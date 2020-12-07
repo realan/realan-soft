@@ -4,7 +4,7 @@ import React  from "react";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import contentData from "../utils/contentData";
 
-const Orders = () => {
+const Payments = () => {
   return (
     <div>
       Payments
@@ -12,4 +12,4 @@ const Orders = () => {
   )
 }
 
-export default Orders;
+export default Payments;
