@@ -3,19 +3,14 @@ import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 
 
-const GET_CUSTOMERS = gql`
+const GET_ORDERS = gql`
   query {
-    customers {
-      id
-      name
+    orders {
+      date_out
       town
-      firms{
-        id
-        name_full
-      }
-      shops {
-        id
+      customer {
         name
+        id
       }
     }
   }
@@ -24,7 +19,7 @@ const GET_CUSTOMERS = gql`
   const Orders = () => {
   
 
-    const { loading, error, data } = useQuery(GET_CUSTOMERS);
+    const { loading, error, data } = useQuery(GET_ORDERS);
     if (loading) return "Loading....";
     if (error) return `Error! ${error.message}`;
     
