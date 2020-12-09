@@ -2,7 +2,11 @@ import Dashboard from "views/Dashboard";
 import Orders from "views/Orders";
 import Payments from "views/Payments";
 import Customers from "views/Customers";
+import Stock from "views/Stock";
 import Todo from "views/Todo";
+import OrderFromProduction from "views/OrderFromProduction";
+import OrderFromStock from "views/OrderFromStock";
+import StockCorrect from "views/StockCorrect";
 // import Setting from "views/Setting";
 import SetSample from "views/SetSample";
 import SetDelivery from "views/SetDelivery";
@@ -56,6 +60,42 @@ var dashRoutes = [
     icon: FormatListNumberedIcon,
     component: Todo,
     layout: "/admin"
+  },
+  {
+    collapse: true,
+    name: "Склад",
+    icon: SettingsIcon,
+    state: "pageCollapse",
+    views: [
+      {
+        path: "/stock",
+        name: "Склад состояние",
+        mini: "СК",
+        component: Stock,
+        layout: "/admin"
+      },
+      {
+        path: "/order-production",
+        name: "Приемка",
+        mini: "ПР",
+        component: OrderFromProduction,
+        layout: "/admin"
+      },
+      {
+        path: "/order-stock",
+        name: "Набор со склада",
+        mini: "НБ",
+        component: OrderFromStock,
+        layout: "/admin"
+      },
+      {
+        path: "/stock-correct",
+        name: "Корректировки",
+        mini: "КР",
+        component: StockCorrect,
+        layout: "/admin"
+      }
+    ]
   },
   {
     collapse: true,
