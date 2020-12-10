@@ -96,7 +96,7 @@ const TableFormImport = (props) => {
         return state;
     };
 
-    // console.log(data)
+    //  console.log(data)
     const tableData = data[tableName].map(item => {
         return {
             actions: (
@@ -126,6 +126,8 @@ const TableFormImport = (props) => {
             ...item,
         }
     })
+
+    // console.log(tableData)
 
     return (
         <div>

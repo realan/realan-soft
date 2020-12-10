@@ -18,6 +18,8 @@ const SetPersons = () => {
     if (loading) return "Loading persons .....";
     if (error) return `Error! ${error.message}`;
 
+    console.log(data)
+
     const columns = [
         {
             Header: "Действия",
