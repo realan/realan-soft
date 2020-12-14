@@ -1,10 +1,11 @@
 import React  from "react";
-
+import GmailTreeView from "../components/GmailTreeView/GmailTreeView";
 
 const StockCorrect = () => {
   return (
     <div>
-      StockCorrect
+      <GmailTreeView/>
+
     </div>
   )
 }

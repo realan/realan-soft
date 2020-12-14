@@ -33,6 +33,9 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Paper from '@material-ui/core/Paper';
 import Draggable from 'react-draggable';
 
+import styles from "assets/jss/material-dashboard-pro-react/customSelectStyle.js";
+
+
 function PaperComponent(props) {
   return (
     <Draggable handle="#draggable-dialog-title" cancel={'[class*="MuiDialogContent-root"]'}>
@@ -40,11 +43,6 @@ function PaperComponent(props) {
     </Draggable>
   );
 }
-
-
-import styles from "assets/jss/material-dashboard-pro-react/customSelectStyle.js";
-
-
 
 
 const newStyles = {
@@ -89,10 +87,11 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
 fuzzyTextFilterFn.autoRemove = val => !val;
 
 // Our table component
-function Table({ columns, data, onRowClick }) {
+function Table({ columns, data }) {
   const [numberOfRows, setNumberOfRows] = React.useState(10);
   const [pageSelect, handlePageSelect] = React.useState(0);
-//For modal dialog window
+
+  //For modal dialog window
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -216,11 +215,7 @@ function Table({ columns, data, onRowClick }) {
                     { " -odd": i % 2 === 0 },
                     { " -even": i % 2 === 1 }
                   )}
-                  onClick={() => {
-                    console.log(row.original)
-                    // onRowClick(true)
-                    }
-                  } // По клику на строку - модальное окно
+                  onClick={handleClickOpen} // Open dialog window
                 >
                   {row.cells.map(cell => {
                     return (
@@ -351,11 +346,10 @@ function Table({ columns, data, onRowClick }) {
 
 
       </div>
-    <div>ПРОБА ПРОБА проба Проба</div>
-    <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+    {/* <div> */}
+      {/* <Button variant="outlined" color="primary" onClick={handleClickOpen}>
         Open form dialog
-      </Button>
+      </Button> */}
       <Dialog
         open={open}
         onClose={handleClose}
@@ -369,6 +363,7 @@ function Table({ columns, data, onRowClick }) {
           <DialogContentText>
             To subscribe to this website, please enter your email address here. We will send updates
             occasionally.
+            
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -380,7 +375,7 @@ function Table({ columns, data, onRowClick }) {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    {/* </div> */}
     </>
   );
 }

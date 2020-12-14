@@ -65,7 +65,6 @@ const Stock = () => {
         data={dataTable}
         onRowClick={onRowClick}
       />
-      <DialogDistributePos/>
     </div>
   )
 }
