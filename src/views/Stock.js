@@ -2,7 +2,7 @@ import React  from "react";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import ReactTableExp from "../components/ReactTableExp/ReactTableExp";
-import DialogDistributePos from "../components/DialogDistributePos/DialogDistributePos";
+// import DialogDistributePos from "../components/DialogDistributePos/DialogDistributePos";
 
 const GET_STOCK = gql`
   query {
@@ -46,16 +46,8 @@ const Stock = () => {
   if (loading) return "Loading....";
   if (error) return `Error! ${error.message}`;
 
-
-  // function onRowClick (row){
-  //   <DialogDistributePos/>
-  // }
-
-  const onRowClick = <DialogDistributePos open={true} />
-
-
   const dataTable = data.mr_pivot;
-  console.log(dataTable)
+  // console.log(dataTable)
   
   return (
     <div>
@@ -63,7 +55,7 @@ const Stock = () => {
       <ReactTableExp
         columns={columns}
         data={dataTable}
-        onRowClick={onRowClick}
+        // onRowClick={onRowClick}
       />
     </div>
   )

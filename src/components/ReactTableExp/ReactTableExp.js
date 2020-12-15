@@ -23,26 +23,10 @@ import MenuItem from "@material-ui/core/MenuItem";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
-//для окна диалога
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Paper from '@material-ui/core/Paper';
-import Draggable from 'react-draggable';
+import DialogOrders from "components/DialogOrders/DialogOrders.js";
+
 
 import styles from "assets/jss/material-dashboard-pro-react/customSelectStyle.js";
-
-
-function PaperComponent(props) {
-  return (
-    <Draggable handle="#draggable-dialog-title" cancel={'[class*="MuiDialogContent-root"]'}>
-      <Paper {...props} />
-    </Draggable>
-  );
-}
 
 
 const newStyles = {
@@ -93,7 +77,11 @@ function Table({ columns, data }) {
 
   //For modal dialog window
   const [open, setOpen] = React.useState(false);
-  const handleClickOpen = () => {
+  const [itemId, setItemId] = React.useState(undefined);
+  const handleClickOpenDialog = (row) => {
+    setItemId(row.values.item_id)
+    console.log(itemId);
+    console.log(row);
     setOpen(true);
   };
   const handleClose = () => {
@@ -215,7 +203,7 @@ function Table({ columns, data }) {
                     { " -odd": i % 2 === 0 },
                     { " -even": i % 2 === 1 }
                   )}
-                  onClick={handleClickOpen} // Open dialog window
+                  onClick={() => handleClickOpenDialog(row)} // Open dialog window
                 >
                   {row.cells.map(cell => {
                     return (
@@ -346,36 +334,10 @@ function Table({ columns, data }) {
 
 
       </div>
-    {/* <div> */}
-      {/* <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Open form dialog
-      </Button> */}
-      <Dialog
+      <DialogOrders
         open={open}
-        onClose={handleClose}
-        PaperComponent={PaperComponent}
-        aria-labelledby="draggable-dialog-title"
-      >
-        <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-          Subscribe
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            To subscribe to this website, please enter your email address here. We will send updates
-            occasionally.
-            
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleClose} color="primary">
-            Subscribe
-          </Button>
-        </DialogActions>
-      </Dialog>
-    {/* </div> */}
+        handleClose ={handleClose}
+      />
     </>
   );
 }
