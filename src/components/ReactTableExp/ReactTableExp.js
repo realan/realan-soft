@@ -81,7 +81,6 @@ function Table({ columns, data }) {
   const handleClickOpenDialog = (row) => {
     setItemId(row.values.item_id)
     console.log(itemId);
-    console.log(row);
     setOpen(true);
   };
   const handleClose = () => {

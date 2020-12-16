@@ -2,6 +2,7 @@ import React  from "react";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import ReactTableExp from "../components/ReactTableExp/ReactTableExp";
+// import DialogOrders from "../components/DialogOrders/DialogOrders.js";
 // import DialogDistributePos from "../components/DialogDistributePos/DialogDistributePos";
 
 const GET_STOCK = gql`
@@ -23,6 +24,7 @@ const GET_STOCK = gql`
 
 
 const Stock = () => {
+
 
   const columns = React.useMemo(
     () => [
@@ -55,8 +57,8 @@ const Stock = () => {
       <ReactTableExp
         columns={columns}
         data={dataTable}
-        // onRowClick={onRowClick}
       />
+
     </div>
   )
 }
