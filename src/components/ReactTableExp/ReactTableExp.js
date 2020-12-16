@@ -337,6 +337,7 @@ function Table({ columns, data }) {
       <DialogOrders
         open={open}
         handleClose ={handleClose}
+        item_id={itemId}
       />
     </>
   );

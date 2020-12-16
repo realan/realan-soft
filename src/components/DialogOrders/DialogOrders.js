@@ -12,12 +12,16 @@ import Draggable from 'react-draggable';
 
 
 const GET_ORDERS_BY_ID = gql`
-  query {
-    mr_items(where: {item: {_eq: 1}, mr_order: {is_shipped: {_eq: false}}}) {
-        order
-        qty
-      }
-  }
+    query QueryOrdersByItemId($item_id: Int!) {
+        mr_items(where: {item: {_eq: $item_id}, mr_order: {is_shipped: {_eq: false}}}) {
+            order
+            qty
+        }
+        mr_price(where: {id: {_eq: $item_id}}) {
+            id
+            name
+        }
+    }
 `;
 
 function PaperComponent(props) {
@@ -30,12 +34,18 @@ function PaperComponent(props) {
 
 const DialogOrders = (props) => {
 
-    const { loading, error, data } = useQuery(GET_ORDERS_BY_ID);
+    let item_id=props.item_id;
+
+    const { loading, error, data } = useQuery(
+        GET_ORDERS_BY_ID,
+        { variables: {item_id} }
+    );
     if (loading) return "Loading....";
     if (error) return `Error! ${error.message}`;
   
     const dataTable = data.mr_items;
-    console.log(dataTable)
+    console.log(data.mr_price[0].name)
+
 
     
     return (
@@ -47,10 +57,16 @@ const DialogOrders = (props) => {
                 aria-labelledby="draggable-dialog-title"
                 >
                 <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-                Subscribe
+                {data.mr_price[0].name}
                 </DialogTitle>
                 <DialogContent>
                 <DialogContentText>
+<table>
+    <tr><td>col1</td><td>col2</td></tr>
+    <tr><td>1</td><td>2</td></tr>
+
+</table>
+
                     To subscribe to this website, please enter your email address here. We will send updates
                     occasionally.
                     
