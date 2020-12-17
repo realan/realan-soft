@@ -76,12 +76,15 @@ const DialogOrders = (props) => {
     console.log(data.mr_items)
 
     const rowOrders=data.mr_items.map( (ord) => {
+        let collectQty = ord.mr_order.mr_to.reduce( (a, b) => a.qty + b.qty, 0);
+        console.log(collectQty);
         return (
-        <tr>
+        <tr key={ord.id}>
             <td> {ord.mr_order.mr_customer.name}</td>
             <td> {ord.mr_order.customer.town}</td>
             <td> {ord.qty}</td>
             <td> {ord.mr_order.date_out}</td>
+            <td> {collectQty}</td>
         </tr>
         )
     });
@@ -102,7 +105,18 @@ const DialogOrders = (props) => {
                 <DialogContentText>
 
                 <table>
+                  <thead>
+                  <tr>
+                      <td> Заказчик</td>
+                      <td> Город</td>
+                      <td> Заказ</td>
+                      <td> Дата отгрузки</td>
+                      <td> Набрано</td>
+                  </tr>
+                  </thead>
+                  <tbody>
                     {rowOrders}
+                  </tbody>
                 </table>
 
 
