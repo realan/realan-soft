@@ -38,6 +38,12 @@ const GET_ORDERS_BY_ID = gql`
               mr_customer {
                 name
               }
+              mr_to (where: {item: {_eq: $item_id}}){
+                qty
+              }
+              mr_from(where: {item: {_eq: $item_id}}) {
+                qty
+              }
             }
         }
         mr_price(where: {id: {_eq: $item_id}}) {

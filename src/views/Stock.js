@@ -2,7 +2,7 @@ import React  from "react";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import ReactTableExp from "../components/ReactTableExp/ReactTableExp";
-// import DialogOrders from "../components/DialogOrders/DialogOrders.js";
+import DialogOrders from "../components/DialogOrders/DialogOrders.js";
 // import DialogDistributePos from "../components/DialogDistributePos/DialogDistributePos";
 
 const GET_STOCK = gql`
@@ -20,11 +20,7 @@ const GET_STOCK = gql`
   }
 `;
 
-
-
-
 const Stock = () => {
-
 
   const columns = React.useMemo(
     () => [
@@ -43,6 +39,18 @@ const Stock = () => {
     ],
     []
   );
+
+    //For modal dialog window
+    const [open, setOpen] = React.useState(false);
+    const [itemId, setItemId] = React.useState(undefined);
+    const onRowClick = (row) => {
+      setItemId(row.values.item_id)
+      console.log(itemId);
+      setOpen(true);
+    }
+    const handleClose = () => {
+      setOpen(false);
+    };
   
   const { loading, error, data } = useQuery(GET_STOCK);
   if (loading) return "Loading....";
@@ -50,15 +58,21 @@ const Stock = () => {
 
   const dataTable = data.mr_pivot;
   // console.log(dataTable)
-  
+
+
   return (
     <div>
       <h3>Сейчас на складе</h3>
       <ReactTableExp
         columns={columns}
         data={dataTable}
+        onRowClick={onRowClick}
       />
-
+      <DialogOrders
+        open={open}
+        handleClose ={handleClose}
+        item_id={itemId}
+      />
     </div>
   )
 }

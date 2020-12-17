@@ -71,21 +71,9 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
 fuzzyTextFilterFn.autoRemove = val => !val;
 
 // Our table component
-function Table({ columns, data }) {
+function Table({ columns, data, onRowClick }) {
   const [numberOfRows, setNumberOfRows] = React.useState(10);
   const [pageSelect, handlePageSelect] = React.useState(0);
-
-  //For modal dialog window
-  const [open, setOpen] = React.useState(false);
-  const [itemId, setItemId] = React.useState(undefined);
-  const handleClickOpenDialog = (row) => {
-    setItemId(row.values.item_id)
-    console.log(itemId);
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const classes = useStyles();
   const filterTypes = React.useMemo(
@@ -202,7 +190,7 @@ function Table({ columns, data }) {
                     { " -odd": i % 2 === 0 },
                     { " -even": i % 2 === 1 }
                   )}
-                  onClick={() => handleClickOpenDialog(row)} // Open dialog window
+                  onClick={() => onRowClick(row)} //handleClickOpenDialog(row)} // Open dialog window
                 >
                   {row.cells.map(cell => {
                     return (
@@ -333,11 +321,7 @@ function Table({ columns, data }) {
 
 
       </div>
-      <DialogOrders
-        open={open}
-        handleClose ={handleClose}
-        item_id={itemId}
-      />
+
     </>
   );
 }
