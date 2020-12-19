@@ -9,6 +9,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Paper from '@material-ui/core/Paper';
 import Draggable from 'react-draggable';
+import RowCollectOrder from "components/RowCollectOrder/RowCollectOrder.js";
 
 // core components
 import Table from "components/Table/Table.js";
@@ -16,11 +17,12 @@ import Table from "components/Table/Table.js";
 import styles from "assets/jss/material-dashboard-pro-react/views/extendedTablesStyle.js";
 // material-ui components
 import { makeStyles } from "@material-ui/core/styles";
+
 // material-ui icons
-import Remove from "@material-ui/icons/Remove";
-import Add from "@material-ui/icons/Add";
-import Close from "@material-ui/icons/Close";
-import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
+// import Remove from "@material-ui/icons/Remove";
+// import Add from "@material-ui/icons/Add";
+// import Close from "@material-ui/icons/Close";
+// import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 
 
 
@@ -31,6 +33,7 @@ const GET_ORDERS_BY_ID = gql`
         mr_items(where: {item: {_eq: $item_id}, mr_order: {is_shipped: {_eq: false}}}) {
             order
             qty
+            note
             mr_order {
               customer
               town
@@ -63,6 +66,7 @@ function PaperComponent(props) {
 
 const DialogOrders = (props) => {
     const classes = useStyles();
+
     let item_id=props.item_id;
 
     const { loading, error, data } = useQuery(
@@ -75,129 +79,66 @@ const DialogOrders = (props) => {
     console.log(data.mr_price[0])
     console.log(data.mr_items)
 
-    const rowOrders=data.mr_items.map( (ord) => {
-        let collectQty = ord.mr_order.mr_to.reduce( (a, b) => a.qty + b.qty, 0);
-        console.log(collectQty);
+    const rowOrders=data.mr_items.map( (ord, key) => {
+        let collectQty = ord.mr_order.mr_to.reduce( (sum, current) => sum + current.qty, 0) -
+          ord.mr_order.mr_from.reduce( (sum, current) => sum + current.qty, 0);
+
         return (
-        <tr key={ord.id}>
-            <td> {ord.mr_order.mr_customer.name}</td>
-            <td> {ord.mr_order.customer.town}</td>
-            <td> {ord.qty}</td>
-            <td> {ord.mr_order.date_out}</td>
-            <td> {collectQty}</td>
+        <tr key={key}>
+          <RowCollectOrder
+            customer={ord.mr_order.mr_customer.name}
+            town={ord.mr_order.town}
+            date={ord.mr_order.date_out}
+            orderQty={ord.qty}
+            collectQty={collectQty}
+            note={ord.note}
+          />
+
         </tr>
         )
     });
 
-    
     return (
         <div>
             <Dialog
                 open={props.open}
                 onClose={props.PaperhandleClose}
+                fullWidth={true}
+                maxWidth="md"
                 PaperComponent={PaperComponent}
                 aria-labelledby="draggable-dialog-title"
                 >
                 <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-                {data.mr_price[0].name}
+                  {data.mr_price[0].name}
                 </DialogTitle>
                 <DialogContent>
-                <DialogContentText>
 
-                <table>
-                  <thead>
-                  <tr>
-                      <td> Заказчик</td>
-                      <td> Город</td>
-                      <td> Заказ</td>
-                      <td> Дата отгрузки</td>
-                      <td> Набрано</td>
-                  </tr>
-                  </thead>
-                  <tbody>
-                    {rowOrders}
-                  </tbody>
+                  <table>
+                    <thead>
+                      <tr>
+                          <td> Заказчик</td>
+                          <td> Город</td>
+                          <td> Дата отгрузки</td>
+                          <td> Заказано</td>
+                          <td> Набрано</td>
+                          <td> Добавляем</td>
+                          <td> Набралось</td>
+                          <td> Заношу инфу</td>
+                          <td> Примечание</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {rowOrders}
+                    </tbody>
                 </table>
 
+                <Table
+                  tableHead={["Заказчик","Город","Заказ","Дата отгрузки","Набрано"]}
+                  tableData={[]}
+                />
 
-
-
-                {/* <Table
-      tableHead={["Заказ","Заказано","Набрано","PRICE","QTY","AMOUNT",""]}
-      tableData={[
-        [
-
-            "Dolce Gabbana",
-          "Red",
-          "M",
-          <span>
-            1{' '}
-            <div className={classes.buttonGroup}>
-              <Button
-                color="primary"
-                size="small"
-                round
-                className={classes.firstButton}
-              >
-                <Remove className={classes.icon} />
-              </Button>
-              <Button
-                color="primary"
-                size="small"
-                round
-                className={classes.lastButton}
-              >
-                <Add className={classes.icon} />
-              </Button>
-            </div>
-          </span>,
-          <span>
-            <small className={classes.tdNumberSmall}>€</small> 549
-          </span>,
-          <Button  className={classes.actionButton}>
-            <Close className={classes.icon} />
-          </Button>
-        ],
-        {
-          purchase: true,
-          colspan: "6",
-          col: {
-            colspan: 2,
-            text: (
-              <Button color="secondary" round>
-                Complete Purchase{" "}
-                <KeyboardArrowRight className={classes.icon} />
-              </Button>
-            )
-          }
-        }
-      ]}
-      tableShopping
-      customHeadCellClasses={[
-        classes.center,
-        classes.description,
-        classes.description,
-        classes.right,
-        classes.right,
-        classes.right
-      ]}
-      // 0 is for classes.center, 2 is for classes.description, 3 is for classes.description
-      // 4 is for classes.right, 5 is for classes.right, 6 is for classes.right
-      customHeadClassesForCells={[0, 2, 3, 4, 5, 6]}
-      customCellClasses={[
-        classes.tdName,
-        classes.tdNumber,
-        classes.tdNumber + " " + classes.tdNumberAndButtonGroup,
-        classes.tdNumber
-      ]}
-      // 1 is for classes.tdName, 4 is for classes.tdNumber, 6 is for classes.tdNumber
-      // 5 is for classes.tdNumber + " " + classes.tdNumberAndButtonGroup
-      customClassesForCells={[1, 4, 5, 6]}
-    /> */}
-
-
-                    
-                </DialogContentText>
+                  <DialogContentText>
+                  </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                 <Button autoFocus onClick={props.handleClose} color="primary">
