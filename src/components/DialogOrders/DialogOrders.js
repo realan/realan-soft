@@ -29,7 +29,7 @@ import Table from "components/Table/Table.js";
 // const useStyles = makeStyles(styles);
 
 const GET_ORDERS_BY_ID = gql`
-    query QueryOrdersByItemId($item_id: Int!) {
+  query QueryOrdersByItemId($item_id: Int!) {
         mr_items(where: {item: {_eq: $item_id}, mr_order: {is_shipped: {_eq: false}}}) {
             order
             qty
