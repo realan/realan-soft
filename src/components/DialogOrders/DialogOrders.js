@@ -14,9 +14,9 @@ import RowCollectOrder from "components/RowCollectOrder/RowCollectOrder.js";
 // core components
 import Table from "components/Table/Table.js";
 // import Button from "components/CustomButtons/Button.js";
-import styles from "assets/jss/material-dashboard-pro-react/views/extendedTablesStyle.js";
+// import styles from "assets/jss/smaterial-dashboard-pro-react/views/extendedTablesStyle.js";
 // material-ui components
-import { makeStyles } from "@material-ui/core/styles";
+// import { makeStyles } from "@material-ui/core/styles";
 
 // material-ui icons
 // import Remove from "@material-ui/icons/Remove";
@@ -26,7 +26,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 
 
-const useStyles = makeStyles(styles);
+// const useStyles = makeStyles(styles);
 
 const GET_ORDERS_BY_ID = gql`
     query QueryOrdersByItemId($item_id: Int!) {
@@ -65,7 +65,7 @@ function PaperComponent(props) {
 }
 
 const DialogOrders = (props) => {
-    const classes = useStyles();
+    // const classes = useStyles();
 
     let item_id=props.item_id;
 
