@@ -1,8 +1,9 @@
 import React  from "react";
 import { gql } from "apollo-boost";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery, useMutation } from "@apollo/react-hooks";
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
+// import Table from "../Table/Table.js";
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -11,26 +12,13 @@ import Paper from '@material-ui/core/Paper';
 import Draggable from 'react-draggable';
 import RowCollectOrder from "components/RowCollectOrder/RowCollectOrder.js";
 
-// core components
-import Table from "components/Table/Table.js";
-// import Button from "components/CustomButtons/Button.js";
-// import styles from "assets/jss/smaterial-dashboard-pro-react/views/extendedTablesStyle.js";
-// material-ui components
-// import { makeStyles } from "@material-ui/core/styles";
-
-// material-ui icons
-// import Remove from "@material-ui/icons/Remove";
-// import Add from "@material-ui/icons/Add";
-// import Close from "@material-ui/icons/Close";
-// import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
-
 
 
 // const useStyles = makeStyles(styles);
 
 const GET_ORDERS_BY_ID = gql`
   query QueryOrdersByItemId($item_id: Int!) {
-        mr_items(where: {item: {_eq: $item_id}, mr_order: {is_shipped: {_eq: false}}}) {
+        mr_items(where: {item: {_eq: $item_id}, mr_order: {is_shipped: {_eq: false}}}, order_by: {mr_order: {date_out: asc_nulls_last}}) {
             order
             qty
             note
@@ -56,6 +44,22 @@ const GET_ORDERS_BY_ID = gql`
     }
 `;
 
+const ADD_MOVE = gql`
+  mutation AddMove ($addData: mr_moving_insert_input!){
+    insert_mr_moving (objects: [$addData]) 
+    {
+      affected_rows
+    }
+  }
+`;
+
+// mutation MyMutation {
+//   insert_mr_moving(objects: {item: 10, qty: 10, from_order: 10, to_order: 10}) {
+//     affected_rows
+//   }
+// }
+
+
 function PaperComponent(props) {
     return (
       <Draggable handle="#draggable-dialog-title" cancel={'[class*="MuiDialogContent-root"]'}>
@@ -66,6 +70,11 @@ function PaperComponent(props) {
 
 const DialogOrders = (props) => {
     // const classes = useStyles();
+    const [dataDB, setDataDB] = React.useState({
+      dataDB: [],
+    }); // для добавления в бд перемещений ассортимента
+
+    const [AddMove] = useMutation(ADD_MOVE);
 
     let item_id=props.item_id;
 
@@ -75,14 +84,19 @@ const DialogOrders = (props) => {
     );
     if (loading) return "Loading....";
     if (error) return `Error! ${error.message}`;
-  
-    console.log(data.mr_price[0])
-    console.log(data.mr_items)
+ 
+    const handleOK = (data) => {
+      setDataDB({dataDB: convertToDB(data)})
+      AddMove({ variables: data }); 
+    }
+
+    const onQtyChange = (e) => {
+      console.log(e)
+    }
 
     const rowOrders=data.mr_items.map( (ord, key) => {
         let collectQty = ord.mr_order.mr_to.reduce( (sum, current) => sum + current.qty, 0) -
           ord.mr_order.mr_from.reduce( (sum, current) => sum + current.qty, 0);
-
         return (
         <tr key={key}>
           <RowCollectOrder
@@ -92,11 +106,28 @@ const DialogOrders = (props) => {
             orderQty={ord.qty}
             collectQty={collectQty}
             note={ord.note}
+            onQtyChange={onQtyChange}
           />
-
         </tr>
         )
     });
+
+      /* Конвертируем данные для бд */
+    const convertToDB = (data) => {
+      let arr = [];
+      for (let j = 0; j < data.length; j++) {
+          if (data.qty !== 0) { 
+            let o = {};
+            o.item = 10;
+            o.qty = 10;
+            o.from_order = 10;
+            o.to_order = 10;
+            arr.push(o);
+          }
+      }
+      console.log('arr', arr);
+      return arr;
+    };
 
     return (
         <div>
@@ -109,7 +140,7 @@ const DialogOrders = (props) => {
                 aria-labelledby="draggable-dialog-title"
                 >
                 <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-                  {data.mr_price[0].name}
+                  {data.mr_price[0].name}, на складе {props.stock_now} шт.
                 </DialogTitle>
                 <DialogContent>
 
@@ -120,10 +151,9 @@ const DialogOrders = (props) => {
                           <td> Город</td>
                           <td> Дата отгрузки</td>
                           <td> Заказано</td>
-                          <td> Набрано</td>
+                          <td> Нужно</td>
                           <td> Добавляем</td>
                           <td> Набралось</td>
-                          <td> Заношу инфу</td>
                           <td> Примечание</td>
                       </tr>
                     </thead>
@@ -132,20 +162,20 @@ const DialogOrders = (props) => {
                     </tbody>
                 </table>
 
-                <Table
+                {/* <Table
                   tableHead={["Заказчик","Город","Заказ","Дата отгрузки","Набрано"]}
                   tableData={[]}
-                />
+                /> */}
 
                   <DialogContentText>
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                <Button autoFocus onClick={props.handleClose} color="primary">
-                    Cancel
-                </Button>
                 <Button onClick={props.handleClose} color="primary">
-                    Subscribe
+                    Отмена
+                </Button>
+                <Button onClick={handleOK} color="primary" variant="contained">
+                    Подтвердить
                 </Button>
                 </DialogActions>
             </Dialog>

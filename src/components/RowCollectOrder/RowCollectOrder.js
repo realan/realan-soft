@@ -3,13 +3,13 @@ import Button from '@material-ui/core/Button';
 // import Button from "components/CustomButtons/Button.js";
 import Input from '@material-ui/core/Input';
 // import AddCircleIcon from '@material-ui/icons/AddCircle';
-import TextField from '@material-ui/core/TextField';
+// import TextField from '@material-ui/core/TextField';
 
 
 const RowCollectOrder = (props) => {
     
     const [count, setCount]= React.useState(0);
-    const [disabled, setDisabled]= React.useState(false);
+    // const [disabled, setDisabled]= React.useState(false);
 
     const date = new Date(props.date).getDate();
     const month = new Date(props.date).getMonth()+1;
@@ -39,17 +39,13 @@ const RowCollectOrder = (props) => {
       setCount(needQty)
     }
 
-    const onMakeMoveClick = () => {
-      
-    }
-
     return (
         <>
             <td> {props.customer}</td>
             <td> {props.town}</td>
             <td> {date}.{month} </td>
             <td> {props.orderQty}</td>
-            <td> {props.collectQty}</td>
+            <td> {needQty}</td>
             <td> 
               <Button 
                 size="small"
@@ -57,16 +53,6 @@ const RowCollectOrder = (props) => {
                 variant="outlined"
                 onClick={decrease}
               >-</Button>
-              {/* <TextField
-                id="standard-number"
-                label="Number"
-                type="number"
-                value={count}
-                onChange={onChangeInput}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              /> */}
               <Input 
                 variant="outlined"
                 type="number" 
@@ -83,23 +69,27 @@ const RowCollectOrder = (props) => {
             </td>
             <td> 
               <Button 
-                simple 
                 color="primary"
                 variant="outlined"
                 onClick={onCollectAllClick}
               >Закрыть</Button>
             </td>
-            <td> 
+            {/* <td> 
               <Button
                 color="primary"
                 variant="contained"
               >Провести</Button>
-            </td>
+            </td> */}
             <td>{props.note}</td>
-        </>
+        </> 
     )
 
 }
 
 
 export default RowCollectOrder;
+
+
+
+
+

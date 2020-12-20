@@ -4,7 +4,7 @@ import { createHttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { ApolloClient } from 'apollo-client';
 import { getMainDefinition } from '@apollo/client/utilities';
-import { split, HttpLink } from '@apollo/client';
+import { split } from '@apollo/client';
 import initialState from '../GraphQL/state';
 import { resolvers, typeDefs } from '../GraphQL/Resolvers';
 import { authLink } from 'providers/AuthLink'
@@ -24,6 +24,11 @@ const wsLink = new WebSocketLink({
     uri: "ws://realan.herokuapp.com/v1/graphql",
     options: {
       reconnect: true,
+      connectionParams: {
+        headers: {
+          'x-hasura-admin-secret':'31080913'
+        }
+      }
     //   connectionParams: {
     //     headers: {headers-object}
     //   }
