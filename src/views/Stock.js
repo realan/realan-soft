@@ -62,10 +62,10 @@ const Stock = () => {
     const onRowClick = (row) => {
       setItemId(row.values.item_id);
       setStockQty(row.values.stock_now);
-      console.log(itemId);
-      console.log(stockQty);
-      console.log(row.values);
-      console.log(row.values.stock_now);
+      // console.log(itemId);
+      // console.log(stockQty);
+      // console.log(row.values);
+      // console.log(row.values.stock_now);
       setOpen(true);
     }
     const handleClose = () => {

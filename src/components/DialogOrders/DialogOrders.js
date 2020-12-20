@@ -23,6 +23,7 @@ const GET_ORDERS_BY_ID = gql`
             qty
             note
             mr_order {
+              id
               customer
               town
               date_out
@@ -70,9 +71,7 @@ function PaperComponent(props) {
 
 const DialogOrders = (props) => {
     // const classes = useStyles();
-    const [dataDB, setDataDB] = React.useState({
-      dataDB: [],
-    }); // для добавления в бд перемещений ассортимента
+    const [dataDB, setDataDB] = React.useState( [] ); // для добавления в бд перемещений ассортимента
 
     const [AddMove] = useMutation(ADD_MOVE);
 
@@ -82,21 +81,41 @@ const DialogOrders = (props) => {
         GET_ORDERS_BY_ID,
         { variables: {item_id} }
     );
+
+    React.useEffect(() => {
+      if(!loading && data){
+        setDataDB(data.mr_items.map( (ord) => {
+            return {
+              item: item_id,
+              qty: 0, // initial value
+              from_order: 3, // у склада ID = 3 - типа постоянное значение заказа !!!!!!!!
+              to_order: ord.mr_order.id,
+            }
+        }));
+      }
+    }, [loading, data, item_id])
+
     if (loading) return "Loading....";
     if (error) return `Error! ${error.message}`;
+    
+    console.log(dataDB)
  
-    const handleOK = (data) => {
-      setDataDB({dataDB: convertToDB(data)})
-      AddMove({ variables: data }); 
+    const handleOK = () => {
+      // setDataDB({dataDB: convertToDB(data)})
+      // AddMove({ variables: data }); 
     }
 
-    const onQtyChange = (e) => {
-      console.log(e)
+
+
+    const onQtyChange = () => {
+      console.log("Эываыаыв")
     }
 
     const rowOrders=data.mr_items.map( (ord, key) => {
+
         let collectQty = ord.mr_order.mr_to.reduce( (sum, current) => sum + current.qty, 0) -
           ord.mr_order.mr_from.reduce( (sum, current) => sum + current.qty, 0);
+
         return (
         <tr key={key}>
           <RowCollectOrder
@@ -112,22 +131,22 @@ const DialogOrders = (props) => {
         )
     });
 
-      /* Конвертируем данные для бд */
-    const convertToDB = (data) => {
-      let arr = [];
-      for (let j = 0; j < data.length; j++) {
-          if (data.qty !== 0) { 
-            let o = {};
-            o.item = 10;
-            o.qty = 10;
-            o.from_order = 10;
-            o.to_order = 10;
-            arr.push(o);
-          }
-      }
-      console.log('arr', arr);
-      return arr;
-    };
+    //   /* Конвертируем данные для бд */
+    // const convertToDB = (data) => {
+    //   let arr = [];
+    //   for (let j = 0; j < data.length; j++) {
+    //       if (data.qty !== 0) { 
+    //         let o = {};
+    //         o.item = 10;
+    //         o.qty = 10;
+    //         o.from_order = 10;
+    //         o.to_order = 10;
+    //         arr.push(o);
+    //       }
+    //   }
+    //   console.log('arr', arr);
+    //   return arr;
+    // };
 
     return (
         <div>

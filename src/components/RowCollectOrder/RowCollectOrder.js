@@ -31,10 +31,15 @@ const RowCollectOrder = (props) => {
 
     const onChangeInput = (e) => {
       let val = e.target.value;
+      console.log("1111111111");
       if (val>=0 && val <= needQty) {
-        setCount(e.target.value)
+        // setCount(e.target.value);
+
+        console.log("kjjlkjlkjlkjlkjlkjl");
+        // props.onQtyChange();
       }
     }
+
     const onCollectAllClick = () => {
       setCount(needQty)
     }
