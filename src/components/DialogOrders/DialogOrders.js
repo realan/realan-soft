@@ -115,18 +115,67 @@ const DialogOrders = (props) => {
 
         let collectQty = ord.mr_order.mr_to.reduce( (sum, current) => sum + current.qty, 0) -
           ord.mr_order.mr_from.reduce( (sum, current) => sum + current.qty, 0);
+        
+        // const increase = () => {
+        //     if(count+1 > needQty) {
+              
+        //     } else {
+        //       setCount(count + 1)
+        //     }
+        // }
+      
+        // const decrease = () => {
+        //     if(count-1 >= 0) { 
+        //       setCount(count - 1) 
+        //     }
+        // }
+
 
         return (
-        <tr key={key}>
-          <RowCollectOrder
-            customer={ord.mr_order.mr_customer.name}
-            town={ord.mr_order.town}
-            date={ord.mr_order.date_out}
-            orderQty={ord.qty}
-            collectQty={collectQty}
-            note={ord.note}
-            onQtyChange={onQtyChange}
-          />
+          <tr key={key}>
+            <RowCollectOrder
+              customer={ord.mr_order.mr_customer.name}
+              town={ord.mr_order.town}
+              date={ord.mr_order.date_out}
+              orderQty={ord.qty}
+              collectQty={collectQty}
+              note={ord.note}
+              onQtyChange={onQtyChange}
+            />
+              {/* <td> {ord.mr_order.mr_customer.name}</td>
+              <td> {ord.mr_order.town}</td>
+              <td>{ord.mr_order.date_out}</td>
+              <td> {ord.qty}</td>
+              <td> {collectQty}</td>
+              <td> 
+                <Button 
+                  size="small"
+                  color="primary"
+                  variant="outlined"
+                  onClick={decrease}
+                >-</Button>
+                <Input 
+                  variant="outlined"
+                  type="number" 
+                  value={count}
+                  onChange={onChangeInput}
+                  style = {{width: 50}}
+                />
+                <Button 
+                  size="small"
+                  variant="contained"
+                  color="primary"
+                  onClick={increase}
+                >+</Button>
+              </td>
+              <td> 
+                <Button 
+                  color="primary"
+                  variant="outlined"
+                  onClick={onCollectAllClick}
+                >Закрыть</Button>
+              </td>
+            <td>{props.note}</td> */}
         </tr>
         )
     });
