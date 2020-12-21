@@ -19,29 +19,30 @@ const RowCollectOrder = (props) => {
       if(count+1 > needQty) {
         
       } else {
+        props.onQtyChange(props.id, count + 1 );
         setCount(count + 1)
+        
       }
     }
 
     const decrease = () => {
       if(count-1 >= 0) { 
-        setCount(count - 1) 
+        props.onQtyChange(props.id, count - 1);
+        setCount(count - 1); 
       }
     }
 
     const onChangeInput = (e) => {
       let val = e.target.value;
-      console.log(val);
       if (val>=0 && val <= needQty) {
-        setCount(e.target.value);
-
-        console.log("kjjlkjlkjlkjlkjlkjl");
-        // props.onQtyChange();
+        setCount(val);
+        props.onQtyChange(props.id, val);
       }
     }
 
     const onCollectAllClick = () => {
-      setCount(needQty)
+      setCount(needQty);
+      props.onQtyChange(props.id, needQty);
     }
 
     return (

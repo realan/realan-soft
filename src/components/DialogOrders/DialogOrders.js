@@ -2,6 +2,7 @@ import React  from "react";
 import { gql } from "apollo-boost";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import Button from '@material-ui/core/Button';
+// import Input from '@material-ui/core/Input';
 import Dialog from '@material-ui/core/Dialog';
 // import Table from "../Table/Table.js";
 import DialogActions from '@material-ui/core/DialogActions';
@@ -97,105 +98,42 @@ const DialogOrders = (props) => {
 
     if (loading) return "Loading....";
     if (error) return `Error! ${error.message}`;
-    
-    console.log(dataDB)
  
     const handleOK = () => {
-      // setDataDB({dataDB: convertToDB(data)})
-      // AddMove({ variables: data }); 
-    }
+      console.log(dataDB)
+      const dataNotZero = dataDB.filter( obj => obj.qty !== 0);
+      console.log(dataNotZero);
+      if (dataNotZero.length > 0) {
+        AddMove({ variables: dataNotZero })
+      }
+    };
 
-
-
-    const onQtyChange = () => {
-      console.log("Эываыаыв")
+    const onQtyChange = (id, qty) => {
+      setDataDB([...dataDB], dataDB[id].qty = qty);
+      console.log(dataDB)
     }
 
     const rowOrders=data.mr_items.map( (ord, key) => {
 
         let collectQty = ord.mr_order.mr_to.reduce( (sum, current) => sum + current.qty, 0) -
           ord.mr_order.mr_from.reduce( (sum, current) => sum + current.qty, 0);
-        
-        // const increase = () => {
-        //     if(count+1 > needQty) {
-              
-        //     } else {
-        //       setCount(count + 1)
-        //     }
-        // }
-      
-        // const decrease = () => {
-        //     if(count-1 >= 0) { 
-        //       setCount(count - 1) 
-        //     }
-        // }
-
 
         return (
-          <tr key={key}>
-            <RowCollectOrder
-              customer={ord.mr_order.mr_customer.name}
-              town={ord.mr_order.town}
-              date={ord.mr_order.date_out}
-              orderQty={ord.qty}
-              collectQty={collectQty}
-              note={ord.note}
-              onQtyChange={onQtyChange}
-            />
-              {/* <td> {ord.mr_order.mr_customer.name}</td>
-              <td> {ord.mr_order.town}</td>
-              <td>{ord.mr_order.date_out}</td>
-              <td> {ord.qty}</td>
-              <td> {collectQty}</td>
-              <td> 
-                <Button 
-                  size="small"
-                  color="primary"
-                  variant="outlined"
-                  onClick={decrease}
-                >-</Button>
-                <Input 
-                  variant="outlined"
-                  type="number" 
-                  value={count}
-                  onChange={onChangeInput}
-                  style = {{width: 50}}
-                />
-                <Button 
-                  size="small"
-                  variant="contained"
-                  color="primary"
-                  onClick={increase}
-                >+</Button>
-              </td>
-              <td> 
-                <Button 
-                  color="primary"
-                  variant="outlined"
-                  onClick={onCollectAllClick}
-                >Закрыть</Button>
-              </td>
-            <td>{props.note}</td> */}
+        <tr key={key}>
+          <RowCollectOrder
+            customer={ord.mr_order.mr_customer.name}
+            town={ord.mr_order.town}
+            date={ord.mr_order.date_out}
+            orderQty={ord.qty}
+            collectQty={collectQty}
+            note={ord.note}
+            onQtyChange={onQtyChange}
+            id={key}
+          />
         </tr>
         )
     });
 
-    //   /* Конвертируем данные для бд */
-    // const convertToDB = (data) => {
-    //   let arr = [];
-    //   for (let j = 0; j < data.length; j++) {
-    //       if (data.qty !== 0) { 
-    //         let o = {};
-    //         o.item = 10;
-    //         o.qty = 10;
-    //         o.from_order = 10;
-    //         o.to_order = 10;
-    //         arr.push(o);
-    //       }
-    //   }
-    //   console.log('arr', arr);
-    //   return arr;
-    // };
 
     return (
         <div>
