@@ -100,11 +100,10 @@ const DialogOrders = (props) => {
     if (error) return `Error! ${error.message}`;
  
     const handleOK = () => {
-      console.log(dataDB)
       const dataNotZero = dataDB.filter( obj => obj.qty !== 0);
       console.log(dataNotZero);
       if (dataNotZero.length > 0) {
-        AddMove({ variables: dataNotZero })
+        AddMove( {variables: dataNotZero} )
       }
     };
 
