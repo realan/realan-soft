@@ -50,16 +50,27 @@ const ADD_MOVE = gql`
   mutation AddMove ($addData: mr_moving_insert_input!){
     insert_mr_moving (objects: [$addData]) 
     {
-      affected_rows
+      affected_rows      
+        returning {
+          qty
+          to_order
+          from_order
+          item
+      }
     }
   }
 `;
+
+
+
 
 // mutation MyMutation {
 //   insert_mr_moving(objects: {item: 10, qty: 10, from_order: 10, to_order: 10}) {
 //     affected_rows
 //   }
 // }
+
+
 
 
 function PaperComponent(props) {
@@ -87,10 +98,10 @@ const DialogOrders = (props) => {
       if(!loading && data){
         setDataDB(data.mr_items.map( (ord) => {
             return {
-              item: item_id,
               qty: 0, // initial value
-              from_order: 3, // у склада ID = 3 - типа постоянное значение заказа !!!!!!!!
               to_order: ord.mr_order.id,
+              from_order: 3, // у склада ID = 3 - типа постоянное значение заказа !!!!!!!!
+              item: item_id,
             }
         }));
       }
@@ -100,16 +111,23 @@ const DialogOrders = (props) => {
     if (error) return `Error! ${error.message}`;
  
     const handleOK = () => {
-      const dataNotZero = dataDB.filter( obj => obj.qty !== 0);
-      console.log(dataNotZero);
-      if (dataNotZero.length > 0) {
-        AddMove( {variables: dataNotZero} )
-      }
+      console.log(dataDB);
+      dataDB.map( (it) => {
+          if (it.qty !== 0) {
+            console.log(it);
+            let addData = it;
+            console.log(addData);
+            AddMove({variables: addData})
+          }
+      })
+ 
+
+
     };
 
     const onQtyChange = (id, qty) => {
       setDataDB([...dataDB], dataDB[id].qty = qty);
-      console.log(dataDB)
+      // console.log(dataDB)
     }
 
     const rowOrders=data.mr_items.map( (ord, key) => {
