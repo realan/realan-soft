@@ -117,12 +117,11 @@ const DialogOrders = (props) => {
             console.log(it);
             let addData = it;
             console.log(addData);
-            AddMove({variables: addData})
+            AddMove({variables: {addData: it }})
           }
+          return 1; //хз почему return
       })
- 
-
-
+      props.handleClose();
     };
 
     const onQtyChange = (id, qty) => {
