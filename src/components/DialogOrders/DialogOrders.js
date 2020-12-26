@@ -1,4 +1,5 @@
 import React  from "react";
+import { useState, useEffect } from 'react';
 import { gql } from "apollo-boost";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import Button from '@material-ui/core/Button';
@@ -61,18 +62,6 @@ const ADD_MOVE = gql`
   }
 `;
 
-
-
-
-// mutation MyMutation {
-//   insert_mr_moving(objects: {item: 10, qty: 10, from_order: 10, to_order: 10}) {
-//     affected_rows
-//   }
-// }
-
-
-
-
 function PaperComponent(props) {
     return (
       <Draggable handle="#draggable-dialog-title" cancel={'[class*="MuiDialogContent-root"]'}>
@@ -83,7 +72,10 @@ function PaperComponent(props) {
 
 const DialogOrders = (props) => {
     // const classes = useStyles();
-    const [dataDB, setDataDB] = React.useState( [] ); // для добавления в бд перемещений ассортимента
+    const [dataDB, setDataDB] = useState( [] ); // для добавления в бд перемещений ассортимента с производства и склада
+    const [stockQty, setStockQty] = useState(0);
+
+    console.log(stockQty)
 
     const [AddMove] = useMutation(ADD_MOVE);
 
@@ -94,16 +86,30 @@ const DialogOrders = (props) => {
         { variables: {item_id} }
     );
 
-    React.useEffect(() => {
+    useEffect( ()=> {
+      setStockQty(props.stock_now)}, 
+      [props.stock_now] 
+    );
+
+    useEffect(() => {
       if(!loading && data){
+        // setDataDB(data.mr_items.map( (ord) => {
+        //     return {
+        //       qty: 0, // initial value
+        //       to_order: ord.mr_order.id,
+        //       from_order: 2, // у доработка ID = 2 - типа постоянное значение заказа !!!!!!!!
+        //       item: item_id,
+        //     }
+        // }));
         setDataDB(data.mr_items.map( (ord) => {
-            return {
-              qty: 0, // initial value
-              to_order: ord.mr_order.id,
-              from_order: 3, // у склада ID = 3 - типа постоянное значение заказа !!!!!!!!
-              item: item_id,
-            }
-        }));
+          return {
+            qty: 0, // initial value
+            qtyFromStock: 0, // initial value
+            to_order: ord.mr_order.id,
+            // from_order: 2, // у доработка ID = 2 - типа постоянное значение заказа !!!!!!!!
+            item: item_id,
+          }
+      }));
       }
     }, [loading, data, item_id])
 
@@ -115,9 +121,23 @@ const DialogOrders = (props) => {
       dataDB.map( (it) => {
           if (it.qty !== 0) {
             console.log(it);
-            let addData = it;
-            console.log(addData);
-            AddMove({variables: {addData: it }})
+            let addData = {
+              qty: it.qty,
+              to_order: it.to_order,
+              from_order: 2, // у доработки ID = 2 - типа постоянное значение заказа !!!!!!!!
+              item: it.item,
+            };
+            AddMove({variables: {addData: addData }})
+          }
+          if (it.qtyFromStock !== 0) {
+            console.log(it);
+            let addData = {
+              qty: it.qtyFromStock,
+              to_order: it.to_order,
+              from_order: 3, // у склада ID = 3 - типа постоянное значение заказа !!!!!!!!
+              item: it.item,
+            };
+            AddMove({variables: {addData: addData }})
           }
           return 1; //хз почему return
       })
@@ -126,6 +146,11 @@ const DialogOrders = (props) => {
 
     const onQtyChange = (id, qty) => {
       setDataDB([...dataDB], dataDB[id].qty = qty);
+      // console.log(dataDB)
+    }
+
+    const onStockQtyChange = (id, qtyFromStock) => {
+      setDataDB([...dataDB], dataDB[id].qtyFromStock = qtyFromStock);
       // console.log(dataDB)
     }
 
@@ -144,6 +169,8 @@ const DialogOrders = (props) => {
             collectQty={collectQty}
             note={ord.note}
             onQtyChange={onQtyChange}
+            onStockQtyChange={onStockQtyChange}
+            stockQty={stockQty}
             id={key}
           />
         </tr>
@@ -162,7 +189,10 @@ const DialogOrders = (props) => {
                 aria-labelledby="draggable-dialog-title"
                 >
                 <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-                  {data.mr_price[0].name}, на складе {props.stock_now} шт.
+                  {data.mr_price[0].name}
+                  <Button onClick={props.handleClose} color="primary">
+                    На складе {stockQty} {props.stock_now}
+                  </Button>
                 </DialogTitle>
                 <DialogContent>
 
@@ -174,8 +204,8 @@ const DialogOrders = (props) => {
                           <td> Дата отгрузки</td>
                           <td> Заказано</td>
                           <td> Нужно</td>
-                          <td> Добавляем</td>
-                          <td> Набралось</td>
+                          <td> С доработки</td>
+                          <td> Со склада</td>
                           <td> Примечание</td>
                       </tr>
                     </thead>
