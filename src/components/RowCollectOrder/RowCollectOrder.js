@@ -1,18 +1,24 @@
 import React  from "react";
+import { useState }  from "react";
+// import Alert from '@material-ui/lab/Alert';
+// import Snackbar from '@material-ui/core/Snackbar';
+
 import Button from '@material-ui/core/Button';
 
 // import Button from "components/CustomButtons/Button.js";
 import Input from '@material-ui/core/Input';
+// import { Alert } from "@material-ui/lab";
 // import AddCircleIcon from '@material-ui/icons/AddCircle';
 // import TextField from '@material-ui/core/TextField';
 
 
 const RowCollectOrder = (props) => {
     
-    const [count, setCount]= React.useState(0);
-    const [countStock, setCountStock]= React.useState(0);
+    const [count, setCount]= useState(0);
+    const [countStock, setCountStock]= useState(0);
+    // const [openNotInStock, setOpenNotInStock]= useState(false);
+    // const [openTooMuch, setOpenTooMuch]= useState(false);
 
-    // const [disabled, setDisabled]= React.useState(false);
 
     const date = new Date(props.date).getDate();
     const month = new Date(props.date).getMonth()+1;
@@ -21,11 +27,14 @@ const RowCollectOrder = (props) => {
 // Process stock
 const increaseStock = () => {
   if(countStock+1 > needQty - count) {
-    
+    // перебор
+    // setOpenTooMuch(true);
+  } else if (props.stockQty <= 0){
+    // столько нет на складе
+    // setOpenNotInStock(true);
   } else {
     props.onStockQtyChange(props.id, countStock + 1 );
-    setCountStock(countStock + 1)
-    
+    setCountStock(countStock + 1);
   }
 }
 
@@ -45,8 +54,13 @@ const onChangeInputStock = (e) => {
 }
 
 const onCollectAllStockClick = () => {
-  setCountStock(needQty - count);
-  props.onStockQtyChange(props.id, needQty - count);
+    if ((needQty - count - countStock) > props.stockQty) { // если на складе меньше, чем нужно набрать - к-во на складе
+      setCountStock(countStock + props.stockQty);
+      props.onStockQtyChange(props.id, countStock + props.stockQty);
+    } else {                                  // иначе сколько нужно набрать минус к-во из доработки
+      setCountStock(needQty - count);
+      props.onStockQtyChange(props.id, needQty - count);
+    }
 }
 
 
@@ -150,9 +164,22 @@ const onCollectAllStockClick = () => {
               >++</Button>
             </td>
             <td>{props.note}</td>
+            <td>{props.stockQty}</td>
+
+
+            {/* <Snackbar open={openNotInStock} autoHideDuration={6000} >
+                <Alert severity="success">
+                    Столько нет на складе
+                </Alert>
+            </Snackbar>
+            <Snackbar open={openTooMuch} autoHideDuration={6000} >
+                <Alert severity="info">
+                    Столько нет на складе
+                </Alert>
+            </Snackbar> */}
+
         </> 
     )
-
 }
 
 

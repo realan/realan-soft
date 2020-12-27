@@ -14,8 +14,6 @@ import Paper from '@material-ui/core/Paper';
 import Draggable from 'react-draggable';
 import RowCollectOrder from "components/RowCollectOrder/RowCollectOrder.js";
 
-
-
 // const useStyles = makeStyles(styles);
 
 const GET_ORDERS_BY_ID = gql`
@@ -75,8 +73,6 @@ const DialogOrders = (props) => {
     const [dataDB, setDataDB] = useState( [] ); // для добавления в бд перемещений ассортимента с производства и склада
     const [stockQty, setStockQty] = useState(0);
 
-    console.log(stockQty)
-
     const [AddMove] = useMutation(ADD_MOVE);
 
     let item_id=props.item_id;
@@ -93,20 +89,11 @@ const DialogOrders = (props) => {
 
     useEffect(() => {
       if(!loading && data){
-        // setDataDB(data.mr_items.map( (ord) => {
-        //     return {
-        //       qty: 0, // initial value
-        //       to_order: ord.mr_order.id,
-        //       from_order: 2, // у доработка ID = 2 - типа постоянное значение заказа !!!!!!!!
-        //       item: item_id,
-        //     }
-        // }));
         setDataDB(data.mr_items.map( (ord) => {
           return {
             qty: 0, // initial value
-            qtyFromStock: 0, // initial value
+            qtyFromStock: 0, // initial value 
             to_order: ord.mr_order.id,
-            // from_order: 2, // у доработка ID = 2 - типа постоянное значение заказа !!!!!!!!
             item: item_id,
           }
       }));
@@ -117,7 +104,6 @@ const DialogOrders = (props) => {
     if (error) return `Error! ${error.message}`;
  
     const handleOK = () => {
-      console.log(dataDB);
       dataDB.map( (it) => {
           if (it.qty !== 0) {
             console.log(it);
@@ -127,7 +113,10 @@ const DialogOrders = (props) => {
               from_order: 2, // у доработки ID = 2 - типа постоянное значение заказа !!!!!!!!
               item: it.item,
             };
-            AddMove({variables: {addData: addData }})
+            AddMove({
+              variables: {addData: addData },
+              refetchQueries: [GET_ORDERS_BY_ID, { variables: {item_id} }], // ЖОПА
+            });
           }
           if (it.qtyFromStock !== 0) {
             console.log(it);
@@ -137,12 +126,20 @@ const DialogOrders = (props) => {
               from_order: 3, // у склада ID = 3 - типа постоянное значение заказа !!!!!!!!
               item: it.item,
             };
-            AddMove({variables: {addData: addData }})
+            AddMove({
+              variables: {addData: addData },
+              refetchQueries: [GET_ORDERS_BY_ID, { variables: {item_id} }], // ЖОПА
+            });
           }
           return 1; //хз почему return
       })
       props.handleClose();
     };
+
+    const handleCancel = () => {
+      setStockQty(props.stock_now);
+      props.handleClose();
+    }
 
     const onQtyChange = (id, qty) => {
       setDataDB([...dataDB], dataDB[id].qty = qty);
@@ -151,6 +148,9 @@ const DialogOrders = (props) => {
 
     const onStockQtyChange = (id, qtyFromStock) => {
       setDataDB([...dataDB], dataDB[id].qtyFromStock = qtyFromStock);
+      let sumQtyFromStock = dataDB.reduce( function (sum, elem) {return sum + elem.qtyFromStock}, 0);
+      console.log(sumQtyFromStock);
+      setStockQty(props.stock_now - sumQtyFromStock);
       // console.log(dataDB)
     }
 
@@ -190,8 +190,8 @@ const DialogOrders = (props) => {
                 >
                 <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
                   {data.mr_price[0].name}
-                  <Button onClick={props.handleClose} color="primary">
-                    На складе {stockQty} {props.stock_now}
+                  <Button onClick={props.handleClose} color="primary" variant="outlined">
+                    На складе {stockQty} шт.
                   </Button>
                 </DialogTitle>
                 <DialogContent>
@@ -223,7 +223,7 @@ const DialogOrders = (props) => {
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                <Button onClick={props.handleClose} color="primary">
+                <Button onClick={handleCancel} color="primary" variant="outlined">
                     Отмена
                 </Button>
                 <Button onClick={handleOK} color="primary" variant="contained">
