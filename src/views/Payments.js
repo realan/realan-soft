@@ -1,13 +1,34 @@
-import React  from "react";
+import * as React from "react";
+import { XGrid } from "@material-ui/x-grid";
+import { useDemoData } from "@material-ui/x-grid-data-generator";
 
-// import { Row, Col } from "reactstrap";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import contentData from "../utils/contentData";
+
 
 const Payments = () => {
+
+  const { data } = useDemoData({
+    dataSet: "Commodity",
+    rowLength: 10
+  });
+
+  const onRowClick = (row) => {
+    alert(row);
+  };
+
+  console.log(data);
+
   return (
-    <div>
-      Payments
+    <div style={{ height: 520, width: "100%" }}>
+      <XGrid
+        
+        loading={data.rows.length === 0}
+        pagination={true}
+        pageSize={5}
+        rowHeight={38}
+        checkboxSelection
+        onRowClick={onRowClick}
+        {...data}
+      />
     </div>
   )
 }

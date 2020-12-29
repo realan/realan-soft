@@ -1,7 +1,7 @@
 import React  from "react";
 import { useState, useEffect } from 'react';
 import { gql } from "apollo-boost";
-import { useQuery, useMutation } from "@apollo/react-hooks";
+import { useSubscription, useMutation } from "@apollo/react-hooks";
 import Button from '@material-ui/core/Button';
 // import Input from '@material-ui/core/Input';
 import Dialog from '@material-ui/core/Dialog';
@@ -16,33 +16,33 @@ import RowCollectOrder from "components/RowCollectOrder/RowCollectOrder.js";
 
 // const useStyles = makeStyles(styles);
 
-const GET_ORDERS_BY_ID = gql`
-  query QueryOrdersByItemId($item_id: Int!) {
-        mr_items(where: {item: {_eq: $item_id}, mr_order: {is_shipped: {_eq: false}}}, order_by: {mr_order: {date_out: asc_nulls_last}}) {
-            order
-            qty
-            note
-            mr_order {
-              id
-              customer
-              town
-              date_out
-              mr_customer {
-                name
-              }
-              mr_to (where: {item: {_eq: $item_id}}){
-                qty
-              }
-              mr_from(where: {item: {_eq: $item_id}}) {
-                qty
-              }
-            }
-        }
-        mr_price(where: {id: {_eq: $item_id}}) {
-            id
+
+const SUBSCRIPTION_ORDERS_BY_ID = gql`
+  subscription SubscriptionsOrdersByItemId($item_id: Int!) {
+    mr_items(where: {item: {_eq: $item_id}, mr_order: {is_shipped: {_eq: false}}}, order_by: {mr_order: {date_out: asc_nulls_last}}) {
+        order
+        qty
+        note
+        mr_order {
+          id
+          customer
+          town
+          date_out
+          mr_customer {
             name
+          }
+          mr_to (where: {item: {_eq: $item_id}}){
+            qty
+          }
+          mr_from(where: {item: {_eq: $item_id}}) {
+            qty
+          }
+        }
+        mr_price {
+          name
         }
     }
+  }
 `;
 
 const ADD_MOVE = gql`
@@ -77,10 +77,10 @@ const DialogOrders = (props) => {
 
     let item_id=props.item_id;
 
-    const { loading, error, data } = useQuery(
-        GET_ORDERS_BY_ID,
-        { variables: {item_id} }
-    );
+    const { loading, error, data } = useSubscription(
+      SUBSCRIPTION_ORDERS_BY_ID,
+      { variables: {item_id} }
+  );
 
     useEffect( ()=> {
       setStockQty(props.stock_now)}, 
@@ -115,7 +115,7 @@ const DialogOrders = (props) => {
             };
             AddMove({
               variables: {addData: addData },
-              refetchQueries: [GET_ORDERS_BY_ID, { variables: {item_id} }], // ЖОПА
+              // refetchQueries: [GET_ORDERS_BY_ID, { variables: {item_id} }], // ЖОПА
             });
           }
           if (it.qtyFromStock !== 0) {
@@ -128,7 +128,7 @@ const DialogOrders = (props) => {
             };
             AddMove({
               variables: {addData: addData },
-              refetchQueries: [GET_ORDERS_BY_ID, { variables: {item_id} }], // ЖОПА
+              // refetchQueries: [GET_ORDERS_BY_ID, { variables: {item_id} }], // ЖОПА
             });
           }
           return 1; //хз почему return
@@ -177,6 +177,7 @@ const DialogOrders = (props) => {
         )
     });
 
+    console.log(data)
 
     return (
         <div>
@@ -189,7 +190,7 @@ const DialogOrders = (props) => {
                 aria-labelledby="draggable-dialog-title"
                 >
                 <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-                  {data.mr_price[0].name}
+                  {data.mr_items[0].mr_price.name}
                   <Button onClick={props.handleClose} color="primary" variant="outlined">
                     На складе {stockQty} шт.
                   </Button>
@@ -213,11 +214,6 @@ const DialogOrders = (props) => {
                       {rowOrders}
                     </tbody>
                 </table>
-
-                {/* <Table
-                  tableHead={["Заказчик","Город","Заказ","Дата отгрузки","Набрано"]}
-                  tableData={[]}
-                /> */}
 
                   <DialogContentText>
                   </DialogContentText>
