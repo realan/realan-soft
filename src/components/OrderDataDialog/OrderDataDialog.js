@@ -1,5 +1,5 @@
 import React  from "react";
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { gql } from "apollo-boost";
 import { useSubscription, useMutation } from "@apollo/react-hooks";
 import Button from '@material-ui/core/Button';
@@ -10,11 +10,31 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Paper from '@material-ui/core/Paper';
 import Draggable from 'react-draggable';
-import { XGrid } from '@material-ui/x-grid';
+// import { XGrid } from '@material-ui/x-grid';
 import { DataGrid } from '@material-ui/data-grid';
+import Close from "@material-ui/icons/Close";
+import EditIcon from '@material-ui/icons/Edit';
+import IconButton from '@material-ui/core/IconButton';
+// import UpdatePosInOrder from "forms/UpdatePosInOrder";
+
+import { TextField} from '@material-ui/core';
 
 // const useStyles = makeStyles(styles);
 
+const UPDATE_ITEM_IN_ORDER = gql`
+  mutation UpdateItemInOrder(
+    $id: Int!, 
+    $qty: Int!, 
+    $note: String) 
+    {
+    update_mr_items(where: {id: {_eq: $id}},
+      _set: {
+        qty: $qty, 
+        note: $note, 
+      } 
+    ) {returning {id}}
+  }
+`;
 
 const SUBSCRIPTION_ITEMS_IN_ORDER = gql`
     subscription SubscriptionsItemsInOrder($order_id: Int!) {
@@ -54,21 +74,40 @@ function PaperComponent(props) {
 
 const OrderDataDialog = (props) => {
     // const classes = useStyles();
-    const [rows, setRows] = useState( [] );
-    // const [stockQty, setStockQty] = useState(0);
+    const [rows, setRows] = useState([]);
+    const [openUpdate, setOpenUpdate] = useState(false);
+    const [dataRow, setDataRow] = useState({});
+    const [UpdateMutation] = useMutation(UPDATE_ITEM_IN_ORDER);
 
+    const posUpdate = (params) => {
+        setDataRow(params.row)
+        setOpenUpdate(true);
+    }
 
-    const columns = useMemo( () =>
-    [
+    const columns = [
       { field: 'id', headerName: 'id', width: 30 },
-      { field: 'name', headerName: 'Наименование', width: 200 },
-      { field: 'qtyOrder', headerName: 'Заказ', width: 100 },
-      { field: 'qtyCollect', headerName: 'Набрано', width: 100 },
-      { field: 'note', headerName: 'Примечание', width: 200 },  
-    ]
-    , []);
+      { field: 'name', headerName: 'Наименование', type: "text", width: 200 },
+      { field: 'qtyOrder', headerName: 'Заказ', type: "number", width: 100 },
+      { field: 'qtyCollect', headerName: 'Набрано', type: "number", width: 100 },
+      { field: 'note', headerName: 'Примечание', type: "text", width: 200 },  
+      { field: 'update', headerName: 'обновить', width: 100,
+        renderCell: (params) => (
+            <strong>
+                <IconButton color="primary" aria-label="редактировать" component="span"
+                    onClick = {() => posUpdate(params)}
+                >
+                    <EditIcon/>
+                </IconButton>  
+                <IconButton color="secondary" aria-label="редактировать" component="span">
+                    <Close />
+                </IconButton>   
+            </strong>
+        ),
+        },
+      
+    ];
 
-    let order_id=props.order_id;
+    let order_id=props.orderData.id;
 
     const { loading, error, data } = useSubscription(
         SUBSCRIPTION_ITEMS_IN_ORDER,
@@ -78,13 +117,13 @@ const OrderDataDialog = (props) => {
     useEffect(() => {
         if(!loading && data){
             setRows(data.mr_items.map( (it) => {
-                let qtyCollect = it.mr_price.qty_to.aggregate.sum.qty
+                let qtyCollect = it.mr_price.qty_to.aggregate.sum.qty - it.mr_price.qty_from.aggregate.sum.qty;
                 return {
-                id: it.id,
-                name: it.mr_price.name,
-                qtyOrder: it.qty,
-                qtyCollect: qtyCollect,
-                note: it.note,
+                    id: it.id,
+                    name: it.mr_price.name,
+                    qtyOrder: it.qty,
+                    qtyCollect: qtyCollect,
+                    note: it.note,
                 }
             }));
         }
@@ -92,8 +131,6 @@ const OrderDataDialog = (props) => {
 
     if (loading) return "Loading....";
     if (error) return `Error! ${error.message}`;
-
-    console.log(data)
  
     const handleOK = () => {
       props.handleClose();
@@ -102,6 +139,25 @@ const OrderDataDialog = (props) => {
     const handleCancel = () => {
       props.handleClose();
     }
+    const handleUpdateClose = () => {
+        setOpenUpdate(false);
+    }
+    const handleUpdateItem = () => {
+        const dataNew = {
+            id: dataRow.id,
+            qty: dataRow.qtyOrder,
+            note: dataRow.note
+        } 
+        UpdateMutation({ variables: dataNew });
+        setOpenUpdate(false);
+    }
+    const handleQtyChange = (event) => {
+        setDataRow({...dataRow, qtyOrder: event.target.value})
+    }
+    const handleNoteChange = (event) => {
+        setDataRow({...dataRow, note: event.target.value})
+    }
+
 
     return (
         <div>
@@ -112,23 +168,26 @@ const OrderDataDialog = (props) => {
                 maxWidth="md"
                 PaperComponent={PaperComponent}
                 aria-labelledby="draggable-dialog-title"
-                >
+            >
                 <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-                  aksdjflasjhflskj
-                  <Button onClick={props.handleClose} color="primary" variant="outlined">
-                    Нasdfaksjfs;
-                  </Button>
+                  {props.orderData.customer} {props.orderData.town}, отгрузка {props.orderData.date_out}
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        style={{ marginLeft: 16 }}
+                    >
+                        Добавить позицию
+                    </Button>
                 </DialogTitle>
                 <DialogContent>
                     <div style={{ height: 600, width: '100%' }}>
-                    <DataGrid
-                        columns={columns}
-                        rows={rows}
-                        rowHeight={32}
-                    />
+                        <DataGrid
+                            columns={columns}
+                            rows={rows}
+                            rowHeight={32}
+                        />
                     </div>
-
-
                   <DialogContentText>
                   </DialogContentText>
                 </DialogContent>
@@ -141,6 +200,41 @@ const OrderDataDialog = (props) => {
                 </Button>
                 </DialogActions>
             </Dialog>
+
+            <Dialog open={openUpdate} onClose={handleUpdateClose} aria-labelledby="form-dialog-title" maxWidth="sm">
+                <DialogTitle id="form-dialog-title">{dataRow.name} </DialogTitle>
+                <DialogContent>
+                <DialogContentText>
+
+                </DialogContentText>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        label="Кол-во"
+                        type="number"
+                        fullWidth
+                        value={dataRow.qtyOrder}
+                        onChange={handleQtyChange}
+                    />
+                    <TextField
+                        margin="dense"
+                        label="Примечание"
+                        type="text"
+                        fullWidth
+                        value={dataRow.note}
+                        onChange={handleNoteChange}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleUpdateClose} color="primary">
+                        Отмена
+                    </Button>
+                    <Button onClick={handleUpdateItem} color="primary">
+                        Изменить
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
         </div>
     )
 }

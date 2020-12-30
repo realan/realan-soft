@@ -6,6 +6,9 @@ import { gql } from "apollo-boost";
 import { useSubscription } from "@apollo/react-hooks";
 import { renderProgress } from '@material-ui/x-grid-data-generator/'; 
 import OrderDataDialog from "../components/OrderDataDialog/OrderDataDialog.js";
+import Button from '@material-ui/core/Button';
+// import FormTemplate from "forms/FormTemplate";
+// import AddIcon from '@material-ui/icons/Add';
 
 const SUBSCRIPTION_ORDERS = gql`
 subscription {
@@ -46,20 +49,20 @@ subscription {
 
 const Orders = () => {
 
-        //For modal dialog window
   const [open, setOpen] = useState(false);
-  const [orderId, setOrderId] = useState(undefined);
+  // const [openAddOrder, setOpenAddOrder] = useState(false);
+  const [orderData, setOrderData] = useState({id: 1});
 
   const columns = useMemo( () =>
   [
     { field: 'id', headerName: 'id', width: 30 },
-    { field: 'customer', headerName: 'Заказчик', width: 200 },
-    { field: 'town', headerName: 'Город', width: 120 },
-    { field: 'date_in', headerName: 'Заказан', width: 110 },
-    { field: 'date_out', headerName: 'Отгрузка', width: 110 },
-    { field: 'qty', headerName: 'Заказ,шт.', width: 100 },
+    { field: 'customer', headerName: 'Заказчик', type: "text", width: 200 },
+    { field: 'town', headerName: 'Город', type: "text", width: 120 },
+    { field: 'date_in', headerName: 'Заказан', type: "date", width: 110 },
+    { field: 'date_out', headerName: 'Отгрузка', type: "date", width: 110 },
+    { field: 'qty', headerName: 'Заказ,шт.', type: "number", width: 100 },
     { field: 'qtyRatio', headerName: 'Набрано', renderCell: renderProgress, width: 100 },
-
+    { field: 'status', headerName: 'Статус', width: 50 },
   ]
   , []);
 
@@ -68,8 +71,9 @@ const Orders = () => {
     if (loading) return "Loading....";
     if (error) return `Error! ${error.message}`;
 
-        let rows=[];
-        data.mr_order.map( (it) => {
+    let rows=[];
+    
+    data.mr_order.map( (it) => {
           const dateIn = new Date(it.date_in).toLocaleDateString();
           const dateOut = new Date(it.date_out).toLocaleDateString();
           let qty = it.mr_items_aggregate.aggregate.sum.qty;
@@ -86,12 +90,11 @@ const Orders = () => {
           }
           rows.push(obj)
           return rows;
-        })
+    });
     
     const onRowClick = (row) => {
-      setOrderId(row.row.id)
+      setOrderData(row.row)
       setOpen(true)
-      // console.log(row.row.id)
     }
 
     const handleClose = () => {
@@ -100,6 +103,9 @@ const Orders = () => {
 
     return (
       <>
+        <Button>
+          Добавить заказ
+        </Button>
         <div style={{ height: 700, width: '100%' }}>
           <DataGrid
             columns={columns}
@@ -112,8 +118,14 @@ const Orders = () => {
         <OrderDataDialog
           open={open}
           handleClose={handleClose}
-          order_id={orderId}
+          orderData={orderData}
         />
+        {/* <FormTemplate 
+          fields={columns}
+
+          header={"Введи закащ"}
+          openIcon={<AddIcon />}
+          onSubmit={}/> */}
       </>
     );
 }

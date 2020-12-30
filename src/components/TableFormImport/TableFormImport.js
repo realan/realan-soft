@@ -67,7 +67,7 @@ const TableFormImport = (props) => {
             data: { [tableName]: newData }
         });
     };
-    const [DeleteDelivery] = useMutation(deleteMutation, { update: updateCacheDelete });
+    const [DeleteMutation] = useMutation(deleteMutation, { update: updateCacheDelete });
 
     const { loading, error, data } = useQuery(getDataQuery);
     if (loading) return "Loading....";
@@ -84,10 +84,8 @@ const TableFormImport = (props) => {
         UpdateMutation({ variables: data });
     };
     const deleteItem = (id) => {
-        DeleteDelivery({ variables: { id: id } })
+        DeleteMutation({ variables: { id: id } })
     };
-
-
 
     const getInitialState = (id) => {
         let state = data[tableName].filter(item => {
