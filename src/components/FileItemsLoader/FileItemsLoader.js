@@ -37,14 +37,6 @@ const FileLoader = (props) => {
         };
         if (rABS) reader.readAsBinaryString(file); else reader.readAsArrayBuffer(file);
     };
-    const exportFile = () => {
-        /* convert state to workbook */
-        const ws = XLSX.utils.aoa_to_sheet(state.data);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
-        /* generate XLSX file and send to client */
-        XLSX.writeFile(wb, "export.xlsx")
-    };
 
     const updateDB = () => {
         setStateBtn(true);
@@ -55,29 +47,12 @@ const FileLoader = (props) => {
     
     return (
         <DragDropFile handleFile={handleFile}>
-            <div className="row"><div className="col-xs-12">
-                <DataInput handleFile={handleFile} />
-            </div></div>
-            <div className="row"><div className="col-xs-12">
-                <button disabled={!state.data.length} className="btn btn-success" onClick={exportFile}>Export</button>
-                <button disabled={!state.data.length || stateBtn} className="btn btn-success" onClick={updateDB}>Обновить БД</button>
-            </div></div>
-            <div className="row"><div className="col-xs-12">
+            <DataInput handleFile={handleFile} />
             <Table columns={props.header} data={state.dataDB} />
-            </div></div>
         </DragDropFile>
     );
 };
 
-// if (typeof module !== 'undefined') module.exports = SheetJSApp
-
-/* -------------------------------------------------------------------------- */
-
-/*
-  Simple HTML5 file drag-and-drop wrapper
-  usage: <DragDropFile handleFile={handleFile}>...</DragDropFile>
-    handleFile(file:File):void;
-*/
 
 const DragDropFile = (props) => {
     const suppress = (evt) => { evt.stopPropagation(); evt.preventDefault(); };
@@ -114,29 +89,6 @@ const DataInput = (props) => {
     );
 }
 
-/*
-  Simple HTML Table
-  usage: <OutTable data={data} cols={cols} />
-    data:Array<Array<any> >;
-    cols:Array<{name:string, key:number|string}>;
-*/
-/* <OutTable data={state.data} cols={state.cols} /> */
-// const OutTable = (props) => {
-//     return (
-//         <div className="table-responsive">
-//             <table className="table table-striped">
-//                 <thead>
-//                     <tr>{props.cols.map((c) => <th key={c.key}>{c.name}</th>)}</tr>
-//                 </thead>
-//                 <tbody>
-//                     {props.data.map((r, i) => <tr key={i}>
-//                         {props.cols.map(c => <td key={c.key}>{r[c.key]}</td>)}
-//                     </tr>)}
-//                 </tbody>
-//             </table>
-//         </div>
-//     );
-// };
 
 /* list of supported file types */
 const SheetJSFT = [

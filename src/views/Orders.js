@@ -5,8 +5,10 @@ import { DataGrid } from '@material-ui/data-grid';
 import { gql } from "apollo-boost";
 import { useSubscription } from "@apollo/react-hooks";
 import { renderProgress } from '@material-ui/x-grid-data-generator/'; 
-import OrderDataDialog from "../components/OrderDataDialog/OrderDataDialog.js";
+// import OrderDataDialog from "../components/OrderDataDialog/OrderDataDialog.js";
 import Button from '@material-ui/core/Button';
+import DialogOrders from "components/DialogOrders/DialogOrders.js";
+import DialogAddOrder from "components/DialogAddOrder/DialogAddOrder";
 // import FormTemplate from "forms/FormTemplate";
 // import AddIcon from '@material-ui/icons/Add';
 
@@ -50,7 +52,7 @@ subscription {
 const Orders = () => {
 
   const [open, setOpen] = useState(false);
-  // const [openAddOrder, setOpenAddOrder] = useState(false);
+  const [openAddOrder, setOpenAddOrder] = useState(false);
   const [orderData, setOrderData] = useState({id: 1});
 
   const columns = useMemo( () =>
@@ -74,22 +76,22 @@ const Orders = () => {
     let rows=[];
     
     data.mr_order.map( (it) => {
-          const dateIn = new Date(it.date_in).toLocaleDateString();
-          const dateOut = new Date(it.date_out).toLocaleDateString();
-          let qty = it.mr_items_aggregate.aggregate.sum.qty;
-          let qtyRatio = +((it.mr_to_aggregate.aggregate.sum.qty - it.mr_from_aggregate.aggregate.sum.qty)/qty).toFixed(3);
+      const dateIn = new Date(it.date_in);
+      const dateOut = new Date(it.date_out);
+      let qty = it.mr_items_aggregate.aggregate.sum.qty;
+      let qtyRatio = +((it.mr_to_aggregate.aggregate.sum.qty - it.mr_from_aggregate.aggregate.sum.qty)/qty).toFixed(3);
 
-          let obj = {
-            id: it.id,
-            customer: it.mr_customer.name,
-            town: it.town,
-            date_in: dateIn,
-            date_out: dateOut,
-            qty: qty,
-            qtyRatio: qtyRatio,
-          }
-          rows.push(obj)
-          return rows;
+      let obj = {
+        id: it.id,
+        customer: it.mr_customer.name,
+        town: it.town,
+        date_in: dateIn,
+        date_out: dateOut,
+        qty: qty,
+        qtyRatio: qtyRatio,
+      }
+      rows.push(obj)
+      return rows;
     });
     
     const onRowClick = (row) => {
@@ -100,10 +102,13 @@ const Orders = () => {
     const handleClose = () => {
       setOpen(false);
     };
+    const handleAddOrderClose = () => {
+      setOpenAddOrder(false);
+    };
 
     return (
       <>
-        <Button>
+        <Button onClick = { () => setOpenAddOrder(true) }>
           Добавить заказ
         </Button>
         <div style={{ height: 700, width: '100%' }}>
@@ -115,17 +120,15 @@ const Orders = () => {
             paginaton={true}
           />
         </div>
-        <OrderDataDialog
+        <DialogOrders
           open={open}
           handleClose={handleClose}
           orderData={orderData}
         />
-        {/* <FormTemplate 
-          fields={columns}
-
-          header={"Введи закащ"}
-          openIcon={<AddIcon />}
-          onSubmit={}/> */}
+        <DialogAddOrder
+          open={openAddOrder}
+          handleClose={handleAddOrderClose}
+        />
       </>
     );
 }

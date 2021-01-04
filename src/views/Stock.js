@@ -1,9 +1,9 @@
 import React  from "react";
 import { gql } from "apollo-boost";
 import { useSubscription } from "@apollo/react-hooks";
-import ReactTableExp from "../components/ReactTableExp/ReactTableExp";
-import DialogOrders from "../components/DialogOrders/DialogOrders.js";
+// import DialogOrders from "../components/DialogOrders/DialogOrders.js";
 import { DataGrid } from '@material-ui/data-grid';
+import DialogStock from "components/DialogStock/DialogStock.js";
 // import { XGrid } from '@material-ui/x-grid';
 
 const SUBSCRIPTION_STOCK = gql`
@@ -23,24 +23,6 @@ const SUBSCRIPTION_STOCK = gql`
 
 const Stock = () => {
 
-  // const columns = React.useMemo(
-  //   () => [
-  //     {Header: "id", accessor: "item_id", type: "integer", show: false, required: true},
-  //     {Header: "Название", accessor: "item_name", type: "text", show: true, required: true},
-  //     {Header: "На складе", accessor: "stock_now", type: "integer", show: true, required: true},
-  //     {Header: "Эта неделя", columns: [  
-  //       {Header: "Заказано", accessor: "order_this_week", type: "integer", show: true, required: true},
-  //       {Header: "Набрано", accessor: "collected_this_week", type: "integer", show: true, required: true},
-  //     ]}, 
-  //     {Header: "Следующая неделя", columns: [  
-  //       {Header: "Заказано", accessor: "order_next_week", type: "integer", show: true, required: true},
-  //       {Header: "Набрано", accessor: "collected_next_week", type: "integer", show: true, required: true},
-  //     ]},
-  //     {Header: "Заказ позже", accessor: "order_next", type: "integer", show: true, required: true},
-  //   ],
-  //   []
-  // );
-
   const columns = React.useMemo( () =>
   [
     { field: 'id', headerName: 'id', width: 30 },
@@ -56,13 +38,18 @@ const Stock = () => {
 
     //For modal dialog window
     const [open, setOpen] = React.useState(false);
-    const [itemId, setItemId] = React.useState(undefined);
-    const [stockQty, setStockQty] = React.useState(undefined);
+    const [itemId, setItemId] = React.useState();
+    const [stockQty, setStockQty] = React.useState();
 
     const onRowClick = (row) => {
-      setItemId(row.values.item_id);
-      setStockQty(row.values.stock_now);
-      setOpen(true);
+      if (row.row.order_next + row.row.order_next_week + row.row.order_this_week > 0) {
+        setItemId(row.row.id);
+        setStockQty(row.row.stock_now);
+        setOpen(true);
+      } else {
+        alert("Этой позиции нет в заказах")
+      }
+
     }
     const handleClose = () => {
       setOpen(false);
@@ -72,21 +59,20 @@ const Stock = () => {
   if (loading) return "Loading....";
   if (error) return `Error! ${error.message}`;
 
-  const tableData=data.mr_pivot;
+  // const tableData=data.mr_pivot;
 
-  // const rows = tableData.map( (obj) => {
-  //   obj['id'] = obj['item_id'];
-  //   delete obj['item_id'];
-  //   return obj;
-  // });
-  console.log(tableData)
+  // console.log(tableData)
 
   return (
     <div>
       <div style={{ height: 700, width: '100%' }}>
-        <DataGrid rows={tableData} columns={columns} />
+        <DataGrid 
+          rows={data.mr_pivot} 
+          columns={columns} 
+          onRowClick={onRowClick}
+        />
       </div>
-      <DialogOrders
+      <DialogStock
         open={open}
         handleClose ={handleClose}
         item_id={itemId}

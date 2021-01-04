@@ -3,61 +3,81 @@ import { useState, useEffect } from 'react';
 import { gql } from "apollo-boost";
 import { useSubscription, useMutation } from "@apollo/react-hooks";
 import Button from '@material-ui/core/Button';
-// import Input from '@material-ui/core/Input';
 import Dialog from '@material-ui/core/Dialog';
-// import Table from "../Table/Table.js";
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Paper from '@material-ui/core/Paper';
 import Draggable from 'react-draggable';
-import RowCollectOrder from "components/RowCollectOrder/RowCollectOrder.js";
+// import { XGrid } from '@material-ui/x-grid';
+import { DataGrid } from '@material-ui/data-grid';
+import Close from "@material-ui/icons/Close";
+import EditIcon from '@material-ui/icons/Edit';
+import IconButton from '@material-ui/core/IconButton';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import ru from 'date-fns/locale/ru';
+
+import { TextField} from '@material-ui/core';
+
 
 // const useStyles = makeStyles(styles);
 
-
-const SUBSCRIPTION_ORDERS_BY_ID = gql`
-  subscription SubscriptionsOrdersByItemId($item_id: Int!) {
-    mr_items(where: {item: {_eq: $item_id}, mr_order: {is_shipped: {_eq: false}}}, order_by: {mr_order: {date_out: asc_nulls_last}}) {
-        order
-        qty
-        note
-        mr_order {
-          id
-          customer
-          town
-          date_out
-          mr_customer {
-            name
-          }
-          mr_to (where: {item: {_eq: $item_id}}){
-            qty
-          }
-          mr_from(where: {item: {_eq: $item_id}}) {
-            qty
-          }
-        }
-        mr_price {
-          name
-        }
-    }
+const UPDATE_ITEM_IN_ORDER = gql`
+  mutation UpdateItemInOrder(
+    $id: Int!, 
+    $qty: Int!, 
+    $note: String) 
+    {
+    update_mr_items(where: {id: {_eq: $id}},
+      _set: {
+        qty: $qty, 
+        note: $note, 
+      } 
+    ) {returning {id}}
   }
 `;
 
-const ADD_MOVE = gql`
-  mutation AddMove ($addData: mr_moving_insert_input!){
-    insert_mr_moving (objects: [$addData]) 
-    {
-      affected_rows      
-        returning {
-          qty
-          to_order
-          from_order
-          item
-      }
+const UPDATE_ORDER_DATE = gql`
+    mutation UpdateOrderDate(
+        $id: Int!, 
+        $date_out: timestamptz) 
+        {
+        update_mr_order(where: {id: {_eq: $id}},
+            _set: {
+                date_out: $date_out
+            } 
+        ) {returning {id}}
     }
-  }
+`;
+
+const SUBSCRIPTION_ITEMS_IN_ORDER = gql`
+    subscription SubscriptionsItemsInOrder($order_id: Int!) {
+        mr_items(order_by: {item: asc}, where: {mr_order: {id: {_eq: $order_id}}}) {
+        id
+        item
+        qty
+        note
+        mr_price {
+            name
+            qty_to: mr_movings_aggregate(where: {to_order: {_eq: $order_id}}) {
+            aggregate {
+                sum {
+                qty
+                }
+            }
+            }
+            qty_from: mr_movings_aggregate(where: {from_order: {_eq: $order_id}}) {
+            aggregate {
+                sum {
+                qty
+                }
+            }
+            }
+        }
+        }
+    }
 `;
 
 function PaperComponent(props) {
@@ -70,163 +90,187 @@ function PaperComponent(props) {
 
 const DialogOrders = (props) => {
     // const classes = useStyles();
-    const [dataDB, setDataDB] = useState( [] ); // для добавления в бд перемещений ассортимента с производства и склада
-    const [stockQty, setStockQty] = useState(0);
+    const [rows, setRows] = useState([]);
+    const [openUpdate, setOpenUpdate] = useState(false);
+    const [dataRow, setDataRow] = useState({});
+    const [orderDate, setOrderDate] = useState();
 
-    const [AddMove] = useMutation(ADD_MOVE);
+    const [UpdateMutation] = useMutation(UPDATE_ITEM_IN_ORDER);
+    const [UpdateDateMutation] = useMutation(UPDATE_ORDER_DATE);
 
-    let item_id=props.item_id;
+    const posUpdate = (params) => {
+        setDataRow(params.row)
+        setOpenUpdate(true);
+    }
+
+    const columns = [
+      { field: 'id', headerName: 'id', width: 30 },
+      { field: 'name', headerName: 'Наименование', type: "text", width: 200 },
+      { field: 'qtyOrder', headerName: 'Заказ', type: "number", width: 100 },
+      { field: 'qtyCollect', headerName: 'Набрано', type: "number", width: 100 },
+      { field: 'note', headerName: 'Примечание', type: "text", width: 200 },  
+      { field: 'update', headerName: 'обновить', width: 100,
+        renderCell: (params) => (
+            <strong>
+                <IconButton color="primary" aria-label="редактировать" component="span"
+                    onClick = {() => posUpdate(params)}
+                >
+                    <EditIcon/>
+                </IconButton>  
+                <IconButton color="secondary" aria-label="редактировать" component="span">
+                    <Close />
+                </IconButton>   
+            </strong>
+        ),
+        },
+      
+    ];
+
+    useEffect(() => { setOrderDate(props.orderData.date_out) }, [props.orderData.date_out]);
+
+    let order_id=props.orderData.id;
+    
+    
 
     const { loading, error, data } = useSubscription(
-      SUBSCRIPTION_ORDERS_BY_ID,
-      { variables: {item_id} }
-  );
-
-    useEffect( ()=> {
-      setStockQty(props.stock_now)}, 
-      [props.stock_now] 
+        SUBSCRIPTION_ITEMS_IN_ORDER,
+      { variables: {order_id} }
     );
 
     useEffect(() => {
-      if(!loading && data){
-        setDataDB(data.mr_items.map( (ord) => {
-          return {
-            qty: 0, // initial value
-            qtyFromStock: 0, // initial value 
-            to_order: ord.mr_order.id,
-            item: item_id,
-          }
-      }));
-      }
-    }, [loading, data, item_id])
+        if(!loading && data){
+            setRows(data.mr_items.map( (it) => {
+                let qtyCollect = it.mr_price.qty_to.aggregate.sum.qty - it.mr_price.qty_from.aggregate.sum.qty;
+                return {
+                    id: it.id,
+                    name: it.mr_price.name,
+                    qtyOrder: it.qty,
+                    qtyCollect: qtyCollect,
+                    note: it.note,
+                }
+            }));
+        }
+    }, [loading, data])
 
     if (loading) return "Loading....";
     if (error) return `Error! ${error.message}`;
  
     const handleOK = () => {
-      dataDB.map( (it) => {
-          if (it.qty !== 0) {
-            console.log(it);
-            let addData = {
-              qty: it.qty,
-              to_order: it.to_order,
-              from_order: 2, // у доработки ID = 2 - типа постоянное значение заказа !!!!!!!!
-              item: it.item,
-            };
-            AddMove({
-              variables: {addData: addData },
-              // refetchQueries: [GET_ORDERS_BY_ID, { variables: {item_id} }], // ЖОПА
-            });
-          }
-          if (it.qtyFromStock !== 0) {
-            console.log(it);
-            let addData = {
-              qty: it.qtyFromStock,
-              to_order: it.to_order,
-              from_order: 3, // у склада ID = 3 - типа постоянное значение заказа !!!!!!!!
-              item: it.item,
-            };
-            AddMove({
-              variables: {addData: addData },
-              // refetchQueries: [GET_ORDERS_BY_ID, { variables: {item_id} }], // ЖОПА
-            });
-          }
-          return 1; //хз почему return
-      })
       props.handleClose();
     };
 
     const handleCancel = () => {
-      setStockQty(props.stock_now);
       props.handleClose();
     }
-
-    const onQtyChange = (id, qty) => {
-      setDataDB([...dataDB], dataDB[id].qty = qty);
-      // console.log(dataDB)
+    const handleUpdateClose = () => {
+        setOpenUpdate(false);
+    }
+    const handleUpdateItem = () => {
+        const dataNew = {
+            id: dataRow.id,
+            qty: dataRow.qtyOrder,
+            note: dataRow.note
+        } 
+        UpdateMutation({ variables: dataNew });
+        setOpenUpdate(false);
+    }
+    const handleQtyChange = (event) => {
+        setDataRow({...dataRow, qtyOrder: event.target.value})
+    }
+    const handleNoteChange = (event) => {
+        setDataRow({...dataRow, note: event.target.value})
+    }
+    const handleDateChange = (date) => {
+        console.log(orderDate)
+        setOrderDate(date);
+        UpdateDateMutation({ variables: {
+            id: order_id,
+            date_out: date
+        } });
     }
 
-    const onStockQtyChange = (id, qtyFromStock) => {
-      setDataDB([...dataDB], dataDB[id].qtyFromStock = qtyFromStock);
-      let sumQtyFromStock = dataDB.reduce( function (sum, elem) {return sum + elem.qtyFromStock}, 0);
-      console.log(sumQtyFromStock);
-      setStockQty(props.stock_now - sumQtyFromStock);
-      // console.log(dataDB)
-    }
-
-    const rowOrders=data.mr_items.map( (ord, key) => {
-
-        let collectQty = ord.mr_order.mr_to.reduce( (sum, current) => sum + current.qty, 0) -
-          ord.mr_order.mr_from.reduce( (sum, current) => sum + current.qty, 0);
-
-        return (
-        <tr key={key}>
-          <RowCollectOrder
-            customer={ord.mr_order.mr_customer.name}
-            town={ord.mr_order.town}
-            date={ord.mr_order.date_out}
-            orderQty={ord.qty}
-            collectQty={collectQty}
-            note={ord.note}
-            onQtyChange={onQtyChange}
-            onStockQtyChange={onStockQtyChange}
-            stockQty={stockQty}
-            id={key}
-          />
-        </tr>
-        )
-    });
-
-    console.log(data)
 
     return (
         <div>
             <Dialog
                 open={props.open}
-                onClose={props.PaperhandleClose}
+                onClose={props.handleClose}
                 fullWidth={true}
                 maxWidth="md"
                 PaperComponent={PaperComponent}
                 aria-labelledby="draggable-dialog-title"
-                >
+            >
                 <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-                  {data.mr_items[0].mr_price.name}
-                  <Button onClick={props.handleClose} color="primary" variant="outlined">
-                    На складе {stockQty} шт.
-                  </Button>
+                  {props.orderData.customer} {props.orderData.town}, отгрузка 
+
+                  <DatePicker
+                    selected={orderDate}
+                    // name={item.accessor}
+                    showWeekNumbers
+                    showMonthDropdown
+                    // placeholderText={item.Header}
+                    locale={ru}
+                    // value={orderDate}
+                    onChange={ date => {handleDateChange(date) }}
+                    // dateFormat="dd-MM-yyyy"
+                    />
+
                 </DialogTitle>
                 <DialogContent>
-
-                  <table>
-                    <thead>
-                      <tr>
-                          <td> Заказчик</td>
-                          <td> Город</td>
-                          <td> Дата отгрузки</td>
-                          <td> Заказано</td>
-                          <td> Нужно</td>
-                          <td> С доработки</td>
-                          <td> Со склада</td>
-                          <td> Примечание</td>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {rowOrders}
-                    </tbody>
-                </table>
-
+                    <div style={{ height: 600, width: '100%' }}>
+                        <DataGrid
+                            columns={columns}
+                            rows={rows}
+                            rowHeight={32}
+                        />
+                    </div>
                   <DialogContentText>
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                <Button onClick={handleCancel} color="primary" variant="outlined">
-                    Отмена
-                </Button>
-                <Button onClick={handleOK} color="primary" variant="contained">
-                    Подтвердить
-                </Button>
+                    <Button onClick={handleCancel} color="primary" variant="outlined" >
+                        Добавить позицию
+                    </Button>
+                    <Button onClick={handleOK} color="primary" variant="contained">
+                        Закрыть
+                    </Button>
                 </DialogActions>
             </Dialog>
+
+            <Dialog open={openUpdate} onClose={handleUpdateClose} aria-labelledby="form-dialog-title" maxWidth="sm">
+                <DialogTitle id="form-dialog-title">{dataRow.name} </DialogTitle>
+                <DialogContent>
+                <DialogContentText>
+
+                </DialogContentText>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        label="Кол-во"
+                        type="number"
+                        fullWidth
+                        value={dataRow.qtyOrder}
+                        onChange={handleQtyChange}
+                    />
+                    <TextField
+                        margin="dense"
+                        label="Примечание"
+                        type="text"
+                        fullWidth
+                        value={dataRow.note}
+                        onChange={handleNoteChange}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleUpdateClose} color="primary">
+                        Отмена
+                    </Button>
+                    <Button onClick={handleUpdateItem} color="primary">
+                        Изменить
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
         </div>
     )
 }
