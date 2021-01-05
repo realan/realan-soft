@@ -108,7 +108,7 @@ const Orders = () => {
 
     return (
       <>
-        <Button onClick = { () => setOpenAddOrder(true) }>
+        <Button color="primary" variant="outlined" onClick = { () => setOpenAddOrder(true) }>
           Добавить заказ
         </Button>
         <div style={{ height: 700, width: '100%' }}>
