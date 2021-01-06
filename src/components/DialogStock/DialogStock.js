@@ -16,6 +16,8 @@ import Draggable from 'react-draggable';
 import { DataGrid } from '@material-ui/data-grid';
 import InputGroup from "components/InputGroup/InputGroup";
 import InputWithButtons from "components/InputWithButtons/InputWithButtons";
+import CardPosInOrder from "components/CardPosInOrder/CardPosInOrder";
+import Box from '@material-ui/core/Box';
 
 // const useStyles = makeStyles(styles);
 
@@ -119,7 +121,7 @@ const DialogStock = (props) => {
         renderCell: (params) => (
           <strong>
               <InputGroup 
-                maxValue = {stockQty}
+                maxValue = {(stockQty < params.row.needQty) ? stockQty : params.row.needQty }
                 type = {"stock"}
                 id = {params.rowIndex}
                 onQtyChange = {onQtyChange}
@@ -157,6 +159,8 @@ const DialogStock = (props) => {
 
   if (loading) return "Loading....";
   if (error) return `Error! ${error.message}`;
+
+
 
   const handleOK = () => {
     dataDB.map( (it) => {
@@ -218,10 +222,11 @@ const DialogStock = (props) => {
   const handleChangeProdToStock = (qty) => {
     setProdToStock(qty);
   }
-
+  let cards=[];
   let rows=[];
   data.mr_items.map( (it) => {
-    const dateOut = new Date(it.date_out).toLocaleDateString();
+    console.log(it)
+    const dateOut = new Date(it.mr_order.date_out);
     let needQty = it.qty - (it.mr_order.mr_to.reduce( (sum, current) => sum + current.qty, 0) -
     it.mr_order.mr_from.reduce( (sum, current) => sum + current.qty, 0));
 
@@ -229,7 +234,7 @@ const DialogStock = (props) => {
       id: it.id,
       customer: it.mr_order.mr_customer.name,
       town: it.mr_order.town,
-      dateOut: dateOut,
+      dateOut: dateOut.toDateString(),
       // collected: qty,
       orderQty: it.qty,
       needQty: needQty,
@@ -237,9 +242,18 @@ const DialogStock = (props) => {
       fromStock: it.qty,
       note: it.note,
     }
-    rows.push(obj)
-    return rows;
+    rows.push(obj);
+    cards.push(obj);
+    return (rows, cards);
   });
+
+  
+  const listCards = cards.map((item, id) =>
+    <div key={id}>
+        <CardPosInOrder 
+          value = {item}/>
+    </div>
+  );
 
 
   return (
@@ -260,6 +274,9 @@ const DialogStock = (props) => {
               </Button>
             </DialogTitle>
             <DialogContent>
+              <Box display="flex" justifyContent="center" m={1}>
+                {listCards}
+              </Box>
 
               <div style={{ height: 500, width: '100%' }}>
                 <DataGrid 

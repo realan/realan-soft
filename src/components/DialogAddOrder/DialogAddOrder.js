@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
+// import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Paper from '@material-ui/core/Paper';
 import Draggable from 'react-draggable';
@@ -81,8 +81,11 @@ const DialogAddOrder = (props) => {
     useEffect(() => {                            // ЖОПА. Как сделать проще? 
         if(!mutationLoading && mutationData){
             let orderId = mutationData.insert_mr_order.returning[0].id;
+            console.log(orderId);
             orderItems.forEach(function(item) {
                 item["order"] = orderId;
+                console.log(item);
+                // AddOrder({ variables: {addData: orderData } })
             });
             console.log(orderItems);
         }
@@ -93,6 +96,8 @@ const DialogAddOrder = (props) => {
 
     const handleAddOrder = () => {
         AddOrder({ variables: {addData: orderData } })
+
+        console.log(orderItems)
     }
 
     const handleDialogClose = () => {
@@ -103,6 +108,9 @@ const DialogAddOrder = (props) => {
 
     const onDataChange = (data) => {
         setOrderData(data);
+    }
+    const onItemsChange = (data) => {
+        setOrderItems(data);
     }
 
     return (
@@ -116,30 +124,25 @@ const DialogAddOrder = (props) => {
                 aria-labelledby="draggable-dialog-title"
             >
                 <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-
-
                 </DialogTitle>
+                
                 <DialogContent>
 
                     <DialogAddOrderNewCustomer />
                     <DialogAddOrderData onChange={onDataChange} />
-                    <DialogAddOrderItems />
+                    <DialogAddOrderItems onChange={onItemsChange} />
 
-                    <DialogContentText>
-                    </DialogContentText>
                 </DialogContent>
-                <DialogActions>
                 
+                <DialogActions>
                     <Button onClick={handleDialogClose} color="primary">
                         Отмена
                     </Button>
-                    <Button onClick={handleAddOrder} color="primary">
-                        Добавить
+                    <Button onClick={handleAddOrder}    color="primary">
+                        Добавить заказ
                     </Button>
                 </DialogActions>
             </Dialog>
-
-
 
         </div>
     )

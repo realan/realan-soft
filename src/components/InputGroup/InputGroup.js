@@ -8,7 +8,7 @@ import Input from '@material-ui/core/Input';
 
 
 const InputGroup = (props) => {
-
+// props id, type, maxValue, 
     const [count, setCount] = useState(0);
 
     const increase = () => {

@@ -80,7 +80,6 @@ const DialogAddOrderData = (props) => {
             setState(obj);
             props.onChange(obj);
         }   
-
     }
 
 
@@ -122,12 +121,12 @@ const DialogAddOrderData = (props) => {
                 onChange={getInput}
                 renderInput={(params) => <TextField {...params} label="Заказчик" required />}
             />
-            <TextField value={state.town || ""}     type="text"    label="Город" />
-            <TextField value={state.person || ""}   type="text"    label="Контактное лицо"/>
-            <TextField value={state.phone || ""}    type="text"    label="Телефон" />
-            <TextField value={state.email || ""}    type="email"   label="email" />
-            <TextField value={state.delivery || ""} type="text"   label="ТК" />
-            <TextField value={state.discount}       type="number" label="Скидка" />
+            <TextField value={state.town || ""}     type="text"     label="Город" />
+            <TextField value={state.person || ""}   type="text"     label="Контактное лицо"/>
+            <TextField value={state.phone || ""}    type="text"     label="Телефон" />
+            <TextField value={state.email || ""}    type="email"    label="email" />
+            <TextField value={state.delivery || ""} type="text"     label="ТК" />
+            <TextField value={state.discount}       type="number"   label="Скидка" />
         </>
     )
 

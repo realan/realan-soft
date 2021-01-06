@@ -1,29 +1,17 @@
 import React from "react";
 import { useState, useEffect } from 'react';
-import { gql } from "apollo-boost";
+// import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import Button from '@material-ui/core/Button';
 import { DataGrid } from '@material-ui/data-grid';
-
-const QUERY_PRICE = gql`
-    query QueryPrice {
-        mr_price {
-        id
-        name
-        art
-        price_opt
-        price_rozn
-        weight
-        }
-    }
-  `;
+import { GET_PRICE } from "../../GraphQL/Queries";
 
 const DialogAddOrderItems = (props) => {
 
     const [price, setPrice] = useState([]);
     const [items, setItems] = useState([]);
     
-    const { loading, error, data } = useQuery(QUERY_PRICE);
+    const { loading, error, data } = useQuery(GET_PRICE);
 
     useEffect(() => {
         if(!loading && data){
@@ -41,20 +29,26 @@ const DialogAddOrderItems = (props) => {
         { field: 'qty', headerName: 'К-во', type: "number", width: 80 },
         { field: 'price', headerName: 'Цена', type: "number", width: 100 },
         { field: 'note', headerName: 'Примечание', type: "text", width: 200 },  
+        { field: 'itemId', headerName: 'ID Item', type: "number", width: 30 },  
     ];
 
     const parseClipboadToItems = () => {
+
         navigator.clipboard.readText().then( str => {
             let arr = str.split('\n');
             let result = [];
             
             let qtyColumn;
             let priceColumn;
+            let artColumn;
     
             let header=arr[0].split('\t');
             header.forEach(function(item, i) { 
                 if (item === "Товар") {header[i] = "name"}; 
-                if (item === "Модель") {header[i] = "art"}; 
+                if (item === "Модель") {
+                    header[i] = "art";
+                    artColumn = i;
+                }; 
                 if (item === "Кол-во") {
                     header[i] = "qty"; 
                     qtyColumn = i;
@@ -77,8 +71,13 @@ const DialogAddOrderItems = (props) => {
                         if (j === qtyColumn) {
                             obj[header[j]] = Number(cell);
                         } else if (j === priceColumn) {
-                            let val=cell.replace('руб.','').trim();
+                            let val=cell.replace('руб.','').replace(' ', '');
                             obj[header[j]] = Number(val);
+                        } else if (j === artColumn) {
+                            let art = cell.trim();
+                            obj[header[j]] = art;
+                            let itId = price.find( item => item.art === art).id
+                            obj['itemId'] = itId
                         } else {
                         obj[header[j]] = cell.trim();
                         };
@@ -89,11 +88,12 @@ const DialogAddOrderItems = (props) => {
                 }
             }
             });
-            console.log(result);
+            // console.log(result);
             setItems(result);
+            props.onChange(result);
         } );
-    }     
-    
+    }  
+
     return (
         <div style={{ height: 600, width: '100%' }}> 
             Скопируй в буфер заказ - строку заголовка и позиции. Потом нажми кнопку
