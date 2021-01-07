@@ -8,36 +8,36 @@ import Input from '@material-ui/core/Input';
 
 
 const InputGroup = (props) => {
-// props id, type, maxValue, 
+// props id, type (stock or prod), maxValue, onChange - 
     const [count, setCount] = useState(0);
 
     const increase = () => {
-        if(count+1 > props.maxValue) {
+        if (count + 1 > props.maxValue) {
           
         } else {
-            props.onQtyChange(props.id, count + 1, props.type );
+            props.onChange(props.id, count + 1, props.type );
             setCount(count + 1)
         }
       }
   
     const decrease = () => {
-        if(count-1 >= 0) { 
-            props.onQtyChange(props.id, count - 1, props.type);
+        if (count - 1 >= 0) { 
+            props.onChange(props.id, count - 1, props.type);
             setCount(count - 1); 
         }
     }
   
       const onChangeInput = (e) => {
         let val = e.target.value;
-        if (val>=0 && val <= props.maxValue) {
+        if (val >= 0 && val <= props.maxValue) {
             setCount(val);
-            props.onQtyChange(props.id, val, props.type);
+            props.onChange(props.id, val, props.type);
         }
       }
   
       const setMaxValue = () => {
         setCount(props.maxValue);
-        props.onQtyChange(props.id, props.maxValue, props.type);
+        props.onChange(props.id, props.maxValue, props.type);
       }
 
     //   console.log(props.params)

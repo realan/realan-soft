@@ -66,7 +66,7 @@ const DialogAddOrderItems = (props) => {
                     let row = [];
                     let rowIn = line.split("\t"); 
                     let obj={};
-                    console.log(price)
+
                     rowIn.forEach(function(cell, j) {
                         if (j === qtyColumn) {
                             obj[header[j]] = Number(cell);
@@ -90,7 +90,15 @@ const DialogAddOrderItems = (props) => {
             });
             // console.log(result);
             setItems(result);
-            props.onChange(result);
+            let itemsOrder = result.map(item => {
+                return {
+                    item: item.id,
+                    qty: item.qty,
+                    order: item.orderId,
+                    note: item.note,
+                }
+            });
+            props.onChange(itemsOrder);
         } );
     }  
 

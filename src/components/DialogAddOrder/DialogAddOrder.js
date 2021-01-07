@@ -81,23 +81,28 @@ const DialogAddOrder = (props) => {
     useEffect(() => {                            // ЖОПА. Как сделать проще? 
         if(!mutationLoading && mutationData){
             let orderId = mutationData.insert_mr_order.returning[0].id;
-            console.log(orderId);
             orderItems.forEach(function(item) {
                 item["order"] = orderId;
-                console.log(item);
-                // AddOrder({ variables: {addData: orderData } })
+                AddItems({ variables: {addData: item } })
             });
-            console.log(orderItems);
         }
-    }, [mutationLoading, mutationData, orderItems])
+    }, [mutationLoading, mutationData, orderItems, AddItems])
 
     if (mutationLoading) return "Loading....";
     if (mutationError) return `Error! ${mutationError.message}`;
 
     const handleAddOrder = () => {
-        AddOrder({ variables: {addData: orderData } })
-
-        console.log(orderItems)
+        // console.log(orderData)
+        if (orderData.customer === undefined) {
+          alert("Нужно выбрать заказчика");
+        } else if (orderItems.length === 0 ) {
+          alert("Нет позиций в заказе");
+        } else if (orderData.date_out === null ) {
+          alert("Нужно выбрать дату отгрузки");
+        } else {
+          AddOrder({ variables: {addData: orderData } });
+          props.handleClose();
+        }
     }
 
     const handleDialogClose = () => {

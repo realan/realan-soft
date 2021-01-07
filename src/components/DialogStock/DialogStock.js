@@ -87,9 +87,9 @@ const DialogStock = (props) => {
   const onQtyChange = (id, qty, type) => {
     console.log(id, qty, type)
     console.log(dataDB);
-    if (type==="prod"){
+    if (type === "prod"){
       setDataDB([...dataDB], dataDB[id].qtyFromProd = qty);
-    } else{
+    } else {
       setDataDB([...dataDB], dataDB[id].qtyFromStock = qty);
 
       let sumQtyFromStock = dataDB.reduce( function (sum, elem) {return sum + elem.qtyFromStock}, 0);
@@ -112,7 +112,7 @@ const DialogStock = (props) => {
                 maxValue = {params.row.needQty}
                 type = {"prod"}
                 id = {params.rowIndex}
-                onQtyChange = {onQtyChange}
+                onChange = {onQtyChange}
                 params={params}
               />
           </strong>
@@ -124,7 +124,7 @@ const DialogStock = (props) => {
                 maxValue = {(stockQty < params.row.needQty) ? stockQty : params.row.needQty }
                 type = {"stock"}
                 id = {params.rowIndex}
-                onQtyChange = {onQtyChange}
+                onChange = {onQtyChange}
               />
           </strong>
         ), },
@@ -224,22 +224,23 @@ const DialogStock = (props) => {
   }
   let cards=[];
   let rows=[];
-  data.mr_items.map( (it) => {
-    console.log(it)
+
+  data.mr_items.map( (it, key) => {
+    // console.log(it)
     const dateOut = new Date(it.mr_order.date_out);
     let needQty = it.qty - (it.mr_order.mr_to.reduce( (sum, current) => sum + current.qty, 0) -
     it.mr_order.mr_from.reduce( (sum, current) => sum + current.qty, 0));
 
     let obj = {
-      id: it.id,
+      id: key, // it.id,
       customer: it.mr_order.mr_customer.name,
       town: it.mr_order.town,
       dateOut: dateOut.toDateString(),
       // collected: qty,
       orderQty: it.qty,
       needQty: needQty,
-      fromProd: it.qty,
-      fromStock: it.qty,
+      fromProd: 0, //it.qty,
+      fromStock: 0, // it.qty,
       note: it.note,
     }
     rows.push(obj);
@@ -248,13 +249,14 @@ const DialogStock = (props) => {
   });
 
   
-  const listCards = cards.map((item, id) =>
-    <div key={id}>
+  const listCards = cards.map((item, key) =>
         <CardPosInOrder 
-          value = {item}/>
-    </div>
+          key={key}
+          value = {item}
+          stock = {stockQty}
+          onChange = {onQtyChange}
+        />
   );
-
 
   return (
     <div>
@@ -262,8 +264,9 @@ const DialogStock = (props) => {
 
             open={props.open}
             onClose={props.PaperhandleClose}
-            fullWidth={true}
-            maxWidth="md"
+            fullSize={true}
+
+            maxWidth={false}
             PaperComponent={PaperComponent}
             aria-labelledby="draggable-dialog-title"
             >
@@ -274,8 +277,13 @@ const DialogStock = (props) => {
               </Button>
             </DialogTitle>
             <DialogContent>
-              <Box display="flex" justifyContent="center" m={1}>
-                {listCards}
+              <Box         
+                display="flex"
+                flexWrap="wrap"
+                p={1}
+                m={1}
+              >
+                  {listCards}
               </Box>
 
               <div style={{ height: 500, width: '100%' }}>

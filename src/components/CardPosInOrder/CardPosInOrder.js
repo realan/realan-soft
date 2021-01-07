@@ -1,16 +1,10 @@
 import React from 'react';
+import { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import Box from '@material-ui/core/Box';
-// import CardActionArea from '@material-ui/core/CardActionArea';
-// import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-// import CardHeader from '@material-ui/core/CardHeader';
-// import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-// import MoreVertIcon from '@material-ui/icons/MoreVert';
-// import Avatar from '@material-ui/core/Avatar';
-// import IconButton from '@material-ui/core/IconButton';
 import { green } from '@material-ui/core/colors';
 import InputGroup from 'components/InputGroup/InputGroup';
 
@@ -35,9 +29,18 @@ const defaultProps = {
   };
 
 export default function CardPosInOrder(props) {
+
+  // key
+  // value - orderQty, needQty, dateOut, note, order id, customer (name), town
+  // stock = {stockQty}
+  // onChange = {onQtyChange}
+
   const classes = useStyles();
+  const [collectProd, setCollectProd] = useState(0);
+  const [collectStock, setCollectStock] = useState(0);
   console.log(props)
 
+  
 
   return (
     <Card className={classes.root}>
@@ -56,21 +59,33 @@ export default function CardPosInOrder(props) {
             </Typography>
 
             <Box display="flex" justifyContent="center">
-                <Box borderColor="primary.main" {... defaultProps}>
-                    Нужно {props.value.needQty}
-                </Box>
                 <Box borderColor="success.main" {... defaultProps}>
                     заказ {props.value.orderQty}
+                </Box>
+                <Box borderColor="primary.main" {... defaultProps}>
+                    Нужно {props.value.needQty}
                 </Box>
             </Box>
 
             <Box mr={1}>
-                Д <InputGroup />
+                П <InputGroup 
+                  maxValue = { props.value.needQty - collectStock }
+                  type = {"prod"}
+                  id = {props.value.id}
+                  onChange = {props.onChange}
+                />
             </Box>
             
-            <Box mr={1}>
-                С<InputGroup />
+            {/* { props.stock !== 0 && props.fromStock !== 0 &&             } */}
+              <Box mr={1}>
+                С<InputGroup 
+                  maxValue = {(props.stock < props.value.needQty - collectProd) ? props.stock : props.value.needQty - collectStock }
+                  type = {"stock"}
+                  id = {props.value.id}
+                  onChange = {props.onChange}
+                />
             </Box>
+
         </CardContent>
 
     </Card>

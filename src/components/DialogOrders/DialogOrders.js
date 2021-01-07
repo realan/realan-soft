@@ -20,6 +20,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import ru from 'date-fns/locale/ru';
 
 import { TextField} from '@material-ui/core';
+import Box from '@material-ui/core/Box';
 
 
 // const useStyles = makeStyles(styles);
@@ -181,12 +182,14 @@ const DialogOrders = (props) => {
         setDataRow({...dataRow, note: event.target.value})
     }
     const handleDateChange = (date) => {
-        console.log(orderDate)
         setOrderDate(date);
         UpdateDateMutation({ variables: {
             id: order_id,
             date_out: date
         } });
+    }
+    const handleDeleteOrder = () => {
+
     }
 
 
@@ -228,12 +231,21 @@ const DialogOrders = (props) => {
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCancel} color="primary" variant="outlined" >
-                        Добавить позицию
-                    </Button>
-                    <Button onClick={handleOK} color="primary" variant="contained">
-                        Закрыть
-                    </Button>
+                    <Box flexGrow={1}>
+                        <Button onClick={handleDeleteOrder} color="secondary" variant="contained" >
+                            Отменить заказ
+                        </Button>                    
+                    </Box>
+                    <Box>
+                        <Button onClick={handleCancel} color="primary" variant="outlined" >
+                            Добавить позицию
+                        </Button>                   
+                    </Box>
+                    <Box>
+                        <Button onClick={handleOK} color="primary" variant="contained">
+                            Закрыть
+                        </Button>                    
+                    </Box>
                 </DialogActions>
             </Dialog>
 
