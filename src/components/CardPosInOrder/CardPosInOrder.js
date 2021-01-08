@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+// import { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import Box from '@material-ui/core/Box';
@@ -28,19 +28,25 @@ const defaultProps = {
     style: { width: '7rem', height: '3rem' },
   };
 
-export default function CardPosInOrder(props) {
+function CardPosInOrder(props) {
 
   // key
   // value - orderQty, needQty, dateOut, note, order id, customer (name), town
   // stock = {stockQty}
   // onChange = {onQtyChange}
 
+  // console.log(props)
+  console.log(props.value.id, props.value.orderId, props.valueDB.length)
   const classes = useStyles();
-  const [collectProd, setCollectProd] = useState(0);
-  const [collectStock, setCollectStock] = useState(0);
-  console.log(props)
 
-  
+   let collectProd = props.valueDB[props.value.id].qtyFromProd;
+   let collectStock = props.valueDB[props.value.id].qtyFromStock;
+   let stock = props.stock;
+   let need = props.value.needQty;
+
+   
+
+
 
   return (
     <Card className={classes.root}>
@@ -63,31 +69,33 @@ export default function CardPosInOrder(props) {
                     заказ {props.value.orderQty}
                 </Box>
                 <Box borderColor="primary.main" {... defaultProps}>
-                    Нужно {props.value.needQty}
+                    Нужно {need}
                 </Box>
             </Box>
-
             <Box mr={1}>
                 П <InputGroup 
-                  maxValue = { props.value.needQty - collectStock }
+                  maxValue = { need - collectStock }
                   type = {"prod"}
                   id = {props.value.id}
                   onChange = {props.onChange}
                 />
             </Box>
             
-            {/* { props.stock !== 0 && props.fromStock !== 0 &&             } */}
+            {/* { (stock !== 0 || collectStock !== 0) &&            */}
               <Box mr={1}>
                 С<InputGroup 
-                  maxValue = {(props.stock < props.value.needQty - collectProd) ? props.stock : props.value.needQty - collectStock }
+                  minValue = { - props.value.orderQty }
+                  maxValue = {(stock < need - collectProd) ? stock : need - collectProd }
                   type = {"stock"}
                   id = {props.value.id}
                   onChange = {props.onChange}
                 />
-            </Box>
-
+              </Box>
+            {/* } */}
         </CardContent>
 
     </Card>
   );
 }
+
+export default React.memo(CardPosInOrder);

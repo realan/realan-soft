@@ -7,19 +7,20 @@ import IconButton from '@material-ui/core/IconButton';
 import Input from '@material-ui/core/Input';
 
 
+
 const InputGroup = (props) => {
 
     const [count, setCount] = useState(0);
 
     const increase = () => {
         setCount(count + 1);
-        props.onQtyChange(count + 1);
+        props.onChange(count + 1);
     }
   
     const decrease = () => {
         if(count-1 >= 0) { 
             setCount(count - 1);
-            props.onQtyChange(count - 1); 
+            props.onChange(count - 1); 
         }
     }
   
@@ -27,7 +28,7 @@ const InputGroup = (props) => {
         let val = e.target.value;
         if (val>=0) {
             setCount(val);
-            props.onQtyChange(val);
+            props.onChange(val);
         }
       }
 

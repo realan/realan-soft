@@ -1,5 +1,6 @@
 import React  from "react";
 import { gql } from "apollo-boost";
+import { useState, useMemo } from 'react';
 import { useSubscription } from "@apollo/react-hooks";
 // import DialogOrders from "../components/DialogOrders/DialogOrders.js";
 import { DataGrid } from '@material-ui/data-grid';
@@ -23,7 +24,7 @@ const SUBSCRIPTION_STOCK = gql`
 
 const Stock = () => {
 
-  const columns = React.useMemo( () =>
+  const columns = useMemo( () =>
   [
     { field: 'id', headerName: 'id', width: 30 },
     { field: 'item_name', headerName: 'Название', width: 200 },
@@ -37,9 +38,9 @@ const Stock = () => {
   , []);
 
     //For modal dialog window
-    const [open, setOpen] = React.useState(false);
-    const [itemId, setItemId] = React.useState();
-    const [stockQty, setStockQty] = React.useState();
+    const [open, setOpen] = useState(false);
+    const [itemId, setItemId] = useState();
+    const [stockQty, setStockQty] = useState();
 
     const onRowClick = (row) => {
       if (row.row.order_next + row.row.order_next_week + row.row.order_this_week > 0) {
@@ -55,6 +56,20 @@ const Stock = () => {
       setOpen(false);
     };
   
+
+    // useEffect(() => {
+    //   if(!loading && data){
+    //     setDataDB(data.mr_items.map( (ord) => {
+    //       return {
+    //         qtyFromProd: 0, // initial value
+    //         qtyFromStock: 0, // initial value 
+    //         to_order: ord.mr_order.id,
+    //         item: item_id,
+    //       }
+    //     }));
+        
+    //   }
+    // }, [loading, data])    
   const { loading, error, data } = useSubscription(SUBSCRIPTION_STOCK);
   if (loading) return "Loading....";
   if (error) return `Error! ${error.message}`;

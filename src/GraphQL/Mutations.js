@@ -3,6 +3,22 @@ import gql from "graphql-tag";
 // Add Mutation - variable $addData for object
 
 
+export const ADD_MOVE_ITEM = gql`
+  mutation AddMove ($addData: mr_moving_insert_input!){
+    insert_mr_moving (objects: [$addData]) 
+    {
+      affected_rows      
+        returning {
+          qty
+          to_order
+          from_order
+          item
+      }
+    }
+  }
+`;
+
+
 export const ADD_ORDER = gql`
 mutation AddDelivery ($addData: delivery_insert_input!){
   insert_delivery (objects: [$addData]) 
