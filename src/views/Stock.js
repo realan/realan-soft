@@ -23,7 +23,13 @@ const SUBSCRIPTION_STOCK = gql`
 `;
 
 const Stock = () => {
+  // date for dialog
+  const [itemForDialog, setItemForDialog] = useState({isOpen: false, itemId: undefined, stockQty: undefined})
 
+  // hook for data from db
+  const { loading, error, data } = useSubscription(SUBSCRIPTION_STOCK);
+
+  // items for table
   const columns = useMemo( () =>
   [
     { field: 'id', headerName: 'id', width: 30 },
@@ -34,28 +40,19 @@ const Stock = () => {
     { field: 'order_next_week', headerName: 'Заказ 2', type: "number", width: 110 },
     { field: 'collected_next_week', headerName: 'Набрано 2', type: "number", width: 110 },
     { field: 'order_next', headerName: 'Заказ далее', type: "number", width: 110 },
-  ]
-  , []);
-
-    //For modal dialog window
-    const [open, setOpen] = useState(false);
-    const [itemId, setItemId] = useState();
-    const [stockQty, setStockQty] = useState();
+  ], []);
 
     const onRowClick = (row) => {
       if (row.row.order_next + row.row.order_next_week + row.row.order_this_week > 0) {
-        setItemId(row.row.id);
-        setStockQty(row.row.stock_now);
-        setOpen(true);
+        setItemForDialog({isOpen: true, itemId: row.row.id, stockQty: row.row.stock_now})
       } else {
         alert("Этой позиции нет в заказах")
       }
-
     }
+
     const handleClose = () => {
-      setOpen(false);
+      setItemForDialog({...itemForDialog, isOpen: false})
     };
-  
 
     // useEffect(() => {
     //   if(!loading && data){
@@ -67,32 +64,30 @@ const Stock = () => {
     //         item: item_id,
     //       }
     //     }));
-        
     //   }
-    // }, [loading, data])    
-  const { loading, error, data } = useSubscription(SUBSCRIPTION_STOCK);
+    // }, [loading, data])
+  // const tableData=data.mr_pivot;
+  // console.log(tableData)
+
   if (loading) return "Loading....";
   if (error) return `Error! ${error.message}`;
-
-  // const tableData=data.mr_pivot;
-
-  // console.log(tableData)
 
   return (
     <div>
       <div style={{ height: 700, width: '100%' }}>
-        <DataGrid 
+        <DataGrid
           rows={data.mr_pivot} 
           columns={columns} 
           onRowClick={onRowClick}
         />
       </div>
-      {itemId && (
+
+      {itemForDialog.itemId && (
         <DialogStock
-          open={open}
-          handleClose ={handleClose}
-          item_id={itemId}
-          stock_now={stockQty}
+          open={itemForDialog.isOpen}
+          handleClose={handleClose}
+          item_id={itemForDialog.itemId}
+          stock_now={itemForDialog.stockQty}
         />
       )}
     </div>
