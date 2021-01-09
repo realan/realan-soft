@@ -18,6 +18,7 @@ import Draggable from 'react-draggable';
 import InputWithButtons from "components/InputWithButtons/InputWithButtons";
 import CardPosInOrder from "components/CardPosInOrder/CardPosInOrder";
 import Box from '@material-ui/core/Box';
+import Switch from '@material-ui/core/Switch';
 import DialogStockCorrectQty from "components/DialogStockCorrectQty/DialogStockCorrectQty";
 import { ADD_MOVE_ITEM } from '../../GraphQL/Mutations';
 
@@ -68,6 +69,7 @@ const DialogStock = (props) => {
   const [stockQty, setStockQty] = useState(0); // now in stock
   const [stockToProd, setStockToProd] = useState(0); 
   const [prodToStock, setProdToStock] = useState(0); 
+  const [showAll, setShowAll] = useState(false); 
   const [openCorrectQty, setOpenCorrectQty] = useState(false); 
   const [dataDB, setDataDB] = useState( [] ); // для добавления в бд перемещений ассортимента с производства и склада
                                               // id, item, qtyFromProd, qtyFromStock, to_order
@@ -118,8 +120,6 @@ const DialogStock = (props) => {
   //       ), },
   //   { field: 'note', headerName: 'Примечание', type: "text", width: 110 },
   // ];
-
- ;
 
   const { loading, error, data } = useSubscription(
     SUBSCRIPTION_ORDERS_BY_ID,
@@ -254,8 +254,12 @@ const DialogStock = (props) => {
     setStockQty(qty);
     setOpenCorrectQty(false);
   }
+  const handleFilter = () => {
+    setShowAll(!showAll);
+  }
 
   const listCards = cards.map((item, key) =>
+    <Box m={1} bgcolor="text.disabled" key={key}>
         <CardPosInOrder 
           key={key}
           value = {item}
@@ -263,6 +267,7 @@ const DialogStock = (props) => {
           valueDB = {dataDB} //{dataDB[item.id].qtyFromStock}
           onChange = {onQtyChange}
         />
+    </Box>
   );
 
   // let listCards = useMemo( () => getListCards(cards),[]);
@@ -280,6 +285,13 @@ const DialogStock = (props) => {
             >
             <DialogTitle style={{ cursor: 'move'}} id="draggable-dialog-title">
               {data.mr_items[0].mr_price.name}
+              <Switch
+                checked={showAll}
+                onChange={handleFilter}
+                name="checkedB"
+                color="primary"
+              />
+              показать все
               <Button onClick={ () => setOpenCorrectQty(true)} color="primary" variant="outlined" style={{float: 'right'}}>
                 На складе {stockQty} шт.
               </Button>

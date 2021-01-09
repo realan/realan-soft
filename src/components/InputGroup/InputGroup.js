@@ -3,8 +3,11 @@ import { useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
-import IconButton from '@material-ui/core/IconButton';
-import Input from '@material-ui/core/Input';
+// import IconButton from '@material-ui/core/IconButton';
+// import Input from '@material-ui/core/Input';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import Fab from '@material-ui/core/Fab';
+import { Box } from "@material-ui/core";
 
 
 const InputGroup = (props) => {
@@ -12,6 +15,7 @@ const InputGroup = (props) => {
     const [count, setCount] = useState(0);
 
     const minValue = (props.minValue || 0);
+    const color = (props.type === "stock") ? "primary" : "default";
 
     const increase = () => {
         if (count + 1 > props.maxValue) {
@@ -23,7 +27,6 @@ const InputGroup = (props) => {
       }
   
     const decrease = () => {
-        console.log(minValue)
         if (count - 1 >= minValue) { 
             props.onChange(props.id, count - 1, props.type);
             setCount(count - 1); 
@@ -43,28 +46,30 @@ const InputGroup = (props) => {
         props.onChange(props.id, props.maxValue, props.type);
       }
 
-    //   console.log(props.params)
+    //   console.log(props)
 
     return ( 
-        <>
-          <IconButton color="primary" component="span" onClick = {decrease}>
+        <div>
+          <Fab color={color} aria-label="add" size="medium" component="span" onClick = {decrease}>
               <RemoveIcon/>
-          </IconButton>  
-          <Input 
+          </Fab>
+          <Box display="inline" >
+          <OutlinedInput 
             variant="outlined"
             type="number" 
             value={count}
             onChange={onChangeInput}
-            style = {{width: 50}}
+            style = {{width: 60}}
           />
-          <IconButton color="primary" component="span" onClick = {increase} >
-              <AddIcon />
-          </IconButton>  
-          <IconButton color="primary" component="span" onClick = {setMaxValue}>
-              <DoneAllIcon />
-          </IconButton>  
+          </Box>
 
-        </>
+          <Fab color={color} aria-label="add" size="medium" component="span" onClick = {increase}>
+              <AddIcon />
+          </Fab>
+          <Fab color={color} aria-label="add" size="medium" component="span" onClick = {setMaxValue}>
+              <DoneAllIcon />
+          </Fab>
+        </div>
     )
 }
 

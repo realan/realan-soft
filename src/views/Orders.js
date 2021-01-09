@@ -14,7 +14,7 @@ import DialogAddOrder from "components/DialogAddOrder/DialogAddOrder";
 
 const SUBSCRIPTION_ORDERS = gql`
 subscription {
-  mr_order(where: {is_shipped: {_eq: false}}) {
+  mr_order(where: {is_cancelled: {_eq: false}, is_shipped: {_eq: false}}) {
     id
     customer
     town

@@ -3,10 +3,11 @@ import { useState } from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 // import DoneAllIcon from '@material-ui/icons/DoneAll';
-import IconButton from '@material-ui/core/IconButton';
-import Input from '@material-ui/core/Input';
-
-
+// import IconButton from '@material-ui/core/IconButton';
+// import Input from '@material-ui/core/Input';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import Fab from '@material-ui/core/Fab';
+import { Box } from "@material-ui/core";
 
 const InputGroup = (props) => {
 
@@ -26,7 +27,7 @@ const InputGroup = (props) => {
   
       const onChangeInput = (e) => {
         let val = e.target.value;
-        if (val>=0) {
+        if (val >= 0) {
             setCount(val);
             props.onChange(val);
         }
@@ -34,19 +35,21 @@ const InputGroup = (props) => {
 
     return ( 
         <>
-            <IconButton color="primary" component="span" onClick = {decrease}>
+            <Fab color="primary" aria-label="add" size="medium" component="span" onClick = {decrease}>
                 <RemoveIcon/>
-            </IconButton>  
-            <Input 
-                variant="outlined"
-                type="number" 
-                value={count}
-                onChange={onChangeInput}
-                style = {{width: 50}}
-            />
-            <IconButton color="primary" component="span" onClick = {increase} >
+            </Fab>  
+            <Box display="inline" align="center">
+                <OutlinedInput 
+                    variant="outlined"
+                    type="number" 
+                    value={count}
+                    onChange={onChangeInput}
+                    style = {{width: 80}}
+                />
+            </Box>
+            <Fab color="primary" aria-label="add" size="medium" component="span" onClick = {increase}>
                 <AddIcon />
-            </IconButton>  
+            </Fab>
         </>
     )
 }

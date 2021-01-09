@@ -20,8 +20,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 import ru from 'date-fns/locale/ru';
 
 import { TextField} from '@material-ui/core';
+import Tooltip from '@material-ui/core/Tooltip';
 import Box from '@material-ui/core/Box';
-
+import { ADD_MOVE_ITEM } from '../../GraphQL/Mutations';
 
 // const useStyles = makeStyles(styles);
 
@@ -40,6 +41,14 @@ const UPDATE_ITEM_IN_ORDER = gql`
   }
 `;
 
+const DELETE_ITEM_FROM_ORDER = gql`
+  mutation DeleteItemFromOrder($id: Int!) {
+    delete_mr_items(where: {id: {_eq: $id}}) {
+        returning {id}
+    } 
+  }
+`;
+
 const UPDATE_ORDER_DATE = gql`
     mutation UpdateOrderDate(
         $id: Int!, 
@@ -53,6 +62,18 @@ const UPDATE_ORDER_DATE = gql`
     }
 `;
 
+const SET_ORDER_CANCELLED = gql`
+    mutation UpdateSetOrderCancelled(
+        $id: Int!) 
+        {
+        update_mr_order(where: {id: {_eq: $id}},
+            _set: {
+                is_cancelled: true
+            } 
+        ) {returning {id}}
+    }
+`;
+
 const SUBSCRIPTION_ITEMS_IN_ORDER = gql`
     subscription SubscriptionsItemsInOrder($order_id: Int!) {
         mr_items(order_by: {item: asc}, where: {mr_order: {id: {_eq: $order_id}}}) {
@@ -61,6 +82,7 @@ const SUBSCRIPTION_ITEMS_IN_ORDER = gql`
         qty
         note
         mr_price {
+            id
             name
             qty_to: mr_movings_aggregate(where: {to_order: {_eq: $order_id}}) {
             aggregate {
@@ -91,6 +113,8 @@ function PaperComponent(props) {
 
 const DialogOrders = (props) => {
     // const classes = useStyles();
+    let orderId=props.orderData.id;
+
     const [rows, setRows] = useState([]);
     const [openUpdate, setOpenUpdate] = useState(false);
     const [dataRow, setDataRow] = useState({});
@@ -98,10 +122,31 @@ const DialogOrders = (props) => {
 
     const [UpdateMutation] = useMutation(UPDATE_ITEM_IN_ORDER);
     const [UpdateDateMutation] = useMutation(UPDATE_ORDER_DATE);
+    const [DeteteItemMutation] = useMutation(DELETE_ITEM_FROM_ORDER);
+    const [AddMoveItemMutation] = useMutation(ADD_MOVE_ITEM);
+    const [SetOrderCancelledMutation] = useMutation(SET_ORDER_CANCELLED);
 
     const posUpdate = (params) => {
         setDataRow(params.row)
         setOpenUpdate(true);
+    }
+
+    const onePosDelete = (data) => {
+        DeteteItemMutation({ variables: { id: data.id} });
+        let qty = data.qtyCollect;
+        if (qty !== 0) {
+            const addData = {
+                qty: qty,
+                to_order: 3, // id = 3 - склад
+                from_order: orderId, 
+                item: data.qtyCollect,
+            }
+            AddMoveItemMutation({ variables: {addData: addData } });
+        }
+    }
+
+    const posDelete = (params) => {
+        onePosDelete(params.row);
     }
 
     const columns = [
@@ -118,9 +163,13 @@ const DialogOrders = (props) => {
                 >
                     <EditIcon/>
                 </IconButton>  
-                <IconButton color="secondary" aria-label="редактировать" component="span">
-                    <Close />
-                </IconButton>   
+                <Tooltip title="Удаляю позицию. Что набрано - перемещаю на склад">
+                    <IconButton color="secondary" aria-label="редактировать" component="span"
+                        onClick = {() => posDelete(params)}
+                    >
+                        <Close />
+                    </IconButton> 
+                </Tooltip>  
             </strong>
         ),
         },
@@ -129,13 +178,9 @@ const DialogOrders = (props) => {
 
     useEffect(() => { setOrderDate(props.orderData.date_out) }, [props.orderData.date_out]);
 
-    let order_id=props.orderData.id;
-    
-    
-
     const { loading, error, data } = useSubscription(
         SUBSCRIPTION_ITEMS_IN_ORDER,
-      { variables: {order_id} }
+      { variables: {order_id: orderId} }
     );
 
     useEffect(() => {
@@ -148,6 +193,7 @@ const DialogOrders = (props) => {
                     qtyOrder: it.qty,
                     qtyCollect: qtyCollect,
                     note: it.note,
+                    idItem: it.mr_price.id,
                 }
             }));
         }
@@ -184,12 +230,15 @@ const DialogOrders = (props) => {
     const handleDateChange = (date) => {
         setOrderDate(date);
         UpdateDateMutation({ variables: {
-            id: order_id,
+            id: orderId,
             date_out: date
         } });
     }
     const handleDeleteOrder = () => {
-
+        // deleting items in order and move items from order to stock
+        rows.map( item => { onePosDelete(item); return true});
+        props.handleClose();
+        SetOrderCancelledMutation({ variables: { id: orderId} });
     }
 
 
@@ -232,11 +281,13 @@ const DialogOrders = (props) => {
                 </DialogContent>
                 <DialogActions>
                     <Box flexGrow={1}>
-                        <Button onClick={handleDeleteOrder} color="secondary" variant="contained" >
-                            Отменить заказ
-                        </Button>                    
+                        <Tooltip title="Удаляю заказ. Что набрано - перемещаю на склад">
+                            <Button onClick={handleDeleteOrder} color="secondary" variant="contained" >
+                                Отменить заказ
+                            </Button>  
+                        </Tooltip>                  
                     </Box>
-                    <Box>
+                    <Box flexGrow={1}>
                         <Button onClick={handleCancel} color="primary" variant="outlined" >
                             Добавить позицию
                         </Button>                   
@@ -269,7 +320,7 @@ const DialogOrders = (props) => {
                         label="Примечание"
                         type="text"
                         fullWidth
-                        value={dataRow.note}
+                        value={dataRow.note || ""}
                         onChange={handleNoteChange}
                     />
                 </DialogContent>
