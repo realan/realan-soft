@@ -1,3 +1,3 @@
 export default {
-    counter: 20,
-  }
+  counter: 20,
+};

@@ -1,9 +1,9 @@
 //Utilities
 
-@import "mixins/transparency";
-@import "mixins/vendor-prefixes";
-@import "mixins/chartist";
-@import "mixins/sidebar-color";
+@import 'mixins/transparency';
+@import 'mixins/vendor-prefixes';
+@import 'mixins/chartist';
+@import 'mixins/sidebar-color';
 
 // Placeholder text
 @mixin material-placeholder() {
@@ -24,7 +24,7 @@
     $component,
     $selector-suffix,
     $color-default,
-    "variations-content",
+    'variations-content',
     $mdb-param-1
   );
 }
@@ -41,7 +41,7 @@
     $component,
     $selector-suffix,
     $color-default,
-    "background-variations-content",
+    'background-variations-content',
     null
   );
 }
@@ -68,7 +68,7 @@
     $component,
     $selector-suffix,
     $color-default,
-    "button-variations-content",
+    'button-variations-content',
     4%
   );
 }
@@ -90,7 +90,7 @@
     $component,
     $selector-suffix,
     $color-default,
-    "navbar-variations-content",
+    'navbar-variations-content',
     null
   );
 }
@@ -137,7 +137,7 @@
     $component,
     $selector-suffix,
     $color-default,
-    "alert-variations-content",
+    'alert-variations-content',
     null
   );
 }
@@ -198,13 +198,7 @@
 // $variation-color-text ---> rgba(255,255,255,0.84), rgba(0,0,0,0.84), rgba(255,255,255,0.84) ...
 //
 
-@mixin generic-variations(
-  $component,
-  $selector-suffix,
-  $color-default,
-  $mixin-name,
-  $mdb-param-1
-) {
+@mixin generic-variations($component, $selector-suffix, $color-default, $mixin-name, $mdb-param-1) {
   //setup map to pass parameters (instead of the incredibly long-error-prone list for each and every @include)
   $args: (
     //extra: $selector-suffix,
@@ -220,7 +214,7 @@
       $args,
       (
         variation-color: $white-color,
-        variation-color-text: $gray
+        variation-color-text: $gray,
       )
     );
     @include call-variations-content-mixin($args-extra);
@@ -230,7 +224,7 @@
       $args,
       (
         variation-color: #212121,
-        variation-color-text: #fff
+        variation-color-text: #fff,
       )
     );
     @include call-variations-content-mixin($args-inverse);
@@ -240,7 +234,7 @@
       $args,
       (
         variation-color: $brand-primary,
-        variation-color-text: $mdb-text-color-light
+        variation-color-text: $mdb-text-color-light,
       )
     );
     @include call-variations-content-mixin($args-primary);
@@ -250,7 +244,7 @@
       $args,
       (
         variation-color: $brand-success,
-        variation-color-text: $mdb-text-color-light
+        variation-color-text: $mdb-text-color-light,
       )
     );
     @include call-variations-content-mixin($args-success);
@@ -260,7 +254,7 @@
       $args,
       (
         variation-color: $brand-info,
-        variation-color-text: $mdb-text-color-light
+        variation-color-text: $mdb-text-color-light,
       )
     );
     @include call-variations-content-mixin($args-info);
@@ -270,7 +264,7 @@
       $args,
       (
         variation-color: $brand-warning,
-        variation-color-text: $mdb-text-color-light
+        variation-color-text: $mdb-text-color-light,
       )
     );
     @include call-variations-content-mixin($args-warning);
@@ -280,7 +274,7 @@
       $args,
       (
         variation-color: $brand-danger,
-        variation-color-text: $mdb-text-color-light
+        variation-color-text: $mdb-text-color-light,
       )
     );
     @include call-variations-content-mixin($args-danger);
@@ -291,7 +285,7 @@
       $args,
       (
         variation-color: $brand-rose,
-        variation-color-text: $mdb-text-color-light
+        variation-color-text: $mdb-text-color-light,
       )
     );
     @include call-variations-content-mixin($args-rose);
@@ -343,7 +337,7 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  content: "";
+  content: '';
   z-index: 0;
   left: 0;
   top: 0;
@@ -384,11 +378,7 @@
     $center-color 0%,
     $extern-color 100%
   ); /* IE10+ */
-  background: radial-gradient(
-    ellipse at center,
-    $center-color 0%,
-    $extern-color 100%
-  ); /* W3C */
+  background: radial-gradient(ellipse at center, $center-color 0%, $extern-color 100%); /* W3C */
   background-size: 550% 450%;
 }
 
@@ -427,21 +417,9 @@
 
 @mixin linear-gradient($color1, $color2) {
   background: $color1; /* For browsers that do not support gradients */
-  background: -webkit-linear-gradient(
-    60deg,
-    $color1,
-    $color2
-  ); /* For Safari 5.1 to 6.0 */
-  background: -o-linear-gradient(
-    60deg,
-    $color1,
-    $color2
-  ); /* For Opera 11.1 to 12.0 */
-  background: -moz-linear-gradient(
-    60deg,
-    $color1,
-    $color2
-  ); /* For Firefox 3.6 to 15 */
+  background: -webkit-linear-gradient(60deg, $color1, $color2); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(60deg, $color1, $color2); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(60deg, $color1, $color2); /* For Firefox 3.6 to 15 */
   background: linear-gradient(60deg, $color1, $color2); /* Standard syntax */
 }
 
@@ -559,17 +537,17 @@
     }
   }
 
-  .checkbox input[type="checkbox"]:checked + .checkbox-material {
+  .checkbox input[type='checkbox']:checked + .checkbox-material {
     .check {
       background-color: $color;
     }
   }
 
-  .radio input[type="radio"]:checked ~ .check {
+  .radio input[type='radio']:checked ~ .check {
     background-color: $color;
   }
 
-  .radio input[type="radio"]:checked ~ .circle {
+  .radio input[type='radio']:checked ~ .circle {
     border-color: $color;
   }
 }
@@ -579,10 +557,7 @@
     .form-group {
       .form-control {
         background-image: linear-gradient($color, $color),
-          linear-gradient(
-            $mdb-input-underline-color,
-            $mdb-input-underline-color
-          );
+          linear-gradient($mdb-input-underline-color, $mdb-input-underline-color);
       }
     }
   }

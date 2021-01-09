@@ -1,13 +1,13 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { createBrowserHistory } from "history";
-import { Router, Route, Switch, Redirect } from "react-router-dom";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { createBrowserHistory } from 'history';
+import { Router, Route, Switch, Redirect } from 'react-router-dom';
 
-import AuthLayout from "layouts/Auth.js";
-import AdminLayout from "layouts/Admin.js";
+import AuthLayout from 'layouts/Auth.js';
+import AdminLayout from 'layouts/Admin.js';
 
-import "assets/scss/material-dashboard-pro-react.scss?v=1.9.0";
-import { Auth0Provider } from "providers/Auth0Provider";
+import 'assets/scss/material-dashboard-pro-react.scss?v=1.9.0';
+import { Auth0Provider } from 'providers/Auth0Provider';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { client } from 'providers/ClientApollo';
 
@@ -24,7 +24,6 @@ ReactDOM.render(
         </Switch>
       </Router>
     </ApolloProvider>
-  </Auth0Provider>
-  ,
-  document.getElementById("root")
+  </Auth0Provider>,
+  document.getElementById('root')
 );

@@ -21,79 +21,77 @@ const useStyles = makeStyles({
 });
 
 const defaultProps = {
-    bgcolor: 'background.paper',
-    m: 1,
-    border: 2,
-    borderRadius: 6,
-    style: { width: '7rem', height: '3rem' },
-  };
+  bgcolor: 'background.paper',
+  m: 1,
+  border: 2,
+  borderRadius: 6,
+  style: { width: '7rem', height: '3rem' },
+};
 
 function CardPosInOrder(props) {
-
   // key
   // value - orderQty, needQty, dateOut, note, order id, customer (name), town
   // stock = {stockQty}
   // onChange = {onQtyChange}
 
   // console.log(props)
-  console.log(props.value.id, props.value.orderId, props.valueDB.length)
+  // console.log(props.value.id, props.value.orderId, props.valueDB.length);
   const classes = useStyles();
 
-   let collectProd = props.valueDB[props.value.id].qtyFromProd;
-   let collectStock = props.valueDB[props.value.id].qtyFromStock;
-   let stock = props.stock;
-   let need = props.value.needQty;
-
-   
-
-
+  let fromProd = props.valueDB[props.value.id].qtyFromProd;
+  let fromStock = props.valueDB[props.value.id].qtyFromStock;
+  let stock = props.stock;
+  let need = props.value.needQty;
+  let collect = props.value.orderQty - props.value.needQty;
 
   return (
     <Card className={classes.root}>
-        <CardContent>
-            <Typography className={classes.title} color="textPrimary" >
-                {props.value.town}
-            </Typography>
-            <Typography className={classes.subtitle} color="textPrimary" gutterBottom>
-                {props.value.customer}
-            </Typography>
-            <Typography color="textSecondary" variant="caption" gutterBottom>
-                {props.value.dateOut}
-            </Typography>
-            <Typography color="textSecondary" variant="caption" gutterBottom>
-                {props.value.note}
-            </Typography>
+      <CardContent>
+        <Typography className={classes.title} color="textPrimary">
+          {props.value.town}
+        </Typography>
+        <Typography className={classes.subtitle} color="textPrimary" gutterBottom>
+          {props.value.customer}
+        </Typography>
+        <Typography color="textSecondary" variant="caption" gutterBottom>
+          {props.value.dateOut}
+        </Typography>
+        <Typography color="textSecondary" variant="caption" gutterBottom>
+          {props.value.note}
+        </Typography>
 
-            <Box display="flex" justifyContent="center">
-                <Box borderColor="success.main" {... defaultProps}>
-                    заказ {props.value.orderQty}
-                </Box>
-                <Box borderColor="primary.main" {... defaultProps}>
-                    Нужно {need}
-                </Box>
-            </Box>
-            <Box mr={1}>
-                П <InputGroup 
-                  maxValue = { need - collectStock }
-                  type = {"prod"}
-                  id = {props.value.id}
-                  onChange = {props.onChange}
-                />
-            </Box>
-            
-            {/* { (stock !== 0 || collectStock !== 0) &&            */}
-              <Box mr={1}>
-                С<InputGroup 
-                  minValue = { - props.value.orderQty }
-                  maxValue = {(stock < need - collectProd) ? stock : need - collectProd }
-                  type = {"stock"}
-                  id = {props.value.id}
-                  onChange = {props.onChange}
-                />
-              </Box>
-            {/* } */}
-        </CardContent>
+        <Box display="flex" justifyContent="center">
+          <Box borderColor="success.main" {...defaultProps}>
+            заказ {props.value.orderQty}
+          </Box>
+          <Box borderColor="primary.main" {...defaultProps}>
+            Нужно {need}
+          </Box>
+        </Box>
+        <Box mr={1}>
+          П{' '}
+          <InputGroup
+            minValue={0}
+            maxValue={need - fromStock}
+            type={'prod'}
+            id={props.value.id}
+            onChange={props.onChange}
+          />
+        </Box>
 
+        {/* { (stock !== 0 || collectStock !== 0) &&            */}
+        <Box mr={1}>
+          С
+          <InputGroup
+            minValue={- collect}
+            maxValue={stock < need - fromProd ? stock : need - fromProd}
+            type={'stock'}
+            id={props.value.id}
+            onChange={props.onChange}
+          />
+        </Box>
+        {/* } */}
+      </CardContent>
     </Card>
   );
 }

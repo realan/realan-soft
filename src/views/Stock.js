@@ -1,10 +1,10 @@
-import React from "react";
-import { gql } from "apollo-boost";
-import { useState, useMemo } from "react";
-import { useSubscription } from "@apollo/react-hooks";
+import React from 'react';
+import { gql } from 'apollo-boost';
+import { useState, useMemo } from 'react';
+import { useSubscription } from '@apollo/react-hooks';
 // import DialogOrders from "../components/DialogOrders/DialogOrders.js";
-import { DataGrid } from "@material-ui/data-grid";
-import DialogStock from "components/DialogStock/DialogStock.js";
+import { DataGrid } from '@material-ui/data-grid';
+import DialogStock from 'components/DialogStock/DialogStock.js';
 // import { XGrid } from '@material-ui/x-grid';
 
 const SUBSCRIPTION_STOCK = gql`
@@ -36,14 +36,14 @@ const Stock = () => {
   // items for table
   const columns = useMemo(
     () => [
-      { field: "id", headerName: "id", width: 30 },
-      { field: "item_name", headerName: "Название", width: 200 },
-      { field: "stock_now", headerName: "Склад", type: "number", width: 110 },
-      { field: "order_this_week", headerName: "Заказ 1", type: "number", width: 110 },
-      { field: "collected_this_week", headerName: "Набрано 1", type: "number", width: 110 },
-      { field: "order_next_week", headerName: "Заказ 2", type: "number", width: 110 },
-      { field: "collected_next_week", headerName: "Набрано 2", type: "number", width: 110 },
-      { field: "order_next", headerName: "Заказ далее", type: "number", width: 110 },
+      // { field: 'id', headerName: 'id', width: 30 },
+      { field: 'item_name', headerName: 'Название', width: 200 },
+      { field: 'stock_now', headerName: 'Склад', type: 'number', width: 80 },
+      { field: 'order_this_week', headerName: 'Зк1', type: 'number', width: 80 },
+      { field: 'collected_this_week', headerName: 'Нб1', type: 'number', width: 80 },
+      { field: 'order_next_week', headerName: 'Зк22', type: 'number', width: 80 },
+      { field: 'collected_next_week', headerName: 'Нб2', type: 'number', width: 80 },
+      { field: 'order_next', headerName: 'Зк--', type: 'number', width: 80 },
     ],
     []
   );
@@ -52,7 +52,7 @@ const Stock = () => {
     if (row.row.order_next + row.row.order_next_week + row.row.order_this_week > 0) {
       setItemForDialog({ isOpen: true, itemId: row.row.id, stockQty: row.row.stock_now });
     } else {
-      alert("Этой позиции нет в заказах");
+      alert('Этой позиции нет в заказах');
     }
   };
 
@@ -75,12 +75,12 @@ const Stock = () => {
   // const tableData=data.mr_pivot;
   // console.log(tableData)
 
-  if (loading) return "Loading....";
+  if (loading) return 'Loading....';
   if (error) return `Error! ${error.message}`;
 
   return (
     <div>
-      <div style={{ height: 700, width: "100%" }}>
+      <div style={{ height: 700, width: '100%' }}>
         <DataGrid rows={data.mr_pivot} columns={columns} onRowClick={onRowClick} />
       </div>
 

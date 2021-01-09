@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -22,97 +20,93 @@ import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
 import CreateIcon from '@material-ui/icons/Create';
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        maxWidth: 230,
-        padding: 3,
-    },
-    expand: {
-        transform: 'rotate(0deg)',
-        marginLeft: 'auto',
-        transition: theme.transitions.create('transform', {
-            duration: theme.transitions.duration.shortest,
-        }),
-    },
-    expandOpen: {
-        transform: 'rotate(180deg)',
-    },
-    avatar: {
-        backgroundColor: green[500],
-    },
+  root: {
+    maxWidth: 230,
+    padding: 3,
+  },
+  expand: {
+    transform: 'rotate(0deg)',
+    marginLeft: 'auto',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shortest,
+    }),
+  },
+  expandOpen: {
+    transform: 'rotate(180deg)',
+  },
+  avatar: {
+    backgroundColor: green[500],
+  },
 }));
 
 export default function RecipeReviewCard() {
-    const classes = useStyles();
-    const [expanded, setExpanded] = React.useState(false);
-    const [payment, setPayment] = React.useState('red');
+  const classes = useStyles();
+  const [expanded, setExpanded] = React.useState(false);
+  const [payment, setPayment] = React.useState('red');
 
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
-    const handlePaymentClick = () => {
-        setPayment('green');
-    };
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+  const handlePaymentClick = () => {
+    setPayment('green');
+  };
 
-    let progressVal = 95;
+  let progressVal = 95;
 
-    return (
-        <Card className={classes.root}>
-            <LinearProgress variant="determinate" color="secondary" value={progressVal} />
+  return (
+    <Card className={classes.root}>
+      <LinearProgress variant="determinate" color="secondary" value={progressVal} />
 
-            <CardHeader
-                avatar={
-                    <Avatar aria-label="recipe" className={classes.avatar} sizes="10" >
-                        P
-                    </Avatar>
-                }
-                title="Сувениры Регионов"
-                subheader="Оренбург"
-            />
-            <CardContent>
-                <Typography variant="body2" color="textSecondary" component="p">
-                    Мрамор (лазер)
-                </Typography>
-                <Typography variant="body2" color="textSecondary" component="p">
-                    Основной магазин
-                </Typography>
-                <Typography variant="body2" color="textSecondary" component="p">
-                    ТК Кит
-                </Typography>
-            </CardContent>
-            <CardActions disableSpacing fontSize="small">
-                <IconButton aria-label="bill">
-                    <AssignmentOutlinedIcon fontSize="small" />
-                </IconButton>
-                <IconButton aria-label="payment"
-                    onClick={handlePaymentClick}>
-                    <MonetizationOnIcon htmlColor={payment} fontSize="small" />
-                </IconButton>
-                <IconButton aria-label="invoice" fontSize="small" >
-                    <DescriptionOutlinedIcon fontSize="small" />
-                </IconButton>
-                <IconButton aria-label="settings" fontSize="small"  >
-                    <CreateIcon fontSize="small" />
-                </IconButton>
-                <IconButton
-                    className={clsx(classes.expand, {
-                        [classes.expandOpen]: expanded,
-                    })}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more"
-                    fontSize="small" 
-                >
-                    <ExpandMoreIcon fontSize="small" />
-                </IconButton>
-            </CardActions>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
-                <CardContent>
-                    <Typography paragraph>
-                        12 средних наклеек "Оренбург"
-                    </Typography>
-
-                </CardContent>
-            </Collapse>
-        </Card>
-    );
+      <CardHeader
+        avatar={
+          <Avatar aria-label="recipe" className={classes.avatar} sizes="10">
+            P
+          </Avatar>
+        }
+        title="Сувениры Регионов"
+        subheader="Оренбург"
+      />
+      <CardContent>
+        <Typography variant="body2" color="textSecondary" component="p">
+          Мрамор (лазер)
+        </Typography>
+        <Typography variant="body2" color="textSecondary" component="p">
+          Основной магазин
+        </Typography>
+        <Typography variant="body2" color="textSecondary" component="p">
+          ТК Кит
+        </Typography>
+      </CardContent>
+      <CardActions disableSpacing fontSize="small">
+        <IconButton aria-label="bill">
+          <AssignmentOutlinedIcon fontSize="small" />
+        </IconButton>
+        <IconButton aria-label="payment" onClick={handlePaymentClick}>
+          <MonetizationOnIcon htmlColor={payment} fontSize="small" />
+        </IconButton>
+        <IconButton aria-label="invoice" fontSize="small">
+          <DescriptionOutlinedIcon fontSize="small" />
+        </IconButton>
+        <IconButton aria-label="settings" fontSize="small">
+          <CreateIcon fontSize="small" />
+        </IconButton>
+        <IconButton
+          className={clsx(classes.expand, {
+            [classes.expandOpen]: expanded,
+          })}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+          fontSize="small"
+        >
+          <ExpandMoreIcon fontSize="small" />
+        </IconButton>
+      </CardActions>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent>
+          <Typography paragraph>12 средних наклеек "Оренбург"</Typography>
+        </CardContent>
+      </Collapse>
+    </Card>
+  );
 }

@@ -4,13 +4,11 @@ import gql from 'graphql-tag';
 
 export const typeDefs = gql`
   extend type Query {
-    count: Number!,
-    name:String!,
+    count: Number!
+    name: String!
   }
 `;
 
 export const resolvers = {
-  Mutation: {
-
-  }
-}
+  Mutation: {},
+};

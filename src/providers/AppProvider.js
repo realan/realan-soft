@@ -1,5 +1,3 @@
-const AppProvider = ({children}) => (
-    {children}  
-);
+const AppProvider = ({ children }) => ({ children });
 
-export default AppProvider 
+export default AppProvider;

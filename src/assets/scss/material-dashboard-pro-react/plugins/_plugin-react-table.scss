@@ -85,44 +85,44 @@
 .ReactTable .rt-thead .rt-th.-cursor-pointer > div:first-of-type {
   &:after {
     opacity: 0.4;
-    content: "\F0DC";
+    content: '\F0DC';
     font-weight: bold;
     position: relative;
     display: inline-block;
     bottom: 0px;
     right: -7px;
-    font-family: Font Awesome\ 5 Free;
+    font-family: Font Awesome\5 Free;
   }
 }
 .ReactTable .rt-thead .rt-th.-cursor-pointer.-sort-desc > div:first-of-type {
   &:after {
-    content: "\F0DD";
+    content: '\F0DD';
     top: -3px;
     font-weight: bold;
     position: relative;
     display: inline-block;
     bottom: 0px;
     right: -7px;
-    font-family: Font Awesome\ 5 Free;
+    font-family: Font Awesome\5 Free;
     opacity: 0.8;
   }
 }
 .ReactTable .rt-thead .rt-th.-cursor-pointer.-sort-asc > div:first-of-type {
   &:after {
-    content: "\F0DE";
+    content: '\F0DE';
     top: 3px;
     font-weight: bold;
     position: relative;
     display: inline-block;
     bottom: 0px;
     right: -7px;
-    font-family: Font Awesome\ 5 Free;
+    font-family: Font Awesome\5 Free;
     opacity: 0.8;
   }
 }
 .ReactTable .rt-thead .rt-th,
 .ReactTable .rt-thead .rt-td {
-  font-size: 1.0rem;
+  font-size: 1rem;
   text-align: left;
   font-weight: 300;
   line-height: 1.5em !important; //was 2.5em
@@ -158,7 +158,7 @@
   left: 100%;
   top: 50%;
   border: solid transparent;
-  content: " ";
+  content: ' ';
   height: 0;
   width: 0;
   position: absolute;
@@ -253,7 +253,7 @@
   margin: 0 10px;
 }
 .ReactTable .rt-expander:after {
-  content: "";
+  content: '';
   position: absolute;
   width: 0;
   height: 0;
@@ -324,20 +324,12 @@
 .ReactTable .rt-thead.-filters select,
 .ReactTable .-pagination .select-wrap select {
   border: 0;
-  background-image: -webkit-gradient(
-      linear,
-      left top,
-      left bottom,
-      from(#9c27b0),
-      to(#9c27b0)
-    ),
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#9c27b0), to(#9c27b0)),
     -webkit-gradient(linear, left top, left bottom, from(#d2d2d2), to(#d2d2d2));
   background-image: -webkit-linear-gradient(#9c27b0, #9c27b0),
     -webkit-linear-gradient(#d2d2d2, #d2d2d2);
-  background-image: -o-linear-gradient(#9c27b0, #9c27b0),
-    -o-linear-gradient(#d2d2d2, #d2d2d2);
-  background-image: linear-gradient(#9c27b0, #9c27b0),
-    linear-gradient(#d2d2d2, #d2d2d2);
+  background-image: -o-linear-gradient(#9c27b0, #9c27b0), -o-linear-gradient(#d2d2d2, #d2d2d2);
+  background-image: linear-gradient(#9c27b0, #9c27b0), linear-gradient(#d2d2d2, #d2d2d2);
   background-size: 0 2px, 100% 1px;
   background-repeat: no-repeat;
   background-position: center bottom, center calc(100% - 1px);
@@ -354,8 +346,7 @@
 
   &:focus {
     outline: none;
-    background-image: linear-gradient(#9c27b0, #9c27b0),
-      linear-gradient(#d2d2d2, #d2d2d2);
+    background-image: linear-gradient(#9c27b0, #9c27b0), linear-gradient(#d2d2d2, #d2d2d2);
     background-size: 100% 2px, 100% 1px;
     box-shadow: none;
     transition-duration: 0.3s;
@@ -437,8 +428,7 @@
   width: 70px;
   text-align: center;
   border: 0;
-  background-image: linear-gradient(#9c27b0, #9c27b0),
-    linear-gradient(#d2d2d2, #d2d2d2);
+  background-image: linear-gradient(#9c27b0, #9c27b0), linear-gradient(#d2d2d2, #d2d2d2);
   background-size: 0 2px, 100% 1px;
   background-repeat: no-repeat;
   background-position: center bottom, center calc(100% - 1px);
@@ -458,8 +448,7 @@
 
   &:focus {
     outline: none;
-    background-image: linear-gradient(#9c27b0, #9c27b0),
-      linear-gradient(#d2d2d2, #d2d2d2);
+    background-image: linear-gradient(#9c27b0, #9c27b0), linear-gradient(#d2d2d2, #d2d2d2);
     background-size: 100% 2px, 100% 1px;
     box-shadow: none;
     transition-duration: 0.3s;

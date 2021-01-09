@@ -389,10 +389,10 @@ button.rbc-input::-moz-focus-inner {
   text-transform: lowercase;
 }
 .rbc-agenda-time-cell .rbc-continues-after:after {
-  content: " »";
+  content: ' »';
 }
 .rbc-agenda-time-cell .rbc-continues-prior:before {
-  content: "« ";
+  content: '« ';
 }
 .rbc-agenda-date-cell,
 .rbc-agenda-time-cell {
@@ -641,33 +641,27 @@ button.rbc-input::-moz-focus-inner {
 
   &.event-azure {
     background-color: $brand-info;
-    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14),
-      0 7px 10px -5px rgba(0, 188, 212, 0.4);
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(0, 188, 212, 0.4);
   }
   &.event-green {
     background-color: $brand-success;
-    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14),
-      0 7px 10px -5px rgba(76, 175, 80, 0.4);
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(76, 175, 80, 0.4);
   }
   &.event-orange {
     background-color: $brand-warning;
-    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14),
-      0 7px 10px -5px rgba(255, 152, 0, 0.4);
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(255, 152, 0, 0.4);
   }
   &.event-red {
     background-color: $brand-danger;
-    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14),
-      0 7px 10px -5px rgba(244, 67, 54, 0.4);
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(244, 67, 54, 0.4);
   }
   &.event-rose {
     background-color: $brand-rose;
-    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14),
-      0 7px 10px -5px rgba(233, 30, 99, 0.4);
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(233, 30, 99, 0.4);
   }
   &.event-default {
     background-color: #999999;
-    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14),
-      0 7px 10px -5px rgba(153, 153, 153, 0.4);
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(153, 153, 153, 0.4);
   }
 
   .rbc-event-content {

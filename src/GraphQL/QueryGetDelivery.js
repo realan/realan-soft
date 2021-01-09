@@ -1,28 +1,31 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
-
-export const GET_DELIVERY = gql`{
+export const GET_DELIVERY = gql`
+  {
     delivery {
-        id
-        name
-        address
-        contact_id
-        phone
-        print_stickers
-        route_order
-        site
+      id
+      name
+      address
+      contact_id
+      phone
+      print_stickers
+      route_order
+      site
     }
-}`;
+  }
+`;
 
-export const getLocalDelivery = gql`{
+export const getLocalDelivery = gql`
+  {
     delivery {
-        id
-        name
-        address
-        contact_id
-        phone
-        print_stickers
-        route_order
-        site
+      id
+      name
+      address
+      contact_id
+      phone
+      print_stickers
+      route_order
+      site
     }
-}`;
+  }
+`;
