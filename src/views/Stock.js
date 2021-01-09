@@ -87,12 +87,14 @@ const Stock = () => {
           onRowClick={onRowClick}
         />
       </div>
-      <DialogStock
-        open={open}
-        handleClose ={handleClose}
-        item_id={itemId}
-        stock_now={stockQty}
-      />
+      {itemId && (
+        <DialogStock
+          open={open}
+          handleClose ={handleClose}
+          item_id={itemId}
+          stock_now={stockQty}
+        />
+      )}
     </div>
   )
 }

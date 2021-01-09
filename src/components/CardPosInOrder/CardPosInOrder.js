@@ -38,6 +38,8 @@ function CardPosInOrder(props) {
   // console.log(props)
   console.log(props.value.id, props.value.orderId, props.valueDB.length)
   const classes = useStyles();
+  
+  console.log('props.valueDB', props.valueDB)
 
    let collectProd = props.valueDB[props.value.id].qtyFromProd;
    let collectStock = props.valueDB[props.value.id].qtyFromStock;
@@ -98,4 +100,4 @@ function CardPosInOrder(props) {
   );
 }
 
-export default React.memo(CardPosInOrder);
+export default CardPosInOrder;
