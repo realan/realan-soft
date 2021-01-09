@@ -98,4 +98,4 @@ function CardPosInOrder(props) {
   );
 }
 
-export default React.memo(CardPosInOrder);
+export default CardPosInOrder;
