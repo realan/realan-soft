@@ -66,7 +66,7 @@ const Todo = () => {
 
   const onClick = (type) => {
     setType(type);
-    console.log(columns(type));
+    console.log(columns[type]);
 
   }
   // { () => {setType("customers"); setColumns(customers)}}
@@ -75,22 +75,22 @@ const Todo = () => {
     <div>
         <div>Выбери, какие данные импортировать</div>
         <Button color = { type === "customers" ? "secondary" : "default" }
-          onClick={onClick("customers")}
+          onClick={() => onClick("customers")}
           >Заказчики</Button>
         <Button color = { type === "category" ? "secondary" : "default" }
-          onClick={onClick("category")}
+          onClick={() => onClick("category")}
           >Категории</Button>
         <Button color = { type === "price" ? "secondary" : "default" }
-          onClick={onClick("price")}
+          onClick={() => onClick("price")}
           >Прайс</Button>
         <Button color = { type === "orders" ? "secondary" : "default" }
-          onClick={onClick("orders")}
+          onClick={() => onClick("orders")}
           >Заказы</Button>
         <Button color = { type === "items" ? "secondary" : "default" }
-          onClick={onClick("items")}
+          onClick={() => onClick("items")}
           >позиции в заказах</Button>
         <Button color = { type === "move" ? "secondary" : "default" }
-          onClick={onClick("move")}
+          onClick={() => onClick("move")}
           >Что набрано</Button>
 
           <AddFromClipboard
