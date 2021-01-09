@@ -2,11 +2,40 @@ import React  from "react";
 import Button from '@material-ui/core/Button';
 import AddFromClipboard from "components/AddFromClipboard/AddFromClipboard";
 import { useState } from 'react';
+// import { gql } from "apollo-boost";
+import { useMutation } from "@apollo/react-hooks";
+import { 
+  ADD_CUSTOMER,
+  ADD_CATEGORY,
+  ADD_PRICE,
+  ADD_ORDER,
+  ADD_ITEM,
+  ADD_MOVING
+} from '../GraphQL/Mutations';
+
+
+
+
+
 
 const Todo = () => {
 
   const [type, setType] = useState('customers');
   // const [columns, setColumns] = useState([]);
+  const [AddCustomer] = useMutation(ADD_CUSTOMER);
+  const [AddCategory] = useMutation(ADD_CATEGORY);
+  const [AddPrice] = useMutation(ADD_PRICE);
+  const [AddOrder] = useMutation(ADD_ORDER);
+  const [AddItem] = useMutation(ADD_ITEM);
+  const [AddMove] = useMutation(ADD_MOVING);
+
+  const mutations = {}
+  mutations["customers"] = AddCustomer;
+  mutations["category"] = AddCategory;
+  mutations["price"] = AddPrice;
+  mutations["orders"] = AddOrder;
+  mutations["items"] = AddItem;
+  mutations["move"] = AddMove;
 
   const columns = {};
 
@@ -22,7 +51,7 @@ const Todo = () => {
   ]
 
   columns["category"] = [
-    "name"
+    {name: "text"}
   ]
   
   columns["price"] = [
@@ -49,11 +78,11 @@ const Todo = () => {
   ]
 
   columns["items"] = [
-    "item", // id price
-    "qty", 
-    "order", //id order
-    "note",
-    "is_cancelled", // nullable
+    {item: "number"}, // id price
+    {qty: "number"},
+    {order: "number"}, //id order
+    {note: "text"},
+    {is_cancelled: "boolean"}, // nullable
   ]
 
   columns["move"] = [
@@ -69,7 +98,10 @@ const Todo = () => {
     console.log(columns[type]);
 
   }
-  // { () => {setType("customers"); setColumns(customers)}}
+
+
+
+
 
   return (
     <div>
@@ -95,7 +127,8 @@ const Todo = () => {
 
           <AddFromClipboard
             name={type} 
-            columns={columns[type]}
+            value={columns[type]}
+            onChange={mutations[type]}
           />
 
 

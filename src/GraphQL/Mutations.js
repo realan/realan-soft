@@ -3,6 +3,81 @@ import gql from "graphql-tag";
 // Add Mutation - variable $addData for object
 
 
+// mutations for mramolit project 
+
+export const ADD_CUSTOMER = gql`
+mutation AddCustomer ($addData: mr_customer_insert_input!){
+  insert_mr_customer (objects: [$addData]) 
+  {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+`;
+
+export const ADD_CATEGORY = gql`
+mutation AddCategory ($addData: mr_category_insert_input!){
+  insert_mr_category (objects: [$addData]) 
+  {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+`;
+
+export const ADD_PRICE = gql`
+mutation AddPrice ($addData: mr_price_insert_input!){
+  insert_mr_price (objects: [$addData]) 
+  {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+`;
+
+export const ADD_ORDER = gql`
+mutation AddOrder ($addData: mr_order_insert_input!){
+  insert_mr_order (objects: [$addData]) 
+  {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+`;
+
+export const ADD_ITEM = gql`
+mutation AddItem ($addData: mr_items_insert_input!){
+  insert_mr_items (objects: [$addData]) 
+  {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+`;
+
+export const ADD_MOVING = gql`
+mutation AddMoving ($addData: mr_moving_insert_input!){
+  insert_mr_moving (objects: [$addData]) 
+  {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+`;
+
+
 export const ADD_MOVE_ITEM = gql`
   mutation AddMove ($addData: mr_moving_insert_input!){
     insert_mr_moving (objects: [$addData]) 
@@ -19,24 +94,9 @@ export const ADD_MOVE_ITEM = gql`
 `;
 
 
-export const ADD_ORDER = gql`
-mutation AddDelivery ($addData: delivery_insert_input!){
-  insert_delivery (objects: [$addData]) 
-  {
-    affected_rows
-    returning {
-      id
-      name
-      address
-      phone
-      print_stickers
-      site
-      route_order
-      contact_id
-    }
-  }
-}
-`;;
+
+
+// old mutations
 
 
 // DELIVERY

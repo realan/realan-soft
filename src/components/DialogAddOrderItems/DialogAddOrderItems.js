@@ -88,7 +88,7 @@ const DialogAddOrderItems = (props) => {
                 }
             }
             });
-            // console.log(result);
+            console.log(result);
             setItems(result);
             let itemsOrder = result.map(item => {
                 return {

@@ -1,6 +1,15 @@
 import gql from "graphql-tag";
 
 
+
+// querries for mramolit project
+
+
+
+
+
+
+
 export const GET_PRICE = gql`
     query GetPrice {
         mr_price {
@@ -13,6 +22,10 @@ export const GET_PRICE = gql`
         }
     }
   `;
+
+
+
+/// old querries
 
 
 export const GET_DELIVERY = gql`{
