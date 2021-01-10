@@ -17,8 +17,18 @@ const AddFromClipboard = ({ type, value, onSubmit }) => {
     return head;
   });
 
-  const headsList = value.map((item) => Object.keys(item));
+  // columns["items"] = [
+  //   { item: "number" }, // id price
+  //   { qty: "number" },
+  //   { order: "number" }, //id order
+  //   { note: "text" },
+  //   { is_cancelled: "boolean" }, // nullable
+  // ];
 
+  const headsList = value.map((item) => Object.keys(item));
+  const headsType = value.map((item) => item[Object.keys(item)]);
+
+  console.log(headsType)
   // const columns = [
   //     { field: 'id', headerName: 'id', width: 30 },
   //     { field: 'name', headerName: 'Наименование', type: "text", width: 200 },   ]
@@ -42,11 +52,20 @@ const AddFromClipboard = ({ type, value, onSubmit }) => {
             let obj = {};
 
             rowIn.forEach(function (cell, j) {
-              obj[headsList[j]] = cell.trim();
-              console.log(obj);
+              let type = headsType[j]
+              let val = cell.trim()
+              if (type === "number") {
+                obj[headsList[j]] = Number(val.replace(",",".").replace(" ", ""));
+              } else if (type === "boolean") {
+                (val === '1' || val === "ИСТИНА" || val === 'true' || val === true) ? val = true : val = false;
+                obj[headsList[j]]=val;
+              } else {
+                obj[headsList[j]]=val;
+              }
+              // console.log(obj);
               row.push(obj);
             });
-            obj.id = i;
+            obj.id = i; //для вывода в таблицу. для Мутации убрать
             result.push(obj);
           }
         }
@@ -55,15 +74,21 @@ const AddFromClipboard = ({ type, value, onSubmit }) => {
       setState(result);
     });
   };
+  console.log(result);
 
   const insertInDb = () => {
-    state.map((item) => {
+    state.forEach((item) => {
       console.log(item);
       let addData = {};
-      for (let key in value) {
-        addData[key] = item[key];
+      for (let key in item) {
+        if (key !== 'id') {
+          addData[key] = item[key];
+        }  
       }
 
+
+      // console.log(addData);
+      // onSubmit({ variables: {addData: addData }});
       // {
       //   qty: item.qtyFromProd,
       //   to_order: item.to_order,
@@ -71,8 +96,9 @@ const AddFromClipboard = ({ type, value, onSubmit }) => {
       //   item: item.item,
       // };
       // AddMove({ variables: {addData: addData } });
+      // return true;
     });
-    onSubmit(type);
+    // onSubmit({ variables: {addData: addData }});
   };
 
   return (

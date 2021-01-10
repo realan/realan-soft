@@ -32,6 +32,8 @@ const Todo = () => {
   mutations["items"] = AddItem;
   mutations["move"] = AddMove;
 
+
+
   const columns = {};
 
   columns["customers"] = [
@@ -68,6 +70,7 @@ const Todo = () => {
     "email", // - text, nullable
     "discount", // - numeric, nullable
     "is_cancelled", // - boolean, nullable, default: false
+    "note",
   ];
 
   columns["items"] = [
