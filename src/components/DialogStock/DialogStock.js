@@ -240,11 +240,11 @@ const DialogStock = (props) => {
     setProdToStock(qty);
   };
 
-  let rows = [];
+  // let rows = [];
 
   const onQtyChange = (id, qty, type) => {
-    console.log(id, qty, type);
-    console.log(dataDB);
+    // console.log(id, qty, type);
+    // console.log(dataDB);
     if (type === "prod") {
       setDataDB([...dataDB], dataDB[id].qtyFromProd = qty);
     } else {
@@ -258,8 +258,9 @@ const DialogStock = (props) => {
   };
 
   const handleCorrectQty = (qty) => {
-    setStockQty(qty);
+    console.log(qty)
     setOpenCorrectQty(false);
+    if (!isNaN(qty)) { setStockQty(qty) };
   };
   const handleFilter = () => {
     setShowAll(!showAll);
@@ -349,7 +350,7 @@ const DialogStock = (props) => {
 
       <DialogStockCorrectQty
         open={openCorrectQty}
-        itemId={data.mr_items[0].mr_price.id} s
+        itemId={data.mr_items[0].mr_price.id}
         name={data.mr_items[0].mr_price.name}
         stockNow={stockQty}
         handleClose={handleCorrectQty}

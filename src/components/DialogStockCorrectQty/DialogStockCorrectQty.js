@@ -18,14 +18,16 @@ const DialogStockCorrectQty = (props) => {
     const [AddMove] = useMutation(ADD_MOVE_ITEM);
 
     const handleOK = () => {
-        const addData = {
-            qty: count - props.stockNow,
-            to_order: 3, // склад - для расчета точного количества
-            from_order: 5, // ID = 5 - корректировки склада
-            item: props.itemId,
+        if (props.stockNow !==0){
+            const addData = {
+                qty: count - props.stockNow,
+                to_order: 3, // склад - для расчета точного количества
+                from_order: 5, // ID = 5 - корректировки склада
+                item: props.itemId,
+            }
+            AddMove({ variables: {addData: addData } });
+            props.handleClose(count);
         }
-        AddMove({ variables: {addData: addData } });
-        props.handleClose(count);
     }
     const onChange = (val) => {
         setCount(val);

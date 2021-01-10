@@ -30,21 +30,27 @@ const defaultProps = {
 
 function CardPosInOrder(props) {
 
+  // const [allStockBtn, setAllStockBtn] = useState(true);
+  // const [allProdBtn, setAttProdBtn] = useState(true);
+
   // key
   // value - orderQty, needQty, dateOut, note, order id, customer (name), town
   // stock = {stockQty}
   // onChange = {onQtyChange}
 
   // console.log(props)
-  console.log(props.value.id, props.value.orderId, props.valueDB.length)
+  // console.log(props.value.id, props.value.orderId, props.valueDB.length)
   const classes = useStyles();
 
-   let collectProd = props.valueDB[props.value.id].qtyFromProd;
-   let collectStock = props.valueDB[props.value.id].qtyFromStock;
+   let fromProd = props.valueDB[props.value.id].qtyFromProd;
+   let fromStock = props.valueDB[props.value.id].qtyFromStock;
    let stock = props.stock;
    let need = props.value.needQty;
+   let collect = props.value.orderQty - need;
 
-   
+
+  // if (fromProd + fromStock >= need) { setAllStockBtn(false) }
+  // if (fromProd + fromStock >= need || stock <=0 ) { setAttProdBtn(false) } 
 
 
 
@@ -74,7 +80,8 @@ function CardPosInOrder(props) {
             </Box>
             <Box mr={1}>
                 П <InputGroup 
-                  maxValue = { need - collectStock }
+                  minValue={0}
+                  maxValue = { need - fromStock }
                   type = {"prod"}
                   id = {props.value.id}
                   onChange = {props.onChange}
@@ -84,8 +91,8 @@ function CardPosInOrder(props) {
             {/* { (stock !== 0 || collectStock !== 0) &&            */}
               <Box mr={1}>
                 С<InputGroup 
-                  minValue = { - props.value.orderQty }
-                  maxValue = {(stock < need - collectProd) ? stock : need - collectProd }
+                  minValue = { - collect }
+                  maxValue = {(stock < need - fromProd) ? stock : need - fromProd }
                   type = {"stock"}
                   id = {props.value.id}
                   onChange = {props.onChange}
