@@ -70,7 +70,7 @@ const AddFromClipboard = ({ type, value, onSubmit }) => {
           }
         }
       });
-      console.log(result);
+      // console.log(result);
       setState(result);
     });
   };
@@ -78,7 +78,7 @@ const AddFromClipboard = ({ type, value, onSubmit }) => {
 
   const insertInDb = () => {
     state.forEach((item) => {
-      console.log(item);
+      // console.log(item);
       let addData = {};
       for (let key in item) {
         if (key !== 'id') {
@@ -87,8 +87,8 @@ const AddFromClipboard = ({ type, value, onSubmit }) => {
       }
 
 
-      // console.log(addData);
-      // onSubmit({ variables: {addData: addData }});
+      console.log(addData);
+      onSubmit({ variables: {addData: addData }});
       // {
       //   qty: item.qtyFromProd,
       //   to_order: item.to_order,

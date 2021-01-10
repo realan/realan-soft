@@ -37,40 +37,40 @@ const Todo = () => {
   const columns = {};
 
   columns["customers"] = [
-    "name",
-    "town",
-    "person",
-    "phone",
-    "email",
-    "delivery",
-    "discount",
-    "first_order",
+    {name:"text"},
+    {town:"text"},
+    {person:"text"},
+    {phone:"text"},
+    {email:"text"},
+    {delivery:"text"},
+    {discount:"number"},
+    {first_order:"text"},
   ];
 
   columns["category"] = [{ name: "text" }];
 
   columns["price"] = [
-    "name",
-    "weight",
-    "price_opt",
-    "art",
-    "category", //ID
-    "price_rozn",
+    {name: "text"},
+    {weight:"number"},
+    {price_opt:"number"},
+    {art:"text"},
+    {category:"number"}, //ID
+    {price_rozn:"number"},
   ];
 
   columns["orders"] = [
-    "customer", // id customer
-    "town",
-    "delivery",
-    "person",
-    "phone",
-    "is_shipped", // - boolean, default: false
-    "date_in", // - timestamp without time zone, nullable, default: now()
-    "date_out", // - timestamp with time zone, nullable
-    "email", // - text, nullable
-    "discount", // - numeric, nullable
-    "is_cancelled", // - boolean, nullable, default: false
-    "note",
+    {customer:"number"}, // id customer
+    {town:"text"},
+    {delivery:"text"},
+    {person:"text"},
+    {phone:"text"},
+    {is_shipped:"boolean"}, // - boolean, default: false
+    {date_in:"text"}, // - timestamp without time zone, nullable, default: now()
+    {date_out:"text"}, // - timestamp with time zone, nullable
+    {email:"text"}, // - text, nullable
+    {discount:"number"}, // - numeric, nullable
+    {is_cancelled:"boolean"}, // - boolean, nullable, default: false
+    {note:"text"},
   ];
 
   columns["items"] = [
@@ -82,11 +82,11 @@ const Todo = () => {
   ];
 
   columns["move"] = [
-    "item", //r
-    "qty",
-    "from_order", // - integer
-    "to_order", // - integer
-    "date", // - timestamp with time zone, default: now()
+    {item:"number"}, //r
+    {qty:"number"},
+    {from_order:"number"}, // - integer
+    {to_order:"number"}, // - integer
+    {date:"text"}, // - timestamp with time zone, default: now()
   ];
 
   const onClick = (type) => {

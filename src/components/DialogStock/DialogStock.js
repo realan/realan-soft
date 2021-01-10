@@ -13,8 +13,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Paper from "@material-ui/core/Paper";
 import Draggable from "react-draggable";
 // import RowCollectOrder from "components/RowCollectOrder/RowCollectOrder.js";
-// import { DataGrid } from '@material-ui/data-grid';
-// import InputGroup from "components/InputGroup/InputGroup";
+import { DataGrid } from '@material-ui/data-grid';
+import InputGroup from "components/InputGroup/InputGroup";
 import InputWithButtons from "components/InputWithButtons/InputWithButtons";
 import CardPosInOrder from "components/CardPosInOrder/CardPosInOrder";
 import Box from "@material-ui/core/Box";
@@ -89,39 +89,39 @@ const DialogStock = (props) => {
   //   />
   // );
 
-  // const columns = [
-  //   { field: 'id', headerName: 'id', width: 10 },
-  //   { field: 'customer', headerName: 'Заказчик', width: 150 },
-  //   { field: 'town', headerName: 'Город', width: 110 },
-  //   { field: 'dateOut', headerName: 'Дата отгрузки', width: 110 },
-  //   { field: 'collected', headerName: 'Набрано%', type: "number", width: 10 },
-  //   { field: 'orderQty', headerName: 'Заказ', type: "number", width: 80 },
-  //   { field: 'needQty', headerName: 'Нужно', type: "number", width: 80 },
-  //   { field: 'fromProd', headerName: 'С доработки', width: 200,
-  //       renderCell: (params) => (
-  //         <strong>
-  //             <InputGroup
-  //               maxValue = {params.row.needQty}
-  //               type = {"prod"}
-  //               id = {params.rowIndex}
-  //               onChange = {onQtyChange}
-  //               params={params}
-  //             />
-  //         </strong>
-  //     ), },
-  //   { field: 'fromStock', headerName: 'Со склада', width: 200,
-  //       renderCell: (params) => (
-  //         <strong>
-  //             <InputGroup
-  //               maxValue = {(stockQty < params.row.needQty) ? stockQty : params.row.needQty }
-  //               type = {"stock"}
-  //               id = {params.rowIndex}
-  //               onChange = {onQtyChange}
-  //             />
-  //         </strong>
-  //       ), },
-  //   { field: 'note', headerName: 'Примечание', type: "text", width: 110 },
-  // ];
+  const columns = [
+    { field: 'id', headerName: 'id', width: 10 },
+    { field: 'customer', headerName: 'Заказчик', width: 150 },
+    { field: 'town', headerName: 'Город', width: 110 },
+    { field: 'dateOut', headerName: 'Дата отгрузки', width: 110 },
+    { field: 'collected', headerName: 'Набрано%', type: "number", width: 10 },
+    { field: 'orderQty', headerName: 'Заказ', type: "number", width: 80 },
+    { field: 'needQty', headerName: 'Нужно', type: "number", width: 80 },
+    { field: 'fromProd', headerName: 'С доработки', width: 200,
+        renderCell: (params) => (
+          <strong>
+              <InputGroup
+                maxValue = {params.row.needQty}
+                type = {"prod"}
+                id = {params.rowIndex}
+                onChange = {onQtyChange}
+                params={params}
+              />
+          </strong>
+      ), },
+    { field: 'fromStock', headerName: 'Со склада', width: 200,
+        renderCell: (params) => (
+          <strong>
+              <InputGroup
+                maxValue = {(stockQty < params.row.needQty) ? stockQty : params.row.needQty }
+                type = {"stock"}
+                id = {params.rowIndex}
+                onChange = {onQtyChange}
+              />
+          </strong>
+        ), },
+    { field: 'note', headerName: 'Примечание', type: "text", width: 110 },
+  ];
 
   const { loading, error, data } = useSubscription(SUBSCRIPTION_ORDERS_BY_ID, {
     variables: { item_id: itemId },
@@ -240,7 +240,7 @@ const DialogStock = (props) => {
     setProdToStock(qty);
   };
 
-  // let rows = [];
+  let rows = [];
 
   const onQtyChange = (id, qty, type) => {
     // console.log(id, qty, type);
@@ -313,12 +313,12 @@ const DialogStock = (props) => {
             </Box>
           )}
 
-          {/* <div style={{ height: 500, width: '100%' }}>
+          <div style={{ height: 500, width: '100%' }}>
                 <DataGrid 
                   rows={rows} 
                   columns={columns} 
                 />
-              </div> */}
+              </div>
           <div>
             {" "}
             Со склада в доработку

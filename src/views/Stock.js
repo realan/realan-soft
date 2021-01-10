@@ -81,7 +81,7 @@ const Stock = () => {
   return (
     <div>
       <div style={{ height: 700, width: "100%" }}>
-        <DataGrid rows={data.mr_pivot} columns={columns} onRowClick={onRowClick} />
+        <DataGrid rows={data.mr_pivot} columns={columns} rowHeight={32} onRowClick={onRowClick} />
       </div>
 
       {itemForDialog.itemId && (
