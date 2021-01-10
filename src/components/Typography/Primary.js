@@ -11,13 +11,9 @@ const useStyles = makeStyles(styles);
 export default function Primary(props) {
   const classes = useStyles();
   const { children } = props;
-  return (
-    <div className={classes.defaultFontStyle + " " + classes.primaryText}>
-      {children}
-    </div>
-  );
+  return <div className={classes.defaultFontStyle + " " + classes.primaryText}>{children}</div>;
 }
 
 Primary.propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node,
 };

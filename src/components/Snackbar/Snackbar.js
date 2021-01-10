@@ -19,7 +19,7 @@ export default function Snackbar(props) {
   const { message, color, close, icon, place, open } = props;
   var action = [];
   const messageClasses = cx({
-    [classes.iconMessage]: icon !== undefined
+    [classes.iconMessage]: icon !== undefined,
   });
   if (close !== undefined) {
     action = [
@@ -31,7 +31,7 @@ export default function Snackbar(props) {
         onClick={() => props.closeNotification()}
       >
         <Close className={classes.close} />
-      </IconButton>
+      </IconButton>,
     ];
   }
   const iconClasses = cx({
@@ -41,23 +41,19 @@ export default function Snackbar(props) {
     [classes.warningIcon]: color === "warning",
     [classes.dangerIcon]: color === "danger",
     [classes.primaryIcon]: color === "primary",
-    [classes.roseIcon]: color === "rose"
+    [classes.roseIcon]: color === "rose",
   });
   return (
     <Snack
       classes={{
         anchorOriginTopCenter: classes.top20,
         anchorOriginTopRight: classes.top40,
-        anchorOriginTopLeft: classes.top40
+        anchorOriginTopLeft: classes.top40,
       }}
       anchorOrigin={{
         vertical: place.indexOf("t") === -1 ? "bottom" : "top",
         horizontal:
-          place.indexOf("l") !== -1
-            ? "left"
-            : place.indexOf("c") !== -1
-            ? "center"
-            : "right"
+          place.indexOf("l") !== -1 ? "left" : place.indexOf("c") !== -1 ? "center" : "right",
       }}
       open={open}
       message={
@@ -70,30 +66,23 @@ export default function Snackbar(props) {
       ContentProps={{
         classes: {
           root: classes.root + " " + classes[color],
-          message: classes.message
-        }
+          message: classes.message,
+        },
       }}
     />
   );
 }
 
 Snackbar.defaultProps = {
-  color: "info"
+  color: "info",
 };
 
 Snackbar.propTypes = {
   message: PropTypes.node.isRequired,
-  color: PropTypes.oneOf([
-    "info",
-    "success",
-    "warning",
-    "danger",
-    "primary",
-    "rose"
-  ]),
+  color: PropTypes.oneOf(["info", "success", "warning", "danger", "primary", "rose"]),
   close: PropTypes.bool,
   icon: PropTypes.object,
   place: PropTypes.oneOf(["tl", "tr", "tc", "br", "bl", "bc"]),
   open: PropTypes.bool,
-  closeNotification: PropTypes.func
+  closeNotification: PropTypes.func,
 };

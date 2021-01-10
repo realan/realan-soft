@@ -14,19 +14,19 @@ import {
   whiteColor,
   blackColor,
   grayColor,
-  hexToRgb
+  hexToRgb,
 } from "assets/jss/material-dashboard-pro-react.js";
 
-const sidebarStyle = theme => ({
+const sidebarStyle = (theme) => ({
   drawerPaperRTL: {
     [theme.breakpoints.up("md")]: {
       left: "auto !important",
-      right: "0 !important"
+      right: "0 !important",
     },
     [theme.breakpoints.down("sm")]: {
       left: "0  !important",
-      right: "auto !important"
-    }
+      right: "auto !important",
+    },
   },
   drawerPaper: {
     border: "none",
@@ -44,7 +44,7 @@ const sidebarStyle = theme => ({
     [theme.breakpoints.up("md")]: {
       width: drawerWidth,
       position: "fixed",
-      height: "100%"
+      height: "100%",
     },
     [theme.breakpoints.down("sm")]: {
       width: drawerWidth,
@@ -63,7 +63,7 @@ const sidebarStyle = theme => ({
       paddingRight: "0px",
       paddingLeft: "0",
       transform: `translate3d(${drawerWidth}px, 0, 0)`,
-      ...transition
+      ...transition,
     },
     "&:before,&:after": {
       position: "absolute",
@@ -72,37 +72,37 @@ const sidebarStyle = theme => ({
       height: "100%",
       content: '""',
       display: "block",
-      top: "0"
-    }
+      top: "0",
+    },
   },
   blackBackground: {
     color: whiteColor,
     "&:after": {
       background: blackColor,
-      opacity: ".8"
-    }
+      opacity: ".8",
+    },
   },
   blueBackground: {
     color: whiteColor,
     "&:after": {
       background: infoColor[0],
-      opacity: ".93"
-    }
+      opacity: ".93",
+    },
   },
   whiteBackground: {
     color: grayColor[2],
     "&:after": {
       background: whiteColor,
-      opacity: ".93"
-    }
+      opacity: ".93",
+    },
   },
   whiteAfter: {
     "&:after": {
-      backgroundColor: "hsla(0,0%,71%,.3) !important"
-    }
+      backgroundColor: "hsla(0,0%,71%,.3) !important",
+    },
   },
   drawerPaperMini: {
-    width: drawerMiniWidth + "px!important"
+    width: drawerMiniWidth + "px!important",
   },
   logo: {
     padding: "15px 0px",
@@ -117,8 +117,8 @@ const sidebarStyle = theme => ({
       height: "1px",
       right: "15px",
       width: "calc(100% - 30px)",
-      backgroundColor: "hsla(0,0%,100%,.3)"
-    }
+      backgroundColor: "hsla(0,0%,100%,.3)",
+    },
   },
   logoMini: {
     transition: "all 300ms linear",
@@ -131,12 +131,12 @@ const sidebarStyle = theme => ({
     marginLeft: "22px",
     marginRight: "18px",
     marginTop: "7px",
-    color: "inherit"
+    color: "inherit",
   },
   logoMiniRTL: {
     float: "right",
     marginRight: "30px",
-    marginLeft: "26px"
+    marginLeft: "26px",
   },
   logoNormal: {
     ...defaultFont,
@@ -152,23 +152,23 @@ const sidebarStyle = theme => ({
     lineHeight: "30px",
     overflow: "hidden",
     "&,&:hover,&:focus": {
-      color: "inherit"
-    }
+      color: "inherit",
+    },
   },
   logoNormalRTL: {
-    textAlign: "right"
+    textAlign: "right",
   },
   logoNormalSidebarMini: {
     opacity: "0",
-    transform: "translate3d(-25px, 0, 0)"
+    transform: "translate3d(-25px, 0, 0)",
   },
   logoNormalSidebarMiniRTL: {
-    transform: "translate3d(25px, 0, 0)"
+    transform: "translate3d(25px, 0, 0)",
   },
   img: {
     width: "35px",
     verticalAlign: "middle",
-    border: "0"
+    border: "0",
   },
   background: {
     position: "absolute",
@@ -180,7 +180,7 @@ const sidebarStyle = theme => ({
     left: "0",
     backgroundSize: "cover",
     backgroundPosition: "center center",
-    transition: "all 300ms linear"
+    transition: "all 300ms linear",
   },
   list: {
     marginTop: "15px",
@@ -192,11 +192,11 @@ const sidebarStyle = theme => ({
     color: "inherit",
     "&:before,&:after": {
       display: "table",
-      content: '" "'
+      content: '" "',
     },
     "&:after": {
-      clear: "both"
-    }
+      clear: "both",
+    },
   },
   item: {
     color: "inherit",
@@ -204,12 +204,12 @@ const sidebarStyle = theme => ({
     display: "block",
     textDecoration: "none",
     margin: "0",
-    padding: "0"
+    padding: "0",
   },
   userItem: {
     "&:last-child": {
-      paddingBottom: "0px"
-    }
+      paddingBottom: "0px",
+    },
   },
   itemLink: {
     paddingLeft: "10px",
@@ -226,11 +226,11 @@ const sidebarStyle = theme => ({
     "&:hover": {
       outline: "none",
       backgroundColor: "rgba(" + hexToRgb(grayColor[17]) + ", 0.2)",
-      boxShadow: "none"
+      boxShadow: "none",
     },
     "&,&:hover,&:focus": {
-      color: "inherit"
-    }
+      color: "inherit",
+    },
   },
   itemIcon: {
     color: "inherit",
@@ -242,12 +242,12 @@ const sidebarStyle = theme => ({
     marginRight: "15px",
     textAlign: "center",
     verticalAlign: "middle",
-    opacity: "0.8"
+    opacity: "0.8",
   },
   itemIconRTL: {
     float: "right",
     marginLeft: "15px",
-    marginRight: "1px"
+    marginRight: "1px",
   },
   itemText: {
     color: "inherit",
@@ -262,39 +262,39 @@ const sidebarStyle = theme => ({
     display: "block",
     height: "auto",
     whiteSpace: "nowrap",
-    padding: "0 16px !important"
+    padding: "0 16px !important",
   },
   userItemText: {
-    lineHeight: "22px"
+    lineHeight: "22px",
   },
   itemTextRTL: {
     marginRight: "45px",
-    textAlign: "right"
+    textAlign: "right",
   },
   itemTextMini: {
     transform: "translate3d(-25px, 0, 0)",
-    opacity: "0"
+    opacity: "0",
   },
   itemTextMiniRTL: {
-    transform: "translate3d(25px, 0, 0) !important"
+    transform: "translate3d(25px, 0, 0) !important",
   },
   collapseList: {
     marginTop: "0",
     "& $caret": {
-      marginTop: "8px"
-    }
+      marginTop: "8px",
+    },
   },
   collapseItem: {
     position: "relative",
     display: "block",
     textDecoration: "none",
     margin: "10px 0 0 0",
-    padding: "0"
+    padding: "0",
   },
   collapseActive: {
     outline: "none",
     backgroundColor: "rgba(" + hexToRgb(grayColor[17]) + ", 0.2)",
-    boxShadow: "none"
+    boxShadow: "none",
   },
   collapseItemLink: {
     transition: "all 300ms linear",
@@ -309,11 +309,11 @@ const sidebarStyle = theme => ({
     "&:hover": {
       outline: "none",
       backgroundColor: "rgba(" + hexToRgb(grayColor[17]) + ", 0.2)",
-      boxShadow: "none"
+      boxShadow: "none",
     },
     "&,&:hover,&:focus": {
-      color: "inherit"
-    }
+      color: "inherit",
+    },
   },
   collapseItemMini: {
     color: "inherit",
@@ -327,12 +327,12 @@ const sidebarStyle = theme => ({
     float: "left",
     display: "inherit",
     transition: "transform 300ms ease 0s, opacity 300ms ease 0s",
-    fontSize: "14px"
+    fontSize: "14px",
   },
   collapseItemMiniRTL: {
     float: "right",
     marginLeft: "30px",
-    marginRight: "1px"
+    marginRight: "1px",
   },
   collapseItemText: {
     color: "inherit",
@@ -344,17 +344,17 @@ const sidebarStyle = theme => ({
     whiteSpace: "nowrap",
     display: "block",
     transition: "transform 300ms ease 0s, opacity 300ms ease 0s",
-    fontSize: "14px"
+    fontSize: "14px",
   },
   collapseItemTextRTL: {
-    textAlign: "right"
+    textAlign: "right",
   },
   collapseItemTextMiniRTL: {
-    transform: "translate3d(25px, 0, 0) !important"
+    transform: "translate3d(25px, 0, 0) !important",
   },
   collapseItemTextMini: {
     transform: "translate3d(-25px, 0, 0)",
-    opacity: "0"
+    opacity: "0",
   },
   caret: {
     marginTop: "13px",
@@ -368,24 +368,24 @@ const sidebarStyle = theme => ({
     verticalAlign: "middle",
     borderTop: "4px solid",
     borderRight: "4px solid transparent",
-    borderLeft: "4px solid transparent"
+    borderLeft: "4px solid transparent",
   },
   userCaret: {
-    marginTop: "10px"
+    marginTop: "10px",
   },
   caretRTL: {
     left: "11px",
-    right: "auto"
+    right: "auto",
   },
   caretActive: {
-    transform: "rotate(180deg)"
+    transform: "rotate(180deg)",
   },
   purple: {
     "&,&:hover,&:focus": {
       color: whiteColor,
       backgroundColor: primaryColor[0],
-      ...primaryBoxShadow
-    }
+      ...primaryBoxShadow,
+    },
   },
   blue: {
     "&,&:hover,&:focus": {
@@ -398,8 +398,8 @@ const sidebarStyle = theme => ({
         hexToRgb(blackColor) +
         ",.12), 0 7px 8px -5px rgba(" +
         hexToRgb(infoColor[0]) +
-        ",.2)"
-    }
+        ",.2)",
+    },
   },
   green: {
     "&,&:hover,&:focus": {
@@ -412,8 +412,8 @@ const sidebarStyle = theme => ({
         hexToRgb(blackColor) +
         ",.12), 0 7px 8px -5px rgba(" +
         hexToRgb(successColor[0]) +
-        ",.2)"
-    }
+        ",.2)",
+    },
   },
   orange: {
     "&,&:hover,&:focus": {
@@ -426,8 +426,8 @@ const sidebarStyle = theme => ({
         hexToRgb(blackColor) +
         ",.12), 0 7px 8px -5px rgba(" +
         hexToRgb(warningColor[0]) +
-        ",.2)"
-    }
+        ",.2)",
+    },
   },
   red: {
     "&,&:hover,&:focus": {
@@ -440,8 +440,8 @@ const sidebarStyle = theme => ({
         hexToRgb(blackColor) +
         ",.12), 0 7px 8px -5px rgba(" +
         hexToRgb(dangerColor[0]) +
-        ",.2)"
-    }
+        ",.2)",
+    },
   },
   white: {
     "&,&:hover,&:focus": {
@@ -452,8 +452,8 @@ const sidebarStyle = theme => ({
         hexToRgb(blackColor) +
         ",.14), 0 7px 10px -5px rgba(" +
         hexToRgb(grayColor[2]) +
-        ",.4)"
-    }
+        ",.4)",
+    },
   },
   rose: {
     "&,&:hover,&:focus": {
@@ -464,8 +464,8 @@ const sidebarStyle = theme => ({
         hexToRgb(blackColor) +
         ",.14), 0 7px 10px -5px rgba(" +
         hexToRgb(roseColor[0]) +
-        ",.4)"
-    }
+        ",.4)",
+    },
   },
   sidebarWrapper: {
     position: "relative",
@@ -478,10 +478,10 @@ const sidebarStyle = theme => ({
     transitionDuration: ".2s, .2s, .35s",
     transitionTimingFunction: "linear, linear, ease",
     color: "inherit",
-    paddingBottom: "30px"
+    paddingBottom: "30px",
   },
   sidebarWrapperWithPerfectScrollbar: {
-    overflow: "hidden !important"
+    overflow: "hidden !important",
   },
   user: {
     paddingBottom: "20px",
@@ -494,8 +494,8 @@ const sidebarStyle = theme => ({
       right: "15px",
       height: "1px",
       width: "calc(100% - 30px)",
-      backgroundColor: "hsla(0,0%,100%,.3)"
-    }
+      backgroundColor: "hsla(0,0%,100%,.3)",
+    },
   },
   photo: {
     transition: "all 300ms linear",
@@ -507,28 +507,28 @@ const sidebarStyle = theme => ({
     marginRight: "11px",
     borderRadius: "50%",
     marginLeft: "23px",
-    ...boxShadow
+    ...boxShadow,
   },
   photoRTL: {
     float: "right",
     marginLeft: "12px",
-    marginRight: "24px"
+    marginRight: "24px",
   },
   avatarImg: {
     width: "100%",
     verticalAlign: "middle",
-    border: "0"
+    border: "0",
   },
   userCollapseButton: {
     margin: "0",
     padding: "6px 15px",
     "&:hover": {
-      background: "none"
-    }
+      background: "none",
+    },
   },
   userCollapseLinks: {
-    marginTop: "-4px"
-  }
+    marginTop: "-4px",
+  },
 });
 
 export default sidebarStyle;

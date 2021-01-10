@@ -24,40 +24,42 @@ import { ADD_MOVE_ITEM } from "../../GraphQL/Mutations";
 
 // const useStyles = makeStyles(styles);
 
-
 const SUBSCRIPTION_ORDERS_BY_ID = gql`
-    subscription SubscriptionsOrdersByItemId($item_id: Int!) {
-        mr_items(where: {item: {_eq: $item_id}, mr_order: {is_shipped: {_eq: false}}}, order_by: {mr_order: {date_out: asc_nulls_last}}) {
-            id
-            order
-            qty
-            note
-            mr_order {
-                id
-                customer
-                town
-                date_out
-                mr_customer {
-                    name
-                }
-                mr_to (where: {item: {_eq: $item_id}}){
-                    qty
-                }
-                mr_from(where: {item: {_eq: $item_id}}) {
-                    qty
-                }
-            }
-            mr_price {
-                id
-                name
-            }
+  subscription SubscriptionsOrdersByItemId($item_id: Int!) {
+    mr_items(
+      where: { item: { _eq: $item_id }, mr_order: { is_shipped: { _eq: false } } }
+      order_by: { mr_order: { date_out: asc_nulls_last } }
+    ) {
+      id
+      order
+      qty
+      note
+      mr_order {
+        id
+        customer
+        town
+        date_out
+        mr_customer {
+          name
         }
+        mr_to(where: { item: { _eq: $item_id } }) {
+          qty
+        }
+        mr_from(where: { item: { _eq: $item_id } }) {
+          qty
+        }
+      }
+      mr_price {
+        id
+        name
+      }
     }
+  }
 `;
 
 function PaperComponent(props) {
   return (
-    <Draggable handle="#draggable-dialog-title" cancel={"[class*=\"MuiDialogContent-root\"]"}>
+    <Draggable handle="#draggable-dialog-title" cancel={'[class*="MuiDialogContent-root"]'}>
       <Paper {...props} />
     </Draggable>
   );
@@ -72,14 +74,13 @@ const DialogStock = (props) => {
   const [showAll, setShowAll] = useState(false);
   const [openCorrectQty, setOpenCorrectQty] = useState(false);
   const [dataDB, setDataDB] = useState([]); // для добавления в бд перемещений ассортимента с производства и склада
-                                            // id, item, qtyFromProd, qtyFromStock, to_order
+  // id, item, qtyFromProd, qtyFromStock, to_order
   const [cards, setCards] = useState([]);
-
 
   const [AddMove] = useMutation(ADD_MOVE_ITEM);
 
   // const getListCards = (cards) => cards.map((item, key) =>
-  //   <CardPosInOrder 
+  //   <CardPosInOrder
   //     key={key}
   //     value = {item}
   //     stock = {stockQty}
@@ -99,7 +100,7 @@ const DialogStock = (props) => {
   //   { field: 'fromProd', headerName: 'С доработки', width: 200,
   //       renderCell: (params) => (
   //         <strong>
-  //             <InputGroup 
+  //             <InputGroup
   //               maxValue = {params.row.needQty}
   //               type = {"prod"}
   //               id = {params.rowIndex}
@@ -111,7 +112,7 @@ const DialogStock = (props) => {
   //   { field: 'fromStock', headerName: 'Со склада', width: 200,
   //       renderCell: (params) => (
   //         <strong>
-  //             <InputGroup 
+  //             <InputGroup
   //               maxValue = {(stockQty < params.row.needQty) ? stockQty : params.row.needQty }
   //               type = {"stock"}
   //               id = {params.rowIndex}
@@ -122,29 +123,27 @@ const DialogStock = (props) => {
   //   { field: 'note', headerName: 'Примечание', type: "text", width: 110 },
   // ];
 
-  const { loading, error, data } = useSubscription(
-    SUBSCRIPTION_ORDERS_BY_ID,
-    { variables: { item_id: itemId } }
-  );
+  const { loading, error, data } = useSubscription(SUBSCRIPTION_ORDERS_BY_ID, {
+    variables: { item_id: itemId },
+  });
 
   useEffect(() => {
-      setItemId(props.item_id);
-      setStockQty(props.stock_now);
-    },
-    [props.stock_now, props.item_id]
-  );
+    setItemId(props.item_id);
+    setStockQty(props.stock_now);
+  }, [props.stock_now, props.item_id]);
 
   useEffect(() => {
     if (!loading && data) {
-      setDataDB(data.mr_items.map((ord) => {
-        return {
-          qtyFromProd: 0, // initial value
-          qtyFromStock: 0, // initial value 
-          to_order: ord.mr_order.id,
-          item: itemId
-        };
-      }));
-
+      setDataDB(
+        data.mr_items.map((ord) => {
+          return {
+            qtyFromProd: 0, // initial value
+            qtyFromStock: 0, // initial value
+            to_order: ord.mr_order.id,
+            item: itemId,
+          };
+        })
+      );
     }
   }, [loading, data, itemId]);
 
@@ -152,8 +151,10 @@ const DialogStock = (props) => {
     if (data) {
       const preparedCards = data.mr_items.map((it, key) => {
         const dateOut = new Date(it.mr_order.date_out);
-        let needQty = it.qty - (it.mr_order.mr_to.reduce((sum, current) => sum + current.qty, 0) -
-          it.mr_order.mr_from.reduce((sum, current) => sum + current.qty, 0));
+        let needQty =
+          it.qty -
+          (it.mr_order.mr_to.reduce((sum, current) => sum + current.qty, 0) -
+            it.mr_order.mr_from.reduce((sum, current) => sum + current.qty, 0));
 
         let obj = {
           id: key, // it.id,
@@ -166,7 +167,7 @@ const DialogStock = (props) => {
           needQty: needQty,
           fromProd: 0, //it.qty,
           fromStock: 0, // it.qty,
-          note: it.note
+          note: it.note,
         };
 
         return obj;
@@ -187,7 +188,7 @@ const DialogStock = (props) => {
           qty: it.qtyFromProd,
           to_order: it.to_order,
           from_order: 2, // у доработки ID = 2 - типа постоянное значение заказа !!!!!!!!
-          item: it.item
+          item: it.item,
         };
         AddMove({ variables: { addData: addData } });
       }
@@ -197,7 +198,7 @@ const DialogStock = (props) => {
           qty: it.qtyFromStock,
           to_order: it.to_order,
           from_order: 3, // у склада ID = 3 - типа постоянное значение заказа !!!!!!!!
-          item: it.item
+          item: it.item,
         };
         AddMove({ variables: { addData: addData } });
       }
@@ -208,18 +209,17 @@ const DialogStock = (props) => {
         qty: stockToProd,
         to_order: 2, // у доработки ID = 2 - типа постоянное значение заказа !!!!!!!!
         from_order: 3, // у склада ID = 3 - типа постоянное значение заказа !!!!!!!!
-        item: itemId
+        item: itemId,
       };
       console.log(addData);
       AddMove({ variables: { addData: addData } });
-
     }
     if (prodToStock > 0) {
       let addData = {
         qty: prodToStock,
         to_order: 3, // у доработки ID = 2 - типа постоянное значение заказа !!!!!!!!
         from_order: 2, // у склада ID = 3 - типа постоянное значение заказа !!!!!!!!
-        item: itemId
+        item: itemId,
       };
       console.log(addData);
       AddMove({ variables: { addData: addData } });
@@ -246,11 +246,11 @@ const DialogStock = (props) => {
     // console.log(id, qty, type);
     // console.log(dataDB);
     if (type === "prod") {
-      setDataDB([...dataDB], dataDB[id].qtyFromProd = qty);
+      setDataDB([...dataDB], (dataDB[id].qtyFromProd = qty));
     } else {
-      setDataDB([...dataDB], dataDB[id].qtyFromStock = qty);
+      setDataDB([...dataDB], (dataDB[id].qtyFromStock = qty));
 
-      let sumQtyFromStock = dataDB.reduce(function(sum, elem) {
+      let sumQtyFromStock = dataDB.reduce(function (sum, elem) {
         return sum + elem.qtyFromStock;
       }, 0);
       setStockQty(props.stock_now - sumQtyFromStock);
@@ -258,16 +258,17 @@ const DialogStock = (props) => {
   };
 
   const handleCorrectQty = (qty) => {
-    console.log(qty)
+    console.log(qty);
     setOpenCorrectQty(false);
-    if (!isNaN(qty)) { setStockQty(qty) };
+    if (!isNaN(qty)) {
+      setStockQty(qty);
+    }
   };
   const handleFilter = () => {
     setShowAll(!showAll);
   };
 
   // let listCards = useMemo( () => getListCards(cards),[]);
-
 
   return (
     <div>
@@ -281,42 +282,36 @@ const DialogStock = (props) => {
       >
         <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
           {data.mr_items[0].mr_price.name}
-          <Switch
-            checked={showAll}
-            onChange={handleFilter}
-            name="checkedB"
-            color="primary"
-          />
+          <Switch checked={showAll} onChange={handleFilter} name="checkedB" color="primary" />
           показать все
-          <Button onClick={() => setOpenCorrectQty(true)} color="primary" variant="outlined" style={{ float: "right" }}>
+          <Button
+            onClick={() => setOpenCorrectQty(true)}
+            color="primary"
+            variant="outlined"
+            style={{ float: "right" }}
+          >
             На складе {stockQty} шт.
           </Button>
         </DialogTitle>
 
         <DialogContent>
           {Boolean(cards.length) && (
-            <Box
-              display="flex"
-              flexWrap="wrap"
-              m={1}
-            >
+            <Box display="flex" flexWrap="wrap" m={1}>
               {cards.map((card, key) => {
-                  return (
-                    <Box m={1} bgcolor="text.disabled" key={key}>
-                      <CardPosInOrder
-                        key={key}
-                        value={card}
-                        stock={stockQty}
-                        valueDB={dataDB} //{dataDB[item.id].qtyFromStock}
-                        onChange={onQtyChange}
-                      />
-                    </Box>
-                  );
-                }
-              )}
+                return (
+                  <Box m={1} bgcolor="text.disabled" key={key}>
+                    <CardPosInOrder
+                      key={key}
+                      value={card}
+                      stock={stockQty}
+                      valueDB={dataDB} //{dataDB[item.id].qtyFromStock}
+                      onChange={onQtyChange}
+                    />
+                  </Box>
+                );
+              })}
             </Box>
           )}
-
 
           {/* <div style={{ height: 500, width: '100%' }}>
                 <DataGrid 
@@ -324,18 +319,17 @@ const DialogStock = (props) => {
                   columns={columns} 
                 />
               </div> */}
-          <div> Со склада в доработку
-            <InputWithButtons
-              onChange={handleChangeStockToProd}
-            />
+          <div>
+            {" "}
+            Со склада в доработку
+            <InputWithButtons onChange={handleChangeStockToProd} />
           </div>
 
-          <div> С доработки на склад
-            <InputWithButtons
-              onChange={handleChangeProdToStock}
-            />
+          <div>
+            {" "}
+            С доработки на склад
+            <InputWithButtons onChange={handleChangeProdToStock} />
           </div>
-
         </DialogContent>
 
         <DialogActions>
@@ -355,7 +349,6 @@ const DialogStock = (props) => {
         stockNow={stockQty}
         handleClose={handleCorrectQty}
       />
-
     </div>
   );
 };

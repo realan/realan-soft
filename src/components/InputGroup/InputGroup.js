@@ -1,20 +1,20 @@
-import React from 'react';
-import { useState } from 'react';
-import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
-import DoneAllIcon from '@material-ui/icons/DoneAll';
+import React from "react";
+import { useState } from "react";
+import AddIcon from "@material-ui/icons/Add";
+import RemoveIcon from "@material-ui/icons/Remove";
+import DoneAllIcon from "@material-ui/icons/DoneAll";
 // import IconButton from '@material-ui/core/IconButton';
 // import Input from '@material-ui/core/Input';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import Fab from '@material-ui/core/Fab';
-import { Box } from '@material-ui/core';
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import Fab from "@material-ui/core/Fab";
+import { Box } from "@material-ui/core";
 
 const InputGroup = (props) => {
   // props id, type (stock or prod), maxValue, minValue onChange -
   const [count, setCount] = useState(0);
 
   const minValue = props.minValue || 0;
-  const color = props.type === 'stock' ? 'primary' : 'default';
+  const color = props.type === "stock" ? "primary" : "default";
 
   const increase = () => {
     if (count + 1 > props.maxValue) {
@@ -48,8 +48,14 @@ const InputGroup = (props) => {
 
   return (
     <div>
-      <Fab color={color} aria-label="add" size="medium" component="span" onClick={decrease} 
-        disabled={count <= props.minValue ? true : false }>
+      <Fab
+        color={color}
+        aria-label="add"
+        size="medium"
+        component="span"
+        onClick={decrease}
+        disabled={count <= props.minValue ? true : false}
+      >
         <RemoveIcon />
       </Fab>
       <Box display="inline">
@@ -62,12 +68,24 @@ const InputGroup = (props) => {
         />
       </Box>
 
-      <Fab color={color} aria-label="add" size="medium" component="span" onClick={increase}
-        disabled={count >= props.maxValue ? true : false }>
+      <Fab
+        color={color}
+        aria-label="add"
+        size="medium"
+        component="span"
+        onClick={increase}
+        disabled={count >= props.maxValue ? true : false}
+      >
         <AddIcon />
       </Fab>
-      <Fab color={color} aria-label="add" size="medium" component="span" onClick={setMaxValue}
-        disabled={count >= props.maxValue ? true : false }>
+      <Fab
+        color={color}
+        aria-label="add"
+        size="medium"
+        component="span"
+        onClick={setMaxValue}
+        disabled={count >= props.maxValue ? true : false}
+      >
         <DoneAllIcon />
       </Fab>
     </div>

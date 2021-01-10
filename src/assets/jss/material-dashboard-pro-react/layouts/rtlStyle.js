@@ -2,10 +2,10 @@ import {
   drawerWidth,
   drawerMiniWidth,
   transition,
-  containerFluid
+  containerFluid,
 } from "assets/jss/material-dashboard-pro-react.js";
 
-const appStyle = theme => ({
+const appStyle = (theme) => ({
   wrapper: {
     position: "relative",
     top: "0",
@@ -13,18 +13,18 @@ const appStyle = theme => ({
     "&:after": {
       display: "table",
       clear: "both",
-      content: '" "'
+      content: '" "',
     },
     "& header,& header + div": {
-      direction: "rtl"
-    }
+      direction: "rtl",
+    },
   },
   mainPanel: {
     transitionProperty: "top, bottom, width",
     transitionDuration: ".2s, .2s, .35s",
     transitionTimingFunction: "linear, linear, ease",
     [theme.breakpoints.up("md")]: {
-      width: `calc(100% - ${drawerWidth}px)`
+      width: `calc(100% - ${drawerWidth}px)`,
     },
     overflow: "auto",
     position: "relative",
@@ -32,19 +32,19 @@ const appStyle = theme => ({
     ...transition,
     maxHeight: "100%",
     width: "100%",
-    overflowScrolling: "touch"
+    overflowScrolling: "touch",
   },
   content: {
     marginTop: "70px",
     padding: "30px 15px",
-    minHeight: "calc(100% - 123px)"
+    minHeight: "calc(100% - 123px)",
   },
   container: { ...containerFluid },
   mainPanelSidebarMini: {
     [theme.breakpoints.up("md")]: {
-      width: `calc(100% - ${drawerMiniWidth}px)`
-    }
-  }
+      width: `calc(100% - ${drawerMiniWidth}px)`,
+    },
+  },
 });
 
 export default appStyle;

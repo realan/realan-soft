@@ -2,7 +2,7 @@ import {
   successColor,
   tooltip,
   cardTitle,
-  grayColor
+  grayColor,
 } from "assets/jss/material-dashboard-pro-react.js";
 
 import hoverCardStyle from "assets/jss/material-dashboard-pro-react/hoverCardStyle.js";
@@ -13,18 +13,18 @@ const dashboardStyle = {
   cardTitle: {
     ...cardTitle,
     marginTop: "0px",
-    marginBottom: "3px"
+    marginBottom: "3px",
   },
   cardIconTitle: {
     ...cardTitle,
     marginTop: "15px",
-    marginBottom: "0px"
+    marginBottom: "0px",
   },
   cardProductTitle: {
     ...cardTitle,
     marginTop: "0px",
     marginBottom: "3px",
-    textAlign: "center"
+    textAlign: "center",
   },
   cardCategory: {
     color: grayColor[0],
@@ -32,11 +32,11 @@ const dashboardStyle = {
     paddingTop: "10px",
     marginBottom: "0",
     marginTop: "0",
-    margin: "0"
+    margin: "0",
   },
   cardProductDesciprion: {
     textAlign: "center",
-    color: grayColor[0]
+    color: grayColor[0],
   },
   stats: {
     color: grayColor[0],
@@ -48,38 +48,38 @@ const dashboardStyle = {
       top: "4px",
       width: "16px",
       height: "16px",
-      marginRight: "3px"
+      marginRight: "3px",
     },
     "& .fab,& .fas,& .far,& .fal,& .material-icons": {
       position: "relative",
       top: "4px",
       fontSize: "16px",
-      marginRight: "3px"
-    }
+      marginRight: "3px",
+    },
   },
   productStats: {
     paddingTop: "7px",
     paddingBottom: "7px",
-    margin: "0"
+    margin: "0",
   },
   successText: {
-    color: successColor[0]
+    color: successColor[0],
   },
   upArrowCardCategory: {
     width: 14,
-    height: 14
+    height: 14,
   },
   underChartIcons: {
     width: "17px",
-    height: "17px"
+    height: "17px",
   },
   price: {
     color: "inherit",
     "& h4": {
       marginBottom: "0px",
-      marginTop: "0px"
-    }
-  }
+      marginTop: "0px",
+    },
+  },
 };
 
 export default dashboardStyle;

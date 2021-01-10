@@ -1,31 +1,31 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import TreeView from '@material-ui/lab/TreeView';
-import TreeItem from '@material-ui/lab/TreeItem';
-import Typography from '@material-ui/core/Typography';
-import MailIcon from '@material-ui/icons/Mail';
-import DeleteIcon from '@material-ui/icons/Delete';
-import Label from '@material-ui/icons/Label';
-import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
-import InfoIcon from '@material-ui/icons/Info';
-import ForumIcon from '@material-ui/icons/Forum';
-import LocalOfferIcon from '@material-ui/icons/LocalOffer';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import React from "react";
+import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core/styles";
+import TreeView from "@material-ui/lab/TreeView";
+import TreeItem from "@material-ui/lab/TreeItem";
+import Typography from "@material-ui/core/Typography";
+import MailIcon from "@material-ui/icons/Mail";
+import DeleteIcon from "@material-ui/icons/Delete";
+import Label from "@material-ui/icons/Label";
+import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
+import InfoIcon from "@material-ui/icons/Info";
+import ForumIcon from "@material-ui/icons/Forum";
+import LocalOfferIcon from "@material-ui/icons/LocalOffer";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 
 const useTreeItemStyles = makeStyles((theme) => ({
   root: {
     color: theme.palette.text.secondary,
-    '&:hover > $content': {
+    "&:hover > $content": {
       backgroundColor: theme.palette.action.hover,
     },
-    '&:focus > $content, &$selected > $content': {
+    "&:focus > $content, &$selected > $content": {
       backgroundColor: `var(--tree-view-bg-color, ${theme.palette.grey[400]})`,
-      color: 'var(--tree-view-color)',
+      color: "var(--tree-view-color)",
     },
-    '&:focus > $content $label, &:hover > $content $label, &$selected > $content $label': {
-      backgroundColor: 'transparent',
+    "&:focus > $content $label, &:hover > $content $label, &$selected > $content $label": {
+      backgroundColor: "transparent",
     },
   },
   content: {
@@ -34,32 +34,32 @@ const useTreeItemStyles = makeStyles((theme) => ({
     borderBottomRightRadius: theme.spacing(2),
     paddingRight: theme.spacing(1),
     fontWeight: theme.typography.fontWeightMedium,
-    '$expanded > &': {
+    "$expanded > &": {
       fontWeight: theme.typography.fontWeightRegular,
     },
   },
   group: {
     marginLeft: 0,
-    '& $content': {
+    "& $content": {
       paddingLeft: theme.spacing(2),
     },
   },
   expanded: {},
   selected: {},
   label: {
-    fontWeight: 'inherit',
-    color: 'inherit',
+    fontWeight: "inherit",
+    color: "inherit",
   },
   labelRoot: {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
     padding: theme.spacing(0.5, 0),
   },
   labelIcon: {
     marginRight: theme.spacing(1),
   },
   labelText: {
-    fontWeight: 'inherit',
+    fontWeight: "inherit",
     flexGrow: 1,
   },
 }));
@@ -82,8 +82,8 @@ function StyledTreeItem(props) {
         </div>
       }
       style={{
-        '--tree-view-color': color,
-        '--tree-view-bg-color': bgColor,
+        "--tree-view-color": color,
+        "--tree-view-bg-color": bgColor,
       }}
       classes={{
         root: classes.root,
@@ -120,7 +120,7 @@ export default function GmailTreeView() {
   return (
     <TreeView
       className={classes.root}
-      defaultExpanded={['3']}
+      defaultExpanded={["3"]}
       defaultCollapseIcon={<ArrowDropDownIcon />}
       defaultExpandIcon={<ArrowRightIcon />}
       defaultEndIcon={<div style={{ width: 24 }} />}

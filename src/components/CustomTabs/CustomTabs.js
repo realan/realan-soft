@@ -26,7 +26,7 @@ export default function CustomTabs(props) {
   const { headerColor, plainTabs, tabs, title, rtlActive } = props;
   const cardTitle = classNames({
     [classes.cardTitle]: true,
-    [classes.cardTitleRTL]: rtlActive
+    [classes.cardTitleRTL]: rtlActive,
   });
   return (
     <Card plain={plainTabs}>
@@ -37,7 +37,7 @@ export default function CustomTabs(props) {
           onChange={props.changeValue ? props.changeValue : handleChange}
           classes={{
             root: classes.tabsRoot,
-            indicator: classes.displayNone
+            indicator: classes.displayNone,
           }}
           variant="scrollable"
           scrollButtons="auto"
@@ -46,7 +46,7 @@ export default function CustomTabs(props) {
             var icon = {};
             if (prop.tabIcon) {
               icon = {
-                icon: <prop.tabIcon />
+                icon: <prop.tabIcon />,
               };
             }
             return (
@@ -54,7 +54,7 @@ export default function CustomTabs(props) {
                 classes={{
                   root: classes.tabRootButton,
                   selected: classes.tabSelected,
-                  wrapper: classes.tabWrapper
+                  wrapper: classes.tabWrapper,
                 }}
                 key={key}
                 label={prop.tabName}
@@ -77,7 +77,7 @@ export default function CustomTabs(props) {
 }
 
 CustomTabs.defaultProps = {
-  value: 0
+  value: 0,
 };
 
 CustomTabs.propTypes = {
@@ -88,22 +88,15 @@ CustomTabs.propTypes = {
   // the default function that changes the tabs will no longer work,
   // so you need to create the changing functionality as well
   changeValue: PropTypes.func,
-  headerColor: PropTypes.oneOf([
-    "warning",
-    "success",
-    "danger",
-    "info",
-    "primary",
-    "rose"
-  ]),
+  headerColor: PropTypes.oneOf(["warning", "success", "danger", "info", "primary", "rose"]),
   title: PropTypes.string,
   tabs: PropTypes.arrayOf(
     PropTypes.shape({
       tabName: PropTypes.string.isRequired,
       tabIcon: PropTypes.object,
-      tabContent: PropTypes.node.isRequired
+      tabContent: PropTypes.node.isRequired,
     })
   ),
   rtlActive: PropTypes.bool,
-  plainTabs: PropTypes.bool
+  plainTabs: PropTypes.bool,
 };

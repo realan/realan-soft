@@ -16,17 +16,13 @@ export default function Heading(props) {
     classes.heading +
     " " +
     cx({
-      [classes[textAlign + "TextAlign"]]: textAlign !== undefined
+      [classes[textAlign + "TextAlign"]]: textAlign !== undefined,
     });
   if (title !== undefined || category !== undefined) {
     return (
       <div className={heading}>
-        {title !== undefined ? (
-          <h3 className={classes.title}>{title}</h3>
-        ) : null}
-        {category !== undefined ? (
-          <p className={classes.category}>{category}</p>
-        ) : null}
+        {title !== undefined ? <h3 className={classes.title}>{title}</h3> : null}
+        {category !== undefined ? <p className={classes.category}>{category}</p> : null}
       </div>
     );
   }
@@ -36,5 +32,5 @@ export default function Heading(props) {
 Heading.propTypes = {
   title: PropTypes.node,
   category: PropTypes.node,
-  textAlign: PropTypes.oneOf(["right", "left", "center"])
+  textAlign: PropTypes.oneOf(["right", "left", "center"]),
 };

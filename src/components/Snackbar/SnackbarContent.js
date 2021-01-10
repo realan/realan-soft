@@ -19,18 +19,13 @@ export default function SnackbarContent(props) {
   const { message, color, close, icon } = props;
   var action = [];
   const messageClasses = cx({
-    [classes.iconMessage]: icon !== undefined
+    [classes.iconMessage]: icon !== undefined,
   });
   if (close !== undefined) {
     action = [
-      <IconButton
-        className={classes.iconButton}
-        key="close"
-        aria-label="Close"
-        color="inherit"
-      >
+      <IconButton className={classes.iconButton} key="close" aria-label="Close" color="inherit">
         <Close className={classes.close} />
-      </IconButton>
+      </IconButton>,
     ];
   }
   const iconClasses = cx({
@@ -40,7 +35,7 @@ export default function SnackbarContent(props) {
     [classes.warningIcon]: color === "warning",
     [classes.dangerIcon]: color === "danger",
     [classes.primaryIcon]: color === "primary",
-    [classes.roseIcon]: color === "rose"
+    [classes.roseIcon]: color === "rose",
   });
   return (
     <Snack
@@ -52,7 +47,7 @@ export default function SnackbarContent(props) {
       }
       classes={{
         root: classes.root + " " + classes[color],
-        message: classes.message
+        message: classes.message,
       }}
       action={action}
     />
@@ -60,19 +55,12 @@ export default function SnackbarContent(props) {
 }
 
 SnackbarContent.defaultProps = {
-  color: "info"
+  color: "info",
 };
 
 SnackbarContent.propTypes = {
   message: PropTypes.node.isRequired,
-  color: PropTypes.oneOf([
-    "info",
-    "success",
-    "warning",
-    "danger",
-    "primary",
-    "rose"
-  ]),
+  color: PropTypes.oneOf(["info", "success", "warning", "danger", "primary", "rose"]),
   close: PropTypes.bool,
-  icon: PropTypes.object
+  icon: PropTypes.object,
 };

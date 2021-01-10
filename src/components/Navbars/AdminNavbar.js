@@ -26,13 +26,13 @@ export default function AdminNavbar(props) {
   const classes = useStyles();
   const { color, rtlActive, brandText } = props;
   const appBarClasses = cx({
-    [" " + classes[color]]: color
+    [" " + classes[color]]: color,
   });
   const sidebarMinimize =
     classes.sidebarMinimize +
     " " +
     cx({
-      [classes.sidebarMinimizeRTL]: rtlActive
+      [classes.sidebarMinimizeRTL]: rtlActive,
     });
   return (
     <AppBar className={classes.appBar + appBarClasses}>
@@ -40,21 +40,11 @@ export default function AdminNavbar(props) {
         <Hidden smDown implementation="css">
           <div className={sidebarMinimize}>
             {props.miniActive ? (
-              <Button
-                justIcon
-                round
-                color="white"
-                onClick={props.sidebarMinimize}
-              >
+              <Button justIcon round color="white" onClick={props.sidebarMinimize}>
                 <ViewList className={classes.sidebarMiniIcon} />
               </Button>
             ) : (
-              <Button
-                justIcon
-                round
-                color="white"
-                onClick={props.sidebarMinimize}
-              >
+              <Button justIcon round color="white" onClick={props.sidebarMinimize}>
                 <MoreVert className={classes.sidebarMiniIcon} />
               </Button>
             )}
@@ -91,5 +81,5 @@ AdminNavbar.propTypes = {
   brandText: PropTypes.string,
   miniActive: PropTypes.bool,
   handleDrawerToggle: PropTypes.func,
-  sidebarMinimize: PropTypes.func
+  sidebarMinimize: PropTypes.func,
 };

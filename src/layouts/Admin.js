@@ -40,8 +40,7 @@ export default function Dashboard(props) {
     " " +
     cx({
       [classes.mainPanelSidebarMini]: miniActive,
-      [classes.mainPanelWithPerfectScrollbar]:
-        navigator.platform.indexOf("Win") > -1
+      [classes.mainPanelWithPerfectScrollbar]: navigator.platform.indexOf("Win") > -1,
     });
   // ref for main panel div
   const mainPanel = React.createRef();
@@ -50,7 +49,7 @@ export default function Dashboard(props) {
     if (navigator.platform.indexOf("Win") > -1) {
       ps = new PerfectScrollbar(mainPanel.current, {
         suppressScrollX: true,
-        suppressScrollY: false
+        suppressScrollY: false,
       });
       document.body.style.overflow = "hidden";
     }
@@ -65,13 +64,13 @@ export default function Dashboard(props) {
     };
   });
   // functions for changeing the states from components
-  const handleImageClick = image => {
+  const handleImageClick = (image) => {
     setImage(image);
   };
-  const handleColorClick = color => {
+  const handleColorClick = (color) => {
     setColor(color);
   };
-  const handleBgColorClick = bgColor => {
+  const handleBgColorClick = (bgColor) => {
     switch (bgColor) {
       case "white":
         setLogo(require("assets/img/logo.svg"));
@@ -95,7 +94,7 @@ export default function Dashboard(props) {
   const getRoute = () => {
     return window.location.pathname !== "/admin/full-screen-maps";
   };
-  const getActiveRoute = routes => {
+  const getActiveRoute = (routes) => {
     let activeRoute = "Default Brand Text";
     for (let i = 0; i < routes.length; i++) {
       if (routes[i].collapse) {
@@ -104,28 +103,20 @@ export default function Dashboard(props) {
           return collapseActiveRoute;
         }
       } else {
-        if (
-          window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
-        ) {
+        if (window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1) {
           return routes[i].name;
         }
       }
     }
     return activeRoute;
   };
-  const getRoutes = routes => {
+  const getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.collapse) {
         return getRoutes(prop.views);
       }
       if (prop.layout === "/admin") {
-        return (
-          <Route
-            path={prop.layout + prop.path}
-            component={prop.component}
-            key={key}
-          />
-        );
+        return <Route path={prop.layout + prop.path} component={prop.component} key={key} />;
       } else {
         return null;
       }

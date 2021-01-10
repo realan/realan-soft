@@ -1,12 +1,7 @@
-import React  from "react";
-
+import React from "react";
 
 const Orders = () => {
-  return (
-    <div>
-      Dashboard
-    </div>
-  )
-}
+  return <div>Dashboard</div>;
+};
 
 export default Orders;

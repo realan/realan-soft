@@ -19,7 +19,7 @@ export default function Timeline(props) {
     classes.timeline +
     " " +
     cx({
-      [classes.timelineSimple]: simple
+      [classes.timelineSimple]: simple,
     });
   return (
     <ul className={timelineClass}>
@@ -29,7 +29,7 @@ export default function Timeline(props) {
           " " +
           cx({
             [classes.timelinePanelInverted]: prop.inverted || simple,
-            [classes.timelineSimplePanel]: simple
+            [classes.timelineSimplePanel]: simple,
           });
         const timelineBadgeClasses =
           classes.timelineBadge +
@@ -37,7 +37,7 @@ export default function Timeline(props) {
           classes[prop.badgeColor] +
           " " +
           cx({
-            [classes.timelineSimpleBadge]: simple
+            [classes.timelineSimpleBadge]: simple,
           });
         return (
           <li className={classes.item} key={key}>
@@ -57,9 +57,7 @@ export default function Timeline(props) {
                 <h6 className={classes.footerTitle}>{prop.footerTitle}</h6>
               ) : null}
               {prop.footer ? <hr className={classes.footerLine} /> : null}
-              {prop.footer ? (
-                <div className={classes.timelineFooter}>{prop.footer}</div>
-              ) : null}
+              {prop.footer ? <div className={classes.timelineFooter}>{prop.footer}</div> : null}
             </div>
           </li>
         );
@@ -70,5 +68,5 @@ export default function Timeline(props) {
 
 Timeline.propTypes = {
   stories: PropTypes.arrayOf(PropTypes.object).isRequired,
-  simple: PropTypes.bool
+  simple: PropTypes.bool,
 };

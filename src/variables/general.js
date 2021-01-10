@@ -24,13 +24,13 @@ const rtlStories = [
     titleColor: "danger",
     body: (
       <p>
-        قام كل ماذا العصبة اوروبا. أي جورج العالمي أخر, كان تم أطراف القوى
-        استبدال. أسر ميناء تكتيكاً الجديدة، كل. جُل اللا التكاليف بـ, عرفها
-        النزاع لليابان بـ أضف. انتهت المدن الثالث من وقد.وقبل قادة إحتار عن أخر.
-        حين ونتج أخرى قد. بالعمل بالمطالبة فقد قد. عن جنوب ومضى الشتاء.
+        قام كل ماذا العصبة اوروبا. أي جورج العالمي أخر, كان تم أطراف القوى استبدال. أسر ميناء
+        تكتيكاً الجديدة، كل. جُل اللا التكاليف بـ, عرفها النزاع لليابان بـ أضف. انتهت المدن الثالث
+        من وقد.وقبل قادة إحتار عن أخر. حين ونتج أخرى قد. بالعمل بالمطالبة فقد قد. عن جنوب ومضى
+        الشتاء.
       </p>
     ),
-    footerTitle: "مدن أن هُزم سكان, مكن."
+    footerTitle: "مدن أن هُزم سكان, مكن.",
   },
   {
     // Second story
@@ -41,12 +41,12 @@ const rtlStories = [
     titleColor: "success",
     body: (
       <p>
-        عل فكانت الثقيلة بلا. شيء بخطوط بالرّغم التبرعات عن, يطول بأيدي لم كلّ.
-        معقل الغالي واتّجه لم وتم, أن الصفحة بالمحور حول, بال مرمى الصفحات
-        قُدُماً و. الأخذ سبتمبر العالم من ذلك. ان يبق شدّت الأبرياء, الى الربيع،
-        والمانيا كل. ودول الأهداف التقليدي عل أضف, كلا يقوم الأخذ الآلاف بل.
+        عل فكانت الثقيلة بلا. شيء بخطوط بالرّغم التبرعات عن, يطول بأيدي لم كلّ. معقل الغالي واتّجه
+        لم وتم, أن الصفحة بالمحور حول, بال مرمى الصفحات قُدُماً و. الأخذ سبتمبر العالم من ذلك. ان
+        يبق شدّت الأبرياء, الى الربيع، والمانيا كل. ودول الأهداف التقليدي عل أضف, كلا يقوم الأخذ
+        الآلاف بل.
       </p>
-    )
+    ),
   },
   {
     // Third story
@@ -57,13 +57,12 @@ const rtlStories = [
     titleColor: "info",
     body: (
       <p>
-        جهة المارق والديون التقليدية في, هو وترك المجتمع بريطانيا ذلك, لمّ ما
-        العالم، اليابان،. ٣٠ فقامت أوروبا مشاركة بعد, ٢٠٠٤ الجو مساعدة ما حدى.
-        في عليها وبحلول معارضة بعض. عن الأرض وبداية العمليات ولم. الجو جديداً
-        الأوروبيّون أم به،. ثم التي نتيجة الآلاف جعل, عن المارق السادس قام. ما
-        أخر فقامت الأجل الشرق،, فصل كل وسوء الأرواح. ثم بعد وشعار بأيدي. قبل
-        وكسبت الغالي الولايات بل, ٣٠ أمّا أخرى لأداء أضف. هو منتصف معزّزة على.
-        بـ أفريقيا التغييرات مما, أثره،.
+        جهة المارق والديون التقليدية في, هو وترك المجتمع بريطانيا ذلك, لمّ ما العالم، اليابان،. ٣٠
+        فقامت أوروبا مشاركة بعد, ٢٠٠٤ الجو مساعدة ما حدى. في عليها وبحلول معارضة بعض. عن الأرض
+        وبداية العمليات ولم. الجو جديداً الأوروبيّون أم به،. ثم التي نتيجة الآلاف جعل, عن المارق
+        السادس قام. ما أخر فقامت الأجل الشرق،, فصل كل وسوء الأرواح. ثم بعد وشعار بأيدي. قبل وكسبت
+        الغالي الولايات بل, ٣٠ أمّا أخرى لأداء أضف. هو منتصف معزّزة على. بـ أفريقيا التغييرات مما,
+        أثره،.
       </p>
     ),
     footer: (
@@ -73,18 +72,12 @@ const rtlStories = [
         buttonProps={{
           round: true,
           style: { marginBottom: "0" },
-          color: "info"
+          color: "info",
         }}
-        dropdownList={[
-          "ان",
-          "إجلاء لفرنسا",
-          "أواخر الأرض بل",
-          { divider: true },
-          "عل اليها"
-        ]}
+        dropdownList={["ان", "إجلاء لفرنسا", "أواخر الأرض بل", { divider: true }, "عل اليها"]}
       />
-    )
-  }
+    ),
+  },
 ];
 
 // ##############################
@@ -101,14 +94,13 @@ const widgetStories = [
     titleColor: "danger",
     body: (
       <p>
-        Wifey made the best Father{"'"}s Day meal ever. So thankful so happy so
-        blessed. Thank you for making my family We just had fun with the
-        “future” theme !!! It was a fun night all together ... The always rude
-        Kanye Show at 2am Sold Out Famous viewing @ Figueroa and 12th in
-        downtown.
+        Wifey made the best Father{"'"}s Day meal ever. So thankful so happy so blessed. Thank you
+        for making my family We just had fun with the “future” theme !!! It was a fun night all
+        together ... The always rude Kanye Show at 2am Sold Out Famous viewing @ Figueroa and 12th
+        in downtown.
       </p>
     ),
-    footerTitle: "11 hours ago via Twitter"
+    footerTitle: "11 hours ago via Twitter",
   },
   {
     // Second story
@@ -119,12 +111,11 @@ const widgetStories = [
     titleColor: "success",
     body: (
       <p>
-        Thank God for the support of my wife and real friends. I also wanted to
-        point out that it’s the first album to go number 1 off of streaming!!! I
-        love you Ellen and also my number one design rule of anything I do from
-        shoes to music to homes is that Kim has to like it....
+        Thank God for the support of my wife and real friends. I also wanted to point out that it’s
+        the first album to go number 1 off of streaming!!! I love you Ellen and also my number one
+        design rule of anything I do from shoes to music to homes is that Kim has to like it....
       </p>
-    )
+    ),
   },
   {
     // Third story
@@ -136,14 +127,13 @@ const widgetStories = [
     body: (
       <div>
         <p>
-          Called I Miss the Old Kanye That’s all it was Kanye And I love you
-          like Kanye loves Kanye Famous viewing @ Figueroa and 12th in downtown
-          LA 11:10PM
+          Called I Miss the Old Kanye That’s all it was Kanye And I love you like Kanye loves Kanye
+          Famous viewing @ Figueroa and 12th in downtown LA 11:10PM
         </p>
         <p>
-          What if Kanye made a song about Kanye Royère doesn{"'"}t make a Polar
-          bear bed but the Polar bear couch is my favorite piece of furniture we
-          own It wasn’t any Kanyes Set on his goals Kanye
+          What if Kanye made a song about Kanye Royère doesn{"'"}t make a Polar bear bed but the
+          Polar bear couch is my favorite piece of furniture we own It wasn’t any Kanyes Set on his
+          goals Kanye
         </p>
       </div>
     ),
@@ -153,18 +143,18 @@ const widgetStories = [
         buttonProps={{
           round: true,
           style: { marginBottom: "0" },
-          color: "info"
+          color: "info",
         }}
         dropdownList={[
           "Action",
           "Another action",
           "Something else here",
           { divider: true },
-          "Separated link"
+          "Separated link",
         ]}
       />
-    )
-  }
+    ),
+  },
 ];
 
 // ##############################
@@ -181,14 +171,13 @@ const stories = [
     titleColor: "danger",
     body: (
       <p>
-        Wifey made the best Father{"'"}s Day meal ever. So thankful so happy so
-        blessed. Thank you for making my family We just had fun with the
-        “future” theme !!! It was a fun night all together ... The always rude
-        Kanye Show at 2am Sold Out Famous viewing @ Figueroa and 12th in
-        downtown.
+        Wifey made the best Father{"'"}s Day meal ever. So thankful so happy so blessed. Thank you
+        for making my family We just had fun with the “future” theme !!! It was a fun night all
+        together ... The always rude Kanye Show at 2am Sold Out Famous viewing @ Figueroa and 12th
+        in downtown.
       </p>
     ),
-    footerTitle: "11 hours ago via Twitter"
+    footerTitle: "11 hours ago via Twitter",
   },
   {
     // Second story
@@ -198,12 +187,11 @@ const stories = [
     titleColor: "success",
     body: (
       <p>
-        Thank God for the support of my wife and real friends. I also wanted to
-        point out that it’s the first album to go number 1 off of streaming!!! I
-        love you Ellen and also my number one design rule of anything I do from
-        shoes to music to homes is that Kim has to like it....
+        Thank God for the support of my wife and real friends. I also wanted to point out that it’s
+        the first album to go number 1 off of streaming!!! I love you Ellen and also my number one
+        design rule of anything I do from shoes to music to homes is that Kim has to like it....
       </p>
-    )
+    ),
   },
   {
     // Third story
@@ -215,14 +203,13 @@ const stories = [
     body: (
       <div>
         <p>
-          Called I Miss the Old Kanye That’s all it was Kanye And I love you
-          like Kanye loves Kanye Famous viewing @ Figueroa and 12th in downtown
-          LA 11:10PM
+          Called I Miss the Old Kanye That’s all it was Kanye And I love you like Kanye loves Kanye
+          Famous viewing @ Figueroa and 12th in downtown LA 11:10PM
         </p>
         <p>
-          What if Kanye made a song about Kanye Royère doesn{"'"}t make a Polar
-          bear bed but the Polar bear couch is my favorite piece of furniture we
-          own It wasn’t any Kanyes Set on his goals Kanye
+          What if Kanye made a song about Kanye Royère doesn{"'"}t make a Polar bear bed but the
+          Polar bear couch is my favorite piece of furniture we own It wasn’t any Kanyes Set on his
+          goals Kanye
         </p>
       </div>
     ),
@@ -232,17 +219,17 @@ const stories = [
         buttonProps={{
           round: true,
           style: { marginBottom: "0" },
-          color: "info"
+          color: "info",
         }}
         dropdownList={[
           "Action",
           "Another action",
           "Something else here",
           { divider: true },
-          "Separated link"
+          "Separated link",
         ]}
       />
-    )
+    ),
   },
   {
     // Fourth story
@@ -252,13 +239,12 @@ const stories = [
     titleColor: "warning",
     body: (
       <p>
-        Tune into Big Boy{"'"}s 92.3 I{"'"}m about to play the first single from
-        Cruel Winter also to Kim’s hair and makeup Lorraine jewelry and the
-        whole style squad at Balmain and the Yeezy team. Thank you Anna for the
-        invite thank you to the whole Vogue team
+        Tune into Big Boy{"'"}s 92.3 I{"'"}m about to play the first single from Cruel Winter also
+        to Kim’s hair and makeup Lorraine jewelry and the whole style squad at Balmain and the Yeezy
+        team. Thank you Anna for the invite thank you to the whole Vogue team
       </p>
-    )
-  }
+    ),
+  },
 ];
 
 // ##############################
@@ -276,48 +262,48 @@ const events = [
     allDay: true,
     start: new Date(y, m, 1),
     end: new Date(y, m, 1),
-    color: "default"
+    color: "default",
   },
   {
     title: "Meeting",
     start: new Date(y, m, d - 1, 10, 30),
     end: new Date(y, m, d - 1, 11, 30),
     allDay: false,
-    color: "green"
+    color: "green",
   },
   {
     title: "Lunch",
     start: new Date(y, m, d + 7, 12, 0),
     end: new Date(y, m, d + 7, 14, 0),
     allDay: false,
-    color: "red"
+    color: "red",
   },
   {
     title: "Nud-pro Launch",
     start: new Date(y, m, d - 2),
     end: new Date(y, m, d - 2),
     allDay: true,
-    color: "azure"
+    color: "azure",
   },
   {
     title: "Birthday Party",
     start: new Date(y, m, d + 1, 19, 0),
     end: new Date(y, m, d + 1, 22, 30),
     allDay: false,
-    color: "azure"
+    color: "azure",
   },
   {
     title: "Click for Creative Tim",
     start: new Date(y, m, 21),
     end: new Date(y, m, 22),
-    color: "orange"
+    color: "orange",
   },
   {
     title: "Click for Google",
     start: new Date(y, m, 21),
     end: new Date(y, m, 22),
-    color: "rose"
-  }
+    color: "rose",
+  },
 ];
 
 // ##############################
@@ -328,16 +314,16 @@ var bugs = [
   'Sign contract for "What are conference organizers afraid of?"',
   "Lines From Great Russian Literature? Or E-mails From My Boss?",
   "Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroit",
-  "Create 4 Invisible User Experiences you Never Knew About"
+  "Create 4 Invisible User Experiences you Never Knew About",
 ];
 var website = [
   "Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroit",
-  'Sign contract for "What are conference organizers afraid of?"'
+  'Sign contract for "What are conference organizers afraid of?"',
 ];
 var server = [
   "Lines From Great Russian Literature? Or E-mails From My Boss?",
   "Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroit",
-  'Sign contract for "What are conference organizers afraid of?"'
+  'Sign contract for "What are conference organizers afraid of?"',
 ];
 
 // ##############################
@@ -348,16 +334,16 @@ var rtlBugs = [
   "فقد لمحاكم الاندونيسية, بلاده بالتوقيع تم يبق. جعل السبب وفرنسا الصينية أي.",
   "بحث. كل مما ٢٠٠٤ شاسعة العسكري جعل السبب وفرنسا الصينية أي.",
   "تسبب أفريقيا ضرب عن, عن إنطلاق جعل السبب وفرنسا الصينية أي.",
-  "قدما مليون بين عن, مرجع منتصف الأمريكية جعل السبب وفرنسا الصينية أي."
+  "قدما مليون بين عن, مرجع منتصف الأمريكية جعل السبب وفرنسا الصينية أي.",
 ];
 var rtlWebsite = [
   "قدما مليون بين عن, مرجع منتصف الأمريكية جعل السبب وفرنسا الصينية أي.",
-  "قدما مليون بين عن, مرجع منتصف الأمريكية جعل السبب وفرنسا الصينية أي."
+  "قدما مليون بين عن, مرجع منتصف الأمريكية جعل السبب وفرنسا الصينية أي.",
 ];
 var rtlServer = [
   "قدما مليون بين عن, مرجع منتصف الأمريكية جعل السبب وفرنسا الصينية أي.",
   "قدما مليون بين عن, مرجع منتصف الأمريكية جعل السبب وفرنسا الصينية أي.",
-  "قدما مليون بين عن, مرجع منتصف الأمريكية جعل السبب وفرنسا الصينية أي."
+  "قدما مليون بين عن, مرجع منتصف الأمريكية جعل السبب وفرنسا الصينية أي.",
 ];
 
 // ##############################
@@ -409,8 +395,8 @@ const dataTable = {
     ["Vivian Harrell", "Financial Controller", "San Francisco", "62"],
     ["Timothy Mooney", "Office Manager", "London", "37"],
     ["Jackson Bradshaw", "Director", "New York", "65"],
-    ["Olivia Liang", "Support Engineer", "Singapore", "64"]
-  ]
+    ["Olivia Liang", "Support Engineer", "Singapore", "64"],
+  ],
 };
 
 export {
@@ -431,5 +417,5 @@ export {
   rtlWebsite,
   rtlServer,
   // data for datatables.net in DataTables view
-  dataTable
+  dataTable,
 };

@@ -4,9 +4,9 @@ import ReactTable from "../components/ReactTable/ReactTable";
 import FileLoader from "../components/FileLoader/FileLoader";
 import Button from "components/CustomButtons/Button.js";
 import Close from "@material-ui/icons/Close";
-import EditIcon from '@material-ui/icons/Edit';
-import AddIcon from '@material-ui/icons/Add';
-import LocalShippingIcon from '@material-ui/icons/LocalShipping';
+import EditIcon from "@material-ui/icons/Edit";
+import AddIcon from "@material-ui/icons/Add";
+import LocalShippingIcon from "@material-ui/icons/LocalShipping";
 // import ToggleTheme from "./ToggleTheme";
 
 // import { Row, Col } from "reactstrap";
@@ -15,15 +15,10 @@ import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { GET_DELIVERY } from "../GraphQL/Queries";
-import {
-  ADD_DELIVERY,
-  DELETE_DELIVERY,
-  UPDATE_DELIVERY,
-} from "../GraphQL/Mutations";
-
+import { ADD_DELIVERY, DELETE_DELIVERY, UPDATE_DELIVERY } from "../GraphQL/Mutations";
 
 const Orders = () => {
-  let getSelectorData = () => { }
+  let getSelectorData = () => {};
 
   const columns = React.useMemo(
     () => [
@@ -84,7 +79,7 @@ const Orders = () => {
         selectorSetting: {
           getSData: getSelectorData,
           inputLabelText: "Контакт",
-          showInItem: ["name"], //какие значения показывать в selector item 
+          showInItem: ["name"], //какие значения показывать в selector item
         },
         required: false,
       },
@@ -95,7 +90,8 @@ const Orders = () => {
         required: false,
         initialState: true,
       },
-    ], []
+    ],
+    []
   );
 
   // graphql chapter
@@ -106,9 +102,9 @@ const Orders = () => {
   const tableName = "delivery";
 
   const updateCacheUpdate = (cache, { data }) => {
-    const updData = data["update_" + tableName].returning[0]
+    const updData = data["update_" + tableName].returning[0];
     const existingData = cache.readQuery({ query: getDataQuery });
-    const newData = existingData[tableName].map(item => {
+    const newData = existingData[tableName].map((item) => {
       if (item.id === updData.id) {
         return updData;
       } else {
@@ -117,18 +113,17 @@ const Orders = () => {
     });
     cache.writeQuery({
       query: getDataQuery,
-      data: { [tableName]: newData }
+      data: { [tableName]: newData },
     });
   };
   const [UpdateMutation] = useMutation(updateMutation, { update: updateCacheUpdate });
-
 
   const updateCacheAdd = (cache, { data }) => {
     const existingData = cache.readQuery({ query: getDataQuery });
     const newData = data["insert_" + tableName].returning[0];
     cache.writeQuery({
       query: getDataQuery,
-      data: { [tableName]: [newData, ...existingData[tableName]] }
+      data: { [tableName]: [newData, ...existingData[tableName]] },
     });
   };
 
@@ -137,10 +132,10 @@ const Orders = () => {
   const updateCacheDelete = (cache, { data }) => {
     const existingData = cache.readQuery({ query: getDataQuery });
     const arrData = Array.from(existingData[tableName]);
-    const newData = arrData.filter(it => it.id !== data["delete_" + tableName].returning[0].id);
+    const newData = arrData.filter((it) => it.id !== data["delete_" + tableName].returning[0].id);
     cache.writeQuery({
       query: getDataQuery,
-      data: { [tableName]: newData }
+      data: { [tableName]: newData },
     });
   };
   const [DeleteDelivery] = useMutation(deleteMutation, { update: updateCacheDelete });
@@ -149,35 +144,37 @@ const Orders = () => {
   if (loading) return "Loading....";
   if (error) return `Error! ${error.message}`;
 
-  const addInitialState = {}
-  columns.forEach(item => item.initialState !== undefined ? addInitialState[item.accessor] = item.initialState : "" );
+  const addInitialState = {};
+  columns.forEach((item) =>
+    item.initialState !== undefined ? (addInitialState[item.accessor] = item.initialState) : ""
+  );
 
   // Handlers
   const addHandler = (data) => {
     AddMutation({ variables: data });
-  }
+  };
   const updateHandler = (data) => {
     UpdateMutation({ variables: data });
-  }
+  };
   const deleteItem = (id) => {
     // console.log(id)
-    DeleteDelivery({ variables: { id: id } })
-  }
+    DeleteDelivery({ variables: { id: id } });
+  };
 
   const formHeader = {
     icon: <LocalShippingIcon fontSize="large" />,
     text: "Sample Input",
     buttonText: "Add Sample",
-  }
+  };
 
   const getInitialState = (id) => {
-    let state = data[tableName].filter(item => {
-      return item.id === id
+    let state = data[tableName].filter((item) => {
+      return item.id === id;
     })[0];
     return state;
-  }
+  };
 
-  const tableData = data[tableName].map(item => {
+  const tableData = data[tableName].map((item) => {
     return {
       actions: (
         <div className="actions-right" style={{ display: "inline-flex", padding: "2px" }}>
@@ -204,22 +201,22 @@ const Orders = () => {
         </div>
       ),
       ...item,
-    }
-  })
+    };
+  });
 
   return (
     <div>
-      <FormTemplate 
-        fields={columns} 
-        initialState={addInitialState} 
-        header={formHeader} 
+      <FormTemplate
+        fields={columns}
+        initialState={addInitialState}
+        header={formHeader}
         openIcon={<AddIcon />}
         onSubmit={addHandler}
       />
       <ReactTable columns={columns} data={tableData} />
       <FileLoader header={columns} handler={addHandler} />
     </div>
-  )
-}
+  );
+};
 
 export default Orders;

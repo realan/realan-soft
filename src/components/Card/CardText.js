@@ -18,7 +18,7 @@ export default function CardText(props) {
   const cardTextClasses = classNames({
     [classes.cardText]: true,
     [classes[color + "CardHeader"]]: color,
-    [className]: className !== undefined
+    [className]: className !== undefined,
   });
   return (
     <div className={cardTextClasses} {...rest}>
@@ -29,13 +29,6 @@ export default function CardText(props) {
 
 CardText.propTypes = {
   className: PropTypes.string,
-  color: PropTypes.oneOf([
-    "warning",
-    "success",
-    "danger",
-    "info",
-    "primary",
-    "rose"
-  ]),
-  children: PropTypes.node
+  color: PropTypes.oneOf(["warning", "success", "danger", "info", "primary", "rose"]),
+  children: PropTypes.node,
 };

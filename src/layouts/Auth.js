@@ -31,19 +31,13 @@ export default function Pages(props) {
     // Specify how to clean up after this effect:
     return function cleanup() {};
   });
-  const getRoutes = routes => {
+  const getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.collapse) {
         return getRoutes(prop.views);
       }
       if (prop.layout === "/auth") {
-        return (
-          <Route
-            path={prop.layout + prop.path}
-            component={prop.component}
-            key={key}
-          />
-        );
+        return <Route path={prop.layout + prop.path} component={prop.component} key={key} />;
       } else {
         return null;
       }
@@ -56,15 +50,13 @@ export default function Pages(props) {
       return login;
     } else if (window.location.pathname.indexOf("/auth/pricing-page") !== -1) {
       return pricing;
-    } else if (
-      window.location.pathname.indexOf("/auth/lock-screen-page") !== -1
-    ) {
+    } else if (window.location.pathname.indexOf("/auth/lock-screen-page") !== -1) {
       return lock;
     } else if (window.location.pathname.indexOf("/auth/error-page") !== -1) {
       return error;
     }
   };
-  const getActiveRoute = routes => {
+  const getActiveRoute = (routes) => {
     let activeRoute = "Default Brand Text";
     for (let i = 0; i < routes.length; i++) {
       if (routes[i].collapse) {
@@ -73,9 +65,7 @@ export default function Pages(props) {
           return collapseActiveRoute;
         }
       } else {
-        if (
-          window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
-        ) {
+        if (window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1) {
           return routes[i].name;
         }
       }
@@ -86,10 +76,7 @@ export default function Pages(props) {
     <div>
       <AuthNavbar brandText={getActiveRoute(routes)} {...rest} />
       <div className={classes.wrapper} ref={wrapper}>
-        <div
-          className={classes.fullPage}
-          style={{ backgroundImage: "url(" + getBgImage() + ")" }}
-        >
+        <div className={classes.fullPage} style={{ backgroundImage: "url(" + getBgImage() + ")" }}>
           <Switch>
             {getRoutes(routes)}
             <Redirect from="/auth" to="/auth/login-page" />

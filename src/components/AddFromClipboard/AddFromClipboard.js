@@ -1,23 +1,23 @@
-import React from 'react';
-import { useState } from 'react';
+import React from "react";
+import { useState } from "react";
 // import { gql } from "apollo-boost";
 // import { useQuery } from "@apollo/react-hooks";
-import Button from '@material-ui/core/Button';
-import { DataGrid } from '@material-ui/data-grid';
+import Button from "@material-ui/core/Button";
+import { DataGrid } from "@material-ui/data-grid";
 
-const AddFromClipboard = ({type, value, onSubmit }) => {
+const AddFromClipboard = ({ type, value, onSubmit }) => {
   const [state, setState] = useState([]);
 
   const columns = value.map((item) => {
     let head = {};
     for (let key in item) {
-        head["field"] = key;
-        head["headerName"] = key;
+      head["field"] = key;
+      head["headerName"] = key;
     }
     return head;
   });
 
-  const headsList = value.map(item => Object.keys(item) );
+  const headsList = value.map((item) => Object.keys(item));
 
   // const columns = [
   //     { field: 'id', headerName: 'id', width: 30 },
@@ -27,7 +27,7 @@ const AddFromClipboard = ({type, value, onSubmit }) => {
 
   const parseClipboad = () => {
     navigator.clipboard.readText().then((str) => {
-      let arr = str.split('\n');
+      let arr = str.split("\n");
 
       // let header=arr[0].split('\t');
       // header.map( item => { return item; });
@@ -38,7 +38,7 @@ const AddFromClipboard = ({type, value, onSubmit }) => {
         if (line) {
           if (i !== 0) {
             let row = [];
-            let rowIn = line.split('\t');
+            let rowIn = line.split("\t");
             let obj = {};
 
             rowIn.forEach(function (cell, j) {
@@ -57,27 +57,26 @@ const AddFromClipboard = ({type, value, onSubmit }) => {
   };
 
   const insertInDb = () => {
-    state.map( (item) => {
-        console.log(item);
-        let addData = {}
-        for (let key in value) {
-          addData[key] = item[key];
-
+    state.map((item) => {
+      console.log(item);
+      let addData = {};
+      for (let key in value) {
+        addData[key] = item[key];
       }
-        
-        // {
-        //   qty: item.qtyFromProd,
-        //   to_order: item.to_order,
-        //   from_order: 2, // у доработки ID = 2 - типа постоянное значение заказа !!!!!!!!
-        //   item: item.item,
-        // };
-        // AddMove({ variables: {addData: addData } });
+
+      // {
+      //   qty: item.qtyFromProd,
+      //   to_order: item.to_order,
+      //   from_order: 2, // у доработки ID = 2 - типа постоянное значение заказа !!!!!!!!
+      //   item: item.item,
+      // };
+      // AddMove({ variables: {addData: addData } });
     });
     onSubmit(type);
   };
 
   return (
-    <div style={{ height: 600, width: '100%' }}>
+    <div style={{ height: 600, width: "100%" }}>
       <div>Скопируй в буфер данные. Потом нажми кнопку</div>
       <Button variant="outlined" color="primary" onClick={parseClipboad}>
         Вставить из буфера

@@ -11,20 +11,10 @@ const useStyles = makeStyles(styles);
 export default function Badge(props) {
   const { color, children } = props;
   const classes = useStyles();
-  return (
-    <span className={classes.badge + " " + classes[color]}>{children}</span>
-  );
+  return <span className={classes.badge + " " + classes[color]}>{children}</span>;
 }
 
 Badge.propTypes = {
-  color: PropTypes.oneOf([
-    "primary",
-    "warning",
-    "danger",
-    "success",
-    "info",
-    "rose",
-    "gray"
-  ]),
-  children: PropTypes.node
+  color: PropTypes.oneOf(["primary", "warning", "danger", "success", "info", "rose", "gray"]),
+  children: PropTypes.node,
 };

@@ -26,7 +26,7 @@ export default function FixedPlugin(props) {
   const handleClick = () => {
     props.handleFixedClick();
   };
-  const handleChange = name => event => {
+  const handleChange = (name) => (event) => {
     switch (name) {
       case "miniActive":
         props.sidebarMinimize();
@@ -45,9 +45,7 @@ export default function FixedPlugin(props) {
   };
   const classesObj = useStyles();
   return (
-    <div
-      className={"fixed-plugin" + (props.rtlActive ? " fixed-plugin-rtl" : "")}
-    >
+    <div className={"fixed-plugin" + (props.rtlActive ? " fixed-plugin-rtl" : "")}>
       <div id="fixedPluginClasses" className={props.fixedClasses}>
         <div onClick={handleClick}>
           <i className="fa fa-cog fa-2x" />
@@ -190,7 +188,7 @@ export default function FixedPlugin(props) {
                   switchBase: classesObj.switchBase,
                   checked: classesObj.switchChecked,
                   thumb: classesObj.switchIcon,
-                  track: classesObj.switchBar
+                  track: classesObj.switchBar,
                 }}
               />
               <div className="clearfix" />
@@ -207,7 +205,7 @@ export default function FixedPlugin(props) {
                   switchBase: classesObj.switchBase,
                   checked: classesObj.switchChecked,
                   thumb: classesObj.switchIcon,
-                  track: classesObj.switchBar
+                  track: classesObj.switchBar,
                 }}
               />
               <div className="clearfix" />
@@ -302,18 +300,10 @@ FixedPlugin.propTypes = {
   miniActive: PropTypes.bool,
   fixedClasses: PropTypes.string,
   bgColor: PropTypes.oneOf(["white", "black", "blue"]),
-  color: PropTypes.oneOf([
-    "white",
-    "red",
-    "orange",
-    "green",
-    "blue",
-    "purple",
-    "rose"
-  ]),
+  color: PropTypes.oneOf(["white", "red", "orange", "green", "blue", "purple", "rose"]),
   handleBgColorClick: PropTypes.func,
   handleColorClick: PropTypes.func,
   handleImageClick: PropTypes.func,
   sidebarMinimize: PropTypes.func,
-  rtlActive: PropTypes.bool
+  rtlActive: PropTypes.bool,
 };

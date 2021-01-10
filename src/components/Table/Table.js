@@ -28,7 +28,7 @@ export default function CustomTable(props) {
     striped,
     tableShopping,
     customHeadCellClasses,
-    customHeadClassesForCells
+    customHeadClassesForCells,
   } = props;
   return (
     <div className={classes.tableResponsive}>
@@ -43,11 +43,10 @@ export default function CustomTable(props) {
                   classes.tableCell +
                   " " +
                   cx({
-                    [customHeadCellClasses[
-                      customHeadClassesForCells.indexOf(key)
-                    ]]: customHeadClassesForCells.indexOf(key) !== -1,
+                    [customHeadCellClasses[customHeadClassesForCells.indexOf(key)]]:
+                      customHeadClassesForCells.indexOf(key) !== -1,
                     [classes.tableShoppingHead]: tableShopping,
-                    [classes.tableHeadFontSize]: !tableShopping
+                    [classes.tableHeadFontSize]: !tableShopping,
                   });
                 return (
                   <TableCell className={tableCellClasses} key={key}>
@@ -71,25 +70,16 @@ export default function CustomTable(props) {
               [classes.tableRowBody]: true,
               [classes.tableRowHover]: hover,
               [classes[rowColor + "Row"]]: rowColored,
-              [classes.tableStripedRow]: striped && key % 2 === 0
+              [classes.tableStripedRow]: striped && key % 2 === 0,
             });
             if (prop.total) {
               return (
                 <TableRow key={key} hover={hover} className={tableRowClasses}>
-                  <TableCell
-                    className={classes.tableCell}
-                    colSpan={prop.colspan}
-                  />
-                  <TableCell
-                    className={classes.tableCell + " " + classes.tableCellTotal}
-                  >
+                  <TableCell className={classes.tableCell} colSpan={prop.colspan} />
+                  <TableCell className={classes.tableCell + " " + classes.tableCellTotal}>
                     Total
                   </TableCell>
-                  <TableCell
-                    className={
-                      classes.tableCell + " " + classes.tableCellAmount
-                    }
-                  >
+                  <TableCell className={classes.tableCell + " " + classes.tableCellAmount}>
                     {prop.amount}
                   </TableCell>
                   {tableHead.length - (prop.colspan - 0 + 2) > 0 ? (
@@ -104,10 +94,7 @@ export default function CustomTable(props) {
             if (prop.purchase) {
               return (
                 <TableRow key={key} hover={hover} className={tableRowClasses}>
-                  <TableCell
-                    className={classes.tableCell}
-                    colSpan={prop.colspan}
-                  />
+                  <TableCell className={classes.tableCell} colSpan={prop.colspan} />
                   <TableCell
                     className={classes.tableCell + " " + classes.right}
                     colSpan={prop.col.colspan}
@@ -131,7 +118,7 @@ export default function CustomTable(props) {
                       [classes[colorsColls[coloredColls.indexOf(key)]]]:
                         coloredColls.indexOf(key) !== -1,
                       [customCellClasses[customClassesForCells.indexOf(key)]]:
-                        customClassesForCells.indexOf(key) !== -1
+                        customClassesForCells.indexOf(key) !== -1,
                     });
                   return (
                     <TableCell className={tableCellClasses} key={key}>
@@ -157,7 +144,7 @@ CustomTable.defaultProps = {
   customCellClasses: [],
   customClassesForCells: [],
   customHeadCellClasses: [],
-  customHeadClassesForCells: []
+  customHeadClassesForCells: [],
 };
 
 CustomTable.propTypes = {
@@ -168,7 +155,7 @@ CustomTable.propTypes = {
     "success",
     "info",
     "rose",
-    "gray"
+    "gray",
   ]),
   tableHead: PropTypes.arrayOf(PropTypes.string),
   // Of(PropTypes.arrayOf(PropTypes.node)) || Of(PropTypes.object),
@@ -183,5 +170,5 @@ CustomTable.propTypes = {
   customHeadClassesForCells: PropTypes.arrayOf(PropTypes.number),
   striped: PropTypes.bool,
   // this will cause some changes in font
-  tableShopping: PropTypes.bool
+  tableShopping: PropTypes.bool,
 };

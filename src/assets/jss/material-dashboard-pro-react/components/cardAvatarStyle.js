@@ -1,14 +1,11 @@
-import {
-  blackColor,
-  hexToRgb
-} from "assets/jss/material-dashboard-pro-react.js";
+import { blackColor, hexToRgb } from "assets/jss/material-dashboard-pro-react.js";
 
 const cardAvatarStyle = {
   cardAvatar: {
     "&$cardAvatarProfile img,&$cardAvatarTestimonial img": {
       width: "100%",
-      height: "auto"
-    }
+      height: "auto",
+    },
   },
   cardAvatarProfile: {
     maxWidth: "130px",
@@ -26,8 +23,8 @@ const cardAvatarStyle = {
       hexToRgb(blackColor) +
       ", 0.2)",
     "&$cardAvatarPlain": {
-      marginTop: "0"
-    }
+      marginTop: "0",
+    },
   },
   cardAvatarPlain: {},
   cardAvatarTestimonial: {
@@ -46,13 +43,13 @@ const cardAvatarStyle = {
       hexToRgb(blackColor) +
       ", 0.2)",
     "&$cardAvatarPlain": {
-      marginTop: "0"
-    }
+      marginTop: "0",
+    },
   },
   cardAvatarTestimonialFooter: {
     marginBottom: "-50px",
-    marginTop: "10px"
-  }
+    marginTop: "10px",
+  },
 };
 
 export default cardAvatarStyle;

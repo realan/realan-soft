@@ -95,11 +95,7 @@
     $center-color 0%,
     $extern-color 100%
   ); /* IE10+ */
-  background: radial-gradient(
-    ellipse at center,
-    $center-color 0%,
-    $extern-color 100%
-  ); /* W3C */
+  background: radial-gradient(ellipse at center, $center-color 0%, $extern-color 100%); /* W3C */
   background-size: 550% 450%;
 }
 

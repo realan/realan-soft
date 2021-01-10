@@ -8,8 +8,8 @@ import AdminLayout from "layouts/Admin.js";
 
 import "assets/scss/material-dashboard-pro-react.scss?v=1.9.0";
 import { Auth0Provider } from "providers/Auth0Provider";
-import { ApolloProvider } from '@apollo/react-hooks';
-import { client } from 'providers/ClientApollo';
+import { ApolloProvider } from "@apollo/react-hooks";
+import { client } from "providers/ClientApollo";
 
 const hist = createBrowserHistory();
 
@@ -24,7 +24,6 @@ ReactDOM.render(
         </Switch>
       </Router>
     </ApolloProvider>
-  </Auth0Provider>
-  ,
+  </Auth0Provider>,
   document.getElementById("root")
 );
