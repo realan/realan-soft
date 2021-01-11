@@ -10,6 +10,7 @@ import Fab from "@material-ui/core/Fab";
 import { Box } from "@material-ui/core";
 
 const InputGroup = (props) => {
+  console.log("render InputGroup")
   // props id, type (stock or prod), maxValue, minValue onChange -
   const [count, setCount] = useState(0);
 

@@ -13,7 +13,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Paper from "@material-ui/core/Paper";
 import Draggable from "react-draggable";
 // import RowCollectOrder from "components/RowCollectOrder/RowCollectOrder.js";
-import { DataGrid } from '@material-ui/data-grid';
+// import { DataGrid } from '@material-ui/data-grid';
 import InputGroup from "components/InputGroup/InputGroup";
 import InputWithButtons from "components/InputWithButtons/InputWithButtons";
 import CardPosInOrder from "components/CardPosInOrder/CardPosInOrder";
@@ -66,6 +66,7 @@ function PaperComponent(props) {
 }
 
 const DialogStock = (props) => {
+  console.log("render DialogStock")
   // const classes = useStyles();
   const [itemId, setItemId] = useState(undefined);
   const [stockQty, setStockQty] = useState(0); // now in stock
@@ -73,21 +74,14 @@ const DialogStock = (props) => {
   const [prodToStock, setProdToStock] = useState(0);
   const [showAll, setShowAll] = useState(false);
   const [openCorrectQty, setOpenCorrectQty] = useState(false);
+  // const [btnOkStatus, setBtnOkStatus] = useState(true);
   const [dataDB, setDataDB] = useState([]); // для добавления в бд перемещений ассортимента с производства и склада
   // id, item, qtyFromProd, qtyFromStock, to_order
   const [cards, setCards] = useState([]);
+  // const [rows, setRows] = useState([]);
 
   const [AddMove] = useMutation(ADD_MOVE_ITEM);
 
-  // const getListCards = (cards) => cards.map((item, key) =>
-  //   <CardPosInOrder
-  //     key={key}
-  //     value = {item}
-  //     stock = {stockQty}
-  //     valueDB = {dataDB} //{dataDB[item.id].qtyFromStock}
-  //     onChange = {onQtyChange}
-  //   />
-  // );
 
   const columns = [
     { field: 'id', headerName: 'id', width: 10 },
@@ -240,8 +234,6 @@ const DialogStock = (props) => {
     setProdToStock(qty);
   };
 
-  let rows = [];
-
   const onQtyChange = (id, qty, type) => {
     // console.log(id, qty, type);
     // console.log(dataDB);
@@ -255,10 +247,17 @@ const DialogStock = (props) => {
       }, 0);
       setStockQty(props.stock_now - sumQtyFromStock);
     }
+
+
+    // let flag = true;
+    // dataDB.forEach( item => (item.qtyFromProd !==0) || (item.qtyFromStock !==0) ? flag = false : flag = true);
+    // console.log(flag)
+    // setBtnOkStatus(flag);
+ 
   };
 
   const handleCorrectQty = (qty) => {
-    console.log(qty);
+    // console.log(qty);
     setOpenCorrectQty(false);
     if (!isNaN(qty)) {
       setStockQty(qty);
@@ -311,14 +310,16 @@ const DialogStock = (props) => {
                 );
               })}
             </Box>
+
+            
           )}
 
-          <div style={{ height: 500, width: '100%' }}>
+          {/* <div style={{ height: 500, width: '100%' }}>
                 <DataGrid 
                   rows={rows} 
                   columns={columns} 
                 />
-              </div>
+          </div> */}
           <div>
             {" "}
             Со склада в доработку
@@ -336,7 +337,7 @@ const DialogStock = (props) => {
           <Button onClick={handleCancel} color="primary" variant="outlined">
             Отмена
           </Button>
-          <Button onClick={handleOK} color="primary" variant="contained">
+          <Button onClick={handleOK} color="primary" variant="contained" >
             Подтвердить
           </Button>
         </DialogActions>

@@ -60,28 +60,14 @@ const Stock = () => {
     setItemForDialog({ ...itemForDialog, isOpen: false });
   };
 
-  // useEffect(() => {
-  //   if(!loading && data){
-  //     setDataDB(data.mr_items.map( (ord) => {
-  //       return {
-  //         qtyFromProd: 0, // initial value
-  //         qtyFromStock: 0, // initial value
-  //         to_order: ord.mr_order.id,
-  //         item: item_id,
-  //       }
-  //     }));
-  //   }
-  // }, [loading, data])
-  // const tableData=data.mr_pivot;
-  // console.log(tableData)
 
   if (loading) return "Loading....";
   if (error) return `Error! ${error.message}`;
 
   return (
     <div>
-      <div style={{ height: 700, width: "100%" }}>
-        <DataGrid rows={data.mr_pivot} columns={columns} rowHeight={32} onRowClick={onRowClick} />
+      <div style={{ height: 800, width: "100%" }}>
+        <DataGrid rows={data.mr_pivot} columns={columns} rowHeight={30} onRowClick={onRowClick} />
       </div>
 
       {itemForDialog.itemId && (

@@ -18,7 +18,7 @@ import IconButton from "@material-ui/core/IconButton";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ru from "date-fns/locale/ru";
-
+import InputGroup from "components/InputGroup/InputGroup";
 import { TextField } from "@material-ui/core";
 import Tooltip from "@material-ui/core/Tooltip";
 import Box from "@material-ui/core/Box";
@@ -105,12 +105,15 @@ function PaperComponent(props) {
 
 const DialogOrders = (props) => {
   // const classes = useStyles();
+
+  console.log("render DialogOrder")
   let orderId = props.orderData.id;
 
   const [rows, setRows] = useState([]);
   const [openUpdate, setOpenUpdate] = useState(false);
   const [dataRow, setDataRow] = useState({});
   const [orderDate, setOrderDate] = useState();
+  // const [dataDB, setDataDB] = useState([]); // для добавления в бд перемещений ассортимента с производства и склада
 
   const [UpdateMutation] = useMutation(UPDATE_ITEM_IN_ORDER);
   const [UpdateDateMutation] = useMutation(UPDATE_ORDER_DATE);
@@ -174,6 +177,30 @@ const DialogOrders = (props) => {
         </strong>
       ),
     },
+    { field: 'fromProd', headerName: 'С доработки', width: 250,
+    renderCell: (params) => (
+      <strong>
+          <InputGroup
+            maxValue = {1000} //params.row.needQty}
+            type = {"prod"}
+            id = {params.rowIndex}
+            onChange = {onQtyChange}
+            params={params}
+          />
+      </strong>
+  ), },
+  { field: 'fromStock', headerName: 'Со склада', width: 250,
+    renderCell: (params) => (
+      <strong>
+          <InputGroup
+            maxValue = {1000}//(stockQty < params.row.needQty) ? stockQty : params.row.needQty }
+            type = {"stock"}
+            id = {params.rowIndex}
+            onChange = {onQtyChange}
+          />
+      </strong>
+    ), },
+
   ];
 
   useEffect(() => {
@@ -186,22 +213,31 @@ const DialogOrders = (props) => {
 
   useEffect(() => {
     if (!loading && data) {
-      setRows(
-        data.mr_items.map((it) => {
-          let qtyCollect =
-            it.mr_price.qty_to.aggregate.sum.qty - it.mr_price.qty_from.aggregate.sum.qty;
-          return {
-            id: it.id,
-            name: it.mr_price.name,
-            qtyOrder: it.qty,
-            qtyCollect: qtyCollect,
-            note: it.note,
-            idItem: it.mr_price.id,
-          };
-        })
-      );
+      console.log(data)
+      const preparedRows = data.mr_items.map((it, key) => {
+        let qtyCollect =
+          it.mr_price.qty_to.aggregate.sum.qty - it.mr_price.qty_from.aggregate.sum.qty;
+ 
+        let obj = {
+          id: key, // it.id,
+          name: it.mr_price.name,
+          qtyOrder: it.qty,
+          // needQty: needQty,
+          qtyCollect: qtyCollect,
+          fromProd: 0, //it.qty,
+          fromStock: 0, // it.qty,
+          note: it.note,
+          to_order: props.orderData.id,
+          idItem: it.mr_price.id,
+        };
+
+        return obj;
+      });
+
+      console.log(preparedRows)
+      setRows(preparedRows);
     }
-  }, [loading, data]);
+  }, [loading, data, props.orderData.id]);
 
   if (loading) return "Loading....";
   if (error) return `Error! ${error.message}`;
@@ -250,12 +286,47 @@ const DialogOrders = (props) => {
     SetOrderCancelledMutation({ variables: { id: orderId } });
   };
 
+  const onQtyChange = (id, qty, type) => {
+    console.log(rows)  
+    if (type === "prod") {
+      setRows([...rows], (rows[id].fromProd = qty));
+    } else {
+      setRows([...rows], (rows[id].fromStock = qty));
+    }
+  };
+
+  const makeMoves = () => {
+    rows.map((it) => {
+      if (it.qtyFromProd !== 0) {
+        let addData = {
+          qty: it.fromProd,
+          to_order: it.to_order,
+          from_order: 2, // у доработки ID = 2 - типа постоянное значение заказа !!!!!!!!
+          item: it.idItem,
+        };
+        AddMoveItemMutation({ variables: { addData: addData } });
+      }
+      if (it.qtyFromStock !== 0) {
+        let addData = {
+          qty: it.fromStock,
+          to_order: it.to_order,
+          from_order: 3, // у склада ID = 3 - типа постоянное значение заказа !!!!!!!!
+          item: it.idItem,
+        };
+        AddMoveItemMutation({ variables: { addData: addData } });
+      }
+      return 1; //хз почему return
+    });
+    props.handleClose();   
+  }
+
   return (
     <div>
       <Dialog
         open={props.open}
         onClose={props.handleClose}
         fullWidth={true}
+        fullScreen={true}
         maxWidth="md"
         PaperComponent={PaperComponent}
         aria-labelledby="draggable-dialog-title"
@@ -277,9 +348,11 @@ const DialogOrders = (props) => {
           />
         </DialogTitle>
         <DialogContent>
-          <div style={{ height: 600, width: "100%" }}>
+          {Boolean(rows.length) && (
+         <div style={{ height: 600, width: "100%" }}>
             <DataGrid columns={columns} rows={rows} rowHeight={32} />
           </div>
+          )}
           <DialogContentText></DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -295,8 +368,15 @@ const DialogOrders = (props) => {
               Добавить позицию
             </Button>
           </Box>
+
+          <Box flexGrow={1}>
+            <Button onClick={makeMoves} color="primary" variant="contained">
+                Обновить кол-во
+            </Button>
+          </Box>
+
           <Box>
-            <Button onClick={handleOK} color="primary" variant="contained">
+            <Button onClick={handleOK} color="primary" variant="outlined">
               Закрыть
             </Button>
           </Box>

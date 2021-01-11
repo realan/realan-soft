@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 // import { XGrid } from '@material-ui/x-grid';
 import { DataGrid } from "@material-ui/data-grid";
 import { gql } from "apollo-boost";
@@ -49,9 +49,16 @@ const SUBSCRIPTION_ORDERS = gql`
 `;
 
 const Orders = () => {
-  const [open, setOpen] = useState(false);
+
+  const [itemForDialog, setItemForDialog] = useState({
+    isOpen: false,
+    orderData: undefined,
+  });
+
+  const [rows, setRows] = useState([]);
+  // const [open, setOpen] = useState(false);
   const [openAddOrder, setOpenAddOrder] = useState(false);
-  const [orderData, setOrderData] = useState({ id: 1 });
+  // const [orderData, setOrderData] = useState({ id: 1 });
 
   const columns = useMemo(
     () => [
@@ -68,40 +75,46 @@ const Orders = () => {
   );
 
   const { loading, error, data } = useSubscription(SUBSCRIPTION_ORDERS);
+
+  useEffect(() => {
+    if (!loading && data) {
+
+      const preparedRows = data.mr_order.map((it) => {
+        const dateIn = new Date(it.date_in);
+        const dateOut = new Date(it.date_out);
+        let qty = it.mr_items_aggregate.aggregate.sum.qty;
+        let qtyRatio = +(
+          (it.mr_to_aggregate.aggregate.sum.qty - it.mr_from_aggregate.aggregate.sum.qty) /
+          qty
+        ).toFixed(3);
+    
+        let obj = {
+          id: it.id,
+          customer: it.mr_customer.name,
+          town: it.town,
+          date_in: dateIn,
+          date_out: dateOut,
+          qty: qty,
+          qtyRatio: qtyRatio,
+        };
+        return obj;
+      });
+      setRows(preparedRows);
+    }
+  }, [loading, data]);
+
   if (loading) return "Loading....";
   if (error) return `Error! ${error.message}`;
 
-  let rows = [];
-
-  data.mr_order.map((it) => {
-    const dateIn = new Date(it.date_in);
-    const dateOut = new Date(it.date_out);
-    let qty = it.mr_items_aggregate.aggregate.sum.qty;
-    let qtyRatio = +(
-      (it.mr_to_aggregate.aggregate.sum.qty - it.mr_from_aggregate.aggregate.sum.qty) /
-      qty
-    ).toFixed(3);
-
-    let obj = {
-      id: it.id,
-      customer: it.mr_customer.name,
-      town: it.town,
-      date_in: dateIn,
-      date_out: dateOut,
-      qty: qty,
-      qtyRatio: qtyRatio,
-    };
-    rows.push(obj);
-    return rows;
-  });
-
   const onRowClick = (row) => {
-    setOrderData(row.row);
-    setOpen(true);
+    setItemForDialog({
+      orderData: row.row,
+      isOpen: true,
+    })
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setItemForDialog({...itemForDialog, isOpen:false});
   };
   const handleAddOrderClose = () => {
     setOpenAddOrder(false);
@@ -121,7 +134,10 @@ const Orders = () => {
           paginaton={true}
         />
       </div>
-      <DialogOrders open={open} handleClose={handleClose} orderData={orderData} />
+      {Boolean(itemForDialog.orderData) && (
+        <DialogOrders open={itemForDialog.isOpen} handleClose={handleClose} orderData={itemForDialog.orderData} />
+      )}
+      
       <DialogAddOrder open={openAddOrder} handleClose={handleAddOrderClose} />
     </>
   );
