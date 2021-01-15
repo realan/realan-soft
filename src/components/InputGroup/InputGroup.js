@@ -12,40 +12,52 @@ import { Box } from "@material-ui/core";
 const InputGroup = (props) => {
   console.log("render InputGroup")
   // props id, type (stock or prod), maxValue, minValue onChange -
-  const [count, setCount] = useState(0);
+  // const [count, setCount] = useState(0);
+  const [state, setState] = useState({
+    count: 0,
+    disabledDecrease: 0 <= props.minValue ? true : false,
+    disabledIncrease: 0 >= props.maxValue ? true : false,
+    disabledMAxValue: 0 >= props.maxValue ? true : false,
+  });
 
   const minValue = props.minValue || 0;
   const color = props.type === "stock" ? "primary" : "default";
 
   const increase = () => {
-    if (count + 1 > props.maxValue) {
+    if (state.count + 1 > props.maxValue) {
     } else {
-      props.onChange(props.id, count + 1, props.type);
-      setCount(count + 1);
+      props.onChange(props.id, state.count + 1, props.type);
+      // setCount(count + 1);
+      setState({...state, count: state.count + 1})
     }
   };
 
   const decrease = () => {
-    if (count - 1 >= minValue) {
-      props.onChange(props.id, count - 1, props.type);
-      setCount(count - 1);
+    if (state.count - 1 >= minValue) {
+      props.onChange(props.id, state.count - 1, props.type);
+      // setCount(count - 1);
+      setState({...state, count: state.count - 1})
     }
   };
 
   const onChangeInput = (e) => {
     let val = e.target.value;
     if (val >= minValue && val <= props.maxValue) {
-      setCount(val);
+      // setCount(val);
+      setState({...state, count: val})
       props.onChange(props.id, val, props.type);
     }
   };
 
   const setMaxValue = () => {
-    setCount(props.maxValue);
+    // setCount(props.maxValue);
+    setState({...state, count: props.maxValue})
     props.onChange(props.id, props.maxValue, props.type);
   };
 
   //   console.log(props)
+
+
 
   return (
     <div>
@@ -55,7 +67,7 @@ const InputGroup = (props) => {
         size="medium"
         component="span"
         onClick={decrease}
-        disabled={count <= props.minValue ? true : false}
+        disabled={state.count <= props.minValue ? true : false}
       >
         <RemoveIcon />
       </Fab>
@@ -63,7 +75,7 @@ const InputGroup = (props) => {
         <OutlinedInput
           variant="outlined"
           type="number"
-          value={count}
+          value={state.count}
           onChange={onChangeInput}
           style={{ width: 60 }}
         />
@@ -75,7 +87,7 @@ const InputGroup = (props) => {
         size="medium"
         component="span"
         onClick={increase}
-        disabled={count >= props.maxValue ? true : false}
+        disabled={state.count >= props.maxValue ? true : false}
       >
         <AddIcon />
       </Fab>
@@ -85,7 +97,7 @@ const InputGroup = (props) => {
         size="medium"
         component="span"
         onClick={setMaxValue}
-        disabled={count >= props.maxValue ? true : false}
+        disabled={state.count >= props.maxValue ? true : false}
       >
         <DoneAllIcon />
       </Fab>

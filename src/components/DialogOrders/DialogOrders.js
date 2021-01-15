@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useState, useEffect } from "react";
 import { gql } from "apollo-boost";
 import { useSubscription, useMutation } from "@apollo/react-hooks";
@@ -144,64 +144,68 @@ const DialogOrders = (props) => {
     onePosDelete(params.row);
   };
 
+  function updateField (params){
+    return (
+    <strong>
+    <IconButton
+      color="primary"
+      aria-label="редактировать"
+      component="span"
+      onClick={() => posUpdate(params)}
+    >
+      <EditIcon />
+    </IconButton>
+    <Tooltip title="Удаляю позицию. Что набрано - перемещаю на склад">
+      <IconButton
+        color="secondary"
+        aria-label="редактировать"
+        component="span"
+        onClick={() => posDelete(params)}
+      >
+        <Close />
+      </IconButton>
+    </Tooltip>
+  </strong>
+  )};
+
+  function fromFrodField (params) {
+    return (
+      <strong>
+        <InputGroup
+          maxValue = {1000} //params.row.needQty}
+          type = {"prod"}
+          id = {params.rowIndex}
+          onChange = {onQtyChange}
+          params={params}
+        />
+      </strong>
+    )
+  }
+
+  const fromStockField = useCallback( (params) => {
+    return (
+      <strong>
+        <InputGroup
+          maxValue = {1000} //params.row.needQty}
+          type = {"stock"}
+          id = {params.rowIndex}
+          onChange = {onQtyChange}
+          params={params}
+        />
+      </strong>
+    )
+  }, [] )
+
   const columns = [
     { field: "id", headerName: "id", width: 30 },
     { field: "name", headerName: "Наименование", type: "text", width: 200 },
     { field: "qtyOrder", headerName: "Заказ", type: "number", width: 100 },
     { field: "qtyCollect", headerName: "Набрано", type: "number", width: 100 },
     { field: "note", headerName: "Примечание", type: "text", width: 200 },
-    {
-      field: "update",
-      headerName: "обновить",
-      width: 100,
-      renderCell: (params) => (
-        <strong>
-          <IconButton
-            color="primary"
-            aria-label="редактировать"
-            component="span"
-            onClick={() => posUpdate(params)}
-          >
-            <EditIcon />
-          </IconButton>
-          <Tooltip title="Удаляю позицию. Что набрано - перемещаю на склад">
-            <IconButton
-              color="secondary"
-              aria-label="редактировать"
-              component="span"
-              onClick={() => posDelete(params)}
-            >
-              <Close />
-            </IconButton>
-          </Tooltip>
-        </strong>
-      ),
-    },
-    { field: 'fromProd', headerName: 'С доработки', width: 250,
-    renderCell: (params) => (
-      <strong>
-          <InputGroup
-            maxValue = {1000} //params.row.needQty}
-            type = {"prod"}
-            id = {params.rowIndex}
-            onChange = {onQtyChange}
-            params={params}
-          />
-      </strong>
-  ), },
-  { field: 'fromStock', headerName: 'Со склада', width: 250,
-    renderCell: (params) => (
-      <strong>
-          <InputGroup
-            maxValue = {1000}//(stockQty < params.row.needQty) ? stockQty : params.row.needQty }
-            type = {"stock"}
-            id = {params.rowIndex}
-            onChange = {onQtyChange}
-          />
-      </strong>
-    ), },
-
-  ];
+    { field: "update", headerName: "обновить", width: 100, renderCell: updateField },
+    { field: 'fromProd', headerName: 'С доработки', width: 250, renderCell: fromFrodField },
+    { field: 'fromStock', headerName: 'Со склада', width: 250, renderCell: fromStockField },
+  ]
 
   useEffect(() => {
     setOrderDate(props.orderData.date_out);
