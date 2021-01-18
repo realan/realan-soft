@@ -12,16 +12,16 @@ import Paper from "@material-ui/core/Paper";
 import Draggable from "react-draggable";
 // import { XGrid } from '@material-ui/x-grid';
 import { DataGrid } from "@material-ui/data-grid";
-import Pagination from '@material-ui/lab/Pagination';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
+import Pagination from "@material-ui/lab/Pagination";
+import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core/styles";
 import Close from "@material-ui/icons/Close";
 import EditIcon from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ru from "date-fns/locale/ru";
-import InputGroup from "components/InputGroup/InputGroup";
+import { QuantityChanger } from "components/QuantityChanger";
 import { TextField } from "@material-ui/core";
 import Tooltip from "@material-ui/core/Tooltip";
 import Box from "@material-ui/core/Box";
@@ -100,9 +100,14 @@ const SUBSCRIPTION_ITEMS_IN_ORDER = gql`
 
 const useStyles = makeStyles({
   root: {
-    display: 'flex',
+    display: "flex",
   },
 });
+
+const STORE_TYPE = {
+  PRODUCTION: "production",
+  STOCK: "stock",
+};
 
 function PaperComponent(props) {
   return (
@@ -141,7 +146,7 @@ CustomPagination.propTypes = {
     page: PropTypes.number.isRequired,
     pageCount: PropTypes.number.isRequired,
     pageSize: PropTypes.number.isRequired,
-    paginationMode: PropTypes.oneOf(['client', 'server']).isRequired,
+    paginationMode: PropTypes.oneOf(["client", "server"]).isRequired,
     rowCount: PropTypes.number.isRequired,
   }).isRequired,
 };
@@ -149,7 +154,6 @@ CustomPagination.propTypes = {
 const DialogOrders = (props) => {
   // const classes = useStyles();
 
-  console.log("render DialogOrder")
   let orderId = props.orderData.id;
 
   const [rows, setRows] = useState([]);
@@ -186,7 +190,7 @@ const DialogOrders = (props) => {
     onePosDelete(params.row);
   };
 
-  function updateField (params){
+  function updateField(params) {
     return (
       <strong>
         <IconButton
@@ -208,37 +212,40 @@ const DialogOrders = (props) => {
           </IconButton>
         </Tooltip>
       </strong>
-  )};
-
-  function fromFrodField (params) {
-    return (
-      <strong>
-        <InputGroup
-          maxValue = {1000} //params.row.needQty}
-          type = {"prod"}
-          id = {params.rowIndex}
-          onChange = {onQtyChange}
-          params={params}
-        />
-      </strong>
-    )
+    );
   }
-  function fromStockField (params) {
+
+  function fromProdField(params) {
     return (
       <strong>
-        <InputGroup
-          maxValue = {1000} //params.row.needQty}
-          type = {"stock"}
-          id = {params.rowIndex}
-          onChange = {onQtyChange}
-          params={params}
+        <QuantityChanger
+          maxValue={1000}
+          id={params.rowIndex}
+          onChange={(newValue) =>
+            onCountChange(newValue, rows, params.rowIndex, STORE_TYPE.PRODUCTION)
+          }
+          colorType="default"
+          value={params.row.fromProd}
         />
       </strong>
-    )
+    );
+  }
+
+  function fromStockField(params) {
+    return (
+      <strong>
+        <QuantityChanger
+          maxValue={1000}
+          id={params.rowIndex}
+          onChange={(newValue) => onCountChange(newValue, rows, params.rowIndex, STORE_TYPE.STOCK)}
+          value={params.row.fromStock}
+        />
+      </strong>
+    );
   }
 
   // const onQtyChange = useCallback( (id, qty, type) => {
-  //   console.log(rows)  
+  //   console.log(rows)
   //   if (type === "prod") {
   //     setRows([...rows], (rows[id].fromProd = qty));
   //   } else {
@@ -249,7 +256,7 @@ const DialogOrders = (props) => {
   // const fromStockField = useCallback( (params) => {
   //   return (
   //     <strong>
-  //       <InputGroup
+  //       <Index
   //         maxValue = {1000} //params.row.needQty}
   //         type = {"stock"}
   //         id = {params.rowIndex}
@@ -267,8 +274,8 @@ const DialogOrders = (props) => {
     { field: "qtyCollect", headerName: "Набрано", type: "number", width: 100 },
     { field: "note", headerName: "Примечание", type: "text", width: 200 },
     { field: "update", headerName: "обновить", width: 100, renderCell: updateField },
-    { field: 'fromProd', headerName: 'С доработки', width: 250, renderCell: fromFrodField },
-    { field: 'fromStock', headerName: 'Со склада', width: 250, renderCell: fromStockField },
+    { field: "fromProd", headerName: "С доработки", width: 250, renderCell: fromProdField },
+    { field: "fromStock", headerName: "Со склада", width: 250, renderCell: fromStockField },
   ];
 
   useEffect(() => {
@@ -281,12 +288,11 @@ const DialogOrders = (props) => {
 
   useEffect(() => {
     if (!loading && data) {
-      console.log(data)
       const preparedRows = data.mr_items.map((it, key) => {
-        let qtyCollect =
+        const qtyCollect =
           it.mr_price.qty_to.aggregate.sum.qty - it.mr_price.qty_from.aggregate.sum.qty;
- 
-        let obj = {
+
+        return {
           id: key, // it.id,
           name: it.mr_price.name,
           qtyOrder: it.qty,
@@ -298,14 +304,11 @@ const DialogOrders = (props) => {
           to_order: props.orderData.id,
           idItem: it.mr_price.id,
         };
-
-        return obj;
       });
 
-      console.log(preparedRows)
       setRows(preparedRows);
     }
-  }, [loading, data, props.orderData.id]);
+  }, [loading, data]);
 
   if (loading) return "Loading....";
   if (error) return `Error! ${error.message}`;
@@ -354,17 +357,25 @@ const DialogOrders = (props) => {
     SetOrderCancelledMutation({ variables: { id: orderId } });
   };
 
-  const onQtyChange = (id, qty, type) => {
-    console.log(rows)  
-    if (type === "prod") {
-      setRows([...rows], (rows[id].fromProd = qty));
-    } else {
-      setRows([...rows], (rows[id].fromStock = qty));
-    }
+  const onCountChange = (newCount, currentRows, id, storeType) => {
+    const preparedRow = currentRows.map((row) => {
+      if (row.id === id) {
+        return {
+          ...row,
+          fromProd: storeType === STORE_TYPE.PRODUCTION ? newCount : row.fromProd,
+          fromStock: storeType === STORE_TYPE.STOCK ? newCount : row.fromStock,
+        };
+      }
+
+      return row;
+    });
+
+    setRows(preparedRow);
   };
 
-  const makeMoves = () => {
-    rows.map((it) => {
+  const makeMoves = (currentRows) => {
+    // TODO: replace map to forEach
+    currentRows.map((it) => {
       if (it.qtyFromProd !== 0) {
         let addData = {
           qty: it.fromProd,
@@ -383,10 +394,11 @@ const DialogOrders = (props) => {
         };
         AddMoveItemMutation({ variables: { addData: addData } });
       }
-      return 1; //хз почему return
+      return;
     });
-    props.handleClose();   
-  }
+
+    props.handleClose();
+  };
 
   return (
     <div>
@@ -415,20 +427,23 @@ const DialogOrders = (props) => {
             // dateFormat="dd-MM-yyyy"
           />
         </DialogTitle>
+
         <DialogContent>
           {Boolean(rows.length) && (
-         <div style={{ height: 800, width: "100%" }}>
-            <DataGrid 
-              pagination
-              pageSize={20}
-              components={{ pagination: CustomPagination,}}
-              columns={columns} 
-              rows={rows} 
-              rowHeight={32} />
-          </div>
+            <div style={{ height: 800, width: "100%" }}>
+              <DataGrid
+                pagination
+                pageSize={20}
+                components={{ pagination: CustomPagination }}
+                columns={columns}
+                rows={rows}
+                rowHeight={32}
+              />
+            </div>
           )}
           <DialogContentText></DialogContentText>
         </DialogContent>
+
         <DialogActions>
           <Box flexGrow={1}>
             <Tooltip title="Удаляю заказ. Что набрано - перемещаю на склад">
@@ -444,8 +459,8 @@ const DialogOrders = (props) => {
           </Box>
 
           <Box flexGrow={1}>
-            <Button onClick={makeMoves} color="primary" variant="contained">
-                Обновить кол-во
+            <Button onClick={() => makeMoves(rows)} color="primary" variant="contained">
+              Обновить кол-во
             </Button>
           </Box>
 

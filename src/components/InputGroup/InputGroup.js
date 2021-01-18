@@ -14,9 +14,7 @@ const useStyles = makeStyles({
   },
 });
 
-function InputGroup ({id, minValue, maxValue, type, onChange}) {
-  console.log("render InputGroup")
-
+function InputGroup({ id, minValue, maxValue, type, onChange }) {
   const classes = useStyles();
 
   const [state, setState] = useState({
@@ -28,9 +26,8 @@ function InputGroup ({id, minValue, maxValue, type, onChange}) {
 
   const color = type === "stock" ? "primary" : "default";
 
-
   const increase = () => {
-    let c = state.count + 1
+    let c = state.count + 1;
     if (c > maxValue) {
     } else {
       onChange(id, c, type);
@@ -55,7 +52,7 @@ function InputGroup ({id, minValue, maxValue, type, onChange}) {
       });
     }
   };
-  
+
   const setMaxValue = () => {
     onChange(id, maxValue, type);
     setState({
@@ -108,7 +105,7 @@ function InputGroup ({id, minValue, maxValue, type, onChange}) {
         size="medium"
         component="span"
         onClick={increase}
-        disabled={state.disabledIncrease} 
+        disabled={state.disabledIncrease}
       >
         <AddIcon />
       </Fab>
@@ -126,4 +123,4 @@ function InputGroup ({id, minValue, maxValue, type, onChange}) {
   );
 }
 
-export default React.memo(InputGroup);
+export default InputGroup;
