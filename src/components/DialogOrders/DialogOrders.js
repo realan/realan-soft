@@ -12,6 +12,9 @@ import Paper from "@material-ui/core/Paper";
 import Draggable from "react-draggable";
 // import { XGrid } from '@material-ui/x-grid';
 import { DataGrid } from "@material-ui/data-grid";
+import Pagination from '@material-ui/lab/Pagination';
+import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
 import Close from "@material-ui/icons/Close";
 import EditIcon from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
@@ -95,6 +98,12 @@ const SUBSCRIPTION_ITEMS_IN_ORDER = gql`
   }
 `;
 
+const useStyles = makeStyles({
+  root: {
+    display: 'flex',
+  },
+});
+
 function PaperComponent(props) {
   return (
     <Draggable handle="#draggable-dialog-title" cancel={'[class*="MuiDialogContent-root"]'}>
@@ -102,6 +111,40 @@ function PaperComponent(props) {
     </Draggable>
   );
 }
+
+function CustomPagination(props) {
+  const { pagination, api } = props;
+  const classes = useStyles();
+
+  return (
+    <Pagination
+      className={classes.root}
+      color="primary"
+      page={pagination.page}
+      count={pagination.pageCount}
+      onChange={(event, value) => api.current.setPage(value)}
+    />
+  );
+}
+
+CustomPagination.propTypes = {
+  /**
+   * ApiRef that let you manipulate the grid.
+   */
+  api: PropTypes.shape({
+    current: PropTypes.object.isRequired,
+  }).isRequired,
+  /**
+   * The object containing all pagination details in [[PaginationState]].
+   */
+  pagination: PropTypes.shape({
+    page: PropTypes.number.isRequired,
+    pageCount: PropTypes.number.isRequired,
+    pageSize: PropTypes.number.isRequired,
+    paginationMode: PropTypes.oneOf(['client', 'server']).isRequired,
+    rowCount: PropTypes.number.isRequired,
+  }).isRequired,
+};
 
 const DialogOrders = (props) => {
   // const classes = useStyles();
@@ -113,7 +156,6 @@ const DialogOrders = (props) => {
   const [openUpdate, setOpenUpdate] = useState(false);
   const [dataRow, setDataRow] = useState({});
   const [orderDate, setOrderDate] = useState();
-  // const [dataDB, setDataDB] = useState([]); // для добавления в бд перемещений ассортимента с производства и склада
 
   const [UpdateMutation] = useMutation(UPDATE_ITEM_IN_ORDER);
   const [UpdateDateMutation] = useMutation(UPDATE_ORDER_DATE);
@@ -146,26 +188,26 @@ const DialogOrders = (props) => {
 
   function updateField (params){
     return (
-    <strong>
-    <IconButton
-      color="primary"
-      aria-label="редактировать"
-      component="span"
-      onClick={() => posUpdate(params)}
-    >
-      <EditIcon />
-    </IconButton>
-    <Tooltip title="Удаляю позицию. Что набрано - перемещаю на склад">
-      <IconButton
-        color="secondary"
-        aria-label="редактировать"
-        component="span"
-        onClick={() => posDelete(params)}
-      >
-        <Close />
-      </IconButton>
-    </Tooltip>
-  </strong>
+      <strong>
+        <IconButton
+          color="primary"
+          aria-label="редактировать"
+          component="span"
+          onClick={() => posUpdate(params)}
+        >
+          <EditIcon />
+        </IconButton>
+        <Tooltip title="Удаляю позицию. Что набрано - перемещаю на склад">
+          <IconButton
+            color="secondary"
+            aria-label="редактировать"
+            component="span"
+            onClick={() => posDelete(params)}
+          >
+            <Close />
+          </IconButton>
+        </Tooltip>
+      </strong>
   )};
 
   function fromFrodField (params) {
@@ -181,8 +223,7 @@ const DialogOrders = (props) => {
       </strong>
     )
   }
-
-  const fromStockField = useCallback( (params) => {
+  function fromStockField (params) {
     return (
       <strong>
         <InputGroup
@@ -194,7 +235,30 @@ const DialogOrders = (props) => {
         />
       </strong>
     )
-  }, [] )
+  }
+
+  // const onQtyChange = useCallback( (id, qty, type) => {
+  //   console.log(rows)  
+  //   if (type === "prod") {
+  //     setRows([...rows], (rows[id].fromProd = qty));
+  //   } else {
+  //     setRows([...rows], (rows[id].fromStock = qty));
+  //   }
+  // }, [rows]);
+
+  // const fromStockField = useCallback( (params) => {
+  //   return (
+  //     <strong>
+  //       <InputGroup
+  //         maxValue = {1000} //params.row.needQty}
+  //         type = {"stock"}
+  //         id = {params.rowIndex}
+  //         onChange = {onQtyChange}
+  //         params={params}
+  //       />
+  //     </strong>
+  //   )
+  // }, [onQtyChange] )
 
   const columns = [
     { field: "id", headerName: "id", width: 30 },
@@ -205,7 +269,7 @@ const DialogOrders = (props) => {
     { field: "update", headerName: "обновить", width: 100, renderCell: updateField },
     { field: 'fromProd', headerName: 'С доработки', width: 250, renderCell: fromFrodField },
     { field: 'fromStock', headerName: 'Со склада', width: 250, renderCell: fromStockField },
-  ]
+  ];
 
   useEffect(() => {
     setOrderDate(props.orderData.date_out);
@@ -353,8 +417,14 @@ const DialogOrders = (props) => {
         </DialogTitle>
         <DialogContent>
           {Boolean(rows.length) && (
-         <div style={{ height: 600, width: "100%" }}>
-            <DataGrid columns={columns} rows={rows} rowHeight={32} />
+         <div style={{ height: 800, width: "100%" }}>
+            <DataGrid 
+              pagination
+              pageSize={20}
+              components={{ pagination: CustomPagination,}}
+              columns={columns} 
+              rows={rows} 
+              rowHeight={32} />
           </div>
           )}
           <DialogContentText></DialogContentText>
