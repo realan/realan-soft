@@ -13,7 +13,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Paper from "@material-ui/core/Paper";
 import Draggable from "react-draggable";
 // import RowCollectOrder from "components/RowCollectOrder/RowCollectOrder.js";
-// import { DataGrid } from '@material-ui/data-grid';
+import { DataGrid } from '@material-ui/data-grid';
 import InputGroup from "components/InputGroup/InputGroup";
 import InputWithButtons from "components/InputWithButtons/InputWithButtons";
 import CardPosInOrder from "components/CardPosInOrder/CardPosInOrder";
@@ -21,6 +21,7 @@ import Box from "@material-ui/core/Box";
 import Switch from "@material-ui/core/Switch";
 import DialogStockCorrectQty from "components/DialogStockCorrectQty/DialogStockCorrectQty";
 import { ADD_MOVE_ITEM } from "../../GraphQL/Mutations";
+import cardIconStyle from "assets/jss/material-dashboard-pro-react/components/cardIconStyle";
 
 // const useStyles = makeStyles(styles);
 
@@ -166,7 +167,7 @@ const DialogStock = (props) => {
 
         return obj;
       });
-
+      console.log(preparedCards);
       setCards(preparedCards);
     }
   }, [data]);
@@ -234,7 +235,7 @@ const DialogStock = (props) => {
     setProdToStock(qty);
   };
 
-  const onQtyChange = (id, qty, type) => {
+  function onQtyChange (id, qty, type) {
     // console.log(id, qty, type);
     // console.log(dataDB);
     if (type === "prod") {
@@ -316,7 +317,7 @@ const DialogStock = (props) => {
 
           {/* <div style={{ height: 500, width: '100%' }}>
                 <DataGrid 
-                  rows={rows} 
+                  rows={cards} 
                   columns={columns} 
                 />
           </div> */}

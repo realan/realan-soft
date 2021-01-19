@@ -12,13 +12,16 @@ import Paper from "@material-ui/core/Paper";
 import Draggable from "react-draggable";
 // import { XGrid } from '@material-ui/x-grid';
 import { DataGrid } from "@material-ui/data-grid";
+import Pagination from "@material-ui/lab/Pagination";
+import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core/styles";
 import Close from "@material-ui/icons/Close";
 import EditIcon from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ru from "date-fns/locale/ru";
-import InputGroup from "components/InputGroup/InputGroup";
+import { QuantityChanger } from "components/QuantityChanger";
 import { TextField } from "@material-ui/core";
 import Tooltip from "@material-ui/core/Tooltip";
 import Box from "@material-ui/core/Box";
@@ -95,6 +98,17 @@ const SUBSCRIPTION_ITEMS_IN_ORDER = gql`
   }
 `;
 
+const useStyles = makeStyles({
+  root: {
+    display: "flex",
+  },
+});
+
+const STORE_TYPE = {
+  PRODUCTION: "production",
+  STOCK: "stock",
+};
+
 function PaperComponent(props) {
   return (
     <Draggable handle="#draggable-dialog-title" cancel={'[class*="MuiDialogContent-root"]'}>
@@ -103,17 +117,49 @@ function PaperComponent(props) {
   );
 }
 
+function CustomPagination(props) {
+  const { pagination, api } = props;
+  const classes = useStyles();
+
+  return (
+    <Pagination
+      className={classes.root}
+      color="primary"
+      page={pagination.page}
+      count={pagination.pageCount}
+      onChange={(event, value) => api.current.setPage(value)}
+    />
+  );
+}
+
+CustomPagination.propTypes = {
+  /**
+   * ApiRef that let you manipulate the grid.
+   */
+  api: PropTypes.shape({
+    current: PropTypes.object.isRequired,
+  }).isRequired,
+  /**
+   * The object containing all pagination details in [[PaginationState]].
+   */
+  pagination: PropTypes.shape({
+    page: PropTypes.number.isRequired,
+    pageCount: PropTypes.number.isRequired,
+    pageSize: PropTypes.number.isRequired,
+    paginationMode: PropTypes.oneOf(["client", "server"]).isRequired,
+    rowCount: PropTypes.number.isRequired,
+  }).isRequired,
+};
+
 const DialogOrders = (props) => {
   // const classes = useStyles();
 
-  console.log("render DialogOrder")
   let orderId = props.orderData.id;
 
   const [rows, setRows] = useState([]);
   const [openUpdate, setOpenUpdate] = useState(false);
   const [dataRow, setDataRow] = useState({});
   const [orderDate, setOrderDate] = useState();
-  // const [dataDB, setDataDB] = useState([]); // для добавления в бд перемещений ассортимента с производства и склада
 
   const [UpdateMutation] = useMutation(UPDATE_ITEM_IN_ORDER);
   const [UpdateDateMutation] = useMutation(UPDATE_ORDER_DATE);
@@ -144,57 +190,82 @@ const DialogOrders = (props) => {
     onePosDelete(params.row);
   };
 
-  function updateField (params){
-    return (
-    <strong>
-    <IconButton
-      color="primary"
-      aria-label="редактировать"
-      component="span"
-      onClick={() => posUpdate(params)}
-    >
-      <EditIcon />
-    </IconButton>
-    <Tooltip title="Удаляю позицию. Что набрано - перемещаю на склад">
-      <IconButton
-        color="secondary"
-        aria-label="редактировать"
-        component="span"
-        onClick={() => posDelete(params)}
-      >
-        <Close />
-      </IconButton>
-    </Tooltip>
-  </strong>
-  )};
-
-  function fromFrodField (params) {
+  function updateField(params) {
     return (
       <strong>
-        <InputGroup
-          maxValue = {1000} //params.row.needQty}
-          type = {"prod"}
-          id = {params.rowIndex}
-          onChange = {onQtyChange}
-          params={params}
-        />
+        <IconButton
+          color="primary"
+          aria-label="редактировать"
+          component="span"
+          onClick={() => posUpdate(params)}
+        >
+          <EditIcon />
+        </IconButton>
+        <Tooltip title="Удаляю позицию. Что набрано - перемещаю на склад">
+          <IconButton
+            color="secondary"
+            aria-label="редактировать"
+            component="span"
+            onClick={() => posDelete(params)}
+          >
+            <Close />
+          </IconButton>
+        </Tooltip>
       </strong>
-    )
+    );
   }
 
-  const fromStockField = useCallback( (params) => {
+  function fromProdField(params) {
     return (
       <strong>
-        <InputGroup
-          maxValue = {1000} //params.row.needQty}
-          type = {"stock"}
-          id = {params.rowIndex}
-          onChange = {onQtyChange}
-          params={params}
+        <QuantityChanger
+          maxValue={1000}
+          id={params.rowIndex}
+          onChange={(newValue) =>
+            onCountChange(newValue, rows, params.rowIndex, STORE_TYPE.PRODUCTION)
+          }
+          colorType="default"
+          value={params.row.fromProd}
         />
       </strong>
-    )
-  }, [] )
+    );
+  }
+
+  function fromStockField(params) {
+    return (
+      <strong>
+        <QuantityChanger
+          maxValue={1000}
+          id={params.rowIndex}
+          onChange={(newValue) => onCountChange(newValue, rows, params.rowIndex, STORE_TYPE.STOCK)}
+          value={params.row.fromStock}
+        />
+      </strong>
+    );
+  }
+
+  // const onQtyChange = useCallback( (id, qty, type) => {
+  //   console.log(rows)
+  //   if (type === "prod") {
+  //     setRows([...rows], (rows[id].fromProd = qty));
+  //   } else {
+  //     setRows([...rows], (rows[id].fromStock = qty));
+  //   }
+  // }, [rows]);
+
+  // const fromStockField = useCallback( (params) => {
+  //   return (
+  //     <strong>
+  //       <Index
+  //         maxValue = {1000} //params.row.needQty}
+  //         type = {"stock"}
+  //         id = {params.rowIndex}
+  //         onChange = {onQtyChange}
+  //         params={params}
+  //       />
+  //     </strong>
+  //   )
+  // }, [onQtyChange] )
 
   const columns = [
     { field: "id", headerName: "id", width: 30 },
@@ -203,9 +274,9 @@ const DialogOrders = (props) => {
     { field: "qtyCollect", headerName: "Набрано", type: "number", width: 100 },
     { field: "note", headerName: "Примечание", type: "text", width: 200 },
     { field: "update", headerName: "обновить", width: 100, renderCell: updateField },
-    { field: 'fromProd', headerName: 'С доработки', width: 250, renderCell: fromFrodField },
-    { field: 'fromStock', headerName: 'Со склада', width: 250, renderCell: fromStockField },
-  ]
+    { field: "fromProd", headerName: "С доработки", width: 250, renderCell: fromProdField },
+    { field: "fromStock", headerName: "Со склада", width: 250, renderCell: fromStockField },
+  ];
 
   useEffect(() => {
     setOrderDate(props.orderData.date_out);
@@ -217,12 +288,11 @@ const DialogOrders = (props) => {
 
   useEffect(() => {
     if (!loading && data) {
-      console.log(data)
       const preparedRows = data.mr_items.map((it, key) => {
-        let qtyCollect =
+        const qtyCollect =
           it.mr_price.qty_to.aggregate.sum.qty - it.mr_price.qty_from.aggregate.sum.qty;
- 
-        let obj = {
+
+        return {
           id: key, // it.id,
           name: it.mr_price.name,
           qtyOrder: it.qty,
@@ -234,14 +304,11 @@ const DialogOrders = (props) => {
           to_order: props.orderData.id,
           idItem: it.mr_price.id,
         };
-
-        return obj;
       });
 
-      console.log(preparedRows)
       setRows(preparedRows);
     }
-  }, [loading, data, props.orderData.id]);
+  }, [loading, data]);
 
   if (loading) return "Loading....";
   if (error) return `Error! ${error.message}`;
@@ -290,17 +357,25 @@ const DialogOrders = (props) => {
     SetOrderCancelledMutation({ variables: { id: orderId } });
   };
 
-  const onQtyChange = (id, qty, type) => {
-    console.log(rows)  
-    if (type === "prod") {
-      setRows([...rows], (rows[id].fromProd = qty));
-    } else {
-      setRows([...rows], (rows[id].fromStock = qty));
-    }
+  const onCountChange = (newCount, currentRows, id, storeType) => {
+    const preparedRow = currentRows.map((row) => {
+      if (row.id === id) {
+        return {
+          ...row,
+          fromProd: storeType === STORE_TYPE.PRODUCTION ? newCount : row.fromProd,
+          fromStock: storeType === STORE_TYPE.STOCK ? newCount : row.fromStock,
+        };
+      }
+
+      return row;
+    });
+
+    setRows(preparedRow);
   };
 
-  const makeMoves = () => {
-    rows.map((it) => {
+  const makeMoves = (currentRows) => {
+    // TODO: replace map to forEach
+    currentRows.map((it) => {
       if (it.qtyFromProd !== 0) {
         let addData = {
           qty: it.fromProd,
@@ -319,10 +394,11 @@ const DialogOrders = (props) => {
         };
         AddMoveItemMutation({ variables: { addData: addData } });
       }
-      return 1; //хз почему return
+      return;
     });
-    props.handleClose();   
-  }
+
+    props.handleClose();
+  };
 
   return (
     <div>
@@ -351,14 +427,23 @@ const DialogOrders = (props) => {
             // dateFormat="dd-MM-yyyy"
           />
         </DialogTitle>
+
         <DialogContent>
           {Boolean(rows.length) && (
-         <div style={{ height: 600, width: "100%" }}>
-            <DataGrid columns={columns} rows={rows} rowHeight={32} />
-          </div>
+            <div style={{ height: 800, width: "100%" }}>
+              <DataGrid
+                pagination
+                pageSize={20}
+                components={{ pagination: CustomPagination }}
+                columns={columns}
+                rows={rows}
+                rowHeight={32}
+              />
+            </div>
           )}
           <DialogContentText></DialogContentText>
         </DialogContent>
+
         <DialogActions>
           <Box flexGrow={1}>
             <Tooltip title="Удаляю заказ. Что набрано - перемещаю на склад">
@@ -374,8 +459,8 @@ const DialogOrders = (props) => {
           </Box>
 
           <Box flexGrow={1}>
-            <Button onClick={makeMoves} color="primary" variant="contained">
-                Обновить кол-во
+            <Button onClick={() => makeMoves(rows)} color="primary" variant="contained">
+              Обновить кол-во
             </Button>
           </Box>
 

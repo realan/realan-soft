@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect } from "react";
 import { DataGrid } from "@material-ui/data-grid";
 import { gql } from "apollo-boost";
 import { useSubscription } from "@apollo/react-hooks";
-import { renderProgress } from "@material-ui/x-grid-data-generator/";
+import { renderProgress } from "@material-ui/x-grid-data-generator";
 // import OrderDataDialog from "../components/OrderDataDialog/OrderDataDialog.js";
 import Button from "@material-ui/core/Button";
 import DialogOrders from "components/DialogOrders/DialogOrders.js";
@@ -49,7 +49,6 @@ const SUBSCRIPTION_ORDERS = gql`
 `;
 
 const Orders = () => {
-
   const [itemForDialog, setItemForDialog] = useState({
     isOpen: false,
     orderData: undefined,
@@ -78,7 +77,6 @@ const Orders = () => {
 
   useEffect(() => {
     if (!loading && data) {
-
       const preparedRows = data.mr_order.map((it) => {
         const dateIn = new Date(it.date_in);
         const dateOut = new Date(it.date_out);
@@ -87,7 +85,7 @@ const Orders = () => {
           (it.mr_to_aggregate.aggregate.sum.qty - it.mr_from_aggregate.aggregate.sum.qty) /
           qty
         ).toFixed(3);
-    
+
         let obj = {
           id: it.id,
           customer: it.mr_customer.name,
@@ -110,11 +108,11 @@ const Orders = () => {
     setItemForDialog({
       orderData: row.row,
       isOpen: true,
-    })
+    });
   };
 
   const handleClose = () => {
-    setItemForDialog({...itemForDialog, isOpen:false});
+    setItemForDialog({ ...itemForDialog, isOpen: false });
   };
   const handleAddOrderClose = () => {
     setOpenAddOrder(false);
@@ -134,10 +132,15 @@ const Orders = () => {
           paginaton={true}
         />
       </div>
+
       {Boolean(itemForDialog.orderData) && (
-        <DialogOrders open={itemForDialog.isOpen} handleClose={handleClose} orderData={itemForDialog.orderData} />
+        <DialogOrders
+          open={itemForDialog.isOpen}
+          handleClose={handleClose}
+          orderData={itemForDialog.orderData}
+        />
       )}
-      
+
       <DialogAddOrder open={openAddOrder} handleClose={handleAddOrderClose} />
     </>
   );
