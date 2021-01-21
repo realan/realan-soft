@@ -123,7 +123,7 @@ const Orders = () => {
       <Button color="primary" variant="outlined" onClick={() => setOpenAddOrder(true)}>
         Добавить заказ
       </Button>
-      <div style={{ height: 700, width: "100%" }}>
+      <div style={{ height: 1400, width: "100%" }}>
         <DataGrid
           columns={columns}
           rows={rows}

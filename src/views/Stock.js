@@ -4,7 +4,11 @@ import { useState, useMemo } from "react";
 import { useSubscription } from "@apollo/react-hooks";
 // import DialogOrders from "../components/DialogOrders/DialogOrders.js";
 import { DataGrid } from "@material-ui/data-grid";
+import Pagination from "@material-ui/lab/Pagination";
+import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core/styles";
 import DialogStock from "components/DialogStock/DialogStock.js";
+import StockTableChoise from "components/StockTableChoise/StockTableChoise";
 // import { XGrid } from '@material-ui/x-grid';
 
 const SUBSCRIPTION_STOCK = gql`
@@ -22,16 +26,81 @@ const SUBSCRIPTION_STOCK = gql`
   }
 `;
 
+const useStyles = makeStyles({
+  root: {
+    display: "flex",
+  },
+});
+
+function CustomPagination(props) {
+  const { pagination, api } = props;
+  const classes = useStyles();
+
+  return (
+    <Pagination
+      className={classes.root}
+      boundaryCount={50}
+      size="large"
+      siblingCount={3}
+      color="primary"
+      page={pagination.page}
+      count={pagination.pageCount}
+      onChange={(event, value) => api.current.setPage(value)}
+    />
+  );
+}
+
+CustomPagination.propTypes = {
+  /**
+   * ApiRef that let you manipulate the grid.
+   */
+  api: PropTypes.shape({
+    current: PropTypes.object.isRequired,
+  }).isRequired,
+  /**
+   * The object containing all pagination details in [[PaginationState]].
+   */
+  pagination: PropTypes.shape({
+    page: PropTypes.number.isRequired,
+    pageCount: PropTypes.number.isRequired,
+    pageSize: PropTypes.number.isRequired,
+    paginationMode: PropTypes.oneOf(["client", "server"]).isRequired,
+    rowCount: PropTypes.number.isRequired,
+  }).isRequired,
+};
+
+
 const Stock = () => {
   // date for dialog
   const [itemForDialog, setItemForDialog] = useState({
     isOpen: false,
     itemId: undefined,
     stockQty: undefined,
+    // whatShow: "all",
   });
+  // const [rows, setRows] = useState([]);
 
   // hook for data from db
   const { loading, error, data } = useSubscription(SUBSCRIPTION_STOCK);
+
+  // useEffect(() => {
+  //   if (!loading && data) {
+  //     const preparedRows = data.mr_pivot.map((it) => {
+  //       let obj = {
+  //         id: it.id,
+  //         item_name: it.item_name,
+  //         stock_now: it.stock_now,
+  //         order_this_week: it.order_this_week,
+  //         collected_this_week: it.collected_this_week,
+  //         order_next_week: it.order_next_week,
+  //         collected_next_week: it.order_next_week,
+  //         order_next: it.order_next_week,
+  //       };
+  //       return obj;
+  //     });
+  //     setRows(preparedRows);
+  //   }
+  // }, [loading, data, itemForDialog.whatShow]);
 
   // items for table
   const columns = useMemo(
@@ -66,8 +135,17 @@ const Stock = () => {
 
   return (
     <div>
-      <div style={{ height: 800, width: "100%" }}>
-        <DataGrid rows={data.mr_pivot} columns={columns} rowHeight={30} onRowClick={onRowClick} />
+      <StockTableChoise/>
+      <div style={{ height: 1400, width: "100%" }}>
+        <DataGrid 
+          rows={data.mr_pivot} 
+          columns={columns} 
+          rowHeight={30} 
+          onRowClick={onRowClick} 
+          pagination
+          pageSize={40}
+          components={{ pagination: CustomPagination }}
+        />
       </div>
 
       {itemForDialog.itemId && (

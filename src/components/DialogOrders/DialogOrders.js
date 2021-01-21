@@ -98,6 +98,7 @@ const SUBSCRIPTION_ITEMS_IN_ORDER = gql`
         }
       }
     }
+
   }
 `;
 
@@ -161,6 +162,7 @@ const DialogOrders = (props) => {
 
   const [rows, setRows] = useState([]);
   const [openUpdate, setOpenUpdate] = useState(false);
+  const [openAddItem, setOpenAddItem] = useState(false);
   const [dataRow, setDataRow] = useState({});
   const [orderDate, setOrderDate] = useState();
 
@@ -382,11 +384,14 @@ const DialogOrders = (props) => {
         };
         AddMoveItemMutation({ variables: { addData: addData } });
       }
-      return;
+      return true;
     });
 
     props.handleClose();
   };
+
+  const handleAddItem = () => {  }
+  const handleAddItemClose = () => { setOpenAddItem(false) }
 
   return (
     <div>
@@ -423,7 +428,7 @@ const DialogOrders = (props) => {
                 autoHeight={true}
                 density="compact"
                 pagination
-                pageSize={20}
+                pageSize={40}
                 components={{ pagination: CustomPagination }}
                 columns={columns}
                 rows={rows}
@@ -442,7 +447,7 @@ const DialogOrders = (props) => {
             </Tooltip>
           </Box>
           <Box flexGrow={1}>
-            <Button onClick={handleCancel} color="primary" variant="outlined">
+            <Button onClick={handleAddItem} color="primary" variant="outlined">
               Добавить позицию
             </Button>
           </Box>
@@ -469,7 +474,6 @@ const DialogOrders = (props) => {
       >
         <DialogTitle id="form-dialog-title">{dataRow.name} </DialogTitle>
         <DialogContent>
-          <DialogContentText></DialogContentText>
           <TextField
             autoFocus
             margin="dense"
@@ -497,6 +501,43 @@ const DialogOrders = (props) => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      <Dialog
+        open={openAddItem}
+        onClose={handleAddItemClose}
+        aria-labelledby="form-dialog-title"
+        maxWidth="sm"
+      >
+        <DialogTitle id="form-dialog-title">{dataRow.name} </DialogTitle>
+          <DialogContent>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="Кол-во"
+              type="number"
+              fullWidth
+              value={dataRow.qtyOrder}
+              onChange={handleQtyChange}
+            />
+            <TextField
+              margin="dense"
+              label="Примечание"
+              type="text"
+              fullWidth
+              value={dataRow.note || ""}
+              onChange={handleNoteChange}
+            />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleUpdateClose} color="primary">
+            Отмена
+          </Button>
+          <Button onClick={handleUpdateItem} color="primary">
+            Изменить
+          </Button>
+        </DialogActions>
+      </Dialog>
+
     </div>
   );
 };

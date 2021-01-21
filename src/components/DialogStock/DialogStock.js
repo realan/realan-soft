@@ -14,14 +14,15 @@ import Paper from "@material-ui/core/Paper";
 import Draggable from "react-draggable";
 // import RowCollectOrder from "components/RowCollectOrder/RowCollectOrder.js";
 import { DataGrid } from '@material-ui/data-grid';
-import InputGroup from "components/InputGroup/InputGroup";
+// import InputGroup from "components/InputGroup/InputGroup";
 import InputWithButtons from "components/InputWithButtons/InputWithButtons";
 import CardPosInOrder from "components/CardPosInOrder/CardPosInOrder";
 import Box from "@material-ui/core/Box";
 import Switch from "@material-ui/core/Switch";
 import DialogStockCorrectQty from "components/DialogStockCorrectQty/DialogStockCorrectQty";
 import { ADD_MOVE_ITEM } from "../../GraphQL/Mutations";
-import cardIconStyle from "assets/jss/material-dashboard-pro-react/components/cardIconStyle";
+// import cardIconStyle from "assets/jss/material-dashboard-pro-react/components/cardIconStyle";
+import { QuantityChanger } from "components/QuantityChanger";
 
 // const useStyles = makeStyles(styles);
 
@@ -66,6 +67,11 @@ function PaperComponent(props) {
   );
 }
 
+const STORE_TYPE = {
+  PRODUCTION: "production",
+  STOCK: "stock",
+};
+
 const DialogStock = (props) => {
   console.log("render DialogStock")
   // const classes = useStyles();
@@ -78,10 +84,46 @@ const DialogStock = (props) => {
   // const [btnOkStatus, setBtnOkStatus] = useState(true);
   const [dataDB, setDataDB] = useState([]); // для добавления в бд перемещений ассортимента с производства и склада
   // id, item, qtyFromProd, qtyFromStock, to_order
-  const [cards, setCards] = useState([]);
+  const [rows, setRows] = useState([]);
   // const [rows, setRows] = useState([]);
 
   const [AddMove] = useMutation(ADD_MOVE_ITEM);
+
+  function fromProdField(params) {
+    console.log(params);
+    const needQty = params.row.needQty - params.row.fromStock;
+    return (
+      <strong>
+        <QuantityChanger
+          maxValue={needQty}
+          id={params.rowIndex}
+          onChange={(newValue) =>
+            onCountChange(newValue, rows, params.rowIndex, STORE_TYPE.PRODUCTION)
+          }
+          colorType="default"
+          value={params.row.fromProd}
+        />
+      </strong>
+    );
+  }
+
+  function fromStockField(params) {
+    console.log(params);
+    const needQty = params.row.needQty - params.row.fromProd;
+    let maxValue = 0; 
+    (needQty < stockQty) ? maxValue = needQty : maxValue = stockQty;
+    return (
+      <strong>
+        <QuantityChanger
+          minValue={-(params.row.orderQty - params.row.needQty)}
+          maxValue={maxValue}
+          id={params.rowIndex}
+          onChange={(newValue) => onCountChange(newValue, rows, params.rowIndex, STORE_TYPE.STOCK)}
+          value={params.row.fromStock}
+        />
+      </strong>
+    );
+  }
 
 
   const columns = [
@@ -92,29 +134,8 @@ const DialogStock = (props) => {
     { field: 'collected', headerName: 'Набрано%', type: "number", width: 10 },
     { field: 'orderQty', headerName: 'Заказ', type: "number", width: 80 },
     { field: 'needQty', headerName: 'Нужно', type: "number", width: 80 },
-    { field: 'fromProd', headerName: 'С доработки', width: 200,
-        renderCell: (params) => (
-          <strong>
-              <InputGroup
-                maxValue = {params.row.needQty}
-                type = {"prod"}
-                id = {params.rowIndex}
-                onChange = {onQtyChange}
-                params={params}
-              />
-          </strong>
-      ), },
-    { field: 'fromStock', headerName: 'Со склада', width: 200,
-        renderCell: (params) => (
-          <strong>
-              <InputGroup
-                maxValue = {(stockQty < params.row.needQty) ? stockQty : params.row.needQty }
-                type = {"stock"}
-                id = {params.rowIndex}
-                onChange = {onQtyChange}
-              />
-          </strong>
-        ), },
+    { field: 'fromProd', headerName: 'С доработки', width: 200, renderCell: fromProdField },
+    { field: 'fromStock', headerName: 'Со склада', width: 200, renderCell: fromStockField },
     { field: 'note', headerName: 'Примечание', type: "text", width: 110 },
   ];
 
@@ -168,7 +189,7 @@ const DialogStock = (props) => {
         return obj;
       });
       console.log(preparedCards);
-      setCards(preparedCards);
+      setRows(preparedCards);
     }
   }, [data]);
 
@@ -268,6 +289,29 @@ const DialogStock = (props) => {
     setShowAll(!showAll);
   };
 
+  const onCountChange = (newCount, currentRows, id, storeType) => {
+    const preparedRow = currentRows.map((row) => {
+      if (row.id === id) {
+        return {
+          ...row,
+          fromProd: storeType === STORE_TYPE.PRODUCTION ? newCount : row.fromProd,
+          fromStock: storeType === STORE_TYPE.STOCK ? newCount : row.fromStock,
+        };
+      }
+
+      return row;
+    });
+
+    if (storeType === STORE_TYPE.STOCK) {
+      let sumQtyFromStock = preparedRow.reduce(function (sum, elem) {
+        return sum + elem.fromStock;
+      }, 0);
+      setStockQty(props.stock_now - sumQtyFromStock);
+    }
+    
+    setRows(preparedRow);
+  };
+
   // let listCards = useMemo( () => getListCards(cards),[]);
 
   return (
@@ -295,9 +339,9 @@ const DialogStock = (props) => {
         </DialogTitle>
 
         <DialogContent>
-          {Boolean(cards.length) && (
+          {Boolean(rows.length) && (
             <Box display="flex" flexWrap="wrap" m={1}>
-              {cards.map((card, key) => {
+              {rows.map((card, key) => {
                 return (
                   <Box m={1} bgcolor="text.disabled" key={key}>
                     <CardPosInOrder
@@ -311,16 +355,15 @@ const DialogStock = (props) => {
                 );
               })}
             </Box>
-
-            
           )}
-
-          {/* <div style={{ height: 500, width: '100%' }}>
-                <DataGrid 
-                  rows={cards} 
-                  columns={columns} 
-                />
-          </div> */}
+          {Boolean(rows.length) && (
+            <div style={{ height: 500, width: '100%' }}>
+                  <DataGrid 
+                    rows={rows} 
+                    columns={columns} 
+                  />
+            </div>
+          )}
           <div>
             {" "}
             Со склада в доработку
