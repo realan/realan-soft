@@ -27,7 +27,7 @@ const QuantityChanger = ({
       <Fab
         color={colorType}
         aria-label="remove"
-        size="medium"
+        size="small"
         component="span"
         onClick={() => onChange(value - 1)}
         disabled={value <= minValue}
@@ -48,7 +48,7 @@ const QuantityChanger = ({
       <Fab
         color={colorType}
         aria-label="add"
-        size="medium"
+        size="small"
         component="span"
         onClick={() => onChange(value + 1)}
         disabled={value >= maxValue}
@@ -59,7 +59,7 @@ const QuantityChanger = ({
       <Fab
         color={colorType}
         aria-label="add"
-        size="medium"
+        size="small"
         component="span"
         onClick={() => onChange(maxValue)}
         disabled={value >= maxValue}

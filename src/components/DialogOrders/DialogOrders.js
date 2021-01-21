@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { useState, useEffect } from "react";
 import { gql } from "apollo-boost";
 import { useSubscription, useMutation } from "@apollo/react-hooks";
@@ -76,6 +76,9 @@ const SUBSCRIPTION_ITEMS_IN_ORDER = gql`
       item
       qty
       note
+  		stock_data{
+        stock_now
+      }
       mr_price {
         id
         name
@@ -216,10 +219,11 @@ const DialogOrders = (props) => {
   }
 
   function fromProdField(params) {
+    const needQty = params.row.qtyOrder - params.row.qtyCollect- params.row.fromStock;
     return (
       <strong>
         <QuantityChanger
-          maxValue={1000}
+          maxValue={needQty}
           id={params.rowIndex}
           onChange={(newValue) =>
             onCountChange(newValue, rows, params.rowIndex, STORE_TYPE.PRODUCTION)
@@ -232,10 +236,14 @@ const DialogOrders = (props) => {
   }
 
   function fromStockField(params) {
+    const needQty = params.row.qtyOrder - params.row.qtyCollect - params.row.fromProd;
+    let maxValue = 0; 
+    (needQty < params.row.qtyStock) ? maxValue = needQty : maxValue = params.row.qtyStock;
     return (
       <strong>
         <QuantityChanger
-          maxValue={1000}
+          minValue={-params.row.qtyCollect}
+          maxValue={maxValue}
           id={params.rowIndex}
           onChange={(newValue) => onCountChange(newValue, rows, params.rowIndex, STORE_TYPE.STOCK)}
           value={params.row.fromStock}
@@ -244,38 +252,16 @@ const DialogOrders = (props) => {
     );
   }
 
-  // const onQtyChange = useCallback( (id, qty, type) => {
-  //   console.log(rows)
-  //   if (type === "prod") {
-  //     setRows([...rows], (rows[id].fromProd = qty));
-  //   } else {
-  //     setRows([...rows], (rows[id].fromStock = qty));
-  //   }
-  // }, [rows]);
-
-  // const fromStockField = useCallback( (params) => {
-  //   return (
-  //     <strong>
-  //       <Index
-  //         maxValue = {1000} //params.row.needQty}
-  //         type = {"stock"}
-  //         id = {params.rowIndex}
-  //         onChange = {onQtyChange}
-  //         params={params}
-  //       />
-  //     </strong>
-  //   )
-  // }, [onQtyChange] )
-
   const columns = [
     { field: "id", headerName: "id", width: 30 },
-    { field: "name", headerName: "Наименование", type: "text", width: 200 },
-    { field: "qtyOrder", headerName: "Заказ", type: "number", width: 100 },
-    { field: "qtyCollect", headerName: "Набрано", type: "number", width: 100 },
+    { field: "name", headerName: "Наименование", type: "text", width: 280 },
+    { field: "qtyOrder", headerName: "Заказ", type: "number", width: 70 },
+    { field: "qtyCollect", headerName: "Набрано", type: "number", width: 70 },
+    { field: "fromProd", headerName: "С доработки", width: 220, renderCell: fromProdField },
+    { field: "qtyStock", headerName: "Склад", type: "number", width: 70 },
+    { field: "fromStock", headerName: "Со склада", width: 220, renderCell: fromStockField },
     { field: "note", headerName: "Примечание", type: "text", width: 200 },
     { field: "update", headerName: "обновить", width: 100, renderCell: updateField },
-    { field: "fromProd", headerName: "С доработки", width: 250, renderCell: fromProdField },
-    { field: "fromStock", headerName: "Со склада", width: 250, renderCell: fromStockField },
   ];
 
   useEffect(() => {
@@ -288,6 +274,7 @@ const DialogOrders = (props) => {
 
   useEffect(() => {
     if (!loading && data) {
+      // console.log(data);
       const preparedRows = data.mr_items.map((it, key) => {
         const qtyCollect =
           it.mr_price.qty_to.aggregate.sum.qty - it.mr_price.qty_from.aggregate.sum.qty;
@@ -297,6 +284,7 @@ const DialogOrders = (props) => {
           name: it.mr_price.name,
           qtyOrder: it.qty,
           // needQty: needQty,
+          qtyStock: it.stock_data.stock_now,
           qtyCollect: qtyCollect,
           fromProd: 0, //it.qty,
           fromStock: 0, // it.qty,
@@ -432,12 +420,13 @@ const DialogOrders = (props) => {
           {Boolean(rows.length) && (
             <div style={{ height: 800, width: "100%" }}>
               <DataGrid
+                autoHeight={true}
+                density="compact"
                 pagination
                 pageSize={20}
                 components={{ pagination: CustomPagination }}
                 columns={columns}
                 rows={rows}
-                rowHeight={32}
               />
             </div>
           )}
