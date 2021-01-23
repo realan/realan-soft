@@ -84,6 +84,16 @@ export const ADD_MOVE_ITEM = gql`
   }
 `;
 
+export const UPDATE_ITEM_IN_ORDER = gql`
+  mutation UpdateItemInOrder($id: Int!, $qty: Int!, $note: String) {
+    update_mr_items(where: { id: { _eq: $id } }, _set: { qty: $qty, note: $note }) {
+      returning {
+        id
+      }
+    }
+  }
+`;
+
 // old mutations
 
 // DELIVERY

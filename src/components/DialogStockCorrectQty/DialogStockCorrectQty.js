@@ -40,7 +40,7 @@ const DialogStockCorrectQty = (props) => {
       maxWidth="sm"
     >
       <DialogTitle id="form-dialog-title">
-        {props.name} - числится - {props.stockNow}{" "}
+        {props.name}: числится - {props.stockNow}{" "}
       </DialogTitle>
       <DialogContent>
         По факту

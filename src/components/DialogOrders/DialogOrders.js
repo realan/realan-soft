@@ -26,6 +26,8 @@ import { TextField } from "@material-ui/core";
 import Tooltip from "@material-ui/core/Tooltip";
 import Box from "@material-ui/core/Box";
 import { ADD_MOVE_ITEM } from "../../GraphQL/Mutations";
+// import DialogOrdersCancelOrder from "components/Dialogs/DialogOrdersCancelOrder";
+import DialogOrdersUpdateItem from "components/Dialogs/DialogOrdersUpdateItem";
 
 // const useStyles = makeStyles(styles);
 
@@ -466,41 +468,18 @@ const DialogOrders = (props) => {
         </DialogActions>
       </Dialog>
 
-      <Dialog
-        open={openUpdate}
-        onClose={handleUpdateClose}
-        aria-labelledby="form-dialog-title"
-        maxWidth="sm"
-      >
-        <DialogTitle id="form-dialog-title">{dataRow.name} </DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            label="Кол-во"
-            type="number"
-            fullWidth
-            value={dataRow.qtyOrder}
-            onChange={handleQtyChange}
-          />
-          <TextField
-            margin="dense"
-            label="Примечание"
-            type="text"
-            fullWidth
-            value={dataRow.note || ""}
-            onChange={handleNoteChange}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleUpdateClose} color="primary">
-            Отмена
-          </Button>
-          <Button onClick={handleUpdateItem} color="primary">
-            Изменить
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <DialogOrdersUpdateItem 
+        isOpen={openUpdate}
+        value={ {          
+          id: dataRow.id,
+          name: dataRow.name,
+          qtyOrder:dataRow.qtyOrder,
+          note: dataRow.note || "",
+        }}
+        handleClose={() => setOpenUpdate(false)}
+      />
+
+
 
       <Dialog
         open={openAddItem}

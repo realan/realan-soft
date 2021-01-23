@@ -285,6 +285,7 @@ const DialogStock = (props) => {
       setStockQty(qty);
     }
   };
+  
   const handleFilter = () => {
     setShowAll(!showAll);
   };
