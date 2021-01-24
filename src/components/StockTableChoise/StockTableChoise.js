@@ -1,14 +1,14 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+// import { makeStyles } from "@material-ui/core/styles";
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-const useStyles = makeStyles({
-  input: {
-    width: 65,
-  },
-});
+// const useStyles = makeStyles({
+//   input: {
+//     width: 65,
+//   },
+// });
 
 const StockTableChoise = ({ 
         whatShow = "all",

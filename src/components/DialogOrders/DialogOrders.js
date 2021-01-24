@@ -26,6 +26,7 @@ import { TextField } from "@material-ui/core";
 import Tooltip from "@material-ui/core/Tooltip";
 import Box from "@material-ui/core/Box";
 import { ADD_MOVE_ITEM } from "../../GraphQL/Mutations";
+import UpdateItemInOrder from "components/ModalDialogs/UpdateItemInOrder";
 
 // const useStyles = makeStyles(styles);
 
@@ -206,6 +207,15 @@ const DialogOrders = (props) => {
         >
           <EditIcon />
         </IconButton>
+        {/* <UpdateItemInOrder 
+          isOpen={openUpdate} 
+          count={params.row.qtyOrder}
+          text={params.row.note}
+          name={params.row.name}
+          handleClose={ () => setOpenUpdate(false) }
+          handleOk={handleUpdateItem}
+          handleChange
+        /> */}
         <Tooltip title="Удаляю позицию. Что набрано - перемещаю на склад">
           <IconButton
             color="secondary"
@@ -453,7 +463,7 @@ const DialogOrders = (props) => {
           </Box>
 
           <Box flexGrow={1}>
-            <Button onClick={() => makeMoves(rows)} color="primary" variant="contained">
+            <Button onClick={() => makeMoves(rows)} color="primary" variant="contained" size="large">
               Обновить кол-во
             </Button>
           </Box>

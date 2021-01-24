@@ -105,14 +105,14 @@ const Stock = () => {
   // items for table
   const columns = useMemo(
     () => [
-      { field: "id", headerName: "id", width: 30 },
-      { field: "item_name", headerName: "Название", width: 200 },
-      { field: "stock_now", headerName: "Склад", type: "number", width: 110 },
-      { field: "order_this_week", headerName: "Заказ 1", type: "number", width: 110 },
-      { field: "collected_this_week", headerName: "Набрано 1", type: "number", width: 110 },
-      { field: "order_next_week", headerName: "Заказ 2", type: "number", width: 110 },
-      { field: "collected_next_week", headerName: "Набрано 2", type: "number", width: 110 },
-      { field: "order_next", headerName: "Заказ далее", type: "number", width: 110 },
+      { field: "id", headerName: "id", width: 10 },
+      { field: "item_name", headerName: "Название", width: 380 },
+      { field: "stock_now", headerName: "Склад", type: "number", width: 80 },
+      { field: "order_this_week", headerName: "Зкз 1", type: "number", width: 80 },
+      { field: "collected_this_week", headerName: "Нбр 1", type: "number", width: 80 },
+      { field: "order_next_week", headerName: "Зкз 2", type: "number", width: 80 },
+      { field: "collected_next_week", headerName: "Нбр 2", type: "number", width: 80 },
+      { field: "order_next", headerName: "Зкз далее", type: "number", width: 80 },
     ],
     []
   );

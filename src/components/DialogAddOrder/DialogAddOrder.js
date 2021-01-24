@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { gql } from "apollo-boost";
 import { useMutation } from "@apollo/react-hooks";
 import Button from "@material-ui/core/Button";
+import Box from "@material-ui/core/Box";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -136,9 +137,11 @@ const DialogAddOrder = (props) => {
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={handleDialogClose} color="primary">
-            Отмена
-          </Button>
+          <Box flexGrow={1}>
+            <Button onClick={handleDialogClose} color="primary">
+              Отмена
+            </Button>
+          </Box>
           <Button onClick={handleAddOrder} color="primary">
             Добавить заказ
           </Button>

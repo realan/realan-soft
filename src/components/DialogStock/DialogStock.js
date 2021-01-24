@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { gql } from "apollo-boost";
 import { useSubscription, useMutation } from "@apollo/react-hooks";
 import Button from "@material-ui/core/Button";
+import Box from "@material-ui/core/Box";
 // import Input from '@material-ui/core/Input';
 import Dialog from "@material-ui/core/Dialog";
 // import Table from "../Table/Table.js";
@@ -10,14 +11,11 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 // import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from "@material-ui/core/DialogTitle";
-import Paper from "@material-ui/core/Paper";
-import Draggable from "react-draggable";
 // import RowCollectOrder from "components/RowCollectOrder/RowCollectOrder.js";
 import { DataGrid } from '@material-ui/data-grid';
 // import InputGroup from "components/InputGroup/InputGroup";
 import InputWithButtons from "components/InputWithButtons/InputWithButtons";
 import CardPosInOrder from "components/CardPosInOrder/CardPosInOrder";
-import Box from "@material-ui/core/Box";
 import Switch from "@material-ui/core/Switch";
 import DialogStockCorrectQty from "components/DialogStockCorrectQty/DialogStockCorrectQty";
 import { ADD_MOVE_ITEM } from "../../GraphQL/Mutations";
@@ -59,13 +57,6 @@ const SUBSCRIPTION_ORDERS_BY_ID = gql`
   }
 `;
 
-function PaperComponent(props) {
-  return (
-    <Draggable handle="#draggable-dialog-title" cancel={'[class*="MuiDialogContent-root"]'}>
-      <Paper {...props} />
-    </Draggable>
-  );
-}
 
 const STORE_TYPE = {
   PRODUCTION: "production",
@@ -79,7 +70,7 @@ const DialogStock = (props) => {
   const [stockQty, setStockQty] = useState(0); // now in stock
   const [stockToProd, setStockToProd] = useState(0);
   const [prodToStock, setProdToStock] = useState(0);
-  const [showAll, setShowAll] = useState(false);
+  const [showCards, setShowCards] = useState(false);
   const [openCorrectQty, setOpenCorrectQty] = useState(false);
   // const [btnOkStatus, setBtnOkStatus] = useState(true);
   const [dataDB, setDataDB] = useState([]); // для добавления в бд перемещений ассортимента с производства и склада
@@ -128,12 +119,14 @@ const DialogStock = (props) => {
 
   const columns = [
     { field: 'id', headerName: 'id', width: 10 },
-    { field: 'customer', headerName: 'Заказчик', width: 150 },
-    { field: 'town', headerName: 'Город', width: 110 },
+    // { field: 'customer', headerName: 'Заказчик', width: 150 },
+    // { field: 'town', headerName: 'Город', width: 110 },
+    { field: 'townAndCustomer', headerName: 'Заказ', width: 250 },
     { field: 'dateOut', headerName: 'Дата отгрузки', width: 110 },
-    { field: 'collected', headerName: 'Набрано%', type: "number", width: 10 },
+    // { field: 'collected', headerName: 'Набрано%', type: "number", width: 80 },
     { field: 'orderQty', headerName: 'Заказ', type: "number", width: 80 },
-    { field: 'needQty', headerName: 'Нужно', type: "number", width: 80 },
+    // { field: 'needQty', headerName: 'Нужно', type: "number", width: 80 },
+    { field: 'collectedQty', headerName: 'Набрано', type: "number", width: 80 },
     { field: 'fromProd', headerName: 'С доработки', width: 200, renderCell: fromProdField },
     { field: 'fromStock', headerName: 'Со склада', width: 200, renderCell: fromStockField },
     { field: 'note', headerName: 'Примечание', type: "text", width: 110 },
@@ -165,20 +158,22 @@ const DialogStock = (props) => {
 
   useEffect(() => {
     if (data) {
-      const preparedCards = data.mr_items.map((it, key) => {
+      const preparedData = data.mr_items.map((it, key) => {
+
         const dateOut = new Date(it.mr_order.date_out);
-        let needQty =
-          it.qty -
-          (it.mr_order.mr_to.reduce((sum, current) => sum + current.qty, 0) -
-            it.mr_order.mr_from.reduce((sum, current) => sum + current.qty, 0));
+        const sumTo = it.mr_order.mr_to.reduce((sum, current) => sum + current.qty, 0);
+        const sumFrom = it.mr_order.mr_from.reduce((sum, current) => sum + current.qty, 0);
+        const needQty = it.qty - (sumTo - sumFrom);
+        const collectedQty = sumTo - sumFrom;
 
         let obj = {
           id: key, // it.id,
           orderId: it.mr_order.id,
           customer: it.mr_order.mr_customer.name,
           town: it.mr_order.town,
+          townAndCustomer: it.mr_order.town + " " + it.mr_order.mr_customer.name,
           dateOut: dateOut.toDateString(),
-          // collected: qty,
+          collectedQty: collectedQty,
           orderQty: it.qty,
           needQty: needQty,
           fromProd: 0, //it.qty,
@@ -188,8 +183,8 @@ const DialogStock = (props) => {
 
         return obj;
       });
-      console.log(preparedCards);
-      setRows(preparedCards);
+      console.log(preparedData);
+      setRows(preparedData);
     }
   }, [data]);
 
@@ -286,7 +281,7 @@ const DialogStock = (props) => {
     }
   };
   const handleFilter = () => {
-    setShowAll(!showAll);
+    setShowCards(!showCards);
   };
 
   const onCountChange = (newCount, currentRows, id, storeType) => {
@@ -321,13 +316,13 @@ const DialogStock = (props) => {
         onClose={props.PaperhandleClose}
         fullScreen={true}
         maxWidth={false}
-        PaperComponent={PaperComponent}
+
         aria-labelledby="draggable-dialog-title"
       >
         <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
           {data.mr_items[0].mr_price.name}
-          <Switch checked={showAll} onChange={handleFilter} name="checkedB" color="primary" />
-          показать все
+          <Switch checked={showCards} onChange={handleFilter} name="checkedB" color="primary" />
+            Карточки
           <Button
             onClick={() => setOpenCorrectQty(true)}
             color="primary"
@@ -339,7 +334,16 @@ const DialogStock = (props) => {
         </DialogTitle>
 
         <DialogContent>
-          {Boolean(rows.length) && (
+          {Boolean(rows.length) && !showCards && (
+            <div style={{ height: 800, width: '100%' }}>
+              <DataGrid 
+                rows={rows} 
+                columns={columns} 
+              />
+            </div>
+          )}
+
+          {Boolean(rows.length) && showCards && (
             <Box display="flex" flexWrap="wrap" m={1}>
               {rows.map((card, key) => {
                 return (
@@ -356,14 +360,7 @@ const DialogStock = (props) => {
               })}
             </Box>
           )}
-          {Boolean(rows.length) && (
-            <div style={{ height: 500, width: '100%' }}>
-                  <DataGrid 
-                    rows={rows} 
-                    columns={columns} 
-                  />
-            </div>
-          )}
+
           <div>
             {" "}
             Со склада в доработку
@@ -378,10 +375,12 @@ const DialogStock = (props) => {
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={handleCancel} color="primary" variant="outlined">
-            Отмена
-          </Button>
-          <Button onClick={handleOK} color="primary" variant="contained" >
+          <Box flexGrow={1}>
+            <Button onClick={handleCancel} color="primary" variant="outlined">
+              Отмена
+            </Button>
+          </Box>
+          <Button onClick={handleOK} color="primary" variant="contained" size="large">
             Подтвердить
           </Button>
         </DialogActions>
