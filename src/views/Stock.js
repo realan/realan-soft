@@ -1,6 +1,6 @@
 import React from "react";
 import { gql } from "apollo-boost";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useSubscription } from "@apollo/react-hooks";
 // import DialogOrders from "../components/DialogOrders/DialogOrders.js";
 import { DataGrid } from "@material-ui/data-grid";
@@ -9,6 +9,8 @@ import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import DialogStock from "components/DialogStock/DialogStock.js";
 import StockTableChoise from "components/StockTableChoise/StockTableChoise";
+import VoiceInput from "components/VoiceInput/VoiceInput";
+import { Box } from "@material-ui/core";
 // import { XGrid } from '@material-ui/x-grid';
 
 const SUBSCRIPTION_STOCK = gql`
@@ -69,7 +71,6 @@ CustomPagination.propTypes = {
   }).isRequired,
 };
 
-
 const Stock = () => {
   // date for dialog
   const [itemForDialog, setItemForDialog] = useState({
@@ -78,29 +79,19 @@ const Stock = () => {
     stockQty: undefined,
     // whatShow: "all",
   });
-  // const [rows, setRows] = useState([]);
+  const [rows, setRows] = useState([]);
+  const [rowsData, setRowsData] = useState([]);
+  const [filter, setFilter] = useState("all");
 
   // hook for data from db
   const { loading, error, data } = useSubscription(SUBSCRIPTION_STOCK);
 
-  // useEffect(() => {
-  //   if (!loading && data) {
-  //     const preparedRows = data.mr_pivot.map((it) => {
-  //       let obj = {
-  //         id: it.id,
-  //         item_name: it.item_name,
-  //         stock_now: it.stock_now,
-  //         order_this_week: it.order_this_week,
-  //         collected_this_week: it.collected_this_week,
-  //         order_next_week: it.order_next_week,
-  //         collected_next_week: it.order_next_week,
-  //         order_next: it.order_next_week,
-  //       };
-  //       return obj;
-  //     });
-  //     setRows(preparedRows);
-  //   }
-  // }, [loading, data, itemForDialog.whatShow]);
+  useEffect(() => {
+    if (!loading && data) { 
+      setRowsData(data.mr_pivot);
+      setRows(data.mr_pivot);
+    }
+  }, [loading, data]);
 
   // items for table
   const columns = useMemo(
@@ -129,16 +120,52 @@ const Stock = () => {
     setItemForDialog({ ...itemForDialog, isOpen: false });
   };
 
-
   if (loading) return "Loading....";
   if (error) return `Error! ${error.message}`;
 
+  const filterChange = (event) => {
+    const filterType = event.target.value;
+    let preparedRows = [];
+    setFilter(filterType);
+    switch(filterType) {
+      case 'needAllWeeks': 
+        preparedRows = rowsData.filter( row => 
+          row.order_this_week !== 0 || 
+          row.order_next_week !== 0 || 
+          row.order_next !== 0
+        );
+        break;
+      case 'stockNow':
+        preparedRows = rowsData.filter( row => row.stock_now !== 0);
+        break;
+      case 'needThisWeek':
+        preparedRows = rowsData.filter( row => (row.order_this_week - row.collected_this_week) !== 0);
+        break;
+      default:
+        preparedRows = rowsData;
+        break;
+    }
+    setRows(preparedRows);
+  }
+
+  const onSearchChange = (text) => {
+    const preparedRows = rowsData.filter( row => row.item_name.toLowerCase().indexOf(text) >= 0);
+    setRows(preparedRows);
+  }
+
   return (
     <div>
-      <StockTableChoise/>
+      <Box>
+        <Box flexGrow={1}>
+          <StockTableChoise value={filter} onChange={filterChange} />
+        </Box>
+        <Box>
+          <VoiceInput onChange={onSearchChange} />        
+        </Box>
+      </Box>
       <div style={{ height: 1400, width: "100%" }}>
         <DataGrid 
-          rows={data.mr_pivot} 
+          rows={rows} 
           columns={columns} 
           rowHeight={30} 
           onRowClick={onRowClick} 

@@ -11,23 +11,28 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 // });
 
 const StockTableChoise = ({ 
-        whatShow = "all",
+        value = "all",
         onChange,
     }) => {
+  
+  // const [value, setValue] = React.useState('all');
+  // const handleChange = (event) => {
+  //   setValue(event.target.value);
+  // };
 
   return (
       <>
         <RadioGroup
             aria-label="stock-table-choice"
             name="stockRadio"
-            value={whatShow}
-            onChange={onChange}
+            value={value}
+            onChange={(event) => onChange(event) }
             row
         >
             <FormControlLabel value="all" control={<Radio />} label="Все" />
-            <FormControlLabel value="needAll" control={<Radio />} label="Нужно" />
-            <FormControlLabel value="stock" control={<Radio />} label="На складе" />
-            <FormControlLabel value="week" control={<Radio />} label="Эта неделя" />
+            <FormControlLabel value="needAllWeeks" control={<Radio />} label="Нужно" />
+            <FormControlLabel value="stockNow" control={<Radio />} label="На складе" />
+            <FormControlLabel value="needThisWeek" control={<Radio />} label="Эта неделя" />
         </RadioGroup>
     </>
   );

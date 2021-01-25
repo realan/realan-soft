@@ -1,8 +1,9 @@
 import * as React from "react";
 import { DataGrid } from "@material-ui/data-grid";
-import InputGroup from "../components/InputGroup/InputGroup";
+// import InputGroup from "../components/InputGroup/InputGroup";
 import { useSubscription } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
+import VoiceInput from "components/VoiceInput/VoiceInput";
 
 const SUBSCRIPTION_ITEMS_IN_ORDER = gql`
   subscription SubscriptionsItemsInOrder($order_id: Int!) {
@@ -36,74 +37,51 @@ const SUBSCRIPTION_ITEMS_IN_ORDER = gql`
 const Payments = () => {
 
   const [rows, setRows] = React.useState([])
+  const [rowsData, setRowsData] = React.useState([])
 
   const { loading, error, data } = useSubscription(SUBSCRIPTION_ITEMS_IN_ORDER, {
-    variables: { order_id: 99 },
+    variables: { order_id: 150 },
   });
-
-
-  
-  const onQtyChange = React.useCallback (() => {
-    console.log("onQtyChange")
-  });
-
-  
-  const fromStockField  = React.useCallback(  (params) => {
-    return (
-      <strong>
-        <InputGroup
-          maxValue = {1000} //params.row.needQty}
-          type = {"stock"}
-          id = {params.rowIndex}
-          onChange = {onQtyChange}
-          params={params}
-        />
-      </strong>
-    )
-  }, [onQtyChange] )
-
   
   const columns = React.useMemo ( () => [
     { field: "id", headerName: "id", width: 30 },
-    { field: "name", headerName: "Наименование", type: "text", width: 200 },
-    { field: 'fromStock', headerName: 'Со склада', width: 250, renderCell: fromStockField },
-  ], [fromStockField]);
+    { field: "name", headerName: "Наименование", type: "text", width: 300 },
+    { field: "qtyOrder", headerName: "Q-ty", type: "number", width: 100 },
+    // { field: 'fromStock', headerName: 'Со склада', width: 250, renderCell: fromStockField },
+  ], []);
   
   React.useEffect(() => {
     if (!loading && data) {
-      console.log(data)
       const preparedRows = data.mr_items.map((it, key) => {
-        let qtyCollect =
-          it.mr_price.qty_to.aggregate.sum.qty - it.mr_price.qty_from.aggregate.sum.qty;
- 
         let obj = {
           id: key, // it.id,
           name: it.mr_price.name,
           qtyOrder: it.qty,
-          qtyCollect: qtyCollect,
-          fromProd: 0, //it.qty,
-          fromStock: 0, // it.qty,
           note: it.note,
           to_order: 99,
           idItem: it.mr_price.id,
         };
-
         return obj;
       });
-
-      console.log(preparedRows)
       setRows(preparedRows);
+      setRowsData(preparedRows);
     }
   }, [loading, data]);
 
   if (loading) return "Loading....";
   if (error) return `Error! ${error.message}`;
 
-
+  const onSearchChange = (text) => {
+    const preparedRows = rowsData.filter( row => row.name.toLowerCase().indexOf(text) >= 0);
+    console.log(preparedRows)
+    setRows(preparedRows);
+  }
 
 
 
   return (
+    <>
+      <VoiceInput onChange={onSearchChange} />
       <div style={{ height: 800, width: "100%" }}>
         <DataGrid 
           columns={columns} 
@@ -111,7 +89,8 @@ const Payments = () => {
           rowHeight={32} 
         />
       </div>
+    </>
   );
 };
 
-export default React.memo(Payments);
+export default Payments;
