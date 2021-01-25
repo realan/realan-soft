@@ -80,9 +80,12 @@ const DialogAddOrder = (props) => {
   useEffect(() => {
     // ЖОПА. Как сделать проще?
     if (!mutationLoading && mutationData) {
+      console.log(orderItems)
       let orderId = mutationData.insert_mr_order.returning[0].id;
       orderItems.forEach(function (item) {
         item["order"] = orderId;
+        if (item["note"] === undefined){ item["note"] = "" };
+        console.log(item)
         AddItems({ variables: { addData: item } });
       });
     }

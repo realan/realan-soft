@@ -94,7 +94,7 @@ const DialogAddOrderItems = (props) => {
       setItems(result);
       let itemsOrder = result.map((item) => {
         return {
-          item: item.id,
+          item: item.itemId,
           qty: item.qty,
           order: item.orderId,
           note: item.note,
