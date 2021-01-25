@@ -11,6 +11,7 @@ import DialogStock from "components/DialogStock/DialogStock.js";
 import StockTableChoise from "components/StockTableChoise/StockTableChoise";
 import VoiceInput from "components/VoiceInput/VoiceInput";
 import { Box } from "@material-ui/core";
+import FileExportToXls from "components/FileExportToXls/FileExportToXls";
 // import { XGrid } from '@material-ui/x-grid';
 
 const SUBSCRIPTION_STOCK = gql`
@@ -174,7 +175,7 @@ const Stock = () => {
           components={{ pagination: CustomPagination }}
         />
       </div>
-
+      <FileExportToXls  data={rows} name={"склад"} />
       {itemForDialog.itemId && (
         <DialogStock
           open={itemForDialog.isOpen}

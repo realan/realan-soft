@@ -4,6 +4,7 @@ import { DataGrid } from "@material-ui/data-grid";
 import { useSubscription } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 import VoiceInput from "components/VoiceInput/VoiceInput";
+import FileExportToXls from "components/FileExportToXls/FileExportToXls";
 
 const SUBSCRIPTION_ITEMS_IN_ORDER = gql`
   subscription SubscriptionsItemsInOrder($order_id: Int!) {
@@ -77,10 +78,13 @@ const Payments = () => {
     setRows(preparedRows);
   }
 
+  const addHandler = () => {
 
+  }
 
   return (
     <>
+      <FileExportToXls data={rowsData} name={"export"} />
       <VoiceInput onChange={onSearchChange} />
       <div style={{ height: 800, width: "100%" }}>
         <DataGrid 
@@ -89,6 +93,7 @@ const Payments = () => {
           rowHeight={32} 
         />
       </div>
+      
     </>
   );
 };
