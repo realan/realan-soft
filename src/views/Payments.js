@@ -78,10 +78,6 @@ const Payments = () => {
     setRows(preparedRows);
   }
 
-  const addHandler = () => {
-
-  }
-
   return (
     <>
       <FileExportToXls data={rowsData} name={"export"} />

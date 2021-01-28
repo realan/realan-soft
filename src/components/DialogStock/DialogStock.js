@@ -192,6 +192,8 @@ const DialogStock = (props) => {
   if (error) return `Error! ${error.message}`;
 
   const handleOK = () => {
+    console.log(dataDB);
+    console.log("handle OK")
     dataDB.map((it) => {
       if (it.qtyFromProd !== 0) {
         console.log(it);
@@ -241,6 +243,8 @@ const DialogStock = (props) => {
   };
 
   const handleCancel = () => {
+    console.log(dataDB)
+    console.log("handle cancel")
     setStockQty(props.stock_now);
     props.handleClose();
   };
@@ -253,7 +257,7 @@ const DialogStock = (props) => {
 
   function onQtyChange (id, qty, type) {
     // console.log(id, qty, type);
-    // console.log(dataDB);
+    console.log(dataDB);
     if (type === "prod") {
       setDataDB([...dataDB], (dataDB[id].qtyFromProd = qty));
     } else {
@@ -264,13 +268,6 @@ const DialogStock = (props) => {
       }, 0);
       setStockQty(props.stock_now - sumQtyFromStock);
     }
-
-
-    // let flag = true;
-    // dataDB.forEach( item => (item.qtyFromProd !==0) || (item.qtyFromStock !==0) ? flag = false : flag = true);
-    // console.log(flag)
-    // setBtnOkStatus(flag);
- 
   };
 
   const handleCorrectQty = (qty) => {

@@ -1,0 +1,1544 @@
+{
+  "ReportVersion": "2017.2.3.0",
+  "ReportGuid": "712d2a2ac4594808b930dea5bafbb55c",
+  "ReportName": "ReconciliationAct",
+  "ReportAlias": "Акт сверки",
+  "ReportCreated": "/Date(1492657296000+0300)/",
+  "ReportChanged": "/Date(1510129082462+0300)/",
+  "EngineVersion": "EngineV2",
+  "Script": "using System;\r\nusing System.Drawing;\r\nusing System.Windows.Forms;\r\nusing System.Data;\r\nusing Stimulsoft.Controls;\r\nusing Stimulsoft.Base.Drawing;\r\nusing Stimulsoft.Report;\r\nusing Stimulsoft.Report.Dialogs;\r\nusing Stimulsoft.Report.Components;\r\n\r\nnamespace Reports\r\n{\r\n    public class ReconciliationAct : Stimulsoft.Report.StiReport\r\n    {\r\n        public ReconciliationAct()        {\r\n            this.InitializeComponent();\r\n        }\r\n\r\n\t\t#region Custom methods\r\n\t\tpublic decimal SaldoCalculate(decimal sumDt, decimal sumKt, decimal saldoBegin)\r\n\t\t{\r\n\t\t\treturn (sumDt - sumKt) - saldoBegin;\r\n\t\t}\r\n\t\t#endregion  Custom methods\r\n\t\t\r\n        #region StiReport Designer generated code - do not modify\r\n\t\t#endregion StiReport Designer generated code - do not modify\r\n    }\r\n}\r\n",
+  "ReferencedAssemblies": {
+    "0": "System.Dll",
+    "1": "System.Drawing.Dll",
+    "2": "System.Windows.Forms.Dll",
+    "3": "System.Data.Dll",
+    "4": "System.Xml.Dll",
+    "5": "Stimulsoft.Controls.Dll",
+    "6": "Stimulsoft.Base.Dll",
+    "7": "Stimulsoft.Report.Dll"
+  },
+  "Dictionary": {
+    "DataSources": {
+      "0": {
+        "Ident": "StiDataTableSource",
+        "Name": "root",
+        "Alias": "root",
+        "Columns": {
+          "0": {
+            "Name": "actData",
+            "Index": -1,
+            "NameInSource": "actData",
+            "Alias": "actData",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "cause",
+            "Index": -1,
+            "NameInSource": "cause",
+            "Alias": "cause",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "listItems",
+            "Index": -1,
+            "NameInSource": "listItems",
+            "Alias": "listItems",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "payer",
+            "Index": -1,
+            "NameInSource": "payer",
+            "Alias": "payer",
+            "Type": "System.String"
+          },
+          "4": {
+            "Name": "supplier",
+            "Index": -1,
+            "NameInSource": "supplier",
+            "Alias": "supplier",
+            "Type": "System.String"
+          }
+        },
+        "NameInSource": "JSON.root"
+      },
+      "1": {
+        "Ident": "StiDataTableSource",
+        "Name": "root_actData",
+        "Alias": "root_actData",
+        "Columns": {
+          "0": {
+            "Name": "dateBegin",
+            "Index": -1,
+            "NameInSource": "dateBegin",
+            "Alias": "dateBegin",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "dateEnd",
+            "Index": -1,
+            "NameInSource": "dateEnd",
+            "Alias": "dateEnd",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "relationId",
+            "Index": -1,
+            "NameInSource": "relationId",
+            "Alias": "relationId",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "saldoBegin",
+            "Index": -1,
+            "NameInSource": "saldoBegin",
+            "Alias": "saldoBegin",
+            "Type": "System.Decimal"
+          },
+          "4": {
+            "Name": "saldoEnd",
+            "Index": -1,
+            "NameInSource": "saldoEnd",
+            "Alias": "saldoEnd",
+            "Type": "System.Decimal"
+          }
+        },
+        "NameInSource": "JSON.root_actData"
+      },
+      "2": {
+        "Ident": "StiDataTableSource",
+        "Name": "root_listItems",
+        "Alias": "root_listItems",
+        "Columns": {
+          "0": {
+            "Name": "date",
+            "Index": -1,
+            "NameInSource": "date",
+            "Alias": "date",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "docNumber",
+            "Index": -1,
+            "NameInSource": "docNumber",
+            "Alias": "docNumber",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "dt",
+            "Index": -1,
+            "NameInSource": "dt",
+            "Alias": "dt",
+            "Type": "System.Decimal"
+          },
+          "3": {
+            "Name": "kt",
+            "Index": -1,
+            "NameInSource": "kt",
+            "Alias": "kt",
+            "Type": "System.Decimal"
+          },
+          "4": {
+            "Name": "relationId",
+            "Index": -1,
+            "NameInSource": "relationId",
+            "Alias": "relationId",
+            "Type": "System.String"
+          }
+        },
+        "NameInSource": "JSON.root_listItems"
+      },
+      "3": {
+        "Ident": "StiDataTableSource",
+        "Name": "root_payer",
+        "Alias": "root_payer",
+        "Columns": {
+          "0": {
+            "Name": "name",
+            "Index": -1,
+            "NameInSource": "name",
+            "Alias": "name",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "relationId",
+            "Index": -1,
+            "NameInSource": "relationId",
+            "Alias": "relationId",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "responsibleName",
+            "Index": -1,
+            "NameInSource": "responsibleName",
+            "Alias": "responsibleName",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "responsiblePosition",
+            "Index": -1,
+            "NameInSource": "responsiblePosition",
+            "Alias": "responsiblePosition",
+            "Type": "System.String"
+          }
+        },
+        "NameInSource": "JSON.root_payer"
+      },
+      "4": {
+        "Ident": "StiDataTableSource",
+        "Name": "root_supplier",
+        "Alias": "root_supplier",
+        "Columns": {
+          "0": {
+            "Name": "name",
+            "Index": -1,
+            "NameInSource": "name",
+            "Alias": "name",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "relationId",
+            "Index": -1,
+            "NameInSource": "relationId",
+            "Alias": "relationId",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "responsibleName",
+            "Index": -1,
+            "NameInSource": "responsibleName",
+            "Alias": "responsibleName",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "responsiblePosition",
+            "Index": -1,
+            "NameInSource": "responsiblePosition",
+            "Alias": "responsiblePosition",
+            "Type": "System.String"
+          }
+        },
+        "NameInSource": "JSON.root_supplier"
+      }
+    },
+    "Databases": {
+      "0": {
+        "Ident": "StiJsonDatabase",
+        "Name": "JSON",
+        "Alias": "JSON",
+        "PathData": "C:\\Users\\igor\\Desktop\\Stimul Blanks\\Stimul Blanks\\SBакт сверки\\reconciliationActData.json"
+      }
+    },
+    "Relations": {
+      "0": {
+        "Name": "root",
+        "ChildColumns": {
+          "0": "relationId"
+        },
+        "ParentColumns": {
+          "0": "actData"
+        },
+        "NameInSource": "root_actData",
+        "Alias": "root",
+        "ParentSource": "root",
+        "ChildSource": "root_actData"
+      },
+      "1": {
+        "Name": "root",
+        "ChildColumns": {
+          "0": "relationId"
+        },
+        "ParentColumns": {
+          "0": "listItems"
+        },
+        "NameInSource": "root_listItems",
+        "Alias": "root",
+        "ParentSource": "root",
+        "ChildSource": "root_listItems"
+      },
+      "2": {
+        "Name": "root",
+        "ChildColumns": {
+          "0": "relationId"
+        },
+        "ParentColumns": {
+          "0": "payer"
+        },
+        "NameInSource": "root_payer",
+        "Alias": "root",
+        "ParentSource": "root",
+        "ChildSource": "root_payer"
+      },
+      "3": {
+        "Name": "root",
+        "ChildColumns": {
+          "0": "relationId"
+        },
+        "ParentColumns": {
+          "0": "supplier"
+        },
+        "NameInSource": "root_supplier",
+        "Alias": "root",
+        "ParentSource": "root",
+        "ChildSource": "root_supplier"
+      }
+    }
+  },
+  "Pages": {
+    "0": {
+      "Ident": "StiPage",
+      "Name": "Page1",
+      "Guid": "9c24ad0a273fe1518d9ff40b75546bba",
+      "Interaction": {
+        "Ident": "StiInteraction"
+      },
+      "Border": ";;2;;1;;;solid:Black",
+      "Brush": "solid:",
+      "Components": {
+        "0": {
+          "Ident": "StiReportTitleBand",
+          "Name": "ReportTitleBand1",
+          "ClientRectangle": "0,0.4,27.69,3.2",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text3",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0.8,27.6,1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "взаимных расчетов за период {System.Convert.ToDateTime(root_actData.dateBegin).ToString(\"dd.Mm.yyyy\")}  - {System.Convert.ToDateTime(root_actData.dateEnd).ToString(\"dd.Mm.yyyy\")}\r\nмежду {root_supplier.name} и {root_payer.name}\r\n"
+              },
+              "HorAlignment": "Center",
+              "Font": ";9;;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "Text4",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,1.8,27.6,1.2",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "\tМы, нижеподписавшиеся, {root_supplier.responsiblePosition} {root_supplier.name} {root_supplier.responsibleName}, с одной стороны и {root_payer.responsiblePosition} {root_payer.name} {root_payer.responsibleName}, с другой стороны, составили данный акт сверки в том, что, состояние взаимных расчетов по данным учета следующее:"
+              },
+              "Font": ";9;;",
+              "Border": ";;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "Text5",
+              "Guid": "f4a8c22402e54c60afc45d398da95e76",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0.2,27.6,0.6",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Акт сверки\r\n"
+              },
+              "HorAlignment": "Center",
+              "Font": ";12;Bold;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            }
+          }
+        },
+        "1": {
+          "Ident": "StiTable",
+          "Name": "Tableroot_listItems",
+          "ClientRectangle": "0,4.4,27.69,2.6",
+          "Interaction": {
+            "Ident": "StiBandInteraction"
+          },
+          "Border": ";;2;;1;;;solid:Black",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell1",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0,3.46,0.43",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Enabled": false,
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Border": "All;105,105,105;;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "ParentJoin": 31,
+              "ID": 28
+            },
+            "1": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell2",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "3.46,0,3.46,0.43",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Enabled": false,
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Border": "All;105,105,105;;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "ParentJoin": 31,
+              "ID": 29
+            },
+            "2": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell3",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "6.92,0,3.46,0.43",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Enabled": false,
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Border": "All;105,105,105;;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "ParentJoin": 31,
+              "ID": 30
+            },
+            "3": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell4",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0.01,14.22,0.42",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "По данным {root_supplier.name}, руб."
+              },
+              "Font": ";9;;",
+              "Border": "All;105,105,105;2;;1;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression",
+              "JoinCells": {
+                "0": "28",
+                "1": "29",
+                "2": "30",
+                "3": "31"
+              },
+              "ParentJoin": 31,
+              "Join": true,
+              "ID": 31,
+              "JoinWidth": 4,
+              "JoinHeight": 1
+            },
+            "4": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell5",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "13.05,0,2.27,0.43",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Enabled": false,
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Font": ";9;;",
+              "Border": "All;105,105,105;;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "ParentJoin": 41,
+              "ID": 32
+            },
+            "5": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell6",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "15.32,0,6.64,0.43",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Enabled": false,
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Font": ";9;;",
+              "Border": "All;105,105,105;;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "ParentJoin": 41,
+              "ID": 33
+            },
+            "6": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell7",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "21.96,0,3.07,0.43",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Enabled": false,
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Font": ";9;;",
+              "Border": "All;105,105,105;;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "ParentJoin": 41,
+              "ID": 37
+            },
+            "7": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell8",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "14.25,0.01,13.44,0.42",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "По данным {root_payer.name}, руб."
+              },
+              "Font": ";9;;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression",
+              "JoinCells": {
+                "0": "32",
+                "1": "33",
+                "2": "37",
+                "3": "41"
+              },
+              "ParentJoin": 41,
+              "Join": true,
+              "ID": 41,
+              "JoinWidth": 4,
+              "JoinHeight": 1
+            },
+            "8": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell9",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0.43,1.86,0.43",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Дата"
+              },
+              "HorAlignment": "Center",
+              "Font": ";9;Bold;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression",
+              "ID": 0
+            },
+            "9": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell10",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "1.87,0.43,6.84,0.44",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Документ"
+              },
+              "HorAlignment": "Center",
+              "Font": ";9;Bold;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression",
+              "ID": 1
+            },
+            "10": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell11",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "8.71,0.43,2.83,0.44",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Дебет"
+              },
+              "HorAlignment": "Center",
+              "Font": ";9;Bold;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression",
+              "ID": 2
+            },
+            "11": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell12",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "11.55,0.43,2.68,0.44",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Кредит"
+              },
+              "HorAlignment": "Center",
+              "Font": ";9;Bold;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression",
+              "ID": 3
+            },
+            "12": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell13",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "14.25,0.43,2.47,0.44",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Дата"
+              },
+              "HorAlignment": "Center",
+              "Font": ";9;Bold;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression",
+              "ID": 25
+            },
+            "13": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell14",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "16.71,0.43,5.86,0.44",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Документ"
+              },
+              "HorAlignment": "Center",
+              "Font": ";9;Bold;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression",
+              "ID": 34
+            },
+            "14": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell15",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "22.57,0.43,2.47,0.44",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Дебет"
+              },
+              "HorAlignment": "Center",
+              "Font": ";9;Bold;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression",
+              "ID": 38
+            },
+            "15": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell16",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "25.03,0.43,2.66,0.43",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Кредит"
+              },
+              "HorAlignment": "Center",
+              "Font": ";9;Bold;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression",
+              "ID": 42
+            },
+            "16": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell17",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0.87,1.86,0.43",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Enabled": false,
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Border": "All;105,105,105;;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "ParentJoin": 46,
+              "ID": 45
+            },
+            "17": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell18",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0.88,8.71,0.44",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Сальдо начальное"
+              },
+              "Font": ";9;Bold;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression",
+              "JoinCells": {
+                "0": "45",
+                "1": "46"
+              },
+              "ParentJoin": 46,
+              "Join": true,
+              "ID": 46,
+              "JoinWidth": 2,
+              "JoinHeight": 1
+            },
+            "18": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell19",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "8.71,0.88,2.83,0.44",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{root_actData.saldoBegin < 0 ? (-root_actData.saldoBegin).ToString(\"N2\") : \"\"}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";9;Bold;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "DecimalSeparator": ",",
+                "GroupSeparator": " "
+              },
+              "ID": 47
+            },
+            "19": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell20",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "11.55,0.91,2.68,0.42",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{root_actData.saldoBegin > 0 ? root_actData.saldoBegin.ToString(\"N2\") : \"\"} "
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";9;Bold;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression",
+              "ID": 48
+            },
+            "20": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell21",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "13.05,0.88,2.25,0.43",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Enabled": false,
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Font": ";9;Bold;",
+              "Border": "All;105,105,105;;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "ParentJoin": 50,
+              "ID": 49
+            },
+            "21": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell22",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "14.25,0.91,8.31,0.42",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Сальдо начальное"
+              },
+              "Font": ";9;Bold;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression",
+              "JoinCells": {
+                "0": "49",
+                "1": "50"
+              },
+              "ParentJoin": 50,
+              "Join": true,
+              "ID": 50,
+              "JoinWidth": 2,
+              "JoinHeight": 1
+            },
+            "22": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell23",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "22.57,0.88,2.47,0.44",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Font": ";9;Bold;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "ID": 51
+            },
+            "23": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell24",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "25.03,0.88,2.66,0.43",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Font": ";9;Bold;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "ID": 52
+            },
+            "24": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell25",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,1.29,1.86,0.44",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{System.Convert.ToDateTime(root_listItems.date).ToString(\"dd.MM.yyyy\")}"
+              },
+              "Font": ";9;;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression",
+              "ID": 5
+            },
+            "25": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell26",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "1.87,1.3,6.8,0.44",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{root_listItems.dt > 0 ? \"Продажа\" : \"Оплата\"} ({root_listItems.docNumber} от {System.Convert.ToDateTime(root_listItems.date).ToString(\"dd.MM.yyyy\")})"
+              },
+              "Font": ";9;;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression",
+              "ID": 6
+            },
+            "26": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell27",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "8.67,1.3,2.9,0.44",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{root_listItems.dt > 0 ? root_listItems.dt.ToString(\"N2\") : \"\"}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";9;;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "DecimalSeparator": ",",
+                "GroupSeparator": " "
+              },
+              "ID": 7
+            },
+            "27": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell28",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "11.55,1.3,2.68,0.44",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{root_listItems.kt > 0 ? root_listItems.kt.ToString(\"N2\") : \"\"}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";9;;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "DecimalSeparator": ",",
+                "GroupSeparator": " "
+              },
+              "ID": 8
+            },
+            "28": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell29",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "14.25,1.3,2.47,0.44",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Font": ";9;;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "ID": 26
+            },
+            "29": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell30",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "16.71,1.31,5.86,0.42",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Font": ";9;;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "ID": 35
+            },
+            "30": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell31",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "22.57,1.31,2.47,0.42",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Font": ";9;;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "ID": 39
+            },
+            "31": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell32",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "25.03,1.31,2.66,0.43",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Font": ";9;;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "ID": 43
+            },
+            "32": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell33",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,1.73,1.86,0.43",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Enabled": false,
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Border": "All;105,105,105;;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "ParentJoin": 11,
+              "ID": 10
+            },
+            "33": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell34",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,1.73,8.67,0.44",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Обороты за период"
+              },
+              "Font": ";9;Bold;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression",
+              "JoinCells": {
+                "0": "10",
+                "1": "11"
+              },
+              "ParentJoin": 11,
+              "Join": true,
+              "ID": 11,
+              "JoinWidth": 2,
+              "JoinHeight": 1
+            },
+            "34": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell35",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "8.67,1.73,2.9,0.44",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(Tableroot_listItems,root_listItems.dt)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";9;Bold;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Totals",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "DecimalSeparator": ",",
+                "GroupSeparator": " "
+              },
+              "ID": 12
+            },
+            "35": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell36",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "11.55,1.72,2.68,0.46",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{Sum(Tableroot_listItems,root_listItems.kt)}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";9;Bold;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Totals",
+              "TextFormat": {
+                "Ident": "StiNumberFormatService",
+                "NegativePattern": 1,
+                "DecimalSeparator": ",",
+                "GroupSeparator": " "
+              },
+              "ID": 13
+            },
+            "36": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell37",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "13.05,1.74,2.25,0.43",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Enabled": false,
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Font": ";9;Bold;",
+              "Border": "All;105,105,105;;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "ParentJoin": 36,
+              "ID": 27
+            },
+            "37": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell38",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "14.25,1.72,8.31,0.46",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Обороты за период"
+              },
+              "Font": ";9;Bold;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression",
+              "JoinCells": {
+                "0": "27",
+                "1": "36"
+              },
+              "ParentJoin": 36,
+              "Join": true,
+              "ID": 36,
+              "JoinWidth": 2,
+              "JoinHeight": 1
+            },
+            "38": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell39",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "22.57,1.73,2.47,0.44",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Font": ";9;Bold;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "ID": 40
+            },
+            "39": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell40",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "25.03,1.74,2.66,0.43",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Font": ";9;Bold;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "ID": 44
+            },
+            "40": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell41",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,2.17,1.86,0.43",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Enabled": false,
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Border": "All;105,105,105;;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "ParentJoin": 54,
+              "ID": 53
+            },
+            "41": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell42",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,2.17,8.67,0.42",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Сальдо конечное"
+              },
+              "Font": ";9;Bold;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression",
+              "JoinCells": {
+                "0": "53",
+                "1": "54"
+              },
+              "ParentJoin": 54,
+              "Join": true,
+              "ID": 54,
+              "JoinWidth": 2,
+              "JoinHeight": 1
+            },
+            "42": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell43",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "8.67,2.17,2.9,0.42",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{SaldoCalculate(Sum(Tableroot_listItems,root_listItems.dt), Sum(Tableroot_listItems,root_listItems.kt), root_actData.saldoBegin) < 0 ? \"\" : (-SaldoCalculate(Sum(Tableroot_listItems,root_listItems.dt), Sum(Tableroot_listItems,root_listItems.kt), root_actData.saldoBegin)).ToString(\"N2\")}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";9;Bold;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression",
+              "ID": 55
+            },
+            "43": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell44",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "11.55,2.18,2.68,0.44",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{SaldoCalculate(Sum(Tableroot_listItems,root_listItems.dt), Sum(Tableroot_listItems,root_listItems.kt), root_actData.saldoBegin) > 0 ? \"\" : (-SaldoCalculate(Sum(Tableroot_listItems,root_listItems.dt), Sum(Tableroot_listItems,root_listItems.kt), root_actData.saldoBegin)).ToString(\"N2\")}"
+              },
+              "HorAlignment": "Right",
+              "VertAlignment": "Center",
+              "Font": ";9;Bold;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression",
+              "ID": 56
+            },
+            "44": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell45",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "13.05,2.16,2.25,0.43",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Enabled": false,
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Font": ";9;Bold;",
+              "Border": "All;105,105,105;;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "ParentJoin": 58,
+              "ID": 57
+            },
+            "45": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell46",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "14.25,2.18,8.29,0.44",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Сальдо конечное"
+              },
+              "Font": ";9;Bold;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression",
+              "JoinCells": {
+                "0": "57",
+                "1": "58"
+              },
+              "ParentJoin": 58,
+              "Join": true,
+              "ID": 58,
+              "JoinWidth": 2,
+              "JoinHeight": 1
+            },
+            "46": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell47",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "22.55,2.17,2.49,0.42",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Font": ";9;Bold;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "ID": 59
+            },
+            "47": {
+              "Ident": "StiTableCell",
+              "Name": "Tableroot_listItems_Cell48",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "25.03,2.16,2.66,0.43",
+              "Restrictions": "AllowMove, AllowSelect, AllowChange",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Font": ";9;Bold;",
+              "Border": "All;105,105,105;2;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "ID": 60
+            }
+          },
+          "MinHeight": 0.60000000000000009,
+          "DataSourceName": "root_listItems",
+          "RowCount": 6,
+          "ColumnCount": 8,
+          "FooterRowsCount": 2,
+          "HeaderRowsCount": 3,
+          "NumberID": 61
+        },
+        "2": {
+          "Ident": "StiReportSummaryBand",
+          "Name": "ReportSummaryBand1",
+          "ClientRectangle": "0,7.8,27.69,4.8",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text1",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0.4,14.2,2.4",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "По данным  {root_supplier.name}\r\nна {System.Convert.ToDateTime(root_actData.dateEnd).ToString(\"dd.MM.yyyy\")} задолженность в пользу {IIF(SaldoCalculate(Sum(Tableroot_listItems,root_listItems.dt), Sum(Tableroot_listItems,root_listItems.kt), root_actData.saldoBegin)<0, root_supplier.name, root_payer.name)}  составила:\r\n{SaldoCalculate(Sum(Tableroot_listItems,root_listItems.dt), Sum(Tableroot_listItems,root_listItems.kt), root_actData.saldoBegin)<0 ? (-SaldoCalculate(Sum(Tableroot_listItems,root_listItems.dt), Sum(Tableroot_listItems,root_listItems.kt), root_actData.saldoBegin)).ToString(\"N2\") : SaldoCalculate(Sum(Tableroot_listItems,root_listItems.dt), Sum(Tableroot_listItems,root_listItems.kt), root_actData.saldoBegin).ToString(\"N2\")}  руб. ({ToCurrencyWordsRu(SaldoCalculate(Sum(Tableroot_listItems,root_listItems.dt), Sum(Tableroot_listItems,root_listItems.kt), root_actData.saldoBegin)<0 ? -SaldoCalculate(Sum(Tableroot_listItems,root_listItems.dt), Sum(Tableroot_listItems,root_listItems.kt), root_actData.saldoBegin) : SaldoCalculate(Sum(Tableroot_listItems,root_listItems.dt), Sum(Tableroot_listItems,root_listItems.kt), root_actData.saldoBegin), true)})"
+              },
+              "Font": ";9;Bold;",
+              "Border": ";105,105,105;;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "Text2",
+              "Guid": "565f20bc913c01942cc650ed7c0163b7",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "14.2,0.4,13.4,2.4",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "По данным "
+              },
+              "Font": ";9;;",
+              "Border": ";105,105,105;;;;;;solid:105,105,105",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0",
+              "Type": "Expression"
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "Text6",
+              "Guid": "20101dcc95184224a5c044984568bbee",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,3.4,14.2,0.6",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{root_supplier.responsiblePosition}: ______________________ {root_supplier.responsibleName}"
+              },
+              "Font": ";9;;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "Text10",
+              "Guid": "60c45c34be49425cb4e5ad21ca4e820c",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "14.2,3.4,13.4,0.6",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{root_payer.responsiblePosition == \"\" ? \"Директор:\" : root_payer.responsiblePosition} ____________________________ {root_payer.responsibleName}"
+              },
+              "Font": ";9;;",
+              "Border": ";;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:0,0,0",
+              "Type": "Expression"
+            },
+            "4": {
+              "Ident": "StiText",
+              "Name": "Text7",
+              "Guid": "7d766dd6cc01421c83862dbaad26f218",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "2.6,4,1,0.6",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "М.П."
+              },
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            },
+            "5": {
+              "Ident": "StiText",
+              "Name": "Text8",
+              "Guid": "a4647423a75446ebaf8131155dd7b008",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "17.4,4,1,0.6",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "М.П."
+              },
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            }
+          }
+        }
+      },
+      "Orientation": "Landscape",
+      "PageWidth": 29.69,
+      "PageHeight": 21.01,
+      "Watermark": {
+        "TextBrush": "solid:50,0,0,0"
+      },
+      "Margins": {
+        "Left": 1.0,
+        "Right": 1.0,
+        "Top": 1.0,
+        "Bottom": 1.0
+      }
+    }
+  }
+}
