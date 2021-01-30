@@ -26,7 +26,7 @@ import { TextField } from "@material-ui/core";
 import Tooltip from "@material-ui/core/Tooltip";
 import Box from "@material-ui/core/Box";
 import { ADD_MOVE_ITEM } from "../../GraphQL/Mutations";
-import UpdateItemInOrder from "components/ModalDialogs/UpdateItemInOrder";
+// import UpdateItemInOrder from "components/ModalDialogs/UpdateItemInOrder";
 
 // const useStyles = makeStyles(styles);
 

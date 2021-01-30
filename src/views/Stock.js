@@ -94,6 +94,8 @@ const Stock = () => {
     }
   }, [loading, data]);
 
+  
+
   // items for table
   const columns = useMemo(
     () => [
