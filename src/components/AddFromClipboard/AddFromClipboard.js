@@ -17,30 +17,14 @@ const AddFromClipboard = ({ type, value, onSubmit }) => {
     return head;
   });
 
-  // columns["items"] = [
-  //   { item: "number" }, // id price
-  //   { qty: "number" },
-  //   { order: "number" }, //id order
-  //   { note: "text" },
-  //   { is_cancelled: "boolean" }, // nullable
-  // ];
-
   const headsList = value.map((item) => Object.keys(item));
   const headsType = value.map((item) => item[Object.keys(item)]);
-
-  console.log(headsType)
-  // const columns = [
-  //     { field: 'id', headerName: 'id', width: 30 },
-  //     { field: 'name', headerName: 'Наименование', type: "text", width: 200 },   ]
 
   let result = [];
 
   const parseClipboad = () => {
     navigator.clipboard.readText().then((str) => {
       let arr = str.split("\n");
-
-      // let header=arr[0].split('\t');
-      // header.map( item => { return item; });
 
       // !!! вставить проверку, значения в массиве из пропса совпадает с заголовками с буфере по порядку
 
@@ -85,20 +69,9 @@ const AddFromClipboard = ({ type, value, onSubmit }) => {
           addData[key] = item[key];
         }  
       }
-
-
       console.log(addData);
       onSubmit({ variables: {addData: addData }});
-      // {
-      //   qty: item.qtyFromProd,
-      //   to_order: item.to_order,
-      //   from_order: 2, // у доработки ID = 2 - типа постоянное значение заказа !!!!!!!!
-      //   item: item.item,
-      // };
-      // AddMove({ variables: {addData: addData } });
-      // return true;
     });
-    // onSubmit({ variables: {addData: addData }});
   };
 
   return (

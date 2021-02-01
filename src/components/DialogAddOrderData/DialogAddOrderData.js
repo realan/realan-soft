@@ -3,9 +3,10 @@ import { useState, useEffect } from "react";
 import { gql } from "apollo-boost";
 import { useSubscription } from "@apollo/react-hooks";
 // import Button from '@material-ui/core/Button';
-import DatePicker from "react-datepicker";
+// import DatePicker from "react-datepicker";
+import DateButton from "components/DateButton/DateButton";
 import "react-datepicker/dist/react-datepicker.css";
-import ru from "date-fns/locale/ru";
+// import ru from "date-fns/locale/ru";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { TextField } from "@material-ui/core";
 
@@ -82,32 +83,19 @@ const DialogAddOrderData = (props) => {
     <>
       <span>
         Дата заказа
-        <DatePicker
-          selected={state.date_in}
-          // name={item.accessor}
-          showWeekNumbers
-          showMonthDropdown
-          placeholderText={"Дата заказа"}
-          locale={ru}
-          onChange={(date) => {
-            handleDateChange(date, "in");
+        <DateButton 
+          value={state.date_in} 
+          onChange={(date) => { handleDateChange(date, "in");
           }}
-          dateFormat="dd-MM-yyyy"
         />
       </span>
       <span>
         Дата отгрузки
-        <DatePicker
-          selected={state.date_out}
-          // name={item.accessor}
-          showWeekNumbers
-          showMonthDropdown
-          placeholderText={"Дата отгрузки"}
-          locale={ru}
-          onChange={(date) => {
-            handleDateChange(date, "out");
+        <DateButton 
+          value={state.date_out} 
+          placeholder={"Дата отгрузки"}
+          onChange={(date) => { handleDateChange(date, "out");
           }}
-          dateFormat="dd-MM-yyyy"
         />
       </span>
       <Autocomplete

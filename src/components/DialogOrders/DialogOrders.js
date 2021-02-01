@@ -8,8 +8,6 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import Paper from "@material-ui/core/Paper";
-import Draggable from "react-draggable";
 // import { XGrid } from '@material-ui/x-grid';
 import { DataGrid } from "@material-ui/data-grid";
 import Pagination from "@material-ui/lab/Pagination";
@@ -18,14 +16,15 @@ import { makeStyles } from "@material-ui/core/styles";
 import Close from "@material-ui/icons/Close";
 import EditIcon from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import ru from "date-fns/locale/ru";
 import { QuantityChanger } from "components/QuantityChanger";
 import { TextField } from "@material-ui/core";
 import Tooltip from "@material-ui/core/Tooltip";
 import Box from "@material-ui/core/Box";
 import { ADD_MOVE_ITEM } from "../../GraphQL/Mutations";
+import DateButton from "components/DateButton/DateButton";
+import AddItemInOrder from "components/AddItemInOrder/AddItemInOrder";
+// import columnsData from "./columnsData";
 // import UpdateItemInOrder from "components/ModalDialogs/UpdateItemInOrder";
 
 // const useStyles = makeStyles(styles);
@@ -114,14 +113,6 @@ const STORE_TYPE = {
   STOCK: "stock",
 };
 
-function PaperComponent(props) {
-  return (
-    <Draggable handle="#draggable-dialog-title" cancel={'[class*="MuiDialogContent-root"]'}>
-      <Paper {...props} />
-    </Draggable>
-  );
-}
-
 function CustomPagination(props) {
   const { pagination, api } = props;
   const classes = useStyles();
@@ -156,10 +147,11 @@ CustomPagination.propTypes = {
   }).isRequired,
 };
 
-const DialogOrders = (props) => {
+
+const DialogOrders = ({open, handleClose, orderData}) => {
   // const classes = useStyles();
 
-  let orderId = props.orderData.id;
+  let orderId = orderData.id;
 
   const [rows, setRows] = useState([]);
   const [openUpdate, setOpenUpdate] = useState(false);
@@ -276,9 +268,11 @@ const DialogOrders = (props) => {
     { field: "update", headerName: "обновить", width: 100, renderCell: updateField },
   ];
 
+
+
   useEffect(() => {
-    setOrderDate(props.orderData.date_out);
-  }, [props.orderData.date_out]);
+    setOrderDate(orderData.date_out);
+  }, [orderData.date_out]);
 
   const { loading, error, data } = useSubscription(SUBSCRIPTION_ITEMS_IN_ORDER, {
     variables: { order_id: orderId },
@@ -301,7 +295,7 @@ const DialogOrders = (props) => {
           fromProd: 0, //it.qty,
           fromStock: 0, // it.qty,
           note: it.note,
-          to_order: props.orderData.id,
+          to_order: orderData.id,
           idItem: it.mr_price.id,
         };
       });
@@ -314,11 +308,11 @@ const DialogOrders = (props) => {
   if (error) return `Error! ${error.message}`;
 
   const handleOK = () => {
-    props.handleClose();
+    handleClose();
   };
 
   const handleCancel = () => {
-    props.handleClose();
+    handleClose();
   };
   const handleUpdateClose = () => {
     setOpenUpdate(false);
@@ -353,7 +347,7 @@ const DialogOrders = (props) => {
       onePosDelete(item);
       return true;
     });
-    props.handleClose();
+    handleClose();
     SetOrderCancelledMutation({ variables: { id: orderId } });
   };
 
@@ -397,38 +391,24 @@ const DialogOrders = (props) => {
       return true;
     });
 
-    props.handleClose();
+    handleClose();
   };
 
-  const handleAddItem = () => {  }
   const handleAddItemClose = () => { setOpenAddItem(false) }
 
   return (
     <div>
       <Dialog
-        open={props.open}
-        onClose={props.handleClose}
+        open={open}
+        onClose={handleClose}
         fullWidth={true}
         fullScreen={true}
         maxWidth="md"
-        PaperComponent={PaperComponent}
         aria-labelledby="draggable-dialog-title"
       >
         <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
-          {props.orderData.customer} {props.orderData.town}, отгрузка
-          <DatePicker
-            selected={orderDate}
-            // name={item.accessor}
-            showWeekNumbers
-            showMonthDropdown
-            // placeholderText={item.Header}
-            locale={ru}
-            // value={orderDate}
-            onChange={(date) => {
-              handleDateChange(date);
-            }}
-            // dateFormat="dd-MM-yyyy"
-          />
+          {orderData.customer} {orderData.town}, отгрузка
+          <DateButton value={orderDate} onChange={(date) => {handleDateChange(date) }} />
         </DialogTitle>
 
         <DialogContent>
@@ -457,9 +437,7 @@ const DialogOrders = (props) => {
             </Tooltip>
           </Box>
           <Box flexGrow={1}>
-            <Button onClick={handleAddItem} color="primary" variant="outlined">
-              Добавить позицию
-            </Button>
+            <AddItemInOrder orderId={orderData.id} />
           </Box>
 
           <Box flexGrow={1}>

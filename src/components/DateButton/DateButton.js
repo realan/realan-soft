@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 
 
 
-const DateButton = ({value, onChange}) => {
+const DateButton = ({value, placeholder = '', onChange}) => {
 
     const ButtonInput = ({ value, onClick }) => (
         <Button 
@@ -15,7 +15,7 @@ const DateButton = ({value, onChange}) => {
             variant="outlined"
             color="primary"
         >
-          {value}
+          {value || placeholder}
         </Button>
       );
 
@@ -26,12 +26,10 @@ const DateButton = ({value, onChange}) => {
             // name={item.accessor}
             showWeekNumbers
             showMonthDropdown
-            // placeholderText={item.Header}
+            placeholderText={placeholder}
             locale={ru}
             // value={orderDate}
-            onChange={(date) => {
-              onChange(date);
-            }}
+            onChange={(date) => { onChange(date) }}
             dateFormat="dd-MM-yyyy"
             customInput={<ButtonInput />}
           />
