@@ -58,7 +58,7 @@ const STORE_TYPE = {
 };
 
 const DialogStock = (props) => {
-  console.log("render DialogStock")
+  // console.log("render DialogStock")
   // const classes = useStyles();
   const [itemId, setItemId] = useState(undefined);
   const [stockQty, setStockQty] = useState(0); // now in stock
@@ -70,7 +70,7 @@ const DialogStock = (props) => {
   const [dataDB, setDataDB] = useState([]); // для добавления в бд перемещений ассортимента с производства и склада
   // id, item, qtyFromProd, qtyFromStock, to_order
   const [rows, setRows] = useState([]);
-  // const [rows, setRows] = useState([]);
+
 
   const [AddMove] = useMutation(ADD_MOVE_ITEM);
 

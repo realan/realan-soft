@@ -6,62 +6,29 @@ import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
+// import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 // import { XGrid } from '@material-ui/x-grid';
 import { DataGrid } from "@material-ui/data-grid";
 import Pagination from "@material-ui/lab/Pagination";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-import Close from "@material-ui/icons/Close";
-import EditIcon from "@material-ui/icons/Edit";
-import IconButton from "@material-ui/core/IconButton";
 import "react-datepicker/dist/react-datepicker.css";
 import { QuantityChanger } from "components/QuantityChanger";
-import { TextField } from "@material-ui/core";
-import Tooltip from "@material-ui/core/Tooltip";
 import Box from "@material-ui/core/Box";
 import { ADD_MOVE_ITEM } from "../../GraphQL/Mutations";
 import DateButton from "components/DateButton/DateButton";
 import AddItemInOrder from "components/AddItemInOrder/AddItemInOrder";
-// import columnsData from "./columnsData";
-// import UpdateItemInOrder from "components/ModalDialogs/UpdateItemInOrder";
+import ButtonDeleteOrder from "components/ButtonDeleteOrder/ButtonDeleteOrder";
+import UpdateItemInOrder from "components/UpdateItemInOrder/UpdateItemInOrder";
+import DeleteItemFromOrder from "components/DeleteItemFromOrder/DeleteItemFromOrder";
+
 
 // const useStyles = makeStyles(styles);
-
-const UPDATE_ITEM_IN_ORDER = gql`
-  mutation UpdateItemInOrder($id: Int!, $qty: Int!, $note: String) {
-    update_mr_items(where: { id: { _eq: $id } }, _set: { qty: $qty, note: $note }) {
-      returning {
-        id
-      }
-    }
-  }
-`;
-
-const DELETE_ITEM_FROM_ORDER = gql`
-  mutation DeleteItemFromOrder($id: Int!) {
-    delete_mr_items(where: { id: { _eq: $id } }) {
-      returning {
-        id
-      }
-    }
-  }
-`;
 
 const UPDATE_ORDER_DATE = gql`
   mutation UpdateOrderDate($id: Int!, $date_out: timestamptz) {
     update_mr_order(where: { id: { _eq: $id } }, _set: { date_out: $date_out }) {
-      returning {
-        id
-      }
-    }
-  }
-`;
-
-const SET_ORDER_CANCELLED = gql`
-  mutation UpdateSetOrderCancelled($id: Int!) {
-    update_mr_order(where: { id: { _eq: $id } }, _set: { is_cancelled: true }) {
       returning {
         id
       }
@@ -148,79 +115,25 @@ CustomPagination.propTypes = {
 };
 
 
+function updateField(params) {
+  const data=params.row;
+  return <UpdateItemInOrder value={data} />
+}
+function deleteField(params) {
+  return <DeleteItemFromOrder value={params.row} />
+}
+
+
 const DialogOrders = ({open, handleClose, orderData}) => {
   // const classes = useStyles();
 
   let orderId = orderData.id;
 
   const [rows, setRows] = useState([]);
-  const [openUpdate, setOpenUpdate] = useState(false);
-  const [openAddItem, setOpenAddItem] = useState(false);
-  const [dataRow, setDataRow] = useState({});
   const [orderDate, setOrderDate] = useState();
 
-  const [UpdateMutation] = useMutation(UPDATE_ITEM_IN_ORDER);
   const [UpdateDateMutation] = useMutation(UPDATE_ORDER_DATE);
-  const [DeteteItemMutation] = useMutation(DELETE_ITEM_FROM_ORDER);
   const [AddMoveItemMutation] = useMutation(ADD_MOVE_ITEM);
-  const [SetOrderCancelledMutation] = useMutation(SET_ORDER_CANCELLED);
-
-  const posUpdate = (params) => {
-    setDataRow(params.row);
-    setOpenUpdate(true);
-  };
-
-  const onePosDelete = (data) => {
-    DeteteItemMutation({ variables: { id: data.id } });
-    let qty = data.qtyCollect;
-    if (qty !== 0) {
-      const addData = {
-        qty: qty,
-        to_order: 3, // id = 3 - склад
-        from_order: orderId,
-        item: data.qtyCollect,
-      };
-      AddMoveItemMutation({ variables: { addData: addData } });
-    }
-  };
-
-  const posDelete = (params) => {
-    onePosDelete(params.row);
-  };
-
-  function updateField(params) {
-    return (
-      <strong>
-        <IconButton
-          color="primary"
-          aria-label="редактировать"
-          component="span"
-          onClick={() => posUpdate(params)}
-        >
-          <EditIcon />
-        </IconButton>
-        {/* <UpdateItemInOrder 
-          isOpen={openUpdate} 
-          count={params.row.qtyOrder}
-          text={params.row.note}
-          name={params.row.name}
-          handleClose={ () => setOpenUpdate(false) }
-          handleOk={handleUpdateItem}
-          handleChange
-        /> */}
-        <Tooltip title="Удаляю позицию. Что набрано - перемещаю на склад">
-          <IconButton
-            color="secondary"
-            aria-label="редактировать"
-            component="span"
-            onClick={() => posDelete(params)}
-          >
-            <Close />
-          </IconButton>
-        </Tooltip>
-      </strong>
-    );
-  }
 
   function fromProdField(params) {
     const needQty = params.row.qtyOrder - params.row.qtyCollect- params.row.fromStock;
@@ -265,10 +178,9 @@ const DialogOrders = ({open, handleClose, orderData}) => {
     { field: "qtyStock", headerName: "Склад", type: "number", width: 70 },
     { field: "fromStock", headerName: "Со склада", width: 220, renderCell: fromStockField },
     { field: "note", headerName: "Примечание", type: "text", width: 200 },
-    { field: "update", headerName: "обновить", width: 100, renderCell: updateField },
+    { field: "update", headerName: "Обновить", width: 80, renderCell: updateField },
+    { field: "delete", headerName: "Удалить", width: 80, renderCell: deleteField },
   ];
-
-
 
   useEffect(() => {
     setOrderDate(orderData.date_out);
@@ -286,17 +198,17 @@ const DialogOrders = ({open, handleClose, orderData}) => {
           it.mr_price.qty_to.aggregate.sum.qty - it.mr_price.qty_from.aggregate.sum.qty;
 
         return {
-          id: key, // it.id,
+          id: key, //it.id,
+          idItem: it.mr_price.id,
           name: it.mr_price.name,
           qtyOrder: it.qty,
-          // needQty: needQty,
           qtyStock: it.stock_data.stock_now,
           qtyCollect: qtyCollect,
           fromProd: 0, //it.qty,
           fromStock: 0, // it.qty,
           note: it.note,
           to_order: orderData.id,
-          idItem: it.mr_price.id,
+          idDb: it.id,
         };
       });
 
@@ -311,27 +223,6 @@ const DialogOrders = ({open, handleClose, orderData}) => {
     handleClose();
   };
 
-  const handleCancel = () => {
-    handleClose();
-  };
-  const handleUpdateClose = () => {
-    setOpenUpdate(false);
-  };
-  const handleUpdateItem = () => {
-    const dataNew = {
-      id: dataRow.id,
-      qty: dataRow.qtyOrder,
-      note: dataRow.note,
-    };
-    UpdateMutation({ variables: dataNew });
-    setOpenUpdate(false);
-  };
-  const handleQtyChange = (event) => {
-    setDataRow({ ...dataRow, qtyOrder: event.target.value });
-  };
-  const handleNoteChange = (event) => {
-    setDataRow({ ...dataRow, note: event.target.value });
-  };
   const handleDateChange = (date) => {
     setOrderDate(date);
     UpdateDateMutation({
@@ -340,15 +231,6 @@ const DialogOrders = ({open, handleClose, orderData}) => {
         date_out: date,
       },
     });
-  };
-  const handleDeleteOrder = () => {
-    // deleting items in order and move items from order to stock
-    rows.map((item) => {
-      onePosDelete(item);
-      return true;
-    });
-    handleClose();
-    SetOrderCancelledMutation({ variables: { id: orderId } });
   };
 
   const onCountChange = (newCount, currentRows, id, storeType) => {
@@ -360,10 +242,8 @@ const DialogOrders = ({open, handleClose, orderData}) => {
           fromStock: storeType === STORE_TYPE.STOCK ? newCount : row.fromStock,
         };
       }
-
       return row;
     });
-
     setRows(preparedRow);
   };
 
@@ -394,8 +274,6 @@ const DialogOrders = ({open, handleClose, orderData}) => {
     handleClose();
   };
 
-  const handleAddItemClose = () => { setOpenAddItem(false) }
-
   return (
     <div>
       <Dialog
@@ -425,16 +303,11 @@ const DialogOrders = ({open, handleClose, orderData}) => {
               />
             </div>
           )}
-          <DialogContentText></DialogContentText>
         </DialogContent>
-
+            
         <DialogActions>
           <Box flexGrow={1}>
-            <Tooltip title="Удаляю заказ. Что набрано - перемещаю на склад">
-              <Button onClick={handleDeleteOrder} color="secondary" variant="contained">
-                Отменить заказ
-              </Button>
-            </Tooltip>
+            <ButtonDeleteOrder items={rows} orderId={orderId} onClick={handleClose} />
           </Box>
           <Box flexGrow={1}>
             <AddItemInOrder orderId={orderData.id} />
@@ -453,79 +326,6 @@ const DialogOrders = ({open, handleClose, orderData}) => {
           </Box>
         </DialogActions>
       </Dialog>
-
-      <Dialog
-        open={openUpdate}
-        onClose={handleUpdateClose}
-        aria-labelledby="form-dialog-title"
-        maxWidth="sm"
-      >
-        <DialogTitle id="form-dialog-title">{dataRow.name} </DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            label="Кол-во"
-            type="number"
-            fullWidth
-            value={dataRow.qtyOrder}
-            onChange={handleQtyChange}
-          />
-          <TextField
-            margin="dense"
-            label="Примечание"
-            type="text"
-            fullWidth
-            value={dataRow.note || ""}
-            onChange={handleNoteChange}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleUpdateClose} color="primary">
-            Отмена
-          </Button>
-          <Button onClick={handleUpdateItem} color="primary">
-            Изменить
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      <Dialog
-        open={openAddItem}
-        onClose={handleAddItemClose}
-        aria-labelledby="form-dialog-title"
-        maxWidth="sm"
-      >
-        <DialogTitle id="form-dialog-title">{dataRow.name} </DialogTitle>
-          <DialogContent>
-            <TextField
-              autoFocus
-              margin="dense"
-              label="Кол-во"
-              type="number"
-              fullWidth
-              value={dataRow.qtyOrder}
-              onChange={handleQtyChange}
-            />
-            <TextField
-              margin="dense"
-              label="Примечание"
-              type="text"
-              fullWidth
-              value={dataRow.note || ""}
-              onChange={handleNoteChange}
-            />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleUpdateClose} color="primary">
-            Отмена
-          </Button>
-          <Button onClick={handleUpdateItem} color="primary">
-            Изменить
-          </Button>
-        </DialogActions>
-      </Dialog>
-
     </div>
   );
 };

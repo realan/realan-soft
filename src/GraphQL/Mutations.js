@@ -84,6 +84,26 @@ export const ADD_MOVE_ITEM = gql`
   }
 `;
 
+export const DELETE_ITEM_FROM_ORDER = gql`
+  mutation DeleteItemFromOrder($id: Int!) {
+    delete_mr_items(where: { id: { _eq: $id } }) {
+      returning {
+        id
+      }
+    }
+  }
+`;
+
+export const SET_ORDER_CANCELLED = gql`
+  mutation UpdateSetOrderCancelled($id: Int!) {
+    update_mr_order(where: { id: { _eq: $id } }, _set: { is_cancelled: true }) {
+      returning {
+        id
+      }
+    }
+  }
+`;
+
 // old mutations
 
 // DELIVERY

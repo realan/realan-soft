@@ -20,7 +20,7 @@ const QuantityChanger = ({
   onChange,
   colorType = "primary",
 }) => {
-  
+  // console.log("render QuantityChanger")
   const classes = useStyles();
 
   return (

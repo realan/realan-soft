@@ -30,7 +30,6 @@ const AddItemInOrder = ({orderId}) => {
 
     useEffect( () => {
         if (!loading && data) {
-            console.log(data)
             setOptions(data.mr_price);
         }
     }, [loading, data])
@@ -40,7 +39,6 @@ const AddItemInOrder = ({orderId}) => {
 
     const handleChange = (type) => (event) => {
         setState({ ...state, [type]: event.target.value });
-        // setState({ ...state, [type]: value });
       };
 
     const getInput = (event, val) => {
@@ -63,7 +61,7 @@ const AddItemInOrder = ({orderId}) => {
     };
 
     const handleOk = () => {
-        console.log(state)
+        // console.log(state)
         if (state.counter !== 0){
             const addData = {
                 order: orderId,
@@ -71,7 +69,7 @@ const AddItemInOrder = ({orderId}) => {
                 qty: state.count,
                 note: state.note,
             };
-            console.log(addData);
+            // console.log(addData);
             AddItems({ variables: {addData: addData }});
         }
         setState(initialState);

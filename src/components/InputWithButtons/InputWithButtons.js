@@ -14,7 +14,7 @@ const useStyles = makeStyles({
 });
 
 const InputGroup = ({onChange}) => {
-  console.log("renderInputWithBottons")
+  // console.log("renderInputWithBottons")
   const [count, setCount] = useState(0);
 
   const classes = useStyles();
