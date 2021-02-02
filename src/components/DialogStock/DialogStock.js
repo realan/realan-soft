@@ -343,8 +343,8 @@ const DialogStock = (props) => {
                       key={key}
                       value={card}
                       stock={stockQty}
-                      valueDB={dataDB} //{dataDB[item.id].qtyFromStock}
-                      onChange={onQtyChange}
+                      // valueDB={dataDB} //{dataDB[item.id].qtyFromStock}
+                      // onChange={onQtyChange}
                     />
                   </Box>
                 );

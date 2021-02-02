@@ -48,6 +48,7 @@
     "react-swipeable-views": "0.13.9",
     "react-table": "7.1.0",
     "react-tagsinput": "3.19.0",
+    "stimulsoft-reports-js": "^2021.1.2",
     "subscriptions-transport-ws": "^0.9.18",
     "typescript": "3.9.3",
     "use-clippy": "^1.0.8",
