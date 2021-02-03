@@ -51,7 +51,6 @@ const SUBSCRIPTION_ORDERS_BY_ID = gql`
   }
 `;
 
-
 const STORE_TYPE = {
   PRODUCTION: "production",
   STOCK: "stock",
@@ -66,16 +65,10 @@ const DialogStock = (props) => {
   const [prodToStock, setProdToStock] = useState(0);
   const [showCards, setShowCards] = useState(false);
   const [openCorrectQty, setOpenCorrectQty] = useState(false);
-  // const [btnOkStatus, setBtnOkStatus] = useState(true);
-  const [dataDB, setDataDB] = useState([]); // для добавления в бд перемещений ассортимента с производства и склада
-  // id, item, qtyFromProd, qtyFromStock, to_order
   const [rows, setRows] = useState([]);
 
-
-  const [AddMove] = useMutation(ADD_MOVE_ITEM);
-
   function fromProdField(params) {
-    console.log(params);
+    // console.log(params);
     const needQty = params.row.needQty - params.row.fromStock;
     return (
       <strong>
@@ -93,7 +86,7 @@ const DialogStock = (props) => {
   }
 
   function fromStockField(params) {
-    console.log(params);
+    // console.log(params);
     const needQty = params.row.needQty - params.row.fromProd;
     let maxValue = 0; 
     (needQty < stockQty) ? maxValue = needQty : maxValue = stockQty;
@@ -110,7 +103,6 @@ const DialogStock = (props) => {
     );
   }
 
-
   const columns = [
     { field: 'id', headerName: 'id', width: 10 },
     // { field: 'customer', headerName: 'Заказчик', width: 150 },
@@ -126,6 +118,8 @@ const DialogStock = (props) => {
     { field: 'note', headerName: 'Примечание', type: "text", width: 110 },
   ];
 
+  const [AddMove] = useMutation(ADD_MOVE_ITEM);
+
   const { loading, error, data } = useSubscription(SUBSCRIPTION_ORDERS_BY_ID, {
     variables: { item_id: itemId },
   });
@@ -134,21 +128,6 @@ const DialogStock = (props) => {
     setItemId(props.item_id);
     setStockQty(props.stock_now);
   }, [props.stock_now, props.item_id]);
-
-  useEffect(() => {
-    if (!loading && data) {
-      setDataDB(
-        data.mr_items.map((ord) => {
-          return {
-            qtyFromProd: 0, // initial value
-            qtyFromStock: 0, // initial value
-            to_order: ord.mr_order.id,
-            item: itemId,
-          };
-        })
-      );
-    }
-  }, [loading, data, itemId]);
 
   useEffect(() => {
     if (data) {
@@ -173,8 +152,8 @@ const DialogStock = (props) => {
           fromProd: 0, //it.qty,
           fromStock: 0, // it.qty,
           note: it.note,
+          // item: itemId,
         };
-
         return obj;
       });
       console.log(preparedData);
@@ -186,26 +165,26 @@ const DialogStock = (props) => {
   if (error) return `Error! ${error.message}`;
 
   const handleOK = () => {
-    console.log(dataDB);
+    console.log(rows);
     console.log("handle OK")
-    dataDB.map((it) => {
-      if (it.qtyFromProd !== 0) {
+    rows.map((it) => {
+      if (it.fromProd !== 0) {
         console.log(it);
         let addData = {
-          qty: it.qtyFromProd,
-          to_order: it.to_order,
+          qty: it.fromProd,
+          to_order: it.orderId,
           from_order: 2, // у доработки ID = 2 - типа постоянное значение заказа !!!!!!!!
-          item: it.item,
+          item: itemId,
         };
         AddMove({ variables: { addData: addData } });
       }
-      if (it.qtyFromStock !== 0) {
+      if (it.fromStock !== 0) {
         console.log(it);
         let addData = {
-          qty: it.qtyFromStock,
-          to_order: it.to_order,
+          qty: it.fromStock,
+          to_order: it.orderId,
           from_order: 3, // у склада ID = 3 - типа постоянное значение заказа !!!!!!!!
-          item: it.item,
+          item: itemId,
         };
         AddMove({ variables: { addData: addData } });
       }
@@ -237,8 +216,6 @@ const DialogStock = (props) => {
   };
 
   const handleCancel = () => {
-    console.log(dataDB)
-    console.log("handle cancel")
     setStockQty(props.stock_now);
     props.handleClose();
   };
@@ -247,21 +224,6 @@ const DialogStock = (props) => {
   };
   const handleChangeProdToStock = (qty) => {
     setProdToStock(qty);
-  };
-
-  function onQtyChange (id, qty, type) {
-    // console.log(id, qty, type);
-    console.log(dataDB);
-    if (type === "prod") {
-      setDataDB([...dataDB], (dataDB[id].qtyFromProd = qty));
-    } else {
-      setDataDB([...dataDB], (dataDB[id].qtyFromStock = qty));
-
-      let sumQtyFromStock = dataDB.reduce(function (sum, elem) {
-        return sum + elem.qtyFromStock;
-      }, 0);
-      setStockQty(props.stock_now - sumQtyFromStock);
-    }
   };
 
   const handleCorrectQty = (qty) => {
@@ -284,7 +246,6 @@ const DialogStock = (props) => {
           fromStock: storeType === STORE_TYPE.STOCK ? newCount : row.fromStock,
         };
       }
-
       return row;
     });
 
@@ -294,17 +255,14 @@ const DialogStock = (props) => {
       }, 0);
       setStockQty(props.stock_now - sumQtyFromStock);
     }
-    
     setRows(preparedRow);
   };
-
-  // let listCards = useMemo( () => getListCards(cards),[]);
 
   return (
     <div>
       <Dialog
         open={props.open}
-        onClose={props.PaperhandleClose}
+        onClose={props.handleClose}
         fullScreen={true}
         maxWidth={false}
 
@@ -334,23 +292,23 @@ const DialogStock = (props) => {
             </div>
           )}
 
-          {Boolean(rows.length) && showCards && (
+          {/* {Boolean(rows.length) && showCards && (
             <Box display="flex" flexWrap="wrap" m={1}>
-              {rows.map((card, key) => {
+              {rows.map((item, key) => {
                 return (
                   <Box m={1} bgcolor="text.disabled" key={key}>
                     <CardPosInOrder
                       key={key}
-                      value={card}
+                      value={item}
                       stock={stockQty}
-                      // valueDB={dataDB} //{dataDB[item.id].qtyFromStock}
+                      valueDB={rows[key]} //{dataDB[item.id].qtyFromStock}
                       // onChange={onQtyChange}
                     />
                   </Box>
                 );
               })}
             </Box>
-          )}
+          )} */}
 
           <div>
             {" "}

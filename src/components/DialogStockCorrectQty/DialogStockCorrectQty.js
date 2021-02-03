@@ -9,45 +9,52 @@ import InputWithButtons from "components/InputWithButtons/InputWithButtons";
 import Button from "@material-ui/core/Button";
 import { ADD_MOVE_ITEM } from "../../GraphQL/Mutations";
 
-const DialogStockCorrectQty = (props) => {
-  // itemId, Name, stockNow, open, handleClose
-  // onSubmit - useMutation
+const DialogStockCorrectQty = ({ 
+  open, 
+  itemId, 
+  name, 
+  stockNow,
+  handleClose 
+}) => {
+
   const [count, setCount] = useState(0);
 
   const [AddMove] = useMutation(ADD_MOVE_ITEM);
 
   const handleOK = () => {
-    if (props.stockNow !== 0) {
+    if (stockNow !== 0) {
       const addData = {
-        qty: count - props.stockNow,
+        qty: count - stockNow,
         to_order: 3, // склад - для расчета точного количества
         from_order: 5, // ID = 5 - корректировки склада
-        item: props.itemId,
+        item: itemId,
       };
+      // console.log(addData)
       AddMove({ variables: { addData: addData } });
-      props.handleClose(count);
+      handleClose(count);
     }
   };
+
   const onChange = (val) => {
     setCount(val);
   };
 
   return (
     <Dialog
-      open={props.open}
-      onClose={props.handleClose}
+      open={open}
+      onClose={handleClose}
       aria-labelledby="form-dialog-title"
       maxWidth="sm"
     >
       <DialogTitle id="form-dialog-title">
-        {props.name} - числится - {props.stockNow}{" "}
+        {name} - числится - {stockNow}{" "}
       </DialogTitle>
       <DialogContent>
         По факту
         <InputWithButtons onChange={onChange} />
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.handleClose} color="primary">
+        <Button onClick={() => handleClose(stockNow)} color="primary">
           Отмена
         </Button>
         <Button onClick={handleOK} color="primary">
