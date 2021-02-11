@@ -10,7 +10,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { DataGrid } from '@material-ui/data-grid';
 import InputWithButtons from "components/InputWithButtons/InputWithButtons";
-import CardPosInOrder from "components/CardPosInOrder/CardPosInOrder";
+// import CardPosInOrder from "components/CardPosInOrder/CardPosInOrder";
 import Switch from "@material-ui/core/Switch";
 import DialogStockCorrectQty from "components/DialogStockCorrectQty/DialogStockCorrectQty";
 import { ADD_MOVE_ITEM } from "../../GraphQL/Mutations";

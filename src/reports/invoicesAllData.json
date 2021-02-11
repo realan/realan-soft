@@ -1,0 +1,247 @@
+{
+    "number": "66",
+	"date": "02.03.2017",
+    "cause" : "Договор № 8 от 01 января 2017г.",
+    
+    "supplier":{
+        "fullName" : "ООО \"Реалан\"",
+        "addressActual": {
+            "zip": "623101",
+            "region": "Свердловская обл.",
+            "town": "Первоуральск",
+            "address": "ул. Строителей, 1-33"
+        },
+        "phone": "+7 (950) 191 33 27",
+        "codes":{
+            "INN":6670012813, 
+            "KPP":668401001, 
+            "OGRN":1036603484939, 
+            "OKPO":32262262, 
+            "OKDP":"", 
+            "OKONKh":"", 
+            "OKVED":"", 
+            "EGRPO":""
+        },
+        "bankDetail":{
+            "account":40702810238220000413,
+            "bankName":"ФИЛИАЛ \"ЕКАТЕРИНБУРГСКИЙ\" АО \"АЛЬФА-БАНК\", г Екатеринбург",
+            "BIC":"046577964",
+            "loroAccount":30101810100000000964
+            }
+
+        },
+
+    "payer":{
+        "fullName" : "ИП Симбирева Анна Анатольевна",
+        "actualZip": "629305",
+        "actualRegion": "ЯНАО",
+        "actualTown": "Новый Уренгой",
+        "actualAddress": "мкр.Оптимистов д.3/1 кв.2",
+        "phone": "+7 (950) 545 11 21",
+        "codes":{
+            "INN":6546546546, 
+            "KPP":"", 
+            "OGRN":"", 
+            "OKPO":"", 
+            "OKDP":"", 
+            "OKONKh":"", 
+            "OKVED":"", 
+            "EGRPO":""
+        },
+        "bankDetail":{
+            "account":40802810500000000039,
+            "bankName":"филиал \"Приполяркомбанк\" г.Н.Уренгой",
+            "BIC":"046577940",
+            "loroAccount":30101810400000000794
+            }
+        },
+
+
+    "shipper":{
+        "fullName" : "ООО \"Реалан \"",
+        "actualZip": "620137",
+        "actualRegion": "",
+        "actualTown": "Екатеринбург",
+        "actualAddress": "ул. Блюхера, 26-17",
+        "phone": "+7 (950) 191 33 27",
+        "codes":{
+            "INN":6670012813, 
+            "KPP":667001001, 
+            "OGRN":1036603484939, 
+            "OKPO":32262262, 
+            "OKDP":"", 
+            "OKONKh":"", 
+            "OKVED":"", 
+            "EGRPO":""
+        },
+        "bankDetail":{
+            "account":40702810238220000413,
+            "bankName":"ФИЛИАЛ \"ЕКАТЕРИНБУРГСКИЙ\" АО \"АЛЬФА-БАНК\", г Екатеринбург",
+            "BIC":"046577964",
+            "loroAccount":30101810100000000964
+            }
+        },
+
+    "consignee":{
+        "fullName" : "ИП Симбирева Анна Анатольевна",
+        "actualZip": "629305",
+        "actualRegion": "ЯНАО",
+        "actualTown": "Новый Уренгой",
+        "actualAddress": "мкр.Оптимистов д.3/1 кв.2",
+        "phone": "+7 (950) 545 11 21",
+        "codes":{
+            "INN":6546546546, 
+            "KPP":"", 
+            "OGRN":"", 
+            "OKPO":"", 
+            "OKDP":"", 
+            "OKONKh":"", 
+            "OKVED":"", 
+            "EGRPO":""
+        },
+        "bankDetail":{
+            "account":40802810500000000039,
+            "bankName":"филиал \"Приполяркомбанк\" г.Н.Уренгой",
+            "BIC":"046577940",
+            "loroAccount":30101810400000000794
+            }
+        },
+
+
+        "allowShipping":
+            {
+            "positionName":"Директор",
+            "name":"Иванов И.И."
+            },
+
+
+        "accountant":
+            {
+            "positionName":"Гл. бухгалтер",
+            "name":"Сидоров С.С."
+            },
+
+        "shippingMade":
+            {
+            "positionName":"Кладовщик",
+            "name":"Петров П.П."
+            },
+
+
+
+
+
+	"items": [ 
+        {"name": "Обнажённая девушка jdfl jfglkjhgl jhlgkjh dsljghls dkjhlskdjgh lskjghlksjdh lksdjfhlkjsghlksjfdg ljsdhgfljk dslkgjhsdkl jglskdjfhgl ksjglksjdglksjdfghlkj hlkjfdhsgl kjsd", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 576.60, "sumBeforeTax": 576.6, "taxRate": "--", "taxSum": 0, "sumTotal": 576.6},
+        {"name": "Давид", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 511.50, "sumBeforeTax": 511.5, "taxRate": "--", "taxSum": 0, "sumTotal": 511.5},
+        {"name": "Мадонна с ребёнком", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 511.50, "sumBeforeTax": 511.5, "taxRate": "--", "taxSum": 0, "sumTotal": 511.5},
+        {"name": "Рыбак у лунки", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 5, "salePrice": 251.10, "sumBeforeTax": 1255.5, "taxRate": "--", "taxSum": 0, "sumTotal": 1255.5},
+        {"name": "Охотник", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 3, "salePrice": 181.35, "sumBeforeTax": 544.05, "taxRate": "--", "taxSum": 0, "sumTotal": 544.05},
+        {"name": "Боцман", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 2, "salePrice": 181.35, "sumBeforeTax": 362.7, "taxRate": "--", "taxSum": 0, "sumTotal": 362.7},
+        {"name": "Доктор", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 5, "salePrice": 167.40, "sumBeforeTax": 837, "taxRate": "--", "taxSum": 0, "sumTotal": 837},
+        {"name": "Бюст Высоцкого", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 2, "salePrice": 362.70, "sumBeforeTax": 725.4, "taxRate": "--", "taxSum": 0, "sumTotal": 725.4},
+        {"name": "Бюст Суворова", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 269.70, "sumBeforeTax": 269.7, "taxRate": "--", "taxSum": 0, "sumTotal": 269.7},
+        {"name": "Бюст Дзержинского", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 3, "salePrice": 204.60, "sumBeforeTax": 613.8, "taxRate": "--", "taxSum": 0, "sumTotal": 613.8},
+        {"name": "Бюст Сталина", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 4, "salePrice": 153.45, "sumBeforeTax": 613.8, "taxRate": "--", "taxSum": 0, "sumTotal": 613.8},
+        {"name": "Ангел на облаке средний (2 вида)", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 3, "salePrice": 260.40, "sumBeforeTax": 781.2, "taxRate": "--", "taxSum": 0, "sumTotal": 781.2},
+        {"name": "Ангел спящий с кроликом", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 162.75, "sumBeforeTax": 162.75, "taxRate": "--", "taxSum": 0, "sumTotal": 162.75},
+        {"name": "Ангел спящий на облаке", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 3, "salePrice": 162.75, "sumBeforeTax": 488.25, "taxRate": "--", "taxSum": 0, "sumTotal": 488.25},
+        {"name": "Ангелочек карапуз стоит", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 3, "salePrice": 83.70, "sumBeforeTax": 251.1, "taxRate": "--", "taxSum": 0, "sumTotal": 251.1},
+        {"name": "Ангел молящийся", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 3, "salePrice": 83.70, "sumBeforeTax": 251.1, "taxRate": "--", "taxSum": 0, "sumTotal": 251.1},
+        {"name": "Ангел с розами сидящий", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 5, "salePrice": 79.05, "sumBeforeTax": 395.25, "taxRate": "--", "taxSum": 0, "sumTotal": 395.25},
+        {"name": "Ангелочек с сердечком (3 вида)", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 3, "salePrice": 79.05, "sumBeforeTax": 237.15, "taxRate": "--", "taxSum": 0, "sumTotal": 237.15},
+        {"name": "Ангелочек (2 вида)", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 5, "salePrice": 60.45, "sumBeforeTax": 302.25, "taxRate": "--", "taxSum": 0, "sumTotal": 302.25},
+        {"name": "Ангелочек спящий малый", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 5, "salePrice": 60.45, "sumBeforeTax": 302.25, "taxRate": "--", "taxSum": 0, "sumTotal": 302.25},
+        {"name": "Ангелочек молящийся и с книжкой (2 вида)", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 5, "salePrice": 46.50, "sumBeforeTax": 232.5, "taxRate": "--", "taxSum": 0, "sumTotal": 232.5},
+        {"name": "Ангелочек - карапуз", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 5, "salePrice": 46.50, "sumBeforeTax": 232.5, "taxRate": "--", "taxSum": 0, "sumTotal": 232.5},
+        {"name": "Пепельница (шкатулка) Череп в каске с рогами", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 372.00, "sumBeforeTax": 372, "taxRate": "--", "taxSum": 0, "sumTotal": 372},
+        {"name": "Пепельница (шкатулка) Череп с пауком", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 325.50, "sumBeforeTax": 325.5, "taxRate": "--", "taxSum": 0, "sumTotal": 325.5},
+        {"name": "Пепельница (шкатулка) Череп пирата", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 325.50, "sumBeforeTax": 325.5, "taxRate": "--", "taxSum": 0, "sumTotal": 325.5},
+        {"name": "Пепельница (шкатулка) Череп со змеей", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 325.50, "sumBeforeTax": 325.5, "taxRate": "--", "taxSum": 0, "sumTotal": 325.5},
+        {"name": "Пепельница (шкатулка) Череп", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 251.10, "sumBeforeTax": 251.1, "taxRate": "--", "taxSum": 0, "sumTotal": 251.1},
+        {"name": "Пепельница Кот в кресле", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 3, "salePrice": 237.15, "sumBeforeTax": 711.45, "taxRate": "--", "taxSum": 0, "sumTotal": 711.45},
+        {"name": "Подсвечник Слон", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 3, "salePrice": 274.35, "sumBeforeTax": 823.05, "taxRate": "--", "taxSum": 0, "sumTotal": 823.05},
+        {"name": "Подсвечник Слониха", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 3, "salePrice": 274.35, "sumBeforeTax": 823.05, "taxRate": "--", "taxSum": 0, "sumTotal": 823.05},
+        {"name": "Подсвечник Слоненок", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 158.10, "sumBeforeTax": 158.1, "taxRate": "--", "taxSum": 0, "sumTotal": 158.1},
+        {"name": "Шкатулка Домовенок на сундуке", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 3, "salePrice": 316.20, "sumBeforeTax": 948.6, "taxRate": "--", "taxSum": 0, "sumTotal": 948.6},
+        {"name": "Шкатулка Слон", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 3, "salePrice": 172.05, "sumBeforeTax": 516.15, "taxRate": "--", "taxSum": 0, "sumTotal": 516.15},
+        {"name": "Часы Орел 1", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 1013.70, "sumBeforeTax": 1013.7, "taxRate": "--", "taxSum": 0, "sumTotal": 1013.7},
+        {"name": "Подставка под бутылки Официант ", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 399.90, "sumBeforeTax": 399.9, "taxRate": "--", "taxSum": 0, "sumTotal": 399.9},
+        {"name": "Крепость большая (карандашница)", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 367.35, "sumBeforeTax": 367.35, "taxRate": "--", "taxSum": 0, "sumTotal": 367.35},
+        {"name": "Роза - подставка под сотовый телефон", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 265.05, "sumBeforeTax": 265.05, "taxRate": "--", "taxSum": 0, "sumTotal": 265.05},
+        {"name": "Распятие Христа (настенное) 1", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 251.10, "sumBeforeTax": 251.1, "taxRate": "--", "taxSum": 0, "sumTotal": 251.1},
+        {"name": "Распятие Христа (настенное) 2", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 204.60, "sumBeforeTax": 204.6, "taxRate": "--", "taxSum": 0, "sumTotal": 204.6},
+        {"name": "Погонщик оленя на фоне буровой", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 1162.50, "sumBeforeTax": 1162.5, "taxRate": "--", "taxSum": 0, "sumTotal": 1162.5},
+        {"name": "Погонщик оленя на фоне юрты", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 1106.70, "sumBeforeTax": 1106.7, "taxRate": "--", "taxSum": 0, "sumTotal": 1106.7},
+        {"name": "Оленевод на фоне юрты", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 1106.70, "sumBeforeTax": 1106.7, "taxRate": "--", "taxSum": 0, "sumTotal": 1106.7},
+        {"name": "Оленевод", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 1078.80, "sumBeforeTax": 1078.8, "taxRate": "--", "taxSum": 0, "sumTotal": 1078.8},
+        {"name": "Люди Севера у юрты", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 1041.60, "sumBeforeTax": 1041.6, "taxRate": "--", "taxSum": 0, "sumTotal": 1041.6},
+        {"name": "Белый медведь на фоне буровой", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 2, "salePrice": 925.35, "sumBeforeTax": 1850.7, "taxRate": "--", "taxSum": 0, "sumTotal": 1850.7},
+        {"name": "Медвежата на фоне буровой", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 916.05, "sumBeforeTax": 916.05, "taxRate": "--", "taxSum": 0, "sumTotal": 916.05},
+        {"name": "Лось и Медведь", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 911.40, "sumBeforeTax": 911.4, "taxRate": "--", "taxSum": 0, "sumTotal": 911.4},
+        {"name": "Бык и Медведь", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 641.70, "sumBeforeTax": 641.7, "taxRate": "--", "taxSum": 0, "sumTotal": 641.7},
+        {"name": "Погонщик оленя", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 3, "salePrice": 641.70, "sumBeforeTax": 1925.1, "taxRate": "--", "taxSum": 0, "sumTotal": 1925.1},
+        {"name": "Оленевод малый", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 3, "salePrice": 553.35, "sumBeforeTax": 1660.05, "taxRate": "--", "taxSum": 0, "sumTotal": 1660.05},
+        {"name": "Охотник и Медведь", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 2, "salePrice": 460.35, "sumBeforeTax": 920.7, "taxRate": "--", "taxSum": 0, "sumTotal": 920.7},
+        {"name": "Девочка с тюленем у юрты", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 2, "salePrice": 437.10, "sumBeforeTax": 874.2, "taxRate": "--", "taxSum": 0, "sumTotal": 874.2},
+        {"name": "Девочка у юрты с елочкой", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 437.10, "sumBeforeTax": 437.1, "taxRate": "--", "taxSum": 0, "sumTotal": 437.1},
+        {"name": "Шаман и охотник у юрты", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 2, "salePrice": 423.15, "sumBeforeTax": 846.3, "taxRate": "--", "taxSum": 0, "sumTotal": 846.3},
+        {"name": "Шаман и девушка с бубном у юрты", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 2, "salePrice": 423.15, "sumBeforeTax": 846.3, "taxRate": "--", "taxSum": 0, "sumTotal": 846.3},
+        {"name": "Девушка с бубном и охотник у юрты 1", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 399.90, "sumBeforeTax": 399.9, "taxRate": "--", "taxSum": 0, "sumTotal": 399.9},
+        {"name": "Семь слонов, идущие по мосту", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 1757.70, "sumBeforeTax": 1757.7, "taxRate": "--", "taxSum": 0, "sumTotal": 1757.7},
+        {"name": "Семь слонов на малой подставке", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 1506.60, "sumBeforeTax": 1506.6, "taxRate": "--", "taxSum": 0, "sumTotal": 1506.6},
+        {"name": "Семь мамонтов, идущие по мосту", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 1711.20, "sumBeforeTax": 1711.2, "taxRate": "--", "taxSum": 0, "sumTotal": 1711.2},
+        {"name": "Мамонт средний", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 3, "salePrice": 241.80, "sumBeforeTax": 725.4, "taxRate": "--", "taxSum": 0, "sumTotal": 725.4},
+        {"name": "Сова большая", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 1292.70, "sumBeforeTax": 1292.7, "taxRate": "--", "taxSum": 0, "sumTotal": 1292.7},
+        {"name": "Орел на скале", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 2, "salePrice": 455.70, "sumBeforeTax": 911.4, "taxRate": "--", "taxSum": 0, "sumTotal": 911.4},
+        {"name": "Орел со змеей", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 437.10, "sumBeforeTax": 437.1, "taxRate": "--", "taxSum": 0, "sumTotal": 437.1},
+        {"name": "Орел 1", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 409.20, "sumBeforeTax": 409.2, "taxRate": "--", "taxSum": 0, "sumTotal": 409.2},
+        {"name": "Сова полярная с расправленными крыльями", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 2, "salePrice": 409.20, "sumBeforeTax": 818.4, "taxRate": "--", "taxSum": 0, "sumTotal": 818.4},
+        {"name": "Петух большой", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 2, "salePrice": 353.40, "sumBeforeTax": 706.8, "taxRate": "--", "taxSum": 0, "sumTotal": 706.8},
+        {"name": "Утка с утятами", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 2, "salePrice": 274.35, "sumBeforeTax": 548.7, "taxRate": "--", "taxSum": 0, "sumTotal": 548.7},
+        {"name": "Сова 1", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 3, "salePrice": 274.35, "sumBeforeTax": 823.05, "taxRate": "--", "taxSum": 0, "sumTotal": 823.05},
+        {"name": "Две совы", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 3, "salePrice": 237.15, "sumBeforeTax": 711.45, "taxRate": "--", "taxSum": 0, "sumTotal": 711.45},
+        {"name": "Петух средний", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 195.30, "sumBeforeTax": 195.3, "taxRate": "--", "taxSum": 0, "sumTotal": 195.3},
+        {"name": "Три совы", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 2, "salePrice": 148.80, "sumBeforeTax": 297.6, "taxRate": "--", "taxSum": 0, "sumTotal": 297.6},
+        {"name": "Орел малый", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 2, "salePrice": 144.15, "sumBeforeTax": 288.3, "taxRate": "--", "taxSum": 0, "sumTotal": 288.3},
+        {"name": "Утка, Селезень (2 вида)", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 2, "salePrice": 125.55, "sumBeforeTax": 251.1, "taxRate": "--", "taxSum": 0, "sumTotal": 251.1},
+        {"name": "Петух на колесе", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 120.90, "sumBeforeTax": 120.9, "taxRate": "--", "taxSum": 0, "sumTotal": 120.9},
+        {"name": "Совёнок лежащий (2 вида)", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 3, "salePrice": 88.35, "sumBeforeTax": 265.05, "taxRate": "--", "taxSum": 0, "sumTotal": 265.05},
+        {"name": "Тигр большой на скале", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 1292.70, "sumBeforeTax": 1292.7, "taxRate": "--", "taxSum": 0, "sumTotal": 1292.7},
+        {"name": "Лев большой", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 827.70, "sumBeforeTax": 827.7, "taxRate": "--", "taxSum": 0, "sumTotal": 827.7},
+        {"name": "Кошка большая (2 вида)", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 460.35, "sumBeforeTax": 460.35, "taxRate": "--", "taxSum": 0, "sumTotal": 460.35},
+        {"name": "Котенок озорной", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 423.15, "sumBeforeTax": 423.15, "taxRate": "--", "taxSum": 0, "sumTotal": 423.15},
+        {"name": "Лев средний", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 325.50, "sumBeforeTax": 325.5, "taxRate": "--", "taxSum": 0, "sumTotal": 325.5},
+        {"name": "Тигр на охоте", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 306.90, "sumBeforeTax": 306.9, "taxRate": "--", "taxSum": 0, "sumTotal": 306.9},
+        {"name": "Кот в кресле", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 3, "salePrice": 241.80, "sumBeforeTax": 725.4, "taxRate": "--", "taxSum": 0, "sumTotal": 725.4},
+        {"name": "Котенок в ботинке", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 2, "salePrice": 241.80, "sumBeforeTax": 483.6, "taxRate": "--", "taxSum": 0, "sumTotal": 483.6},
+        {"name": "Котенок с растопыренными лапами", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 241.80, "sumBeforeTax": 241.8, "taxRate": "--", "taxSum": 0, "sumTotal": 241.8},
+        {"name": "Котята - пара", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 2, "salePrice": 181.35, "sumBeforeTax": 362.7, "taxRate": "--", "taxSum": 0, "sumTotal": 362.7},
+        {"name": "Лев ", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 134.85, "sumBeforeTax": 134.85, "taxRate": "--", "taxSum": 0, "sumTotal": 134.85},
+        {"name": "Тигр средний", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 2, "salePrice": 134.85, "sumBeforeTax": 269.7, "taxRate": "--", "taxSum": 0, "sumTotal": 269.7},
+        {"name": "Чеширский Кот на подушке (шарж)", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 2, "salePrice": 79.05, "sumBeforeTax": 158.1, "taxRate": "--", "taxSum": 0, "sumTotal": 158.1},
+        {"name": "Котёнок Гав", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 3, "salePrice": 37.20, "sumBeforeTax": 111.6, "taxRate": "--", "taxSum": 0, "sumTotal": 111.6},
+        {"name": "Котёнок лежащий", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 3, "salePrice": 37.20, "sumBeforeTax": 111.6, "taxRate": "--", "taxSum": 0, "sumTotal": 111.6},
+        {"name": "Медведь бурый на скале (большой)", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 1106.70, "sumBeforeTax": 1106.7, "taxRate": "--", "taxSum": 0, "sumTotal": 1106.7},
+        {"name": "Медведь белый с рыбой", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 520.80, "sumBeforeTax": 520.8, "taxRate": "--", "taxSum": 0, "sumTotal": 520.8},
+        {"name": "Медведица с медвежатами", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 2, "salePrice": 385.95, "sumBeforeTax": 771.9, "taxRate": "--", "taxSum": 0, "sumTotal": 771.9},
+        {"name": "Три медвежонка (карандашница)", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 2, "salePrice": 385.95, "sumBeforeTax": 771.9, "taxRate": "--", "taxSum": 0, "sumTotal": 771.9},
+        {"name": "Медведь белый с бочонком", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 3, "salePrice": 353.40, "sumBeforeTax": 1060.2, "taxRate": "--", "taxSum": 0, "sumTotal": 1060.2},
+        {"name": "Медведь играющий на пне", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 3, "salePrice": 265.05, "sumBeforeTax": 795.15, "taxRate": "--", "taxSum": 0, "sumTotal": 795.15},
+        {"name": "Медведь бурый сидит", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 265.05, "sumBeforeTax": 265.05, "taxRate": "--", "taxSum": 0, "sumTotal": 265.05},
+        {"name": "Медведь бурый 1", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 2, "salePrice": 251.10, "sumBeforeTax": 502.2, "taxRate": "--", "taxSum": 0, "sumTotal": 502.2},
+        {"name": "Медведь белый на снегу", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 2, "salePrice": 237.15, "sumBeforeTax": 474.3, "taxRate": "--", "taxSum": 0, "sumTotal": 474.3},
+        {"name": "Медведь белый 1", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 5, "salePrice": 195.30, "sumBeforeTax": 976.5, "taxRate": "--", "taxSum": 0, "sumTotal": 976.5},
+        {"name": "Медведь в ярости", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 2, "salePrice": 181.35, "sumBeforeTax": 362.7, "taxRate": "--", "taxSum": 0, "sumTotal": 362.7},
+        {"name": "Медведь бурый 2", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 111.60, "sumBeforeTax": 111.6, "taxRate": "--", "taxSum": 0, "sumTotal": 111.6},
+        {"name": "Медведь белый 2", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 3, "salePrice": 111.60, "sumBeforeTax": 334.8, "taxRate": "--", "taxSum": 0, "sumTotal": 334.8},
+        {"name": "Медвежонок сидит", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 2, "salePrice": 41.85, "sumBeforeTax": 83.7, "taxRate": "--", "taxSum": 0, "sumTotal": 83.7},
+        {"name": "Пегас", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 790.50, "sumBeforeTax": 790.5, "taxRate": "--", "taxSum": 0, "sumTotal": 790.5},
+        {"name": "Конь на дыбах 1", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 576.60, "sumBeforeTax": 576.6, "taxRate": "--", "taxSum": 0, "sumTotal": 576.6},
+        {"name": "Лошадь с жеребенком стоят", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 385.95, "sumBeforeTax": 385.95, "taxRate": "--", "taxSum": 0, "sumTotal": 385.95},
+        {"name": "Конь в сбруе", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 2, "salePrice": 274.35, "sumBeforeTax": 548.7, "taxRate": "--", "taxSum": 0, "sumTotal": 548.7},
+        {"name": "Лошадь с жеребенком", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 274.35, "sumBeforeTax": 274.35, "taxRate": "--", "taxSum": 0, "sumTotal": 274.35},
+        {"name": "Конь на дыбах 2", "article": "", "unit": "шт.", "unitCode": "796", "typePackage": "", "quantOnePlace": "", "quantOfPlace": "", "grossWeight": "", "amount": 1, "salePrice": 237.15, "sumBeforeTax": 237.15, "taxRate": "--", "taxSum": 0, "sumTotal": 237.15}
+	]
+
+}

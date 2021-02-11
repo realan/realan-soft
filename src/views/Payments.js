@@ -1,12 +1,12 @@
 // import StimulsoftViewer from "components/StimulsoftViewer/StimulsoftViewer";
 import * as React from "react";
 import DocumentViewer from "reports/DocumentViewer";
-import invoiceData from '../reports/invoiceData.json';
-import billData1 from '../reports/billData1.json';
+import invoiceData1 from '../reports/invoiceTORG12Data.json';
+// import billData1 from '../reports/billData1.json';
 
 const Payments = () => { 
 
-  const data = billData1;
+  const data = invoiceData1;
 
   const docTemplate = {
     // userId: number;
@@ -17,7 +17,7 @@ const Payments = () => {
     // suffix?: string;
     // firstNumber?: number;
     // toNull?: string;
-    filename: "ruBill1.mrt"
+    filename: "ruInvoiceTORG12.mrt"
     // data: DocTemplateDataType,
   }
 
