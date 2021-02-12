@@ -9,10 +9,9 @@ import { TextField } from "@material-ui/core";
 // import AddAddress from "components/AddAddress/AddAddress";
 
 
-const AddFirm = ({ onChange, firms }) => {
+const AddFirm = ({ onChange }) => {
 
-    const [open, setOpen] = useState(false);
-    const [firmData, setFirmData] = useState({
+    const initialState = {
         name: "",
         address: "",
         addressMail: "",
@@ -27,10 +26,13 @@ const AddFirm = ({ onChange, firms }) => {
         bic: "",
         corrAccount: "",
         email: "",
-      });
+      };
+
+    const [open, setOpen] = useState(false);
+    const [state, setState] = useState(initialState);
 
     const handleChange = (value, type) => {
-        const newData = firmData;
+        const newData = state;
         switch (type) {
             case "firm":
                 if (value.data.management === null) {
@@ -64,21 +66,23 @@ const AddFirm = ({ onChange, firms }) => {
             default: 
                 break;
         };
-        setFirmData(newData);
+        setState(newData);
       }
 
     const handleClick = () => { setOpen(!open) };
 
     const handleAdd = () => { 
-        console.log(firmData, firms);
-        onChange(firmData);
+        if (state.name !== "") {
+            onChange(state, "firms");
+            setState(initialState);
+        }
         setOpen(!open);
     };
 
     return (
         <>
 
-            <Button variant="outlined" color="primary" onClick={handleClick}>+</Button>
+            <Button variant="outlined" color="primary" onClick={handleClick}>+ фирма</Button>
             { open && (
                 <div>
                         Поиск по названию или ИНН

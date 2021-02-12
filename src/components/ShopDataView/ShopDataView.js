@@ -29,9 +29,7 @@ export default function FirmDataView({value}) {
     setExpanded(!expanded);
   };
 
-  const management = value.managementPost + " " + value.managementName;
-  const codes = "ИНН " + value.inn + ", КПП " + value.kpp + ", ОГРН " + value.ogrn + ", ОКПО " + value.okpo;
-  const bank = "р/с " + value.account + " в " + value.bank + ", БИК " + value.bic + ", корр/с " + value.corrAccount;
+//   console.log(value)
 
   return (
     <div className={classes.root}>
@@ -42,14 +40,11 @@ export default function FirmDataView({value}) {
           id="panel1bh-header"
         >
           <Typography className={classes.heading}>{value.name}</Typography>
-          <Typography className={classes.secondaryHeading}>Дебиторка, обороты, наша орг</Typography>
+          <Typography className={classes.secondaryHeading}>{value.city}</Typography>
         </AccordionSummary>
         <AccordionDetails>
             <div>
                 <div>{value.address}</div>
-                <div>{management}</div>
-                <div>{codes}</div>
-                <div>{bank}</div>
                 <div>{value.email}</div>
             </div>
         </AccordionDetails>
@@ -57,4 +52,3 @@ export default function FirmDataView({value}) {
     </div>
   );
 }
-

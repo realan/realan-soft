@@ -2,27 +2,36 @@ import React, { useState } from "react";
 import { TextField } from "@material-ui/core";
 import "react-dadata/dist/react-dadata.css";
 import AddFirm from "components/AddFirm/AddFirm";
+import ShopDataView from "components/ShopDataView/ShopDataView";
 import FirmDataView from "components/FirmDataView/FirmDataView";
+import AddShop from "components/AddShop/AddShop";
 
 
 const Customers = () => {
 
-  const [firms, setFirms] = useState([]);
+  const [state, setState] = useState({
+    firms:[],
+    shops:[],
+    persons:[],
+  });
 
-  const handleAddFirm = (firms, newFirm) => {
-    console.log(firms)
-    const newArr = [...firms, newFirm];
-    console.log(newArr);
-    setFirms(newArr);
+  const handleAdd = (newData, type) => {
+    const obj = {...state};
+    const arr = [...state[type], newData];
+    obj[type] = arr;
+    setState(obj);
   }
 
-  const listFirms = firms.map( (item, index) => 
+  const listFirms = state.firms.map( (item, index) => 
     <div key={index}>
       <FirmDataView value={item} />
     </div>
   )
-
-  //Boolean(firms.lenght) && 
+  const listShops = state.shops.map( (item, index) => 
+    <div key={index}>
+      <ShopDataView value={item} />
+    </div>
+  )
 
   return (
     <div>
@@ -30,7 +39,10 @@ const Customers = () => {
       <TextField variant="outlined" type="text" size="small" label="Заказчик" fullWidth />
       <h4>Фирмы заказчика</h4>
       {listFirms}
-      <AddFirm onChange={handleAddFirm} array={firms}/>
+      <AddFirm onChange={handleAdd}/>
+      <h4>Магазины заказчика</h4>
+      {listShops}
+      <AddShop onChange={handleAdd}/>
     </div>
   );
 };
