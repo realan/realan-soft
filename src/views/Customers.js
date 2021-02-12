@@ -5,6 +5,8 @@ import AddFirm from "components/AddFirm/AddFirm";
 import ShopDataView from "components/ShopDataView/ShopDataView";
 import FirmDataView from "components/FirmDataView/FirmDataView";
 import AddShop from "components/AddShop/AddShop";
+import PersonDataView from "components/PersonDataView/PersonDataView";
+import AddPerson from "components/AddPerson/AddPerson";
 
 
 const Customers = () => {
@@ -32,6 +34,11 @@ const Customers = () => {
       <ShopDataView value={item} />
     </div>
   )
+  const listPersons = state.persons.map( (item, index) => 
+    <div key={index}>
+      <PersonDataView value={item} />
+    </div>
+  )
 
   return (
     <div>
@@ -39,10 +46,13 @@ const Customers = () => {
       <TextField variant="outlined" type="text" size="small" label="Заказчик" fullWidth />
       <h4>Фирмы заказчика</h4>
       {listFirms}
-      <AddFirm onChange={handleAdd}/>
+      <AddFirm onChange={handleAdd} />
       <h4>Магазины заказчика</h4>
       {listShops}
-      <AddShop onChange={handleAdd}/>
+      <AddShop onChange={handleAdd} />
+      <h4>Контактные лица</h4>
+      {listPersons}
+      <AddPerson onChange={handleAdd} />
     </div>
   );
 };
