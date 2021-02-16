@@ -20,6 +20,7 @@ const AddPerson = ({ onChange }) => {
         shopId: "",
         firmId: "",
         customerId: "",
+        pasport: "",
       };
 
     const [open, setOpen] = useState(false);

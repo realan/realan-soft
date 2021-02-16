@@ -26,28 +26,36 @@ const AddFirm = ({ onChange }) => {
         bic: "",
         corrAccount: "",
         email: "",
+        site: "",
       };
 
     const [open, setOpen] = useState(false);
     const [state, setState] = useState(initialState);
 
     const handleChange = (value, type) => {
+         console.log(value);
         const newData = state;
         switch (type) {
             case "firm":
-                if (value.data.management === null) {
-                    newData.managementName = "";
-                    newData.managementPost = "";
-                } else {
-                    newData.managementName = value.data.management.name;
-                    newData.managementPost = value.data.management.post; 
-                }
+                // ("unrestricted_value" in value.address) ? console.log(true) : console.log(false);
                 newData.name            = value.value;
-                newData.address         = value.data.address.unrestricted_value;
                 newData.inn             = value.data.inn;
-                newData.kpp             = value.data.kpp;
                 newData.ogrn            = value.data.ogrn;
                 newData.okpo            = value.data.okpo;
+                newData.address         = value.data.address.unrestricted_value;
+                if (value.data.type === "INDIVIDUAL") {
+                    newData.managementName = value.data.name.full;
+                    newData.managementPost = "";
+                    newData.kpp            = "";
+                } else if (value.data.management === null) {
+                    newData.managementName = "";
+                    newData.managementPost = "";
+                    newData.kpp            = value.data.kpp;
+                } else {
+                    newData.managementName = value.data.management.name;
+                    newData.managementPost = value.data.management.post;
+                    newData.kpp            = value.data.kpp; 
+                }
                 break;
             case "address":
                 newData.addressMail     = value.data.unrestricted_value;
