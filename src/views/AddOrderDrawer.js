@@ -134,7 +134,6 @@ export default function AddOrderDrawer() {
           Новый заказ
         </Button>
         <Drawer anchor={anchor} open={stateDrawer[anchor]} onClose={toggleDrawer(anchor, false)}>
-          {/* <ReactDadata token="02698293a1c705c3241ff4206710c67c84eeff56" query="Москва" placeholder="" /> */}
           {list(anchor)}
         </Drawer>
       </React.Fragment>

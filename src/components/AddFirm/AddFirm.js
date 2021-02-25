@@ -14,9 +14,9 @@ const AddFirm = ({ onChange }) => {
     const initialState = {
         name: "",
         address: "",
-        addressMail: "",
-        managementName: "",
-        managementPost: "",
+        address_mail: "",
+        management_name: "",
+        management_post: "",
         inn: "",
         kpp: "",
         ogrn: "",
@@ -24,9 +24,27 @@ const AddFirm = ({ onChange }) => {
         account: "",
         bank: "",
         bic: "",
-        corrAccount: "",
+        corr_account: "",
         email: "",
         site: "",
+
+//         name - text
+// customer_id - integer, nullable
+// address - text, nullable
+// inn - text, nullable
+// kpp - text, nullable
+// ogrn - text, nullable
+// okpo - text, nullable
+// address_mail - text, nullable
+// email - text, nullable
+// site - text, nullable
+// management_name - text, nullable
+// management_post - text, nullable
+// bank - text, nullable
+// bic - text, nullable
+// account - text, nullable
+// corr_account - text, nullable
+
       };
 
     const [open, setOpen] = useState(false);
@@ -44,26 +62,26 @@ const AddFirm = ({ onChange }) => {
                 newData.okpo            = value.data.okpo;
                 newData.address         = value.data.address.unrestricted_value;
                 if (value.data.type === "INDIVIDUAL") {
-                    newData.managementName = value.data.name.full;
-                    newData.managementPost = "";
+                    newData.management_name = value.data.name.full;
+                    newData.management_post = "";
                     newData.kpp            = "";
                 } else if (value.data.management === null) {
-                    newData.managementName = "";
-                    newData.managementPost = "";
+                    newData.management_name = "";
+                    newData.management_post = "";
                     newData.kpp            = value.data.kpp;
                 } else {
-                    newData.managementName = value.data.management.name;
-                    newData.managementPost = value.data.management.post;
+                    newData.management_name = value.data.management.name;
+                    newData.management_post = value.data.management.post;
                     newData.kpp            = value.data.kpp; 
                 }
                 break;
             case "address":
-                newData.addressMail     = value.data.unrestricted_value;
+                newData.address_mail     = value.data.unrestricted_value;
                 break;
             case "bank":
                 newData.bank            = value.value;
                 newData.bic             = value.data.bic;
-                newData.corrAccount     = value.data.correspondent_account;
+                newData.corr_account     = value.data.correspondent_account;
                 break;
             case "account":
                 newData.account         = value;

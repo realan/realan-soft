@@ -2,7 +2,6 @@ import React from "react";
 import { gql } from "apollo-boost";
 import { useState, useMemo, useEffect } from "react";
 import { useSubscription } from "@apollo/react-hooks";
-// import DialogOrders from "../components/DialogOrders/DialogOrders.js";
 import { DataGrid } from "@material-ui/data-grid";
 import Pagination from "@material-ui/lab/Pagination";
 import PropTypes from "prop-types";
@@ -19,6 +18,7 @@ const SUBSCRIPTION_STOCK = gql`
     mr_pivot {
       id: item_id
       item_name
+      item_art
       stock_now
       order_this_week
       collected_this_week
@@ -112,11 +112,20 @@ const Stock = () => {
   );
 
   const onRowClick = (row) => {
-    if (row.row.order_next + row.row.order_next_week + row.row.order_this_week > 0) {
-      setItemForDialog({ isOpen: true, itemId: row.row.id, stockQty: row.row.stock_now });
-    } else {
-      alert("Этой позиции нет в заказах");
-    }
+      console.log(row)
+    // if (row.row.order_next + row.row.order_next_week + row.row.order_this_week > 0) {
+      setItemForDialog({ 
+        isOpen: true, 
+        stockQty: row.row.stock_now,
+        itemId: row.row.id, 
+        itemName: row.row.item_name,          
+        itemArt: row.row.item_art,          
+    });
+    // } else {
+    //   console.log(row)
+    //   setItemForDialog({ isOpen: true, itemId: row.row.id, stockQty: 0 });
+    //   // alert("Этой позиции нет в заказах");
+    // }
   };
 
   const handleClose = () => {
@@ -183,6 +192,8 @@ const Stock = () => {
           open={itemForDialog.isOpen}
           handleClose={handleClose}
           item_id={itemForDialog.itemId}
+          item_name={itemForDialog.itemName}
+          item_art={itemForDialog.itemArt}
           stock_now={itemForDialog.stockQty}
         />
       )}

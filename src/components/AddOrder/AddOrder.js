@@ -1,9 +1,5 @@
 import React, { useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import { FioSuggestions } from "react-dadata";
-import ReactDadataBox from 'react-dadata-box';
-import "react-dadata/dist/react-dadata.css";
-import { DADATA_API_KEY } from "constants/dadata";
 import { Button } from "@material-ui/core";
 import { TextField } from "@material-ui/core";
 import InputLabel from '@material-ui/core/InputLabel';
@@ -19,20 +15,12 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-const AddPerson = ({ onChange, firms, shops }) => {
+const AddOrder = ({ onChange, firms, shops }) => {
 
     const classes = useStyles();
     const initialState = {
-        full_name: "",
-        name: "",
-        surname: "",
-        fio: "",
-        email: "",
-        phone: "",
-        gender: "",
-        birthday: null,
-        shop_id: null,
-        firm_id: null,
+        shop_id: "",
+        firm_id: "",
         passport: "",
       };
 
@@ -55,27 +43,6 @@ const AddPerson = ({ onChange, firms, shops }) => {
     const handleChange = (value, type) => {
         const newData = state;
         switch (type) {
-            case "full_name":
-                newData.full_name    = value.value;
-                newData.name         = value.data.name;
-                newData.surname      = value.data.surname;
-                newData.gender       = value.data.gender;
-                break;
-            case "name":
-                // newData.name = value;
-                break;
-            case "phone":
-                newData.phone = value;
-                break;
-            case "fio":
-                newData.fio = value;
-                break;
-            case "birthday":
-                newData.birthday = value;
-                break;
-            case "email":
-                newData.email   = value.value;
-                break;
             case "shop":
                 newData.shop_id = value;
                 setShop(value);
@@ -94,7 +61,6 @@ const AddPerson = ({ onChange, firms, shops }) => {
     const handleClick = () => { setOpen(!open) };
 
     const handleAdd = () => { 
-
         if (state.full_name !== "") {
             onChange(state, "persons");
             setState(initialState);
@@ -106,20 +72,9 @@ const AddPerson = ({ onChange, firms, shops }) => {
 
     return (
         <>
-            <Button variant="outlined" color="primary" onClick={handleClick}>+ контакт</Button>
+            <Button variant="outlined" color="primary" onClick={handleClick}>+ заказ</Button>
             { open && (
                 <div>
-                    <FioSuggestions 
-                        token={DADATA_API_KEY} 
-                        onChange={(suggestion) => handleChange(suggestion, "full_name")} 
-                    />
-                        Как обращаться в письмах
-                    <TextField 
-                        variant="outlined" type="text" size="small" label="Имя" fullWidth 
-                        defaultValue={initialState.name}
-                        onChange={(event) => handleChange(event.target.value, "name")}
-                    />
-                    ФИО
                     <TextField 
                         variant="outlined" type="text" size="small" label="ФИО" fullWidth 
                         defaultValue={initialState.fio}
@@ -132,10 +87,6 @@ const AddPerson = ({ onChange, firms, shops }) => {
                         onChange={(event) => handleChange(event.target.value, "phone")}
                     />
                         email
-                    <ReactDadataBox 
-                        token={DADATA_API_KEY}  type="email" 
-                        onChange={(suggestion) => handleChange(suggestion, "email")}
-                    />
                     
                     <FormControl variant="outlined" size="small" className={classes.formControl}>
                         <InputLabel id="select-person-firm-input">Фирма</InputLabel>
@@ -174,4 +125,4 @@ const AddPerson = ({ onChange, firms, shops }) => {
     )
 }
 
-export default AddPerson;
+export default AddOrder;

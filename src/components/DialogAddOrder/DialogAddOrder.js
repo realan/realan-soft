@@ -128,6 +128,7 @@ const DialogAddOrder = (props) => {
         onClose={props.handleClose}
         fullWidth={true}
         maxWidth="md"
+        minWidth="md"
         PaperComponent={PaperComponent}
         aria-labelledby="draggable-dialog-title"
       >

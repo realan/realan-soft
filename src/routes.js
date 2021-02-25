@@ -1,5 +1,6 @@
 import Dashboard from "views/Dashboard";
 import Orders from "views/Orders";
+import OrdersAll from "views/OrdersAll";
 import Payments from "views/Payments";
 import Customers from "views/Customers";
 import Stock from "views/Stock";
@@ -24,6 +25,8 @@ import PaymentIcon from "@material-ui/icons/Payment";
 import PeopleIcon from "@material-ui/icons/People";
 import FormatListNumberedIcon from "@material-ui/icons/FormatListNumbered";
 import SettingsIcon from "@material-ui/icons/Settings";
+import StoreIcon from '@material-ui/icons/Store';
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 
 var dashRoutes = [
   {
@@ -35,9 +38,16 @@ var dashRoutes = [
   },
   {
     path: "/orders",
-    name: "Заказы",
+    name: "Заказы мрамор",
     icon: ShoppingCartIcon,
     component: Orders,
+    layout: "/admin",
+  },
+  {
+    path: "/ordersall",
+    name: "Заказы все",
+    icon: AddShoppingCartIcon,
+    component: OrdersAll,
     layout: "/admin",
   },
   {
@@ -56,7 +66,7 @@ var dashRoutes = [
   },
   {
     path: "/todo",
-    name: "Сделать",
+    name: "Импорт данных",
     icon: FormatListNumberedIcon,
     component: Todo,
     layout: "/admin",
@@ -65,7 +75,7 @@ var dashRoutes = [
     // collapse: true,
     path: "/stock",
     name: "Склад",
-    icon: SettingsIcon,
+    icon: StoreIcon,
     // state: "pageCollapse",
     component: Stock,
     layout: "/admin",

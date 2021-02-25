@@ -16,6 +16,7 @@ import DialogStockCorrectQty from "components/DialogStockCorrectQty/DialogStockC
 import { ADD_MOVE_ITEM } from "../../GraphQL/Mutations";
 import { QuantityChanger } from "components/QuantityChanger";
 
+
 // const useStyles = makeStyles(styles);
 
 const SUBSCRIPTION_ORDERS_BY_ID = gql`
@@ -56,7 +57,8 @@ const STORE_TYPE = {
   STOCK: "stock",
 };
 
-const DialogStock = (props) => {
+// const DialogStock = (props) => {
+const DialogStock = ({open, handleClose, item_id, item_name, item_art, stock_now}) => {
   // console.log("render DialogStock")
   // const classes = useStyles();
   const [itemId, setItemId] = useState(undefined);
@@ -125,12 +127,13 @@ const DialogStock = (props) => {
   });
 
   useEffect(() => {
-    setItemId(props.item_id);
-    setStockQty(props.stock_now);
-  }, [props.stock_now, props.item_id]);
+    setItemId(item_id);
+    setStockQty(stock_now);
+  }, [stock_now, item_id]);
 
   useEffect(() => {
     if (data) {
+      console.log(data);
       const preparedData = data.mr_items.map((it, key) => {
 
         const dateOut = new Date(it.mr_order.date_out);
@@ -212,12 +215,12 @@ const DialogStock = (props) => {
     }
     setProdToStock(0);
     setStockToProd(0);
-    props.handleClose();
+    handleClose();
   };
 
   const handleCancel = () => {
-    setStockQty(props.stock_now);
-    props.handleClose();
+    setStockQty(stock_now);
+    handleClose();
   };
   const handleChangeStockToProd = (qty) => {
     setStockToProd(qty);
@@ -253,25 +256,28 @@ const DialogStock = (props) => {
       let sumQtyFromStock = preparedRow.reduce(function (sum, elem) {
         return sum + elem.fromStock;
       }, 0);
-      setStockQty(props.stock_now - sumQtyFromStock);
+      setStockQty(stock_now - sumQtyFromStock);
     }
     setRows(preparedRow);
   };
 
+  const imgSource = "https://realan-suvenir.ru/image/cache/catalog/products/" + item_art + "-542x542.jpg"
+
   return (
     <div>
       <Dialog
-        open={props.open}
-        onClose={props.handleClose}
+        open={open}
+        onClose={handleClose}
         fullScreen={true}
         maxWidth={false}
 
         aria-labelledby="draggable-dialog-title"
       >
         <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
-          {data.mr_items[0].mr_price.name}
+            {item_name}
           <Switch checked={showCards} onChange={handleFilter} name="checkedB" color="primary" />
             Карточки
+          <img src={imgSource} alt="Item" width={100} height={100}/>
           <Button
             onClick={() => setOpenCorrectQty(true)}
             color="primary"
@@ -321,6 +327,9 @@ const DialogStock = (props) => {
             С доработки на склад
             <InputWithButtons onChange={handleChangeProdToStock} />
           </div>
+          <div>
+            <img src={imgSource} alt="Item" width={100} height={100}/>
+          </div>
         </DialogContent>
 
         <DialogActions>
@@ -337,8 +346,8 @@ const DialogStock = (props) => {
 
       <DialogStockCorrectQty
         open={openCorrectQty}
-        itemId={data.mr_items[0].mr_price.id}
-        name={data.mr_items[0].mr_price.name}
+        itemId={item_id}
+        name={item_name}
         stockNow={stockQty}
         handleClose={handleCorrectQty}
       />
