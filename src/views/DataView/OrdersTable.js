@@ -109,7 +109,7 @@ const OrdersTable = () => {
       if (!loading && data) {
         const preparedRows = data.orders.map(item => {
           const dateOut = new Date(item.date_out);
-          console.log(item)
+          // console.log(item)
           let city = "";
           item.shop !== null ? city = item.shop.city: city = "";
           const status = {};
