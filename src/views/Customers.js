@@ -4,9 +4,6 @@ import AddCustomer from "components/AddCustomer/AddCustomer";
 // import CustomersTable from "./DataView/CustomersTable";
 import CustomersAccordion from "./DataView/CustomersAccordion";
 
-
-
-
 const Customers = () => {
 
   return (

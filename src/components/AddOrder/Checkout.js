@@ -7,7 +7,7 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import AddressForm from './AddressForm';
+import DeliveryForm from './DeliveryForm';
 import SelectCustomer from './SelectCustomer';
 import PaymentForm from './PaymentForm';
 import Review from './Review';
@@ -20,8 +20,8 @@ const useStyles = makeStyles((theme) => ({
     width: 'auto',
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(2),
-    [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
-      width: 600,
+    [theme.breakpoints.up(800 + theme.spacing(2) * 2)]: {
+      width: 800,
       marginLeft: 'auto',
       marginRight: 'auto',
     },
@@ -51,25 +51,27 @@ const useStyles = makeStyles((theme) => ({
 
 const steps = ['Заказчик', 'Доставка', 'Документы', 'Позиции'];
 
-function getStepContent(step) {
+function getStepContent(step, data, onChange) {
   switch (step) {
     case 0:
-      return <SelectCustomer />;
+      return <SelectCustomer orderData={data} onChange={onChange} />;
     case 1:
-      return <AddressForm />;
+      return <DeliveryForm  orderData={data} onChange={onChange} />;
     case 2:
-      return <PaymentForm />;
+      return <PaymentForm  orderData={data} onChange={onChange} />;
     case 3:
-      return <Review />;
+      return <Review  orderData={data} onChange={onChange} />;
     default:
       throw new Error('Unknown step');
   }
 }
 
 export default function Checkout() {
+
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const [open, setOpen] = useState(false);
+  const [orderData, setOrderData] = useState({});
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
@@ -82,6 +84,12 @@ export default function Checkout() {
   const handleEnd = () => {
     setActiveStep(0);
     setOpen(!open);
+  }
+
+  const onOrderDataChange = (type, value) => {
+    // console.log(type, value);
+    console.log(orderData);
+    setOrderData({...orderData, [type]: value })
   }
 
   return (
@@ -112,16 +120,16 @@ export default function Checkout() {
                     {activeStep === steps.length ? (
                     <React.Fragment>
                         <Typography variant="h5" gutterBottom>
-                        Заказ размещен.
+                          Заказ размещен.
                         </Typography>
                         <Typography variant="subtitle1">
                             Нужно сориентировать заказчика по дате отгрузки и выставить счет.
-                            <Button onClick={handleEnd}>OK</Button>
+                            <Button variant="outlined" onClick={handleEnd}>OK</Button>
                         </Typography>
                     </React.Fragment>
                     ) : (
                     <React.Fragment>
-                        {getStepContent(activeStep)}
+                        {getStepContent(activeStep, orderData, onOrderDataChange)}
                         <div className={classes.buttons}>
                         {activeStep !== 0 && (
                             <Button onClick={handleBack} className={classes.button}>
