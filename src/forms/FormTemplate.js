@@ -39,8 +39,8 @@ const FormTemplate = (props) => {
   };
   const handleOK = () => {
     console.log(formState);
-    if (!!props.initialState.id) {
-      // if "id" defined then update mutation, else add
+    if (props.initialState.id) {
+      // было (!!props.initialState.id) if "id" defined then update mutation, else add
       const result = formState;
       delete result.__typename;
       props.onSubmit(result);
@@ -59,6 +59,10 @@ const FormTemplate = (props) => {
   const handleIntegerChange = (event) => {
     setFormState({ ...formState, [event.target.name]: Number(event.target.value) });
   };
+
+  let selectorList = 0;
+  let showInItem = 0;
+  let selectorItems = 0;
 
   const fieldsList = props.fields
     .filter((item) => item.show !== false)
@@ -159,9 +163,9 @@ const FormTemplate = (props) => {
           );
           break;
         case "select":
-          const selectorList = item.selectorSetting.arrData;
-          const showInItem = item.selectorSetting.showInItem;
-          const selectorItems = selectorList.map((li) => {
+          selectorList = item.selectorSetting.arrData;
+          showInItem = item.selectorSetting.showInItem;
+          selectorItems = selectorList.map((li) => {
             let menuItemText = showInItem.reduce(
               (text, it) => text + (li[it] !== null ? li[it] : "") + " ",
               ""

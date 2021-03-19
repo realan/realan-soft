@@ -8,14 +8,13 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { DataGrid } from '@material-ui/data-grid';
+import { DataGrid } from "@material-ui/data-grid";
 import InputWithButtons from "components/InputWithButtons/InputWithButtons";
 // import CardPosInOrder from "components/CardPosInOrder/CardPosInOrder";
 import Switch from "@material-ui/core/Switch";
 import DialogStockCorrectQty from "components/DialogStockCorrectQty/DialogStockCorrectQty";
 import { ADD_MOVE_ITEM } from "../../GraphQL/Mutations";
 import { QuantityChanger } from "components/QuantityChanger";
-
 
 // const useStyles = makeStyles(styles);
 
@@ -58,7 +57,7 @@ const STORE_TYPE = {
 };
 
 // const DialogStock = (props) => {
-const DialogStock = ({open, handleClose, item_id, item_name, item_art, stock_now}) => {
+const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_now }) => {
   // console.log("render DialogStock")
   // const classes = useStyles();
   const [itemId, setItemId] = useState(undefined);
@@ -90,8 +89,8 @@ const DialogStock = ({open, handleClose, item_id, item_name, item_art, stock_now
   function fromStockField(params) {
     // console.log(params);
     const needQty = params.row.needQty - params.row.fromProd;
-    let maxValue = 0; 
-    (needQty < stockQty) ? maxValue = needQty : maxValue = stockQty;
+    let maxValue = 0;
+    needQty < stockQty ? (maxValue = needQty) : (maxValue = stockQty);
     return (
       <strong>
         <QuantityChanger
@@ -106,18 +105,18 @@ const DialogStock = ({open, handleClose, item_id, item_name, item_art, stock_now
   }
 
   const columns = [
-    { field: 'id', headerName: 'id', width: 10 },
+    { field: "id", headerName: "id", width: 10 },
     // { field: 'customer', headerName: 'Заказчик', width: 150 },
     // { field: 'town', headerName: 'Город', width: 110 },
-    { field: 'townAndCustomer', headerName: 'Заказ', width: 250 },
-    { field: 'dateOut', headerName: 'Дата отгрузки', width: 110 },
+    { field: "townAndCustomer", headerName: "Заказ", width: 250 },
+    { field: "dateOut", headerName: "Дата отгрузки", width: 110 },
     // { field: 'collected', headerName: 'Набрано%', type: "number", width: 80 },
-    { field: 'orderQty', headerName: 'Заказ', type: "number", width: 80 },
+    { field: "orderQty", headerName: "Заказ", type: "number", width: 80 },
     // { field: 'needQty', headerName: 'Нужно', type: "number", width: 80 },
-    { field: 'collectedQty', headerName: 'Набрано', type: "number", width: 80 },
-    { field: 'fromProd', headerName: 'С доработки', width: 200, renderCell: fromProdField },
-    { field: 'fromStock', headerName: 'Со склада', width: 200, renderCell: fromStockField },
-    { field: 'note', headerName: 'Примечание', type: "text", width: 110 },
+    { field: "collectedQty", headerName: "Набрано", type: "number", width: 80 },
+    { field: "fromProd", headerName: "С доработки", width: 200, renderCell: fromProdField },
+    { field: "fromStock", headerName: "Со склада", width: 200, renderCell: fromStockField },
+    { field: "note", headerName: "Примечание", type: "text", width: 110 },
   ];
 
   const [AddMove] = useMutation(ADD_MOVE_ITEM);
@@ -135,7 +134,6 @@ const DialogStock = ({open, handleClose, item_id, item_name, item_art, stock_now
     if (data) {
       console.log(data);
       const preparedData = data.mr_items.map((it, key) => {
-
         const dateOut = new Date(it.mr_order.date_out);
         const sumTo = it.mr_order.mr_to.reduce((sum, current) => sum + current.qty, 0);
         const sumFrom = it.mr_order.mr_from.reduce((sum, current) => sum + current.qty, 0);
@@ -169,7 +167,7 @@ const DialogStock = ({open, handleClose, item_id, item_name, item_art, stock_now
 
   const handleOK = () => {
     console.log(rows);
-    console.log("handle OK")
+    console.log("handle OK");
     rows.map((it) => {
       if (it.fromProd !== 0) {
         console.log(it);
@@ -261,7 +259,8 @@ const DialogStock = ({open, handleClose, item_id, item_name, item_art, stock_now
     setRows(preparedRow);
   };
 
-  const imgSource = "https://realan-suvenir.ru/image/cache/catalog/products/" + item_art + "-542x542.jpg"
+  const imgSource =
+    "https://realan-suvenir.ru/image/cache/catalog/products/" + item_art + "-542x542.jpg";
 
   return (
     <div>
@@ -270,14 +269,13 @@ const DialogStock = ({open, handleClose, item_id, item_name, item_art, stock_now
         onClose={handleClose}
         fullScreen={true}
         maxWidth={false}
-
         aria-labelledby="draggable-dialog-title"
       >
         <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
-            {item_name}
+          {item_name}
           <Switch checked={showCards} onChange={handleFilter} name="checkedB" color="primary" />
-            Карточки
-          <img src={imgSource} alt="Item" width={100} height={100}/>
+          Карточки
+          <img src={imgSource} alt="Item" width={100} height={100} />
           <Button
             onClick={() => setOpenCorrectQty(true)}
             color="primary"
@@ -290,11 +288,8 @@ const DialogStock = ({open, handleClose, item_id, item_name, item_art, stock_now
 
         <DialogContent>
           {Boolean(rows.length) && !showCards && (
-            <div style={{ height: 800, width: '100%' }}>
-              <DataGrid 
-                rows={rows} 
-                columns={columns} 
-              />
+            <div style={{ height: 800, width: "100%" }}>
+              <DataGrid rows={rows} columns={columns} />
             </div>
           )}
 
@@ -328,7 +323,7 @@ const DialogStock = ({open, handleClose, item_id, item_name, item_art, stock_now
             <InputWithButtons onChange={handleChangeProdToStock} />
           </div>
           <div>
-            <img src={imgSource} alt="Item" width={100} height={100}/>
+            <img src={imgSource} alt="Item" width={100} height={100} />
           </div>
         </DialogContent>
 

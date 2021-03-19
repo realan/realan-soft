@@ -83,18 +83,20 @@ const DialogAddOrderData = (props) => {
     <>
       <span>
         Дата заказа
-        <DateButton 
-          value={state.date_in} 
-          onChange={(date) => { handleDateChange(date, "in");
+        <DateButton
+          value={state.date_in}
+          onChange={(date) => {
+            handleDateChange(date, "in");
           }}
         />
       </span>
       <span>
         Дата отгрузки
-        <DateButton 
-          value={state.date_out} 
+        <DateButton
+          value={state.date_out}
           placeholder={"Дата отгрузки"}
-          onChange={(date) => { handleDateChange(date, "out");
+          onChange={(date) => {
+            handleDateChange(date, "out");
           }}
         />
       </span>

@@ -3,9 +3,7 @@
 const { Stimulsoft } = window;
 Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("/fonts/arial.ttf", "Arial");
 
-
 class SSReport {
-
   constructor() {
     if (!SSReport.instance) {
       this.report = new Stimulsoft.Report.StiReport();
@@ -20,17 +18,17 @@ class SSReport {
   }
 
   setTemplateData(data) {
-    const dataSet = new Stimulsoft.System.Data.DataSet('SimpleDataSet');
+    const dataSet = new Stimulsoft.System.Data.DataSet("SimpleDataSet");
     dataSet.readJson(data);
     // Remove all connections from the report template
     this.report.dictionary.databases.clear();
-    this.report.regData(dataSet.dataSetName, '', dataSet);
+    this.report.regData(dataSet.dataSetName, "", dataSet);
   }
 
   renderViewer() {
-    const viewer = new Stimulsoft.Viewer.StiViewer(null, 'StiViewer', false);
+    const viewer = new Stimulsoft.Viewer.StiViewer(null, "StiViewer", false);
     viewer.report = this.report;
-    viewer.renderHtml('viewer');
+    viewer.renderHtml("viewer");
   }
 
   makeFormFile() {
@@ -45,8 +43,8 @@ class SSReport {
     service.exportTo(this.report, stream, settings);
     let data = stream.toArray();
     data = new Uint8Array(data);
-    const blob = new Blob([data], {type: "application/pdf"});
-    return new File([blob], 'doc.pdf', { type: "application/pdf" });
+    const blob = new Blob([data], { type: "application/pdf" });
+    return new File([blob], "doc.pdf", { type: "application/pdf" });
   }
 }
 

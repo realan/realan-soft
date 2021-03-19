@@ -13,7 +13,7 @@ const useStyles = makeStyles({
   },
 });
 
-const InputGroup = ({onChange}) => {
+const InputGroup = ({ onChange }) => {
   // console.log("renderInputWithBottons")
   const [count, setCount] = useState(0);
 

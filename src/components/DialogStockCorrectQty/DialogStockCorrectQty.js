@@ -9,14 +9,7 @@ import InputWithButtons from "components/InputWithButtons/InputWithButtons";
 import Button from "@material-ui/core/Button";
 import { ADD_MOVE_ITEM } from "../../GraphQL/Mutations";
 
-const DialogStockCorrectQty = ({ 
-  open, 
-  itemId, 
-  name, 
-  stockNow,
-  handleClose 
-}) => {
-
+const DialogStockCorrectQty = ({ open, itemId, name, stockNow, handleClose }) => {
   const [count, setCount] = useState(0);
 
   const [AddMove] = useMutation(ADD_MOVE_ITEM);
@@ -40,12 +33,7 @@ const DialogStockCorrectQty = ({
   };
 
   return (
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="form-dialog-title"
-      maxWidth="sm"
-    >
+    <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth="sm">
       <DialogTitle id="form-dialog-title">
         {name} - числится - {stockNow}{" "}
       </DialogTitle>

@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 import { DataGrid } from "@material-ui/data-grid";
 import { GET_PRICE } from "../../GraphQL/Queries";
 
-const DialogAddOrderItems = (props) => {
+const AddAllItemsInOrder = ({ onChange }) => {
   const [price, setPrice] = useState([]);
   const [items, setItems] = useState([]);
 
@@ -93,14 +93,18 @@ const DialogAddOrderItems = (props) => {
       console.log(result);
       setItems(result);
       let itemsOrder = result.map((item) => {
+        const inPrice = price.find((el) => el.id === item.itemId);
         return {
           item: item.itemId,
           qty: item.qty,
           order: item.orderId,
           note: item.note,
+          weight: inPrice.weight,
+          price_opt: inPrice.price_opt,
+          price_rozn: inPrice.price_rozn,
         };
       });
-      props.onChange(itemsOrder);
+      onChange(itemsOrder);
     });
   };
 
@@ -118,4 +122,4 @@ const DialogAddOrderItems = (props) => {
   );
 };
 
-export default DialogAddOrderItems;
+export default AddAllItemsInOrder;

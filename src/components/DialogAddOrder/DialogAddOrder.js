@@ -11,7 +11,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Paper from "@material-ui/core/Paper";
 import Draggable from "react-draggable";
-import DialogAddOrderItems from "components/DialogAddOrderItems/DialogAddOrderItems";
+import AddAllItemsInOrder from "components/AddAllItemsInOrder/AddAllItemsInOrder";
 import DialogAddOrderNewCustomer from "components/DialogAddOrderNewCustomer/DialogAddOrderNewCustomer";
 import DialogAddOrderData from "components/DialogAddOrderData/DialogAddOrderData";
 
@@ -80,12 +80,14 @@ const DialogAddOrder = (props) => {
   useEffect(() => {
     // ЖОПА. Как сделать проще?
     if (!mutationLoading && mutationData) {
-      console.log(orderItems)
+      console.log(orderItems);
       let orderId = mutationData.insert_mr_order.returning[0].id;
       orderItems.forEach(function (item) {
         item["order"] = orderId;
-        if (item["note"] === undefined){ item["note"] = "" };
-        console.log(item)
+        if (item["note"] === undefined) {
+          item["note"] = "";
+        }
+        console.log(item);
         AddItems({ variables: { addData: item } });
       });
     }
@@ -137,7 +139,7 @@ const DialogAddOrder = (props) => {
         <DialogContent>
           <DialogAddOrderNewCustomer />
           <DialogAddOrderData onChange={onDataChange} />
-          <DialogAddOrderItems onChange={onItemsChange} />
+          <AddAllItemsInOrder onChange={onItemsChange} />
         </DialogContent>
 
         <DialogActions>

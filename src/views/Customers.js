@@ -5,7 +5,6 @@ import AddCustomer from "components/AddCustomer/AddCustomer";
 import CustomersAccordion from "./DataView/CustomersAccordion";
 
 const Customers = () => {
-
   return (
     <div>
       <AddCustomer />

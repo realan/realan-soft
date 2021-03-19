@@ -1,18 +1,18 @@
-import React, {useState} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import React, { useState } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import Typography from "@material-ui/core/Typography";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100%',
+    width: "100%",
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
-    flexBasis: '33.33%',
+    flexBasis: "33.33%",
     flexShrink: 0,
   },
   secondaryHeading: {
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function FirmDataView({value}) {
+export default function FirmDataView({ value }) {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
 
@@ -29,7 +29,7 @@ export default function FirmDataView({value}) {
     setExpanded(!expanded);
   };
 
-//   console.log(value)
+  //   console.log(value)
 
   return (
     <div className={classes.root}>
@@ -43,10 +43,10 @@ export default function FirmDataView({value}) {
           <Typography className={classes.secondaryHeading}>{value.city}</Typography>
         </AccordionSummary>
         <AccordionDetails>
-            <div>
-                <div>{value.address}</div>
-                <div>{value.email}</div>
-            </div>
+          <div>
+            <div>{value.address}</div>
+            <div>{value.email}</div>
+          </div>
         </AccordionDetails>
       </Accordion>
     </div>

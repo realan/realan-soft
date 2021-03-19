@@ -36,15 +36,17 @@ const AddFromClipboard = ({ type, value, onSubmit }) => {
             let obj = {};
 
             rowIn.forEach(function (cell, j) {
-              let type = headsType[j]
-              let val = cell.trim()
+              let type = headsType[j];
+              let val = cell.trim();
               if (type === "number") {
-                obj[headsList[j]] = Number(val.replace(",",".").replace(" ", ""));
+                obj[headsList[j]] = Number(val.replace(",", ".").replace(" ", ""));
               } else if (type === "boolean") {
-                (val === '1' || val === "ИСТИНА" || val === 'true' || val === true) ? val = true : val = false;
-                obj[headsList[j]]=val;
+                val === "1" || val === "ИСТИНА" || val === "true" || val === true
+                  ? (val = true)
+                  : (val = false);
+                obj[headsList[j]] = val;
               } else {
-                obj[headsList[j]]=val;
+                obj[headsList[j]] = val;
               }
               // console.log(obj);
               row.push(obj);
@@ -65,12 +67,12 @@ const AddFromClipboard = ({ type, value, onSubmit }) => {
       // console.log(item);
       let addData = {};
       for (let key in item) {
-        if (key !== 'id') {
+        if (key !== "id") {
           addData[key] = item[key];
-        }  
+        }
       }
       console.log(addData);
-      onSubmit({ variables: {addData: addData }});
+      onSubmit({ variables: { addData: addData } });
     });
   };
 

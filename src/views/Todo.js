@@ -32,45 +32,43 @@ const Todo = () => {
   mutations["items"] = AddItem;
   mutations["move"] = AddMove;
 
-
-
   const columns = {};
 
   columns["customers"] = [
-    {name:"text"},
-    {town:"text"},
-    {person:"text"},
-    {phone:"text"},
-    {email:"text"},
-    {delivery:"text"},
-    {discount:"number"},
-    {first_order:"text"},
+    { name: "text" },
+    { town: "text" },
+    { person: "text" },
+    { phone: "text" },
+    { email: "text" },
+    { delivery: "text" },
+    { discount: "number" },
+    { first_order: "text" },
   ];
 
   columns["category"] = [{ name: "text" }];
 
   columns["price"] = [
-    {name: "text"},
-    {weight:"number"},
-    {price_opt:"number"},
-    {art:"text"},
-    {category:"number"}, //ID
-    {price_rozn:"number"},
+    { name: "text" },
+    { weight: "number" },
+    { price_opt: "number" },
+    { art: "text" },
+    { category: "number" }, //ID
+    { price_rozn: "number" },
   ];
 
   columns["orders"] = [
-    {customer:"number"}, // id customer
-    {town:"text"},
-    {delivery:"text"},
-    {person:"text"},
-    {phone:"text"},
-    {is_shipped:"boolean"}, // - boolean, default: false
-    {date_in:"text"}, // - timestamp without time zone, nullable, default: now()
-    {date_out:"text"}, // - timestamp with time zone, nullable
-    {email:"text"}, // - text, nullable
-    {discount:"number"}, // - numeric, nullable
-    {is_cancelled:"boolean"}, // - boolean, nullable, default: false
-    {note:"text"},
+    { customer: "number" }, // id customer
+    { town: "text" },
+    { delivery: "text" },
+    { person: "text" },
+    { phone: "text" },
+    { is_shipped: "boolean" }, // - boolean, default: false
+    { date_in: "text" }, // - timestamp without time zone, nullable, default: now()
+    { date_out: "text" }, // - timestamp with time zone, nullable
+    { email: "text" }, // - text, nullable
+    { discount: "number" }, // - numeric, nullable
+    { is_cancelled: "boolean" }, // - boolean, nullable, default: false
+    { note: "text" },
   ];
 
   columns["items"] = [
@@ -82,11 +80,11 @@ const Todo = () => {
   ];
 
   columns["move"] = [
-    {item:"number"}, //r
-    {qty:"number"},
-    {from_order:"number"}, // - integer
-    {to_order:"number"}, // - integer
-    {date:"text"}, // - timestamp with time zone, default: now()
+    { item: "number" }, //r
+    { qty: "number" },
+    { from_order: "number" }, // - integer
+    { to_order: "number" }, // - integer
+    { date: "text" }, // - timestamp with time zone, default: now()
   ];
 
   const onClick = (type) => {

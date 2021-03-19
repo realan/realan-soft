@@ -88,13 +88,11 @@ const Stock = () => {
   const { loading, error, data } = useSubscription(SUBSCRIPTION_STOCK);
 
   useEffect(() => {
-    if (!loading && data) { 
+    if (!loading && data) {
       setRowsData(data.mr_pivot);
       setRows(data.mr_pivot);
     }
   }, [loading, data]);
-
-  
 
   // items for table
   const columns = useMemo(
@@ -112,14 +110,14 @@ const Stock = () => {
   );
 
   const onRowClick = (row) => {
-      console.log(row)
+    console.log(row);
     // if (row.row.order_next + row.row.order_next_week + row.row.order_this_week > 0) {
-      setItemForDialog({ 
-        isOpen: true, 
-        stockQty: row.row.stock_now,
-        itemId: row.row.id, 
-        itemName: row.row.item_name,          
-        itemArt: row.row.item_art,          
+    setItemForDialog({
+      isOpen: true,
+      stockQty: row.row.stock_now,
+      itemId: row.row.id,
+      itemName: row.row.item_name,
+      itemArt: row.row.item_art,
     });
     // } else {
     //   console.log(row)
@@ -139,31 +137,31 @@ const Stock = () => {
     const filterType = event.target.value;
     let preparedRows = [];
     setFilter(filterType);
-    switch(filterType) {
-      case 'needAllWeeks': 
-        preparedRows = rowsData.filter( row => 
-          row.order_this_week !== 0 || 
-          row.order_next_week !== 0 || 
-          row.order_next !== 0
+    switch (filterType) {
+      case "needAllWeeks":
+        preparedRows = rowsData.filter(
+          (row) => row.order_this_week !== 0 || row.order_next_week !== 0 || row.order_next !== 0
         );
         break;
-      case 'stockNow':
-        preparedRows = rowsData.filter( row => row.stock_now !== 0);
+      case "stockNow":
+        preparedRows = rowsData.filter((row) => row.stock_now !== 0);
         break;
-      case 'needThisWeek':
-        preparedRows = rowsData.filter( row => (row.order_this_week - row.collected_this_week) !== 0);
+      case "needThisWeek":
+        preparedRows = rowsData.filter(
+          (row) => row.order_this_week - row.collected_this_week !== 0
+        );
         break;
       default:
         preparedRows = rowsData;
         break;
     }
     setRows(preparedRows);
-  }
+  };
 
   const onSearchChange = (text) => {
-    const preparedRows = rowsData.filter( row => row.item_name.toLowerCase().indexOf(text) >= 0);
+    const preparedRows = rowsData.filter((row) => row.item_name.toLowerCase().indexOf(text) >= 0);
     setRows(preparedRows);
-  }
+  };
 
   return (
     <div>
@@ -172,21 +170,21 @@ const Stock = () => {
           <StockTableChoise value={filter} onChange={filterChange} />
         </Box>
         <Box>
-          <VoiceInput onChange={onSearchChange} />        
+          <VoiceInput onChange={onSearchChange} />
         </Box>
       </Box>
       <div style={{ height: 1400, width: "100%" }}>
-        <DataGrid 
-          rows={rows} 
-          columns={columns} 
-          rowHeight={30} 
-          onRowClick={onRowClick} 
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          rowHeight={30}
+          onRowClick={onRowClick}
           pagination
           pageSize={40}
           components={{ pagination: CustomPagination }}
         />
       </div>
-      <FileExportToXls  data={rows} name={"склад"} />
+      <FileExportToXls data={rows} name={"склад"} />
       {itemForDialog.itemId && (
         <DialogStock
           open={itemForDialog.isOpen}

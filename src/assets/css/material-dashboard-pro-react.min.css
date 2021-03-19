@@ -1723,7 +1723,7 @@ fieldset[disabled] .rbc-toolbar button.active {
   display: inline-block;
   bottom: 0px;
   right: -7px;
-  font-family: Font Awesome\5 Free;
+  font-family: Font awesome\5 Free;
 }
 .ReactTable .rt-thead .rt-th.-cursor-pointer.-sort-desc > div:first-of-type:after {
   content: "\F0DD";
@@ -1733,7 +1733,7 @@ fieldset[disabled] .rbc-toolbar button.active {
   display: inline-block;
   bottom: 0px;
   right: -7px;
-  font-family: Font Awesome\5 Free;
+  font-family: Font awesome\5 Free;
   opacity: 0.8;
 }
 .ReactTable .rt-thead .rt-th.-cursor-pointer.-sort-asc > div:first-of-type:after {
@@ -1744,7 +1744,7 @@ fieldset[disabled] .rbc-toolbar button.active {
   display: inline-block;
   bottom: 0px;
   right: -7px;
-  font-family: Font Awesome\5 Free;
+  font-family: Font awesome\5 Free;
   opacity: 0.8;
 }
 .ReactTable .rt-thead .rt-th,
@@ -2169,7 +2169,7 @@ fieldset[disabled] .rbc-toolbar button.active {
   font-weight: bold;
 }
 .react-tagsinput-tag a::before {
-  font-family: Font Awesome\5 Free;
+  font-family: Font awesome\5 Free;
   content: "\f00d";
   padding: 0px 2px;
   font-weight: 900;

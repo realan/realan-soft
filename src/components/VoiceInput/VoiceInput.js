@@ -1,82 +1,82 @@
 import React from "react";
 import { useState } from "react";
 import { TextField } from "@material-ui/core";
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
+import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 import Fab from "@material-ui/core/Fab";
-import MicIcon from '@material-ui/icons/Mic';
-import MicOffIcon from '@material-ui/icons/MicOff';
+import MicIcon from "@material-ui/icons/Mic";
+import MicOffIcon from "@material-ui/icons/MicOff";
 
+const VoiceInput = ({ onChange }) => {
+  const [state, setState] = useState("");
+  const [toggle, setToggle] = useState(true);
 
-const VoiceInput = ({
-    onChange
-}) => {
+  const commands = [
+    {
+      command: "*",
+      callback: (text) => onChange(text.trim().toLowerCase()),
+    },
+    {
+      command: "Назад",
+      callback: () => onChange(""),
+    },
+  ];
 
-    const [state, setState] = useState("");
-    const [toggle, setToggle] = useState(true)
+  const { transcript } = useSpeechRecognition({ commands });
 
-    const commands = [
-        {
-          command: '*',
-          callback: ((text) => onChange(text.trim().toLowerCase()) )
-        },
-        {
-            command: 'Назад',
-            callback: (() => onChange('') )
-        },
-    ];
+  if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
+    return null;
+  }
 
-    const { transcript } = useSpeechRecognition({ commands })
+  const handleChange = (event) => {
+    const text = event.target.value.toLowerCase();
+    setState(text);
+    onChange(text);
+  };
 
-    if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
-      return null
-    }
+  const handleOn = () => {
+    setToggle(!toggle);
+    SpeechRecognition.startListening({ continuous: true });
+  };
 
-    const handleChange = (event) => {
-        const text = event.target.value.toLowerCase();
-        setState(text);
-        onChange(text);
-    }
+  const handleOff = () => {
+    setToggle(!toggle);
+    SpeechRecognition.stopListening();
+  };
 
-    const handleOn = () => {
-        setToggle(!toggle);
-        SpeechRecognition.startListening({ continuous: true });
-    }
+  return (
+    <>
+      <TextField
+        value={state}
+        type="text"
+        label="Поиск"
+        onChange={(event) => handleChange(event)}
+      />
+      <Fab
+        color="primary"
+        aria-label="start"
+        size="small"
+        component="span"
+        onClick={handleOn} //() => SpeechRecognition.startListening({ continuous: true })}
+        disabled={!toggle}
+      >
+        <MicIcon />
+      </Fab>
+      <Fab
+        color="secondary"
+        aria-label="stop"
+        size="small"
+        component="span"
+        onClick={handleOff} // SpeechRecognition.stopListening}
+        disabled={toggle}
+      >
+        <MicOffIcon />
+      </Fab>
+      <span>{transcript.split(" ").pop()}</span>
 
-    const handleOff = () => {
-        setToggle(!toggle);
-        SpeechRecognition.stopListening();
-    }
-
-    return (
-        <>
-            <TextField value={state} type="text" label="Поиск" onChange={ (event) => handleChange(event) } />
-            <Fab
-                color="primary"
-                aria-label="start"
-                size="small"
-                component="span"
-                onClick={handleOn}//() => SpeechRecognition.startListening({ continuous: true })}
-                disabled={!toggle}
-            >
-                <MicIcon />
-            </Fab>
-            <Fab
-                color="secondary"
-                aria-label="stop"
-                size="small"
-                component="span"
-                onClick={handleOff} // SpeechRecognition.stopListening}
-                disabled={toggle}
-            >
-                <MicOffIcon />
-            </Fab>
-            <span>{transcript.split(" ").pop()}</span>
-
-            {/* <button onClick={() => SpeechRecognition.startListening({ continuous: true })}>Start</button>
+      {/* <button onClick={() => SpeechRecognition.startListening({ continuous: true })}>Start</button>
             <button onClick={SpeechRecognition.stopListening}>Stop</button> */}
-        </>
-
-    );
+    </>
+  );
 };
 
 export default VoiceInput;

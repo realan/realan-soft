@@ -23,7 +23,6 @@ import ButtonDeleteOrder from "components/ButtonDeleteOrder/ButtonDeleteOrder";
 import UpdateItemInOrder from "components/UpdateItemInOrder/UpdateItemInOrder";
 import DeleteItemFromOrder from "components/DeleteItemFromOrder/DeleteItemFromOrder";
 
-
 // const useStyles = makeStyles(styles);
 
 const UPDATE_ORDER_DATE = gql`
@@ -43,7 +42,7 @@ const SUBSCRIPTION_ITEMS_IN_ORDER = gql`
       item
       qty
       note
-  		stock_data{
+      stock_data {
         stock_now
       }
       mr_price {
@@ -65,7 +64,6 @@ const SUBSCRIPTION_ITEMS_IN_ORDER = gql`
         }
       }
     }
-
   }
 `;
 
@@ -114,17 +112,15 @@ CustomPagination.propTypes = {
   }).isRequired,
 };
 
-
 function updateField(params) {
-  const data=params.row;
-  return <UpdateItemInOrder value={data} />
+  const data = params.row;
+  return <UpdateItemInOrder value={data} />;
 }
 function deleteField(params) {
-  return <DeleteItemFromOrder value={params.row} />
+  return <DeleteItemFromOrder value={params.row} />;
 }
 
-
-const DialogOrders = ({open, handleClose, orderData}) => {
+const DialogOrders = ({ open, handleClose, orderData }) => {
   // const classes = useStyles();
 
   let orderId = orderData.id;
@@ -136,7 +132,7 @@ const DialogOrders = ({open, handleClose, orderData}) => {
   const [AddMoveItemMutation] = useMutation(ADD_MOVE_ITEM);
 
   function fromProdField(params) {
-    const needQty = params.row.qtyOrder - params.row.qtyCollect- params.row.fromStock;
+    const needQty = params.row.qtyOrder - params.row.qtyCollect - params.row.fromStock;
     return (
       <strong>
         <QuantityChanger
@@ -154,8 +150,8 @@ const DialogOrders = ({open, handleClose, orderData}) => {
 
   function fromStockField(params) {
     const needQty = params.row.qtyOrder - params.row.qtyCollect - params.row.fromProd;
-    let maxValue = 0; 
-    (needQty < params.row.qtyStock) ? maxValue = needQty : maxValue = params.row.qtyStock;
+    let maxValue = 0;
+    needQty < params.row.qtyStock ? (maxValue = needQty) : (maxValue = params.row.qtyStock);
     return (
       <strong>
         <QuantityChanger
@@ -286,7 +282,12 @@ const DialogOrders = ({open, handleClose, orderData}) => {
       >
         <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
           {orderData.customer} {orderData.town}, отгрузка
-          <DateButton value={orderDate} onChange={(date) => {handleDateChange(date) }} />
+          <DateButton
+            value={orderDate}
+            onChange={(date) => {
+              handleDateChange(date);
+            }}
+          />
         </DialogTitle>
 
         <DialogContent>
@@ -304,7 +305,7 @@ const DialogOrders = ({open, handleClose, orderData}) => {
             </div>
           )}
         </DialogContent>
-            
+
         <DialogActions>
           <Box flexGrow={1}>
             <ButtonDeleteOrder items={rows} orderId={orderId} onClick={handleClose} />
@@ -314,7 +315,12 @@ const DialogOrders = ({open, handleClose, orderData}) => {
           </Box>
 
           <Box flexGrow={1}>
-            <Button onClick={() => makeMoves(rows)} color="primary" variant="contained" size="large">
+            <Button
+              onClick={() => makeMoves(rows)}
+              color="primary"
+              variant="contained"
+              size="large"
+            >
               Обновить кол-во
             </Button>
           </Box>

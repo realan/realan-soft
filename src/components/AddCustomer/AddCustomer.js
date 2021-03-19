@@ -63,40 +63,46 @@ const ADD_PERSONS = gql`
 `;
 
 const AddCustomer = () => {
-
   const initialState = {
-    firms:[],
-    shops:[],
-    persons:[],    
+    firms: [],
+    shops: [],
+    persons: [],
   };
   const [open, setOpen] = useState(false);
   const [customer, setCustomer] = useState("");
   const [canInsertPersons, setCanInsertPersons] = useState(false);
   const [state, setState] = useState(initialState);
-  
-  const [ AddCustomerMutation, { data: addCustomerData, loading: addCustomerLoading, error: addCustomerError },
+
+  const [
+    AddCustomerMutation,
+    { data: addCustomerData, loading: addCustomerLoading, error: addCustomerError },
   ] = useMutation(ADD_CUSTOMER);
 
-  const [ AddFirmsMutation, { data: addFirmsData, loading: addFirmsLoading, error: addFirmsError },
+  const [
+    AddFirmsMutation,
+    { data: addFirmsData, loading: addFirmsLoading, error: addFirmsError },
   ] = useMutation(ADD_FIRMS);
 
-  const [ AddShopsMutation, { data: addShopsData, loading: addShopsLoading, error: addShopsError },
+  const [
+    AddShopsMutation,
+    { data: addShopsData, loading: addShopsLoading, error: addShopsError },
   ] = useMutation(ADD_SHOPS);
 
-  const [ AddPersonsMutation, { loading: addPersonsLoading, error: addPersonsError },
-  ] = useMutation(ADD_PERSONS);
+  const [AddPersonsMutation, { loading: addPersonsLoading, error: addPersonsError }] = useMutation(
+    ADD_PERSONS
+  );
 
   useEffect(() => {
     if (!addCustomerLoading && addCustomerData) {
       const customerId = addCustomerData.insert_customers.returning[0].id;
 
-      const firmsData = state.firms.map( item => {
+      const firmsData = state.firms.map((item) => {
         item.customer_id = customerId;
         return item;
       });
       AddFirmsMutation({ variables: { addData: firmsData } });
 
-      const shopsData = state.shops.map( item => {
+      const shopsData = state.shops.map((item) => {
         item.customer_id = customerId;
         return item;
       });
@@ -110,9 +116,9 @@ const AddCustomer = () => {
     if (canInsertPersons && addShopsData && addFirmsData) {
       const customerId = addCustomerData.insert_customers.returning[0].id;
 
-      const personsData = state.persons.map( item => {
-        console.log(item)
-        console.log(addFirmsData)
+      const personsData = state.persons.map((item) => {
+        console.log(item);
+        console.log(addFirmsData);
         // const firmId;
         if (item.firm_id !== null) {
           item.firm_id = addFirmsData.insert_firms.returning[item.firm_id].id;
@@ -128,9 +134,9 @@ const AddCustomer = () => {
       });
 
       AddPersonsMutation({ variables: { addData: personsData } });
-        // console.log(personsData)
-        // console.log(addShopsData)
-        // console.log(addFirmsData)
+      // console.log(personsData)
+      // console.log(addShopsData)
+      // console.log(addFirmsData)
     }
   }, [addShopsData, addFirmsData, addCustomerData, canInsertPersons]);
 
@@ -147,51 +153,46 @@ const AddCustomer = () => {
     // add customer, return customerId
     const addData = {
       name: customer,
-    }
+    };
     // console.log(addData);
     AddCustomerMutation({ variables: { addData: addData } });
     // add firms, return firmsId, then add shops, return shopsId, then add persons
-  }
+  };
 
   const handleChangeData = (newData, type) => {
-    const obj = {...state};
+    const obj = { ...state };
     const arr = [...state[type], newData];
     obj[type] = arr;
     setState(obj);
-  }
+  };
 
   const handleCancel = () => {
     setOpen(false);
     setState(initialState);
-  }
+  };
 
-  const listFirms = state.firms.map( (item, index) => 
+  const listFirms = state.firms.map((item, index) => (
     <div key={index}>
       <FirmDataView value={item} />
     </div>
-  )
-  const listShops = state.shops.map( (item, index) => 
+  ));
+  const listShops = state.shops.map((item, index) => (
     <div key={index}>
       <ShopDataView value={item} />
     </div>
-  )
-  const listPersons = state.persons.map( (item, index) => 
+  ));
+  const listPersons = state.persons.map((item, index) => (
     <div key={index}>
-      <PersonDataView 
-        value={item} 
-      />
+      <PersonDataView value={item} />
     </div>
-  )
+  ));
 
   return (
     <>
-    <Button 
-        color="primary" 
-        variant="outlined"
-        onClick={() => setOpen(true)}>
+      <Button color="primary" variant="outlined" onClick={() => setOpen(true)}>
         Новый заказчик
-    </Button>
-    <Dialog
+      </Button>
+      <Dialog
         open={open}
         onClose={() => setOpen(false)}
         maxWidth="md"
@@ -201,25 +202,25 @@ const AddCustomer = () => {
         <DialogTitle id="draggable-dialog-title"></DialogTitle>
 
         <DialogContent>
-            <h4>Заказчик</h4>
-            <TextField 
-              variant="outlined" type="text" size="small" label="Заказчик" fullWidth 
-              value={state.customer}
-              onChange={(event) => setCustomer(event.target.value)}
-            />
-            <h4>Фирмы заказчика</h4>
-            {listFirms}
-            <AddFirm onChange={handleChangeData} />
-            <h4>Магазины заказчика</h4>
-            {listShops}
-            <AddShop onChange={handleChangeData} />
-            <h4>Контактные лица</h4>
-            {listPersons}
-            <AddPerson 
-              onChange={handleChangeData} 
-              firms={state.firms} 
-              shops={state.shops} 
-            />
+          <h4>Заказчик</h4>
+          <TextField
+            variant="outlined"
+            type="text"
+            size="small"
+            label="Заказчик"
+            fullWidth
+            value={state.customer}
+            onChange={(event) => setCustomer(event.target.value)}
+          />
+          <h4>Фирмы заказчика</h4>
+          {listFirms}
+          <AddFirm onChange={handleChangeData} />
+          <h4>Магазины заказчика</h4>
+          {listShops}
+          <AddShop onChange={handleChangeData} />
+          <h4>Контактные лица</h4>
+          {listPersons}
+          <AddPerson onChange={handleChangeData} firms={state.firms} shops={state.shops} />
         </DialogContent>
 
         <DialogActions>
@@ -232,9 +233,7 @@ const AddCustomer = () => {
             Добавить заказчика
           </Button>
         </DialogActions>
-      </Dialog>  
-
-
+      </Dialog>
     </>
   );
 };

@@ -1,6 +1,6 @@
 // @flow
 
-import * as React from 'react';
+import * as React from "react";
 import SSReport from "./ReportService";
 
 // interface Props {
@@ -22,17 +22,12 @@ import SSReport from "./ReportService";
 //   data: DocTemplateDataType,
 // }
 
-
-
-
-
 class DocumentViewer extends React.Component {
-
   componentDidMount() {
     const { docTemplate, data } = this.props;
 
-    console.log('DATA', data);
-    console.log('template', docTemplate);
+    console.log("DATA", data);
+    console.log("template", docTemplate);
     const reporter = new SSReport();
     reporter.setTemplate(docTemplate.filename);
 
@@ -44,11 +39,11 @@ class DocumentViewer extends React.Component {
   }
 
   componentWillUnmount() {
-    console.log('will unmount');
+    console.log("will unmount");
   }
 
   render() {
-    return <section id="viewer" />
+    return <section id="viewer" />;
   }
 }
 

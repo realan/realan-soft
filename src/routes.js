@@ -25,8 +25,8 @@ import PaymentIcon from "@material-ui/icons/Payment";
 import PeopleIcon from "@material-ui/icons/People";
 import FormatListNumberedIcon from "@material-ui/icons/FormatListNumbered";
 import SettingsIcon from "@material-ui/icons/Settings";
-import StoreIcon from '@material-ui/icons/Store';
-import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import StoreIcon from "@material-ui/icons/Store";
+import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 
 var dashRoutes = [
   {

@@ -13,5 +13,10 @@ module.exports = {
     },
   },
   plugins: ["react"],
+  rules: {
+    "react/prop-types": 0,
+    skipStrings: 0,
+    "no-unused-vars": 1,
+  },
   extends: ["eslint:recommended", "plugin:react/recommended", "plugin:prettier/recommended"],
 };
