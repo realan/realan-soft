@@ -91,7 +91,7 @@ function getStepContent(step, data, onChange) {
   }
 }
 
-export default function Checkout() {
+export default function OrderDataDialog({initialState, orderMutation, itemsMutation}) {
   const initialState = {
     customer_id: undefined,
     firm_id: undefined,

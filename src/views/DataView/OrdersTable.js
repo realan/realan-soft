@@ -54,10 +54,15 @@ const useStyles = makeStyles({
 
 const SUBSCRIPTION_ORDERS = gql`
   subscription {
-    orders {
+    orders(where: {id: {_gt: 10}}) {
       id
       date_out
       sum
+      price_type_id
+      payment_status
+      our_firm_id
+      bill_id
+      invoice_id
       customer {
         id
         name
@@ -95,9 +100,14 @@ const OrdersTable = () => {
       { field: "shopCity", headerName: "Город", width: 120 },
       { field: "dateOut", headerName: "Отгрузка", type: "date", width: 110 },
       { field: "sum", headerName: "Сумма", type: "number", width: 80 },
-      { field: "statusFirm", headerName: "F", width: 40 },
-      { field: "statusShop", headerName: "S", width: 40 },
-      { field: "statusPerson", headerName: "P", width: 40 },
+      { field: "price_type_id", headerName: "Сумма", type: "number", width: 80 },
+      { field: "payment_status", headerName: "Оплата",  width: 80  },
+      { field: "our_firm_id", headerName: "F", width: 70  },
+      { field: "bill_id", headerName: "S", width: 60  },
+      { field: "invoice_id", headerName: "I", width: 50  },
+      { field: "statusFirm", headerName: "F", width: 50 },
+      { field: "statusShop", headerName: "S", width: 50 },
+      { field: "statusPerson", headerName: "P", width: 50 },
     ],
     []
   );
@@ -115,6 +125,8 @@ const OrdersTable = () => {
         item.shop !== null ? (status.shop = "+") : (status.shop = "-");
         item.firm !== null ? (status.firm = "+") : (status.firm = "-");
         item.person !== null ? (status.person = "+") : (status.person = "-");
+        item.bill_id !== null ? (status.bill_id = "+") : (status.bill_id = "-");
+        item.invoice_id !== null ? (status.invoice_id = "+") : (status.invoice_id = "-");
 
         return {
           id: item.id,
@@ -124,6 +136,13 @@ const OrdersTable = () => {
           statusShop: status.shop,
           statusFirm: status.firm,
           statusPerson: status.person,
+          bill_id: status.bill_id,
+          invoice_id: status.invoice_id,
+          price_type_id: item.price_type_id,
+          payment_status: item.payment_status,
+          our_firm_id: item.our_firm_id,
+          sum: item.sum,
+
         };
       });
       console.log(preparedRows);
