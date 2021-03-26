@@ -17,6 +17,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import DateButton from "components/DateButton/DateButton";
 import GridItem from "components/Grid/GridItem";
 
+// import { AddressSuggestions } from "react-dadata";
+// // import ReactDadataBox from "react-dadata-box";
+// // import "react-dadata/dist/react-dadata.css";
+// import { DADATA_API_KEY } from "constants/dadata";
+
 // import FormControlLabel from '@material-ui/core/FormControlLabel';
 // import Checkbox from "@material-ui/core/Checkbox";
 
@@ -80,6 +85,19 @@ export default function DeliveryForm({ orderData, onChange }) {
         Доставка
       </Typography>
       <Grid container spacing={2} alignItems="baseline">
+        <Grid item xs={12}>
+          <TextField
+            fullWidth
+            label="Пожелания по доставке от заказчика"
+            value={orderData.deliveryData.delivery_note}
+            onChange={(event) =>
+              onChange("deliveryData", {
+                ...orderData.deliveryData,
+                delivery_note: event.target.value,
+              })
+            }
+          />
+        </Grid>
         <Grid item xs={8}>
           <FormControl className={classes.formControl}>
             <InputLabel htmlFor="age-native-simple">Транспортная компания</InputLabel>
@@ -204,26 +222,20 @@ export default function DeliveryForm({ orderData, onChange }) {
         </Grid>
 
         <Grid item xs={12}>
+          {/* <AddressSuggestions
+            token={DADATA_API_KEY}
+            label="Адрес"
+            value={orderData.deliveryData.address}
+            onChange={(suggestion) =>
+              onChange("deliveryData", { ...orderData.deliveryData, address: suggestion })
+            }
+          /> */}
           <TextField
             fullWidth
             label="Адрес"
             value={orderData.deliveryData.address}
             onChange={(event) =>
               onChange("deliveryData", { ...orderData.deliveryData, address: event.target.value })
-            }
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <TextField
-            fullWidth
-            label="Примечание по доставке"
-            value={orderData.deliveryData.delivery_note}
-            onChange={(event) =>
-              onChange("deliveryData", {
-                ...orderData.deliveryData,
-                delivery_note: event.target.value,
-              })
             }
           />
         </Grid>

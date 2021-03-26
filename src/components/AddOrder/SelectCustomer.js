@@ -45,6 +45,9 @@ const SUBSCRIPTION_CUSTOMERS = gql`
       firms {
         id
         name
+        contracts {
+          our_firm_id
+        }
       }
       persons {
         id

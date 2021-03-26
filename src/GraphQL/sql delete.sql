@@ -1,8 +1,11 @@
-CREATE OR REPLACE VIEW "public"."pivot3" AS WITH week_begin AS (
+CREATE
+OR REPLACE VIEW "public"."pivot" AS WITH week_begin AS (
   SELECT
     date_trunc('week' :: text, now()) AS this,
     date_trunc('week' :: text, (now() + '7 days' :: interval)) AS next
 ),
+
+
 
 item_collect AS (
   SELECT
@@ -21,6 +24,10 @@ item_collect AS (
   WHERE
     (o.is_shipped = false)
 ),
+
+
+
+
 
 item_move_to AS (
   SELECT
@@ -41,6 +48,8 @@ item_move_to AS (
     (o.is_shipped = false)
 ),
 
+
+
 item_move_from AS (
   SELECT
     m.id,
@@ -59,6 +68,8 @@ item_move_from AS (
   WHERE
     (o.is_shipped = false)
 )
+
+
 
 SELECT
   p.id AS item_id,
@@ -88,6 +99,7 @@ SELECT
     )
   ) AS stock_now,
 
+
   (
     SELECT
       COALESCE(sum(item_collect.qty), (0) :: bigint) AS "coalesce"
@@ -97,7 +109,8 @@ SELECT
         item,
         qty,
         order_id,
-        is_shipped
+        is_shipped,
+        date_out
       )
     WHERE
       (
@@ -106,6 +119,7 @@ SELECT
         AND (item_collect.date_out < week_begin.next)
       )
   ) AS order_this_week,
+
 
   (
     (
@@ -117,7 +131,8 @@ SELECT
             item,
             qty,
             order_id,
-            is_shipped
+            is_shipped,
+            date_out
         )
       WHERE
         (
@@ -134,7 +149,8 @@ SELECT
             item,
             qty,
             order_id,
-            is_shipped
+            is_shipped,
+            date_out
         )
       WHERE
         (
@@ -145,6 +161,7 @@ SELECT
     )
   ) AS collected_this_week,
 
+
   (
     SELECT
       COALESCE(sum(item_collect.qty), (0) :: bigint) AS "coalesce"
@@ -154,7 +171,8 @@ SELECT
         item,
         qty,
         order_id,
-        is_shipped
+        is_shipped,
+        date_out
       )
     WHERE
       (
@@ -166,6 +184,9 @@ SELECT
       )
   ) AS order_next_week,
 
+
+
+
   (
     (
       SELECT
@@ -176,7 +197,8 @@ SELECT
             item,
             qty,
             order_id,
-            is_shipped
+            is_shipped,
+            date_out
         )
       WHERE
         (
@@ -195,7 +217,8 @@ SELECT
             item,
             qty,
             order_id,
-            is_shipped
+            is_shipped,
+            date_out
         )
       WHERE
         (
@@ -208,6 +231,9 @@ SELECT
     )
   ) AS collected_next_week,
 
+
+
+
   (
     SELECT
       COALESCE(sum(item_collect.qty), (0) :: bigint) AS "coalesce"
@@ -217,7 +243,8 @@ SELECT
         item,
         qty,
         order_id,
-        is_shipped
+        is_shipped,
+        date_out
       )
     WHERE
       (

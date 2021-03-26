@@ -126,6 +126,7 @@ const OrdersTable = () => {
           statusPerson: status.person,
         };
       });
+      console.log(preparedRows);
       setRows(preparedRows);
     }
   }, [loading, data]);

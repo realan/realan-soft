@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Stepper from "@material-ui/core/Stepper";
@@ -11,6 +11,31 @@ import DeliveryForm from "./DeliveryForm";
 import SelectCustomer from "./SelectCustomer";
 import PositionsForm from "./PositionsForm";
 import DocumentsForm from "./DocumentsForm";
+
+import { gql } from "apollo-boost";
+import { useMutation } from "@apollo/react-hooks";
+
+const ADD_ORDER = gql`
+  mutation AddOrder($addData: orders_insert_input!) {
+    insert_orders(objects: [$addData]) {
+      affected_rows
+      returning {
+        id
+      }
+    }
+  }
+`;
+
+const ADD_ITEMS = gql`
+  mutation AddItems($addData: items_insert_input!) {
+    insert_items(objects: [$addData]) {
+      affected_rows
+      returning {
+        id
+      }
+    }
+  }
+`;
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -30,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
     padding: theme.spacing(2),
-    [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
+    [theme.breakpoints.up(800 + theme.spacing(3) * 2)]: {
       marginTop: theme.spacing(6),
       marginBottom: theme.spacing(6),
       padding: theme.spacing(3),
@@ -73,6 +98,8 @@ export default function Checkout() {
     shop_id: undefined,
     person_id: undefined,
     customer: { name: undefined },
+    items: [],
+    sum: 0,
   };
 
   const classes = useStyles();
@@ -80,7 +107,71 @@ export default function Checkout() {
   const [open, setOpen] = useState(false);
   const [orderData, setOrderData] = useState(initialState);
 
+  const [AddOrder, { data: data, loading: loading, error: error }] = useMutation(ADD_ORDER);
+  const [AddItems] = useMutation(ADD_ITEMS);
+
+  useEffect(() => {
+    console.log("additem");
+    if (!loading && data) {
+      console.log(orderData.items);
+      let orderId = data.insert_orders.returning[0].id;
+      orderData.items.forEach(function (item) {
+        item["order_id"] = orderId;
+        if (item["note"] === undefined) {
+          item["note"] = "";
+        }
+        console.log(item);
+        AddItems({ variables: { addData: item } });
+      });
+    }
+  }, [loading, data, orderData, AddItems]);
+
+  if (loading) return "Loading....";
+  if (error) return `Error! ${error.message}`;
+
+  const handleAddOrder = () => {
+    if (orderData.customer_id === undefined) {
+      alert("Нужно выбрать заказчика");
+      return false;
+    } else if (orderData.items.length === 0) {
+      alert("Нет позиций в заказе");
+      return false;
+    } else if (orderData.date_out === null) {
+      alert("Нужно выбрать дату отгрузки");
+      return false;
+    } else {
+      const preparedData = {
+        date_out: orderData.date_out,
+        customer_id: orderData.customer_id,
+        firm_id: orderData.firm_id,
+        person_id: orderData.person_id,
+        shop_id: orderData.shop_id,
+        our_firm_id: orderData.our_firm_id,
+        delivery_id: orderData.deliveryData.delivery_id,
+        city: orderData.deliveryData.city,
+        packaging: orderData.packaging,
+        consignee_name: orderData.deliveryData.consignee_name,
+        consignee_phone: orderData.deliveryData.consignee_phone,
+        consignee_data: orderData.deliveryData.consignee_data,
+        note_delivery: orderData.deliveryData.note_delivery,
+        price_type_id: orderData.price_type_id,
+        discount: orderData.discount,
+        pay_till_date: orderData.pay_till_date,
+        payment_status: "не оплачен",
+        sum: orderData.sum,
+        weigth: orderData.orderParams.weigth,
+        note_order: orderData.note_order,
+        note_supplier: orderData.note_supplier,
+      };
+      console.log(preparedData);
+      AddOrder({ variables: { addData: preparedData } });
+    }
+  };
+
   const handleNext = () => {
+    if (activeStep === steps.length - 1) {
+      handleAddOrder();
+    }
     setActiveStep(activeStep + 1);
   };
 
@@ -93,18 +184,11 @@ export default function Checkout() {
     setOpen(!open);
   };
 
-  // const onOrderDataChange = (type, value) => {
-  //   // console.log(type, value);
-  //   console.log(orderData);
-  //   setOrderData({...orderData, [type]: value })
-  // }
-
   const onOrderDataChange = useCallback(
     (type, value) => {
       // console.log(type, value);
       console.log(orderData);
       setOrderData((prevState) => ({ ...prevState, [type]: value }));
-      // debugger;
     },
     [orderData]
   );

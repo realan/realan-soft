@@ -15,6 +15,20 @@ export const GET_PRICE = gql`
   }
 `;
 
+export const GET_PRICE_NEW = gql`
+  query GetPrice {
+    price {
+      id
+      name
+      art
+      price_dealer
+      price_opt
+      price_retail
+      weight
+    }
+  }
+`;
+
 /// old querries
 
 export const GET_DELIVERY = gql`

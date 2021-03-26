@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW "public"."pivot3" AS WITH week_begin AS (
+CREATE OR REPLACE VIEW "public"."pivot" AS WITH week_begin AS (
   SELECT
     date_trunc('week' :: text, now()) AS this,
     date_trunc('week' :: text, (now() + '7 days' :: interval)) AS next
