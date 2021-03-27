@@ -7,6 +7,8 @@ import { DataGrid } from "@material-ui/data-grid";
 import Pagination from "@material-ui/lab/Pagination";
 import PropTypes from "prop-types";
 import FileExportToXls from "components/FileExportToXls/FileExportToXls";
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import Button from '@material-ui/core/Button';
 // import LensIcon from '@material-ui/icons/Lens';
 
 function CustomPagination(props) {
@@ -90,6 +92,40 @@ const SUBSCRIPTION_ORDERS = gql`
   }
 `;
 
+const handleButtonClick = (type, orderId) => {
+  console.log(type, orderId)
+}
+
+
+function orderDocsButtons (params){
+  return (
+    <ButtonGroup aria-label="button group" size="small" >
+      <Button
+        id="bill"
+        color={params.row.bill_id ? "primary" : "secondary"}
+        onClick={(e)=>handleButtonClick(e.currentTarget.id, params.row.id)}
+      >
+        Сч
+      </Button>
+      <Button
+        id="invoice"
+        color={params.row.invoice_id ? "primary" : "secondary"}
+        onClick={(e)=>handleButtonClick(e.currentTarget.id, params.row.id)}
+      >
+        Нк
+      </Button>
+      <Button
+        id="payment"
+        color={params.row.payment_status ? "primary" : "secondary"}
+        onClick={(e)=>handleButtonClick(e.currentTarget.id, params.row.id)}
+      >
+        Пл
+      </Button>
+    </ButtonGroup>
+  )
+}
+
+
 const OrdersTable = () => {
   const [rows, setRows] = useState([]);
 
@@ -101,13 +137,14 @@ const OrdersTable = () => {
       { field: "dateOut", headerName: "Отгрузка", type: "date", width: 110 },
       { field: "sum", headerName: "Сумма", type: "number", width: 80 },
       { field: "price_type_id", headerName: "Сумма", type: "number", width: 80 },
-      { field: "payment_status", headerName: "Оплата",  width: 80  },
+      // { field: "payment_status", headerName: "Оплата",  width: 80  },
       { field: "our_firm_id", headerName: "F", width: 70  },
-      { field: "bill_id", headerName: "S", width: 60  },
-      { field: "invoice_id", headerName: "I", width: 50  },
+      // { field: "bill_id", headerName: "S", width: 60  },
+      // { field: "invoice_id", headerName: "I", width: 50  },
       { field: "statusFirm", headerName: "F", width: 50 },
       { field: "statusShop", headerName: "S", width: 50 },
       { field: "statusPerson", headerName: "P", width: 50 },
+      { field: "buttonsDocs", headerName: "Docs", width: 200, renderCell: orderDocsButtons },
     ],
     []
   );
@@ -136,8 +173,8 @@ const OrdersTable = () => {
           statusShop: status.shop,
           statusFirm: status.firm,
           statusPerson: status.person,
-          bill_id: status.bill_id,
-          invoice_id: status.invoice_id,
+          bill_id: item.bill_id,
+          invoice_id: item.invoice_id,
           price_type_id: item.price_type_id,
           payment_status: item.payment_status,
           our_firm_id: item.our_firm_id,
@@ -160,6 +197,8 @@ const OrdersTable = () => {
     //   isOpen: true,
     // });
   };
+
+
 
   return (
     <>
