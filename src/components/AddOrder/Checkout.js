@@ -110,7 +110,6 @@ export default function Checkout() {
   const [AddOrder, { data, loading, error }] = useMutation(ADD_ORDER);
   const [AddItems] = useMutation(ADD_ITEMS);
 
-  
   const onOrderDataChange = useCallback(
     (type, value) => {
       // console.log(type, value);
@@ -127,11 +126,11 @@ export default function Checkout() {
       let orderId = data.insert_orders.returning[0].id;
       orderData.items.forEach(function (item) {
         let obj = {
-          "order_id": orderId,
-          "note": item.note,
-          "item_id": item.item_id,
-          "qty": item.qty,
-        }
+          order_id: orderId,
+          note: item.note,
+          item_id: item.item_id,
+          qty: item.qty,
+        };
         console.log(obj);
         AddItems({ variables: { addData: obj } });
       });
@@ -195,7 +194,6 @@ export default function Checkout() {
     setActiveStep(0);
     setOpen(!open);
   };
-
 
   return (
     <React.Fragment>
