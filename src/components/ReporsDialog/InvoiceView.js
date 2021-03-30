@@ -7,8 +7,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DocumentViewer from "reports/DocumentViewer";
 import invoiceData1 from "../../reports/invoiceTORG12Data.json";
 
-const InvoiceView = ({ open, onClose }) => {
-  const data = invoiceData1;
+const InvoiceView = ({ open, onClose, data }) => {
+  const dataSample = invoiceData1;
 
   const docTemplate = {
     // userId: number;
@@ -23,6 +23,8 @@ const InvoiceView = ({ open, onClose }) => {
     // data: DocTemplateDataType,
   };
 
+  console.log(data)
+
   return (
     <>
       <Dialog
@@ -34,7 +36,7 @@ const InvoiceView = ({ open, onClose }) => {
         aria-labelledby="dialog-invoice"
       >
         <DialogContent>
-          <DocumentViewer docTemplate={docTemplate} data={data} />
+          <DocumentViewer docTemplate={docTemplate} data={dataSample} />
         </DialogContent>
         <DialogActions>
           <Box flexGrow={1}>

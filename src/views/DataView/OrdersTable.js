@@ -97,37 +97,39 @@ const SUBSCRIPTION_ORDERS = gql`
 `;
 
 const GET_ORDER_DATA = gql`
-  query GetOrderData {
-    orders(where: { id: { _eq: 16 } }) {
+  query GetOrderData ($item_id: Int!) {
+    orders(where: {id: {_eq: $item_id}}) {
       firm {
+        id
+        name
+        inn
+        kpp
+        okpo
         address
         address_mail
         account
-        inn
-        kpp
-        id
-        name
-        okpo
         management_name
         management_post
       }
       firmByOurFirmId {
-        account
+        id
+        ogrn
+        name
         address
         address_mail
+        account
         bank
         bic
-        id
         inn
         kpp
         management_name
+        accountant_name
         management_post
-        ogrn
-        name
       }
       items {
         qty
         price {
+          id
           art
           name
           price_dealer
@@ -207,7 +209,11 @@ const OrdersTable = () => {
     }
   }, [loading, data]);
 
-  useEffect(() => {}, [loadingOrder, dataOrder]);
+  useEffect(() => {
+    if (!loadingOrder && dataOrder) {
+      console.log(dataOrder);
+    }
+  }, [loadingOrder, dataOrder]);
 
   if (loadingOrder) return <p>Loading order...</p>;
   if (loading) return "Loading....";
@@ -223,7 +229,7 @@ const OrdersTable = () => {
 
       if (type === "invoice") {
         getOrderData({ variables: { order_id: orderId } });
-
+        setOrderData(dataOrder);
         setOpen(true);
       }
     };
@@ -270,7 +276,7 @@ const OrdersTable = () => {
           components={{ pagination: CustomPagination }}
         />
       </div>
-      <InvoiceView open={open} onClose={handleClose} data={orderData} />
+      {/* <InvoiceView open={open} onClose={handleClose} data={orderData} /> */}
       {/* // form={form} /> */}
       <FileExportToXls data={rows} name={"Заказчики"} />
     </>
