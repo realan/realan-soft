@@ -11,7 +11,12 @@ const Orders = () => {
   const [startDate, setStartDate] = useState(new Date(today.getFullYear(), 0, 1));
   const [endDate, setEndDate] = useState(today);
 
-  const params ={row:{}}
+  const params ={row:{
+    id: 16,
+    bill_id: undefined,
+    invoice_id: null,
+    payment_status: null,
+  }}
   // params.id = 16;
   // : {
   //   bill_id: null,

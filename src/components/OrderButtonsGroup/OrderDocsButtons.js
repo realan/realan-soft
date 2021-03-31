@@ -3,13 +3,16 @@ import { useState, useEffect } from "react";
 import InvoiceView from "components/ReporsDialog/InvoiceView";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
-import {  useQuery } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
+import {  useLazyQuery } from "@apollo/react-hooks";
+import { gql } from "@apollo/client";
 
-
+// const GET_ORDER_DATA = gql`
+//   query GetOrderData {
+//     orders(where: {id: {_eq: 16}}) {
 const GET_ORDER_DATA = gql`
   query GetOrderData ($order_id: Int!) {
     orders(where: {id: {_eq: $order_id}}) {
+
       firm {
         id
         name
@@ -57,18 +60,20 @@ const GET_ORDER_DATA = gql`
 `;
 
 
-export default function OrderDocsButtons(params, idOrder) {
+export default function OrderDocsButtons({params}) {
   const [open, setOpen] = useState(false);
   const [orderData, setOrderData] = useState(false);
+  const [orderId, setOrderId] = useState(params.row.id);
 
-
-  const { loading, error, data } = useQuery(GET_ORDER_DATA, {
-    variables: { order_id: idOrder },
-  });
+  const [loadOrderData, { called, loading, data }] = useLazyQuery(
+    GET_ORDER_DATA,
+    { variables: { order_id: params.row.id } }
+  );
 
   useEffect(() => {
     if (data) {
       console.log(data);
+      console.log(params);
       // const preparedData = data.orders.map((it, key) => {
       //   let obj = {
       //   };
@@ -79,12 +84,12 @@ export default function OrderDocsButtons(params, idOrder) {
     }
   }, [data]);
 
-  if (loading) return "Loading....";
-  if (error) return `Error! ${error.message}`;
 
-  const handleButtonClick = (type) => {
-    console.log(type);
+  if (called && loading) return <p>Loading ...</p>
+
+  const handleButtonClick = (type) => {  
     if (type === "invoice") {
+      loadOrderData()
       setOpen(true);
     }
   };
