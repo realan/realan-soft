@@ -23,7 +23,7 @@ const InvoiceView = ({ open, onClose, data }) => {
     // data: DocTemplateDataType,
   };
 
-  console.log(data)
+  console.log(data);
 
   return (
     <>

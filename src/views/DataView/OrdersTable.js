@@ -12,7 +12,7 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
 
 // import OrderDocsButtons from "components/OrderButtonsGroup/OrderDocsButtons";
-import InvoiceView from "components/ReporsDialog/InvoiceView";
+// import InvoiceView from "components/ReporsDialog/InvoiceView";
 // import LensIcon from '@material-ui/icons/Lens';
 
 function CustomPagination(props) {
@@ -34,15 +34,9 @@ function CustomPagination(props) {
 }
 
 CustomPagination.propTypes = {
-  /**
-   * ApiRef that let you manipulate the grid.
-   */
   api: PropTypes.shape({
     current: PropTypes.object.isRequired,
   }).isRequired,
-  /**
-   * The object containing all pagination details in [[PaginationState]].
-   */
   pagination: PropTypes.shape({
     page: PropTypes.number.isRequired,
     pageCount: PropTypes.number.isRequired,
@@ -97,8 +91,8 @@ const SUBSCRIPTION_ORDERS = gql`
 `;
 
 const GET_ORDER_DATA = gql`
-  query GetOrderData ($item_id: Int!) {
-    orders(where: {id: {_eq: $item_id}}) {
+  query GetOrderData($item_id: Int!) {
+    orders(where: { id: { _eq: $item_id } }) {
       firm {
         id
         name

@@ -3,16 +3,12 @@ import { useState, useEffect } from "react";
 import InvoiceView from "components/ReporsDialog/InvoiceView";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
-import {  useLazyQuery } from "@apollo/react-hooks";
+import { useLazyQuery } from "@apollo/react-hooks";
 import { gql } from "@apollo/client";
 
-// const GET_ORDER_DATA = gql`
-//   query GetOrderData {
-//     orders(where: {id: {_eq: 16}}) {
 const GET_ORDER_DATA = gql`
-  query GetOrderData ($order_id: Int!) {
-    orders(where: {id: {_eq: $order_id}}) {
-
+  query GetOrderData($order_id: Int!) {
+    orders(where: { id: { _eq: $order_id } }) {
       firm {
         id
         name
@@ -59,37 +55,65 @@ const GET_ORDER_DATA = gql`
   }
 `;
 
-
-export default function OrderDocsButtons({params}) {
+export default function OrderDocsButtons({ params }) {
   const [open, setOpen] = useState(false);
   const [orderData, setOrderData] = useState(false);
-  const [orderId, setOrderId] = useState(params.row.id);
 
-  const [loadOrderData, { called, loading, data }] = useLazyQuery(
-    GET_ORDER_DATA,
-    { variables: { order_id: params.row.id } }
-  );
+  const [loadOrderData, { called, loading, data }] = useLazyQuery(GET_ORDER_DATA, {
+    variables: { order_id: params.row.id },
+  });
 
   useEffect(() => {
     if (data) {
       console.log(data);
       console.log(params);
-      // const preparedData = data.orders.map((it, key) => {
-      //   let obj = {
-      //   };
-      //   return obj;
-      // });
-      // console.log(preparedData);
-      // setOrderData(preparedData);
+      const preparedData = data.orders.map((it) => {
+        let listItems = it.items.map((item, key) => {
+          let price = 0;
+          params.row.price_type === 1
+            ? (price = item.price.price_dealer)
+            : params.row.price_type === 2
+            ? (price = item.price.price_opt)
+            : (price = item.price.price_retail);
+
+          price = price * (1 - params.row.discount);
+          return {
+            id: key + 1,
+            description: item.price.name,
+            article: item.price.art,
+            unitName: "шт.",
+            unitCode: "796",
+            typePackage: "",
+            quantOnePlace: "",
+            quantOfPlace: "",
+            grossWeight: "",
+            quantity: item.qty,
+            priceBeforeTax: price,
+            sumBeforeTax: price,
+            taxRate: "--",
+            taxSum: 0,
+            sumTotal: price * item.qty,
+          };
+        });
+        let obj = {
+          supplier: it.firmByOurFirmId,
+          shipper: it.firmByOurFirmId,
+          consignee: it.firm,
+          payer: it.firm,
+          listItems: listItems,
+        };
+        return obj;
+      });
+      console.log(preparedData);
+      //   setOrderData(preparedData);
     }
-  }, [data]);
+  }, [data, params]);
 
+  if (called && loading) return <p>Loading ...</p>;
 
-  if (called && loading) return <p>Loading ...</p>
-
-  const handleButtonClick = (type) => {  
+  const handleButtonClick = (type) => {
     if (type === "invoice") {
-      loadOrderData()
+      loadOrderData();
       setOpen(true);
     }
   };
@@ -121,7 +145,7 @@ export default function OrderDocsButtons({params}) {
           Пл
         </Button>
       </ButtonGroup>
-      <InvoiceView open={open} onClose={handleClose} data={orderData} /> 
+      <InvoiceView open={open} onClose={handleClose} data={orderData} />
     </>
   );
 }

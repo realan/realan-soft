@@ -11,22 +11,16 @@ const Orders = () => {
   const [startDate, setStartDate] = useState(new Date(today.getFullYear(), 0, 1));
   const [endDate, setEndDate] = useState(today);
 
-  const params ={row:{
-    id: 16,
-    bill_id: undefined,
-    invoice_id: null,
-    payment_status: null,
-  }}
-  // params.id = 16;
-  // : {
-  //   bill_id: null,
-  //   invoice_id: null,
-  //   payment_status: null,
-  //   id: 16,
-    
-  // }
-
-  const idOrder=16;
+  const params = {
+    row: {
+      id: 16,
+      bill_id: undefined,
+      invoice_id: null,
+      payment_status: null,
+      price_type: 1,
+      discount: 0.04,
+    },
+  };
 
   return (
     <>
@@ -38,8 +32,7 @@ const Orders = () => {
 
       <ModalResorting startDate={startDate} endDate={endDate} />
       <AddItemInOrder orderId={181} />
-      <OrderDocsButtons params={params} idOrder={idOrder}/>
-
+      <OrderDocsButtons params={params} />
     </>
   );
 };
