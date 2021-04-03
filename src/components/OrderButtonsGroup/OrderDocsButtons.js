@@ -70,6 +70,7 @@ const GET_LAST_DOC_NUMBER = gql`
 export default function OrderDocsButtons({ params }) {
   const [open, setOpen] = useState(false);
   const [orderData, setOrderData] = useState(false);
+  const [templateDoc, setTemplateDoc] = useState("");
   let date = new Date();
   let year = date.getFullYear();
 
@@ -132,8 +133,6 @@ export default function OrderDocsButtons({ params }) {
 
   useEffect(() => {
     if (dataNumber) {
-      console.log("++++++++++++++++++++++++++++ set number");
-      console.log(dataNumber);
       setOrderData((prevState) => ({ ...prevState, number: dataNumber.register[0].number }));
     }
   }, [dataNumber]);
@@ -145,11 +144,14 @@ export default function OrderDocsButtons({ params }) {
     if (type === "invoice") {
       loadOrderData();
       getLastDocNumber();
+      setTemplateDoc('ruInvoiceTORG12.mrt')
       setOpen(true);
     }
     if (type === "bill") {
       console.log(orderData);
       getLastDocNumber();
+      setTemplateDoc('ruBill1.mrt')
+      setOpen(true);
     }
   };
 
@@ -180,7 +182,7 @@ export default function OrderDocsButtons({ params }) {
           Пл
         </Button>
       </ButtonGroup>
-      {/* <InvoiceView open={open} onClose={handleClose} data={orderData} /> */}
+      <InvoiceView open={open} onClose={handleClose} data={orderData} template={templateDoc}/>
     </>
   );
 }

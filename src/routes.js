@@ -2,6 +2,7 @@ import Dashboard from "views/Dashboard";
 import Orders from "views/Orders";
 import OrdersAll from "views/OrdersAll";
 import Payments from "views/Payments";
+import Invoice from "views/Invoice";
 import Customers from "views/Customers";
 import Stock from "views/Stock";
 import Todo from "views/Todo";
@@ -55,6 +56,13 @@ var dashRoutes = [
     name: "Платежи",
     icon: PaymentIcon,
     component: Payments,
+    layout: "/admin",
+  },
+  {
+    path: "/invoice",
+    name: "ТОРГ-12",
+    icon: PaymentIcon,
+    component: Invoice,
     layout: "/admin",
   },
   {

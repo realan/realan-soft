@@ -1,0 +1,103 @@
+{
+    "docs": {
+        invoice_number: 1,
+        invoice_date: "15.05.2021",
+        bill_number: 1,
+        bill_date: "10.05.2021",
+    }
+    "supplier": {
+        "id": 1,
+        "ogrn": "1036603484939",
+        "name": "ООО \"Реалан\"",
+        "address": "623119, Свердловская обл, г Первоуральск, ул Строителей, д 1, кв 33",
+        "address_mail": "623119, Свердловская обл, г Первоуральск, ул Строителей, д 1, кв 33",
+        "account": "40702810238220000413",
+        "bank": "ФИЛИАЛ \"ЕКАТЕРИНБУРГСКИЙ\" АО \"АЛЬФА-БАНК\", г Екатеринбург",
+        "bic": "046577964",
+        "inn": "6670012813",
+        "kpp": "668401001",
+        "management_name": "Беляев Сергей Николаевич",
+        "accountant_name": "Беляев Сергей Николаевич",
+        "management_post": "Директор",
+        "__typename": "firms"
+    },
+    "shipper": {
+        "id": 1,
+        "ogrn": "1036603484939",
+        "name": "ООО \"Реалан\"",
+        "address": "623119, Свердловская обл, г Первоуральск, ул Строителей, д 1, кв 33",
+        "address_mail": "623119, Свердловская обл, г Первоуральск, ул Строителей, д 1, кв 33",
+        "account": "40702810238220000413",
+        "bank": "ФИЛИАЛ \"ЕКАТЕРИНБУРГСКИЙ\" АО \"АЛЬФА-БАНК\", г Екатеринбург",
+        "bic": "046577964",
+        "inn": "6670012813",
+        "kpp": "668401001",
+        "management_name": "Беляев Сергей Николаевич",
+        "accountant_name": "Беляев Сергей Николаевич",
+        "management_post": "Директор",
+        "__typename": "firms"
+    },
+    "consignee": {
+        "id": 33,
+        "name": "ООО \"РТК \"СУВЕНИРЫ РЕГИОНОВ\"",
+        "inn": "4345477063",
+        "kpp": "434501001",
+        "okpo": "25191892",
+        "address": "610017, Кировская обл, г Киров, ул Молодой Гвардии, д 46",
+        "address_mail": "",
+        "account": "",
+        "management_name": "Плесовских Сергей Олегович",
+        "management_post": "ГЕНЕРАЛЬНЫЙ ДИРЕКТОР",
+        "__typename": "firms"
+    },
+    "payer": {
+        "id": 33,
+        "name": "ООО \"РТК \"СУВЕНИРЫ РЕГИОНОВ\"",
+        "inn": "4345477063",
+        "kpp": "434501001",
+        "okpo": "25191892",
+        "address": "610017, Кировская обл, г Киров, ул Молодой Гвардии, д 46",
+        "address_mail": "",
+        "account": "",
+        "management_name": "Плесовских Сергей Олегович",
+        "management_post": "ГЕНЕРАЛЬНЫЙ ДИРЕКТОР",
+        "__typename": "firms"
+    },
+    "listItems": [
+        {
+            "id": 1,
+            "description": "Хорек",
+            "article": "j251",
+            "unitName": "шт.",
+            "unitCode": "796",
+            "typePackage": "",
+            "quantOnePlace": "",
+            "quantOfPlace": "",
+            "grossWeight": "",
+            "quantity": 3,
+            "priceBeforeTax": 187.2,
+            "sumBeforeTax": 187.2,
+            "taxRate": "--",
+            "taxSum": 0,
+            "sumTotal": 561.5999999999999
+        },
+        {
+            "id": 2,
+            "description": "Соболь",
+            "article": "j257",
+            "unitName": "шт.",
+            "unitCode": "796",
+            "typePackage": "",
+            "quantOnePlace": "",
+            "quantOfPlace": "",
+            "grossWeight": "",
+            "quantity": 1,
+            "priceBeforeTax": 201.6,
+            "sumBeforeTax": 201.6,
+            "taxRate": "--",
+            "taxSum": 0,
+            "sumTotal": 201.6
+        }
+    ],
+    
+}

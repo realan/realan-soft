@@ -1,6 +1,7 @@
 // @flow
 
 import * as React from "react";
+import { useEffect } from "react";
 import SSReport from "./ReportService";
 
 // interface Props {
@@ -22,29 +23,54 @@ import SSReport from "./ReportService";
 //   data: DocTemplateDataType,
 // }
 
-class DocumentViewer extends React.Component {
-  componentDidMount() {
-    const { docTemplate, data } = this.props;
+// class DocumentViewer extends React.Component {
+//   componentDidMount() {
+//     const { docTemplate, data } = this.props;
 
-    console.log("DATA", data);
-    console.log("template", docTemplate);
+//     console.log("DATA", data);
+//     console.log("template", docTemplate);
+//     const reporter = new SSReport();
+//     reporter.setTemplate(docTemplate.filename);
+
+//     // const dataBuilder = new ReportDataService(doc, docTemplate);
+//     // const data = dataBuilder.buildByOrder(order);
+
+//     reporter.setTemplateData(data);
+//     reporter.renderViewer();
+//   }
+
+//   componentWillUnmount() {
+//     console.log("will unmount");
+//   }
+
+//   render() {
+//     return <section id="viewer" />;
+//   }
+// }
+
+// export default DocumentViewer;
+
+
+const DocumentViewer = ({docTemplate, data}) => {
+  
+  useEffect( () => {
     const reporter = new SSReport();
     reporter.setTemplate(docTemplate.filename);
-
-    // const dataBuilder = new ReportDataService(doc, docTemplate);
-    // const data = dataBuilder.buildByOrder(order);
-
     reporter.setTemplateData(data);
     reporter.renderViewer();
-  }
+    console.log("reporter", reporter)
+  },[])
 
-  componentWillUnmount() {
-    console.log("will unmount");
-  }
+  
 
-  render() {
-    return <section id="viewer" />;
-  }
+  return (
+    <div>
+      <section id="viewer" />
+    </div>
+  );
+
+    
 }
 
 export default DocumentViewer;
+

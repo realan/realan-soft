@@ -7,7 +7,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DocumentViewer from "reports/DocumentViewer";
 import invoiceData1 from "../../reports/invoiceTORG12Data.json";
 
-const InvoiceView = ({ open, onClose, data }) => {
+const InvoiceView = ({ open, onClose, data, template }) => {
   const dataSample = invoiceData1;
 
   const docTemplate = {
@@ -19,7 +19,7 @@ const InvoiceView = ({ open, onClose, data }) => {
     // suffix?: string;
     // firstNumber?: number;
     // toNull?: string;
-    filename: "ruInvoiceTORG12.mrt",
+    filename: template,
     // data: DocTemplateDataType,
   };
 
