@@ -71,8 +71,8 @@ export default function OrderDocsButtons({ params }) {
   const [open, setOpen] = useState(false);
   const [orderData, setOrderData] = useState(false);
   const [templateDoc, setTemplateDoc] = useState("");
-  let date = new Date();
-  let year = date.getFullYear();
+  // let date = new Date();
+  // let year = date.getFullYear();
 
   const [loadOrderData, { called, loading, data }] = useLazyQuery(GET_ORDER_DATA, {
     variables: { order_id: params.row.id },
@@ -144,13 +144,13 @@ export default function OrderDocsButtons({ params }) {
     if (type === "invoice") {
       loadOrderData();
       getLastDocNumber();
-      setTemplateDoc('ruInvoiceTORG12.mrt')
+      setTemplateDoc("ruInvoiceTORG12.mrt");
       setOpen(true);
     }
     if (type === "bill") {
       console.log(orderData);
       getLastDocNumber();
-      setTemplateDoc('ruBill1.mrt')
+      setTemplateDoc("ruBill1.mrt");
       setOpen(true);
     }
   };
@@ -182,7 +182,7 @@ export default function OrderDocsButtons({ params }) {
           Пл
         </Button>
       </ButtonGroup>
-      <InvoiceView open={open} onClose={handleClose} data={orderData} template={templateDoc}/>
+      <InvoiceView open={open} onClose={handleClose} data={orderData} template={templateDoc} />
     </>
   );
 }
