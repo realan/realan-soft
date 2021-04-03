@@ -1,10 +1,12 @@
 {
     "docs": {
-        invoice_number: 1,
-        invoice_date: "15.05.2021",
-        bill_number: 1,
-        bill_date: "10.05.2021",
-    }
+        "invoice_number": 1,
+        "invoice_date": "15.05.2021",
+        "bill_number": 1,
+        "bill_date": "10.05.2021",
+        "cause":"Договор № 8 от 01 января 2017г.",
+        "city": "Сыктывкар"
+    },
     "supplier": {
         "id": 1,
         "ogrn": "1036603484939",
@@ -98,6 +100,6 @@
             "taxSum": 0,
             "sumTotal": 201.6
         }
-    ],
+    ]
     
 }
