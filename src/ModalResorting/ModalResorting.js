@@ -10,8 +10,9 @@ import { DataGrid } from "@material-ui/data-grid";
 import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
 import Draggable from "react-draggable";
-import { useQuery } from "@apollo/react-hooks";
+import { useLazyQuery } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
+import { createTrue } from "typescript";
 
 function PaperComponent(props) {
   return (
@@ -54,7 +55,7 @@ const ModalResorting = ({ startDate, endDate }) => {
     { field: "date", headerName: "Дата коррекции", width: 250 },
   ];
 
-  const { loading, error, data } = useQuery(QUERY_GET_RESORT, {
+  const [getResort, { loading, error, data }] = useLazyQuery(QUERY_GET_RESORT, {
     variables: { startDate: startDate, endDate: endDate },
   });
 
@@ -81,10 +82,14 @@ const ModalResorting = ({ startDate, endDate }) => {
   const handleClose = () => {
     setIsOpen(false);
   };
+  const handleOpen = () => {
+    getResort();
+    setIsOpen(createTrue);
+  };
 
   return (
     <>
-      <Button color="primary" variant="outlined" onClick={() => setIsOpen(true)}>
+      <Button color="primary" variant="outlined" onClick={handleOpen}>
         Небитуха
       </Button>
       <Dialog

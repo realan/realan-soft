@@ -7,7 +7,7 @@ import { TextField } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import { GET_PRICE } from "../../GraphQL/Queries";
 import { ADD_ITEM } from "../../GraphQL/Mutations";
-import { useQuery, useMutation } from "@apollo/react-hooks";
+import { useLazyQuery, useMutation } from "@apollo/react-hooks";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
 const AddItemInOrder = ({ orderId }) => {
@@ -25,7 +25,7 @@ const AddItemInOrder = ({ orderId }) => {
   const [options, setOptions] = useState([]);
   const [AddItems] = useMutation(ADD_ITEM);
 
-  const { loading, error, data } = useQuery(GET_PRICE);
+  const [getPrice, { loading, error, data }] = useLazyQuery(GET_PRICE);
 
   useEffect(() => {
     if (!loading && data) {
@@ -54,6 +54,10 @@ const AddItemInOrder = ({ orderId }) => {
     }
   };
 
+  const handleOpen = () => {
+    getPrice();
+    setIsOpen(true);
+  };
   const handleClose = () => {
     setState(initialState);
     setIsOpen(false);
@@ -82,7 +86,7 @@ const AddItemInOrder = ({ orderId }) => {
         color="primary"
         aria-label="редактировать"
         component="span"
-        onClick={() => setIsOpen(true)}
+        onClick={handleOpen}
       >
         Добавить позицию
       </Button>

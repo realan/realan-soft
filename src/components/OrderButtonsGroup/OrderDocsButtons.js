@@ -56,8 +56,12 @@ const GET_ORDER_DATA = gql`
 `;
 
 const GET_LAST_DOC_NUMBER = gql`
-  query getLastDocNumber{
-    register(where: {year: {_eq: 2021}, our_firm_id: {_eq: 1}, type_doc_id: {_eq: 1}}, limit: 1, order_by: {number: desc}) {
+  query getLastDocNumber {
+    register(
+      where: { year: { _eq: 2021 }, our_firm_id: { _eq: 1 }, type_doc_id: { _eq: 1 } }
+      limit: 1
+      order_by: { number: desc }
+    ) {
       number
     }
   }
@@ -69,73 +73,77 @@ export default function OrderDocsButtons({ params }) {
   let date = new Date();
   let year = date.getFullYear();
 
-  // const [loadOrderData, { called, loading, data }] = useLazyQuery(GET_ORDER_DATA, {
-  //   variables: { order_id: params.row.id },
-  // });
-  const [getLastDocNumber, { calledNumber, loadingNumber, dataNumber }] = useLazyQuery(GET_LAST_DOC_NUMBER)
-  //   , {
-  //   variables: { year: year },
-  // });
-
-  // useEffect(() => {
-  //   if (data) {
-  //     console.log(data);
-  //     console.log(params);
-  //     const preparedData = data.orders.map((it) => {
-  //       let listItems = it.items.map((item, key) => {
-  //         let price = 0;
-  //         params.row.price_type === 1
-  //           ? (price = item.price.price_dealer)
-  //           : params.row.price_type === 2
-  //           ? (price = item.price.price_opt)
-  //           : (price = item.price.price_retail);
-
-  //         price = price * (1 - params.row.discount);
-  //         return {
-  //           id: key + 1,
-  //           description: item.price.name,
-  //           article: item.price.art,
-  //           unitName: "шт.",
-  //           unitCode: "796",
-  //           typePackage: "",
-  //           quantOnePlace: "",
-  //           quantOfPlace: "",
-  //           grossWeight: "",
-  //           quantity: item.qty,
-  //           priceBeforeTax: price,
-  //           sumBeforeTax: price,
-  //           taxRate: "--",
-  //           taxSum: 0,
-  //           sumTotal: price * item.qty,
-  //         };
-  //       });
-  //       let obj = {
-  //         supplier: it.firmByOurFirmId,
-  //         shipper: it.firmByOurFirmId,
-  //         consignee: it.firm,
-  //         payer: it.firm,
-  //         listItems: listItems,
-  //       };
-  //       return obj;
-  //     });
-  //     console.log(preparedData);
-  //     setOrderData(preparedData[0]);
-  //   }
-  // }, [data, params]);
+  const [loadOrderData, { called, loading, data }] = useLazyQuery(GET_ORDER_DATA, {
+    variables: { order_id: params.row.id },
+  });
+  const [getLastDocNumber, { data: dataNumber, loading: loadingNumber }] = useLazyQuery(
+    GET_LAST_DOC_NUMBER,
+    {
+      // variables: { year: year },
+      fetchPolicy: "network-only",
+    }
+  );
 
   useEffect(() => {
-    console.log("++++++++++++++++++++++++++++ set number");
-    console.log(dataNumber);
-    // setOrderData((prevState) => ({ ...prevState, number: dataNumber + 1 }));
+    if (data) {
+      console.log(data);
+      console.log(params);
+      const preparedData = data.orders.map((it) => {
+        let listItems = it.items.map((item, key) => {
+          let price = 0;
+          params.row.price_type === 1
+            ? (price = item.price.price_dealer)
+            : params.row.price_type === 2
+            ? (price = item.price.price_opt)
+            : (price = item.price.price_retail);
+
+          price = price * (1 - params.row.discount);
+          return {
+            id: key + 1,
+            description: item.price.name,
+            article: item.price.art,
+            unitName: "шт.",
+            unitCode: "796",
+            typePackage: "",
+            quantOnePlace: "",
+            quantOfPlace: "",
+            grossWeight: "",
+            quantity: item.qty,
+            priceBeforeTax: price,
+            sumBeforeTax: price,
+            taxRate: "--",
+            taxSum: 0,
+            sumTotal: price * item.qty,
+          };
+        });
+        let obj = {
+          supplier: it.firmByOurFirmId,
+          shipper: it.firmByOurFirmId,
+          consignee: it.firm,
+          payer: it.firm,
+          listItems: listItems,
+        };
+        return obj;
+      });
+      console.log(preparedData);
+      setOrderData(preparedData[0]);
+    }
+  }, [data, params]);
+
+  useEffect(() => {
+    if (dataNumber) {
+      console.log("++++++++++++++++++++++++++++ set number");
+      console.log(dataNumber);
+      setOrderData((prevState) => ({ ...prevState, number: dataNumber.register[0].number }));
+    }
   }, [dataNumber]);
 
-
-  // if (called && loading) return <p>Loading ...</p>;
-  if (calledNumber && loadingNumber) return <p>Loading ...</p>;
+  if (called && loading) return <p>Loading ...</p>;
+  if (loadingNumber) return <p>Loading ...</p>;
 
   const handleButtonClick = (type) => {
     if (type === "invoice") {
-      // loadOrderData();
+      loadOrderData();
       getLastDocNumber();
       setOpen(true);
     }
