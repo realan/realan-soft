@@ -50,27 +50,20 @@ import SSReport from "./ReportService";
 
 // export default DocumentViewer;
 
-
-const DocumentViewer = ({docTemplate, data}) => {
-  
-  useEffect( () => {
+const DocumentViewer = ({ docTemplate, data }) => {
+  useEffect(() => {
     const reporter = new SSReport();
     reporter.setTemplate(docTemplate.filename);
     reporter.setTemplateData(data);
     reporter.renderViewer();
-    console.log("reporter", reporter)
-  },[])
-
-  
+    console.log("reporter", reporter);
+  }, []);
 
   return (
     <div>
       <section id="viewer" />
     </div>
   );
-
-    
-}
+};
 
 export default DocumentViewer;
-

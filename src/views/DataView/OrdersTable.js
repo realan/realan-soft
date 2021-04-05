@@ -139,7 +139,7 @@ const GET_ORDER_DATA = gql`
   }
 `;
 
-const OrdersTable = () => {
+const OrdersTable = ({ onRowClick }) => {
   const [rows, setRows] = useState([]);
   const [open, setOpen] = useState(false);
   const [orderData, setOrderData] = useState({});
@@ -213,10 +213,6 @@ const OrdersTable = () => {
   if (loading) return "Loading....";
   if (error) return `Error! ${error.message}`;
 
-  const onRowClick = (row) => {
-    console.log(row);
-  };
-
   function OrderDocsButtons(params) {
     const handleButtonClick = (type, orderId) => {
       console.log(type, orderId);
@@ -255,7 +251,7 @@ const OrdersTable = () => {
     );
   }
 
-  const handleClose = () => setOpen(false);
+  // const handleClose = () => setOpen(false);
 
   return (
     <>

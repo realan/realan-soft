@@ -2,7 +2,7 @@
 import * as React from "react";
 import DocumentViewer from "reports/DocumentViewer";
 // import invoiceData1 from "../reports/invoiceTORG12Data.json";
-import billData1 from '../reports/billData1.json';
+import billData1 from "../reports/billData1.json";
 
 const Payments = () => {
   const data = billData1;

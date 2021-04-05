@@ -2,6 +2,14 @@
 
 const { Stimulsoft } = window;
 Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("/fonts/arial.ttf", "Arial");
+Stimulsoft.Base.StiLicense.key =
+  "6vJhGtLLLz2GNviWmUTrhSqnOItdDwjBylQzQcAOiHnmbEki2b7c7g2avDGmu47FI5I0xOWWM4x+z6uEC0sv8AB9EJ" +
+  "7m/VJr/sXFBGoGoxjmn2f8sr9agafv9J227YrRuXREgeUnrsq2lYIfKjtkk7QUyfQAjzi/iAlsgeSraQHMgrXUGGJ+" +
+  "cUTCDFCULiq8ZeT4Q3FeiVGLsllhmiSVs/07HglqNc+usFjs5fRz+vZjyXt6fXKaEz/VovJi3GA1lJzwptooIfZqdH" +
+  "9CBtbH0dMriRPinmBsePbzcl4yAq+pEALkKnDJtm/6E2t/O0nhMLkM++qTY+pqcc/Akp0PA84+JDNO26Ob8yXHipg6" +
+  "zGHZp0kkaUrkP/nacJDPrsE+latg4z4wvRHlrBz6GKYh6gUqcC5hdK9iB1Bf650R0V9M/dx08gPAzwbzJsNNZoquwg" +
+  "iG3UmrDH3/HQbAPUV0e7NGakENpg9UoaDBuWP4MAgmimvsguADREE2LgwImsUKIk7df0YsZkR8ZQ+apStrAX/+jm7Y" +
+  "b2Hanq0s2A0KZsm6JewOWWeek4WpCqVSY9QZ";
 
 class SSReport {
   constructor() {
