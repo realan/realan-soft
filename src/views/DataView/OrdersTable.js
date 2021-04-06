@@ -1,17 +1,17 @@
 import React from "react";
 import { useState, useMemo, useEffect } from "react";
 import { gql } from "apollo-boost";
-import { useSubscription, useLazyQuery } from "@apollo/react-hooks";
+import { useSubscription } from "@apollo/react-hooks";
 // import { useLazyQuery } from '@apollo/client';
 import { makeStyles } from "@material-ui/core/styles";
 import { DataGrid } from "@material-ui/data-grid";
 import Pagination from "@material-ui/lab/Pagination";
 import PropTypes from "prop-types";
 import FileExportToXls from "components/FileExportToXls/FileExportToXls";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
-import Button from "@material-ui/core/Button";
+// import ButtonGroup from "@material-ui/core/ButtonGroup";
+// import Button from "@material-ui/core/Button";
 
-// import OrderDocsButtons from "components/OrderButtonsGroup/OrderDocsButtons";
+import OrderDocsButtons from "components/OrderButtonsGroup/OrderDocsButtons";
 // import InvoiceView from "components/ReporsDialog/InvoiceView";
 // import LensIcon from '@material-ui/icons/Lens';
 
@@ -90,59 +90,59 @@ const SUBSCRIPTION_ORDERS = gql`
   }
 `;
 
-const GET_ORDER_DATA = gql`
-  query GetOrderData($item_id: Int!) {
-    orders(where: { id: { _eq: $item_id } }) {
-      firm {
-        id
-        name
-        inn
-        kpp
-        okpo
-        address
-        address_mail
-        account
-        management_name
-        management_post
-      }
-      firmByOurFirmId {
-        id
-        ogrn
-        name
-        address
-        address_mail
-        account
-        bank
-        bic
-        inn
-        kpp
-        management_name
-        accountant_name
-        management_post
-      }
-      items {
-        qty
-        price {
-          id
-          art
-          name
-          price_dealer
-          price_opt
-          price_retail
-        }
-      }
-      city
-      bill_id
-      invoice_id
-      discount
-    }
-  }
-`;
+// const GET_ORDER_DATA = gql`
+//   query GetOrderData($item_id: Int!) {
+//     orders(where: { id: { _eq: $item_id } }) {
+//       firm {
+//         id
+//         name
+//         inn
+//         kpp
+//         okpo
+//         address
+//         address_mail
+//         account
+//         management_name
+//         management_post
+//       }
+//       firmByOurFirmId {
+//         id
+//         ogrn
+//         name
+//         address
+//         address_mail
+//         account
+//         bank
+//         bic
+//         inn
+//         kpp
+//         management_name
+//         accountant_name
+//         management_post
+//       }
+//       items {
+//         qty
+//         price {
+//           id
+//           art
+//           name
+//           price_dealer
+//           price_opt
+//           price_retail
+//         }
+//       }
+//       city
+//       bill_id
+//       invoice_id
+//       discount
+//     }
+//   }
+// `;
 
 const OrdersTable = ({ onRowClick }) => {
   const [rows, setRows] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [orderData, setOrderData] = useState({});
+  // const [open, setOpen] = useState(false);
+  // const [orderData, setOrderData] = useState({});
 
   const columns = useMemo(
     () => [
@@ -150,6 +150,7 @@ const OrdersTable = ({ onRowClick }) => {
       { field: "customer", headerName: "Заказчик", width: 200 },
       { field: "shopCity", headerName: "Город", width: 120 },
       { field: "dateOut", headerName: "Отгрузка", type: "date", width: 110 },
+      { field: "buttonsDocs", headerName: "Docs", width: 200, renderCell: DocsButtons },
       { field: "sum", headerName: "Сумма", type: "number", width: 80 },
       { field: "price_type_id", headerName: "Сумма", type: "number", width: 80 },
       // { field: "payment_status", headerName: "Оплата",  width: 80  },
@@ -159,12 +160,11 @@ const OrdersTable = ({ onRowClick }) => {
       { field: "statusFirm", headerName: "F", width: 50 },
       { field: "statusShop", headerName: "S", width: 50 },
       { field: "statusPerson", headerName: "P", width: 50 },
-      { field: "buttonsDocs", headerName: "Docs", width: 200, renderCell: OrderDocsButtons },
     ],
     []
   );
 
-  const [getOrderData, { loadingOrder, dataOrder }] = useLazyQuery(GET_ORDER_DATA);
+  // const [getOrderData, { loadingOrder, dataOrder }] = useLazyQuery(GET_ORDER_DATA);
 
   const { loading, error, data } = useSubscription(SUBSCRIPTION_ORDERS);
 
@@ -203,52 +203,59 @@ const OrdersTable = ({ onRowClick }) => {
     }
   }, [loading, data]);
 
-  useEffect(() => {
-    if (!loadingOrder && dataOrder) {
-      console.log(dataOrder);
-    }
-  }, [loadingOrder, dataOrder]);
+  // const onClick = (event) => {
+  //   event.stopPropagation();
+  //   event.preventDefault();
+  //   onRowClick();
+  // };
 
-  if (loadingOrder) return <p>Loading order...</p>;
+  // useEffect(() => {
+  //   if (!loadingOrder && dataOrder) {
+  //     console.log(dataOrder);
+  //   }
+  // }, [loadingOrder, dataOrder]);
+
+  // if (loadingOrder) return <p>Loading order...</p>;
   if (loading) return "Loading....";
   if (error) return `Error! ${error.message}`;
 
-  function OrderDocsButtons(params) {
-    const handleButtonClick = (type, orderId) => {
-      console.log(type, orderId);
+  function DocsButtons(params) {
+    // const handleButtonClick = (type, orderId) => {
+    //   console.log(type, orderId);
 
-      if (type === "invoice") {
-        getOrderData({ variables: { order_id: orderId } });
-        setOrderData(dataOrder);
-        setOpen(true);
-      }
-    };
+    //   if (type === "invoice") {
+    //     getOrderData({ variables: { order_id: orderId } });
+    //     setOrderData(dataOrder);
+    //     setOpen(true);
+    //   }
+    // };
 
-    return (
-      <ButtonGroup aria-label="button group" size="small">
-        <Button
-          id="bill"
-          color={params.row.bill_id ? "primary" : "secondary"}
-          onClick={(e) => handleButtonClick(e.currentTarget.id, params.row.id)}
-        >
-          Сч
-        </Button>
-        <Button
-          id="invoice"
-          color={params.row.invoice_id ? "primary" : "secondary"}
-          onClick={(e) => handleButtonClick(e.currentTarget.id, params.row.id)}
-        >
-          Нк
-        </Button>
-        <Button
-          id="payment"
-          color={params.row.payment_status ? "primary" : "secondary"}
-          onClick={(e) => handleButtonClick(e.currentTarget.id, params.row.id)}
-        >
-          Пл
-        </Button>
-      </ButtonGroup>
-    );
+    return <OrderDocsButtons params={params} />;
+    // (
+    //   <ButtonGroup aria-label="button group" size="small">
+    //     <Button
+    //       id="bill"
+    //       color={params.row.bill_id ? "primary" : "secondary"}
+    //       onClick={(e) => handleButtonClick(e.currentTarget.id, params.row.id)}
+    //     >
+    //       Сч
+    //     </Button>
+    //     <Button
+    //       id="invoice"
+    //       color={params.row.invoice_id ? "primary" : "secondary"}
+    //       onClick={(e) => handleButtonClick(e.currentTarget.id, params.row.id)}
+    //     >
+    //       Нк
+    //     </Button>
+    //     <Button
+    //       id="payment"
+    //       color={params.row.payment_status ? "primary" : "secondary"}
+    //       onClick={(e) => handleButtonClick(e.currentTarget.id, params.row.id)}
+    //     >
+    //       Пл
+    //     </Button>
+    //   </ButtonGroup>
+    // );
   }
 
   // const handleClose = () => setOpen(false);
@@ -266,8 +273,6 @@ const OrdersTable = ({ onRowClick }) => {
           components={{ pagination: CustomPagination }}
         />
       </div>
-      {/* <InvoiceView open={open} onClose={handleClose} data={orderData} /> */}
-      {/* // form={form} /> */}
       <FileExportToXls data={rows} name={"Заказчики"} />
     </>
   );

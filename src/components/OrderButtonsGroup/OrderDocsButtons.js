@@ -140,7 +140,13 @@ export default function OrderDocsButtons({ params }) {
   if (called && loading) return <p>Loading ...</p>;
   if (loadingNumber) return <p>Loading ...</p>;
 
-  const handleButtonClick = (type) => {
+  const handleButtonClick = (event) => {
+    console.log(event);
+    event.stopPropagation();
+    event.preventDefault();
+    event.nativeEvent.stopImmediatePropagation();
+    const type = event.currentTarget.id;
+
     if (type === "invoice") {
       loadOrderData();
       getLastDocNumber();
@@ -163,26 +169,28 @@ export default function OrderDocsButtons({ params }) {
         <Button
           id="bill"
           color={params.row.bill_id ? "primary" : "secondary"}
-          onClick={(e) => handleButtonClick(e.currentTarget.id)}
+          onClick={(e) => handleButtonClick(e)}
         >
           Сч
         </Button>
         <Button
           id="invoice"
           color={params.row.invoice_id ? "primary" : "secondary"}
-          onClick={(e) => handleButtonClick(e.currentTarget.id)}
+          onClick={(e) => handleButtonClick(e)}
         >
           Нк
         </Button>
         <Button
           id="payment"
           color={params.row.payment_status ? "primary" : "secondary"}
-          onClick={(e) => handleButtonClick(e.currentTarget.id)}
+          onClick={handleButtonClick}
         >
           Пл
         </Button>
       </ButtonGroup>
-      <InvoiceView open={open} onClose={handleClose} data={orderData} template={templateDoc} />
+      {open && (
+        <InvoiceView open={open} onClose={handleClose} data={orderData} template={templateDoc} />
+      )}
     </>
   );
 }
