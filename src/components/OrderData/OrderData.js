@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -100,7 +100,7 @@ export default function OrderData({ open, onSubmit, orderData, onChange }) {
   const [AddItems] = useMutation(ADD_ITEMS);
 
   useEffect(() => {
-    console.log("additem");
+    // console.log("additem");
     if (!loading && data) {
       console.log(orderData.items);
       let orderId = data.insert_orders.returning[0].id;

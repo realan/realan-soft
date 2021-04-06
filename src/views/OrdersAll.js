@@ -68,31 +68,32 @@ const OrdersAll = () => {
   };
   const [orderData, setOrderData] = useState(initialState);
   const [open, setOpen] = useState(false);
-
-  const [getOrderData, { loading: loadingOrder, data: dataOrder }] = useLazyQuery(GET_ORDER_DATA, {
-    variables: { order_id: 16 },
-  });
-
-  useEffect(() => {
-    if (!loadingOrder && dataOrder) {
-      console.log(dataOrder);
-    }
-  }, [loadingOrder, dataOrder]);
-
-  if (loadingOrder) return <p>Loading order...</p>;
+  // const [orderId, setOrderId] = useState(undefined);
 
   const onOrderDataChange = useCallback(
     (type, value) => {
-      // console.log(orderData);
+      console.log(orderData);
       setOrderData((prevState) => ({ ...prevState, [type]: value }));
     },
     [orderData]
   );
 
+  const [getOrderData, { loading, data }] = useLazyQuery(GET_ORDER_DATA);
+
   const onRowClick = (row) => {
-    getOrderData();
+    console.log(orderData);
+    getOrderData({ variables: { order_id: row.row.id } });
     console.log(row);
   };
+
+  useEffect(() => {
+    if (!loading && data) {
+      // console.log(data);
+      setOrderData(data.orders[0]);
+    }
+  }, [loading, data]);
+
+  if (loading) return <p>Loading order...</p>;
 
   const handleSubmit = () => {
     setOpen(false);
