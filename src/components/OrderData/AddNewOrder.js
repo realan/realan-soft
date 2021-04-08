@@ -33,12 +33,9 @@ export default function AddNewOrder() {
       <Button variant="outlined" color="primary" onClick={() => setOpen(!open)}>
         {open ? "Свернуть" : "Новый заказ"}
       </Button>
-      <OrderData
-        open={open}
-        onSubmit={handleSubmit}
-        orderData={orderData}
-        onChange={onOrderDataChange}
-      />
+      {open && (
+        <OrderData onSubmit={handleSubmit} orderData={orderData} onChange={onOrderDataChange} />
+      )}
     </>
   );
 }

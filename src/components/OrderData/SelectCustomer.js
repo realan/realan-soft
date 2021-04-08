@@ -68,7 +68,7 @@ export default function SelectCustomer({ orderData, onChange }) {
     firms: orderData.customer.firms || [],
     shops: orderData.customer.shops || [],
     persons: orderData.customer.persons || [],
-    consigneeArr: [],
+    // consigneeArr: [],
   };
 
   const classes = useStyles();
@@ -122,21 +122,18 @@ export default function SelectCustomer({ orderData, onChange }) {
     onChange(idType, idValue);
     if (idType === "shop_id") {
       const shopData = options.shops.find((el) => el.id === idValue);
-      const deliveryData = {
-        city: shopData.city,
-        address: shopData.address,
-        consignee_name: shopData.consignee_name,
-        consignee_phone: shopData.consignee_phone,
-        consignee_data: shopData.consignee_data,
-        delivery_note: shopData.delivery_note,
-        delivery_id: shopData.delivery_id,
-      };
+      onChange("city", shopData.city);
+      onChange("address", shopData.address);
+      onChange("consignee_name", shopData.consignee_name);
+      onChange("consignee_phone", shopData.consignee_phone);
+      onChange("consignee_data", shopData.consignee_data);
+      onChange("delivery_note", shopData.delivery_note);
+      onChange("delivery_id", shopData.delivery_id);
+
       const arrPersons = orderData.customer.persons.filter(
         (item) => item.shop_id === idValue || item.firm_id
       );
       setOptions((prevState) => ({ ...prevState, persons: arrPersons }));
-
-      onChange("deliveryData", deliveryData);
     }
   };
 
@@ -173,7 +170,7 @@ export default function SelectCustomer({ orderData, onChange }) {
         <Grid item xs={8}>
           <Autocomplete
             id="combo-box-customers"
-            // inputValue={orderData.customer.name || ""}
+            inputValue={orderData.customer.name || ""}
             // open={true}
             options={customers} //.sort((a, b) => -b.town.localeCompare(a.town))}
             // groupBy={(option) => option.town}

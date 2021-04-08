@@ -58,7 +58,7 @@ export default function DeliveryForm({ orderData, onChange }) {
   useEffect(() => {
     if (!loading && data) {
       setState({ delivery: data.delivery });
-      onChange("packaging", "Без жу");
+      // onChange("packaging", "Без жу");
     }
   }, [loading, data]);
 
@@ -89,13 +89,8 @@ export default function DeliveryForm({ orderData, onChange }) {
           <TextField
             fullWidth
             label="Пожелания по доставке от заказчика"
-            value={orderData.deliveryData.delivery_note}
-            onChange={(event) =>
-              onChange("deliveryData", {
-                ...orderData.deliveryData,
-                delivery_note: event.target.value,
-              })
-            }
+            value={orderData.delivery_note}
+            onChange={(event) => onChange("delivery_note", event.target.value)}
           />
         </Grid>
         <Grid item xs={8}>
@@ -103,13 +98,8 @@ export default function DeliveryForm({ orderData, onChange }) {
             <InputLabel htmlFor="age-native-simple">Транспортная компания</InputLabel>
             <Select
               native
-              value={orderData.deliveryData.delivery_id || ""}
-              onChange={(event) =>
-                onChange("deliveryData", {
-                  ...orderData.deliveryData,
-                  delivery_id: event.target.value,
-                })
-              }
+              value={orderData.delivery_id || ""}
+              onChange={(event) => onChange("delivery_id", event.target.value)}
               inputProps={{
                 name: "delivery",
                 id: "delivery_id",
@@ -174,23 +164,16 @@ export default function DeliveryForm({ orderData, onChange }) {
           <TextField
             fullWidth
             label="Город"
-            value={orderData.deliveryData.city}
-            onChange={(event) =>
-              onChange("deliveryData", { ...orderData.deliveryData, city: event.target.value })
-            }
+            value={orderData.city}
+            onChange={(event) => onChange("city", event.target.value)}
           />
         </Grid>
         <Grid item xs>
           <TextField
             fullWidth
             label="Получатель"
-            value={orderData.deliveryData.consignee_name}
-            onChange={(event) =>
-              onChange("deliveryData", {
-                ...orderData.deliveryData,
-                consignee_name: event.target.value,
-              })
-            }
+            value={orderData.consignee_name}
+            onChange={(event) => onChange("consignee_name", event.target.value)}
           />
         </Grid>
 
@@ -198,26 +181,16 @@ export default function DeliveryForm({ orderData, onChange }) {
           <TextField
             fullWidth
             label="Телефон получателя"
-            value={orderData.deliveryData.consignee_phone}
-            onChange={(event) =>
-              onChange("deliveryData", {
-                ...orderData.deliveryData,
-                consignee_phone: event.target.value,
-              })
-            }
+            value={orderData.consignee_phone}
+            onChange={(event) => onChange("consignee_phone", event.target.value)}
           />
         </Grid>
         <Grid item xs>
           <TextField
             fullWidth
             label="Данные получателя (ИНН, паспорт и пр.)"
-            value={orderData.deliveryData.consignee_data}
-            onChange={(event) =>
-              onChange("deliveryData", {
-                ...orderData.deliveryData,
-                consignee_data: event.target.value,
-              })
-            }
+            value={orderData.consignee_data}
+            onChange={(event) => onChange("consignee_data", event.target.value)}
           />
         </Grid>
 
@@ -233,10 +206,8 @@ export default function DeliveryForm({ orderData, onChange }) {
           <TextField
             fullWidth
             label="Адрес"
-            value={orderData.deliveryData.address}
-            onChange={(event) =>
-              onChange("deliveryData", { ...orderData.deliveryData, address: event.target.value })
-            }
+            value={orderData.address}
+            onChange={(event) => onChange("address", event.target.value)}
           />
         </Grid>
       </Grid>

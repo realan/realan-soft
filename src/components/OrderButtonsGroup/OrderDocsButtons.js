@@ -87,8 +87,8 @@ export default function OrderDocsButtons({ params }) {
 
   useEffect(() => {
     if (data) {
-      console.log(data);
-      console.log(params);
+      // console.log(data);
+      // console.log(params);
       const preparedData = data.orders.map((it) => {
         let listItems = it.items.map((item, key) => {
           let price = 0;
@@ -126,7 +126,7 @@ export default function OrderDocsButtons({ params }) {
         };
         return obj;
       });
-      console.log(preparedData);
+      console.log(preparedData[0]);
       setOrderData(preparedData[0]);
     }
   }, [data, params]);
@@ -142,9 +142,6 @@ export default function OrderDocsButtons({ params }) {
 
   const handleButtonClick = (event) => {
     console.log(event);
-    event.stopPropagation();
-    event.preventDefault();
-    event.nativeEvent.stopImmediatePropagation();
     const type = event.currentTarget.id;
 
     if (type === "invoice") {
@@ -169,14 +166,14 @@ export default function OrderDocsButtons({ params }) {
         <Button
           id="bill"
           color={params.row.bill_id ? "primary" : "secondary"}
-          onClick={(e) => handleButtonClick(e)}
+          onClick={handleButtonClick}
         >
           Сч
         </Button>
         <Button
           id="invoice"
           color={params.row.invoice_id ? "primary" : "secondary"}
-          onClick={(e) => handleButtonClick(e)}
+          onClick={handleButtonClick}
         >
           Нк
         </Button>

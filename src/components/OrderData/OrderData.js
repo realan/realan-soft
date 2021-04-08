@@ -91,10 +91,9 @@ function getStepContent(step, data, onChange) {
   }
 }
 
-export default function OrderData({ open, onSubmit, orderData, onChange }) {
+export default function OrderData({ onSubmit, orderData, onChange }) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
-  // const [open, setOpen] = useState(false);
 
   const [AddOrder, { data, loading, error }] = useMutation(ADD_ORDER);
   const [AddItems] = useMutation(ADD_ITEMS);
@@ -138,13 +137,13 @@ export default function OrderData({ open, onSubmit, orderData, onChange }) {
         person_id: orderData.person_id,
         shop_id: orderData.shop_id,
         our_firm_id: orderData.our_firm_id,
-        delivery_id: orderData.deliveryData.delivery_id,
-        city: orderData.deliveryData.city,
+        delivery_id: orderData.delivery_id,
+        city: orderData.city,
         packaging: orderData.packaging,
-        consignee_name: orderData.deliveryData.consignee_name,
-        consignee_phone: orderData.deliveryData.consignee_phone,
-        consignee_data: orderData.deliveryData.consignee_data,
-        note_delivery: orderData.deliveryData.note_delivery,
+        consignee_name: orderData.consignee_name,
+        consignee_phone: orderData.consignee_phone,
+        consignee_data: orderData.consignee_data,
+        note_delivery: orderData.note_delivery,
         price_type_id: orderData.price_type_id,
         discount: orderData.discount,
         pay_till_date: orderData.pay_till_date,
@@ -177,61 +176,54 @@ export default function OrderData({ open, onSubmit, orderData, onChange }) {
 
   return (
     <React.Fragment>
-      {/* <Button variant="outlined" color="primary" onClick={() => setOpen(!open)}>
-        {open ? "Свернуть" : "Новый заказ"}
-      </Button> */}
-      {open && (
-        <React.Fragment>
-          <main className={classes.layout}>
-            <Paper className={classes.paper}>
-              <Typography component="h1" variant="h4" align="center">
-                Новый заказ
-              </Typography>
-              <Stepper activeStep={activeStep} className={classes.stepper}>
-                {steps.map((label) => (
-                  <Step key={label}>
-                    <StepLabel>{label}</StepLabel>
-                  </Step>
-                ))}
-              </Stepper>
+      <main className={classes.layout}>
+        <Paper className={classes.paper}>
+          <Typography component="h1" variant="h4" align="center">
+            Новый заказ
+          </Typography>
+          <Stepper activeStep={activeStep} className={classes.stepper}>
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+          <React.Fragment>
+            {activeStep === steps.length ? (
               <React.Fragment>
-                {activeStep === steps.length ? (
-                  <React.Fragment>
-                    <Typography variant="h5" gutterBottom>
-                      Заказ размещен.
-                    </Typography>
-                    <Typography variant="subtitle1">
-                      Нужно сориентировать заказчика по дате отгрузки и выставить счет.
-                      <Button variant="outlined" onClick={onSubmit}>
-                        OK
-                      </Button>
-                    </Typography>
-                  </React.Fragment>
-                ) : (
-                  <React.Fragment>
-                    {getStepContent(activeStep, orderData, onChange)}
-                    <div className={classes.buttons}>
-                      {activeStep !== 0 && (
-                        <Button onClick={handleBack} className={classes.button}>
-                          Назад
-                        </Button>
-                      )}
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handleNext}
-                        className={classes.button}
-                      >
-                        {activeStep === steps.length - 1 ? "Разместить заказ" : "Далее"}
-                      </Button>
-                    </div>
-                  </React.Fragment>
-                )}
+                <Typography variant="h5" gutterBottom>
+                  Заказ размещен.
+                </Typography>
+                <Typography variant="subtitle1">
+                  Нужно сориентировать заказчика по дате отгрузки и выставить счет.
+                  <Button variant="outlined" onClick={onSubmit}>
+                    OK
+                  </Button>
+                </Typography>
               </React.Fragment>
-            </Paper>
-          </main>
-        </React.Fragment>
-      )}
+            ) : (
+              <React.Fragment>
+                {getStepContent(activeStep, orderData, onChange)}
+                <div className={classes.buttons}>
+                  {activeStep !== 0 && (
+                    <Button onClick={handleBack} className={classes.button}>
+                      Назад
+                    </Button>
+                  )}
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleNext}
+                    className={classes.button}
+                  >
+                    {activeStep === steps.length - 1 ? "Разместить заказ" : "Далее"}
+                  </Button>
+                </div>
+              </React.Fragment>
+            )}
+          </React.Fragment>
+        </Paper>
+      </main>
     </React.Fragment>
   );
 }

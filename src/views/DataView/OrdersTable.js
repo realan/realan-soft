@@ -2,18 +2,13 @@ import React from "react";
 import { useState, useMemo, useEffect } from "react";
 import { gql } from "apollo-boost";
 import { useSubscription } from "@apollo/react-hooks";
-// import { useLazyQuery } from '@apollo/client';
 import { makeStyles } from "@material-ui/core/styles";
 import { DataGrid } from "@material-ui/data-grid";
 import Pagination from "@material-ui/lab/Pagination";
 import PropTypes from "prop-types";
 import FileExportToXls from "components/FileExportToXls/FileExportToXls";
-// import ButtonGroup from "@material-ui/core/ButtonGroup";
-// import Button from "@material-ui/core/Button";
-
+import UpdateOrder from "components/OrderData/UpdateOrder";
 import OrderDocsButtons from "components/OrderButtonsGroup/OrderDocsButtons";
-// import InvoiceView from "components/ReporsDialog/InvoiceView";
-// import LensIcon from '@material-ui/icons/Lens';
 
 function CustomPagination(props) {
   const { pagination, api } = props;
@@ -139,10 +134,12 @@ const SUBSCRIPTION_ORDERS = gql`
 //   }
 // `;
 
-const OrdersTable = ({ onRowClick }) => {
+const OrdersTable = () => {
   const [rows, setRows] = useState([]);
-  // const [open, setOpen] = useState(false);
-  // const [orderData, setOrderData] = useState({});
+  const [update, setUpdate] = useState({
+    open: false,
+    orderId: undefined,
+  });
 
   const columns = useMemo(
     () => [
@@ -151,6 +148,7 @@ const OrdersTable = ({ onRowClick }) => {
       { field: "shopCity", headerName: "Город", width: 120 },
       { field: "dateOut", headerName: "Отгрузка", type: "date", width: 110 },
       { field: "buttonsDocs", headerName: "Docs", width: 200, renderCell: DocsButtons },
+      // { field: "updateOrder", headerName: "Обн", width: 50, renderCell: UpdateOrderIcon },
       { field: "sum", headerName: "Сумма", type: "number", width: 80 },
       { field: "price_type_id", headerName: "Сумма", type: "number", width: 80 },
       // { field: "payment_status", headerName: "Оплата",  width: 80  },
@@ -203,62 +201,24 @@ const OrdersTable = ({ onRowClick }) => {
     }
   }, [loading, data]);
 
-  // const onClick = (event) => {
-  //   event.stopPropagation();
-  //   event.preventDefault();
-  //   onRowClick();
-  // };
-
-  // useEffect(() => {
-  //   if (!loadingOrder && dataOrder) {
-  //     console.log(dataOrder);
-  //   }
-  // }, [loadingOrder, dataOrder]);
-
-  // if (loadingOrder) return <p>Loading order...</p>;
   if (loading) return "Loading....";
   if (error) return `Error! ${error.message}`;
 
+  const onRowClick = (row) => {
+    console.log(row.row.id);
+    setUpdate({
+      open: true,
+      orderId: row.row.id,
+    });
+  };
+
   function DocsButtons(params) {
-    // const handleButtonClick = (type, orderId) => {
-    //   console.log(type, orderId);
-
-    //   if (type === "invoice") {
-    //     getOrderData({ variables: { order_id: orderId } });
-    //     setOrderData(dataOrder);
-    //     setOpen(true);
-    //   }
-    // };
-
     return <OrderDocsButtons params={params} />;
-    // (
-    //   <ButtonGroup aria-label="button group" size="small">
-    //     <Button
-    //       id="bill"
-    //       color={params.row.bill_id ? "primary" : "secondary"}
-    //       onClick={(e) => handleButtonClick(e.currentTarget.id, params.row.id)}
-    //     >
-    //       Сч
-    //     </Button>
-    //     <Button
-    //       id="invoice"
-    //       color={params.row.invoice_id ? "primary" : "secondary"}
-    //       onClick={(e) => handleButtonClick(e.currentTarget.id, params.row.id)}
-    //     >
-    //       Нк
-    //     </Button>
-    //     <Button
-    //       id="payment"
-    //       color={params.row.payment_status ? "primary" : "secondary"}
-    //       onClick={(e) => handleButtonClick(e.currentTarget.id, params.row.id)}
-    //     >
-    //       Пл
-    //     </Button>
-    //   </ButtonGroup>
-    // );
   }
 
-  // const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setUpdate({ ...update, open: false });
+  };
 
   return (
     <>
@@ -274,6 +234,9 @@ const OrdersTable = ({ onRowClick }) => {
         />
       </div>
       <FileExportToXls data={rows} name={"Заказчики"} />
+      {update.open && (
+        <UpdateOrder open={update.open} onClose={handleClose} orderId={update.orderId} />
+      )}
     </>
   );
 };
