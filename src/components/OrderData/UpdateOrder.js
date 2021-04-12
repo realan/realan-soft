@@ -72,6 +72,20 @@ const GET_ORDER_DATA = gql`
         saldo
         price_type_id
       }
+      items {
+        id
+        item_id
+        qty
+        note
+        price {
+          art
+          name
+          price_dealer
+          price_opt
+          price_retail
+          weight
+        }
+      }
     }
   }
 `;
@@ -87,7 +101,23 @@ export default function UpdateOrder({ open, onClose, orderId }) {
     if (data) {
       console.log(data);
       setOrderData(data.orders[0]);
-      //   setOpen(true);
+      const dateOut = new Date(data.orders[0].date_out);
+      onOrderDataChange("date_out", dateOut);
+      const items = data.orders[0].items.map((it) => {
+        return {
+          id: it.id,
+          item_id: it.item_id,
+          qty: it.qty,
+          note: it.note,
+          art: it.price.art,
+          name: it.price.name,
+          price_dealer: it.price.price_dealer,
+          price_opt: it.price.price_opt,
+          price_retail: it.price.price_retail,
+          weight: it.price.weight,
+        };
+      });
+      onOrderDataChange("items", items);
     }
   }, [data]);
 

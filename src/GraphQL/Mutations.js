@@ -464,6 +464,37 @@ export const UPDATE_SHOPS = gql`
   }
 `;
 
+// export const UPDATE_TRY = gql`
+// mutation insert_article {
+//   insert_article(
+//   objects: [
+//     {
+//       title: "Article 1",
+//       content: "Sample article content",
+//       author: {
+//         data: {name: "Cory"}
+//       }
+//     }
+//     ]
+//   ) {
+//   affected_rows
+//   returning {
+//     id
+//     title
+//     author {
+//       id
+//       name
+//     }
+//   }
+//   }
+//   `;
+
+// mutation MyMutation {
+//   insert_orders_one(object: {city: "", consignee_data: "", consignee_name: "", items: {data: [{item_id: 1, qty: 10}, {item_id: 2, qty: 8}]}, customer_id: 27, price_type_id: 1}) {
+//     weigth
+//   }
+// }
+
 // ORDERS
 
 export const ADD_ORDERS = gql`

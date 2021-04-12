@@ -206,7 +206,7 @@ export default function DeliveryForm({ orderData, onChange }) {
           <TextField
             fullWidth
             label="Адрес"
-            value={orderData.address}
+            value={orderData.address || ""}
             onChange={(event) => onChange("address", event.target.value)}
           />
         </Grid>
