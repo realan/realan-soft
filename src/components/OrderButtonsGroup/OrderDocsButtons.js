@@ -12,26 +12,30 @@ const GET_ORDER_DATA = gql`
       firm {
         id
         name
+        address
+        address_mail
         inn
         kpp
         okpo
-        address
-        address_mail
+        ogrn
+        bic
+        bank
         account
         management_name
         management_post
       }
       firmByOurFirmId {
         id
-        ogrn
         name
         address
         address_mail
-        account
-        bank
-        bic
         inn
         kpp
+        okpo
+        ogrn
+        bic
+        bank
+        account
         management_name
         accountant_name
         management_post
@@ -87,8 +91,8 @@ export default function OrderDocsButtons({ params }) {
 
   useEffect(() => {
     if (data) {
-      // console.log(data);
-      // console.log(params);
+      console.log(data);
+      console.log(params);
       const preparedData = data.orders.map((it) => {
         let listItems = it.items.map((item, key) => {
           let price = 0;
@@ -97,8 +101,9 @@ export default function OrderDocsButtons({ params }) {
             : params.row.price_type === 2
             ? (price = item.price.price_opt)
             : (price = item.price.price_retail);
-
+          console.log(params.row.discount)
           price = price * (1 - params.row.discount);
+          console.log(price)
           return {
             id: key + 1,
             description: item.price.name,
@@ -147,13 +152,14 @@ export default function OrderDocsButtons({ params }) {
     if (type === "invoice") {
       loadOrderData();
       getLastDocNumber();
-      setTemplateDoc("ruInvoiceTORG12.mrt");
+      setTemplateDoc("torg12.mrt");
       setOpen(true);
     }
     if (type === "bill") {
       console.log(orderData);
+      loadOrderData();
       getLastDocNumber();
-      setTemplateDoc("ruBill1.mrt");
+      setTemplateDoc("bill.mrt");
       setOpen(true);
     }
   };

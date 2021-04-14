@@ -58,6 +58,8 @@ const SUBSCRIPTION_ORDERS = gql`
       our_firm_id
       bill_id
       invoice_id
+      discount
+      city
       customer {
         id
         name
@@ -151,6 +153,7 @@ const OrdersTable = () => {
       // { field: "updateOrder", headerName: "Обн", width: 50, renderCell: UpdateOrderIcon },
       { field: "sum", headerName: "Сумма", type: "number", width: 80 },
       { field: "price_type_id", headerName: "Сумма", type: "number", width: 80 },
+      // { field: "discount", headerName: "Скидка", type: "number", width: 80 },
       // { field: "payment_status", headerName: "Оплата",  width: 80  },
       { field: "our_firm_id", headerName: "F", width: 70 },
       // { field: "bill_id", headerName: "S", width: 60  },
@@ -191,6 +194,8 @@ const OrdersTable = () => {
           bill_id: item.bill_id,
           invoice_id: item.invoice_id,
           price_type_id: item.price_type_id,
+          discount: item.discount,
+          city: item.city,
           payment_status: item.payment_status,
           our_firm_id: item.our_firm_id,
           sum: item.sum,
