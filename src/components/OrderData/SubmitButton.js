@@ -129,7 +129,7 @@ export default function SubmitButon({ orderData, nextStep }) {
 
   return (
     <Button variant="contained" color="primary" onClick={handleSubmit} className={classes.button}>
-      Разместить заказ
+      {type === "ADD" ? <>Разместить заказ</> : <>Изменить заказ</>}
     </Button>
   );
 }

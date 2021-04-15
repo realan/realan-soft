@@ -9,6 +9,7 @@ import PropTypes from "prop-types";
 import FileExportToXls from "components/FileExportToXls/FileExportToXls";
 import UpdateOrder from "components/OrderData/UpdateOrder";
 import OrderDocsButtons from "components/OrderButtonsGroup/OrderDocsButtons";
+import EditOrderButton from "components/OrderButtonsGroup/EditOrderButton";
 
 function CustomPagination(props) {
   const { pagination, api } = props;
@@ -87,71 +88,19 @@ const SUBSCRIPTION_ORDERS = gql`
   }
 `;
 
-// const GET_ORDER_DATA = gql`
-//   query GetOrderData($item_id: Int!) {
-//     orders(where: { id: { _eq: $item_id } }) {
-//       firm {
-//         id
-//         name
-//         inn
-//         kpp
-//         okpo
-//         address
-//         address_mail
-//         account
-//         management_name
-//         management_post
-//       }
-//       firmByOurFirmId {
-//         id
-//         ogrn
-//         name
-//         address
-//         address_mail
-//         account
-//         bank
-//         bic
-//         inn
-//         kpp
-//         management_name
-//         accountant_name
-//         management_post
-//       }
-//       items {
-//         qty
-//         price {
-//           id
-//           art
-//           name
-//           price_dealer
-//           price_opt
-//           price_retail
-//         }
-//       }
-//       city
-//       bill_id
-//       invoice_id
-//       discount
-//     }
-//   }
-// `;
-
 const OrdersTable = () => {
   const [rows, setRows] = useState([]);
-  const [update, setUpdate] = useState({
-    open: false,
-    orderId: undefined,
-  });
 
   const columns = useMemo(
     () => [
-      { field: "id", headerName: "id", width: 10 },
+      { field: "editOrder", headerName: "Ред", width: 60, renderCell: EditButton },
+      // { field: "id", headerName: "id", width: 10 },
       { field: "customer", headerName: "Заказчик", width: 200 },
       { field: "shopCity", headerName: "Город", width: 120 },
       { field: "dateOut", headerName: "Отгрузка", type: "date", width: 110 },
-      { field: "buttonsDocs", headerName: "Docs", width: 200, renderCell: DocsButtons },
+      { field: "buttonsDocs", headerName: "Документы", width: 140, renderCell: DocsButtons },
       // { field: "updateOrder", headerName: "Обн", width: 50, renderCell: UpdateOrderIcon },
-      { field: "sum", headerName: "Сумма", type: "number", width: 80 },
+      { field: "sum", headerName: "Сумма", type: "number", width: 120 },
       { field: "price_type_id", headerName: "Сумма", type: "number", width: 80 },
       // { field: "discount", headerName: "Скидка", type: "number", width: 80 },
       // { field: "payment_status", headerName: "Оплата",  width: 80  },
@@ -164,8 +113,6 @@ const OrdersTable = () => {
     ],
     []
   );
-
-  // const [getOrderData, { loadingOrder, dataOrder }] = useLazyQuery(GET_ORDER_DATA);
 
   const { loading, error, data } = useSubscription(SUBSCRIPTION_ORDERS);
 
@@ -209,21 +156,12 @@ const OrdersTable = () => {
   if (loading) return "Loading....";
   if (error) return `Error! ${error.message}`;
 
-  const onRowClick = (row) => {
-    console.log(row.row.id);
-    setUpdate({
-      open: true,
-      orderId: row.row.id,
-    });
-  };
-
   function DocsButtons(params) {
     return <OrderDocsButtons params={params} />;
   }
-
-  const handleClose = () => {
-    setUpdate({ ...update, open: false });
-  };
+  function EditButton(params) {
+    return <EditOrderButton params={params} />;
+  }
 
   return (
     <>
@@ -232,16 +170,13 @@ const OrdersTable = () => {
           rows={rows}
           columns={columns}
           rowHeight={30}
-          onRowClick={onRowClick}
+          //onRowClick={onRowClick}
           pagination
           pageSize={40}
           components={{ pagination: CustomPagination }}
         />
       </div>
-      <FileExportToXls data={rows} name={"Заказчики"} />
-      {update.open && (
-        <UpdateOrder open={update.open} onClose={handleClose} orderId={update.orderId} />
-      )}
+      <FileExportToXls data={rows} name={"Заказы"} />
     </>
   );
 };

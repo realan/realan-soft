@@ -55,14 +55,20 @@ const GET_ORDER_DATA = gql`
       bill_id
       invoice_id
       discount
+      our_firm_id
+      price_type_id
     }
   }
 `;
 
 const GET_LAST_DOC_NUMBER = gql`
-  query getLastDocNumber {
+  query getLastDocNumber($year: Int!, $our_firm_id: Int!, $type_doc_id: Int!) {
     register(
-      where: { year: { _eq: 2021 }, our_firm_id: { _eq: 1 }, type_doc_id: { _eq: 1 } }
+      where: {
+        year: { _eq: $year }
+        our_firm_id: { _eq: $our_firm_id }
+        type_doc_id: { _eq: $type_doc_id }
+      }
       limit: 1
       order_by: { number: desc }
     ) {
@@ -72,9 +78,15 @@ const GET_LAST_DOC_NUMBER = gql`
 `;
 
 export default function OrderDocsButtons({ params }) {
+  // console.log("render Docs buttoons");
   const [open, setOpen] = useState(false);
   const [orderData, setOrderData] = useState(false);
   const [templateDoc, setTemplateDoc] = useState("");
+  const [docVars, setDocVars] = useState({
+    year: 2021,
+    our_firm_id: 1,
+    type_doc_id: 1,
+  });
   // let date = new Date();
   // let year = date.getFullYear();
 
@@ -84,7 +96,11 @@ export default function OrderDocsButtons({ params }) {
   const [getLastDocNumber, { data: dataNumber, loading: loadingNumber }] = useLazyQuery(
     GET_LAST_DOC_NUMBER,
     {
-      // variables: { year: year },
+      variables: {
+        year: docVars.year,
+        our_firm_id: docVars.our_firm_id,
+        type_doc_id: docVars.type_doc_id,
+      },
       fetchPolicy: "network-only",
     }
   );
@@ -92,7 +108,7 @@ export default function OrderDocsButtons({ params }) {
   useEffect(() => {
     if (data) {
       console.log(data);
-      console.log(params);
+      // console.log(params);
       const preparedData = data.orders.map((it) => {
         let listItems = it.items.map((item, key) => {
           let price = 0;
@@ -101,9 +117,9 @@ export default function OrderDocsButtons({ params }) {
             : params.row.price_type === 2
             ? (price = item.price.price_opt)
             : (price = item.price.price_retail);
-          console.log(params.row.discount)
+          // console.log(params.row.discount);
           price = price * (1 - params.row.discount);
-          console.log(price)
+          // console.log(price);
           return {
             id: key + 1,
             description: item.price.name,
@@ -127,6 +143,7 @@ export default function OrderDocsButtons({ params }) {
           shipper: it.firmByOurFirmId,
           consignee: it.firm,
           payer: it.firm,
+          our_firm_id: it.our_firm_id,
           listItems: listItems,
         };
         return obj;
@@ -138,6 +155,7 @@ export default function OrderDocsButtons({ params }) {
 
   useEffect(() => {
     if (dataNumber) {
+      console.log(dataNumber);
       setOrderData((prevState) => ({ ...prevState, number: dataNumber.register[0].number }));
     }
   }, [dataNumber]);
@@ -146,10 +164,16 @@ export default function OrderDocsButtons({ params }) {
   if (loadingNumber) return <p>Loading ...</p>;
 
   const handleButtonClick = (event) => {
-    console.log(event);
+    // console.log(event);
     const type = event.currentTarget.id;
 
     if (type === "invoice") {
+      console.log(orderData);
+      setDocVars({
+        year: 2021,
+        our_firm_id: orderData.our_firm_id,
+        type_doc_id: 1,
+      });
       loadOrderData();
       getLastDocNumber();
       setTemplateDoc("torg12.mrt");
@@ -157,6 +181,11 @@ export default function OrderDocsButtons({ params }) {
     }
     if (type === "bill") {
       console.log(orderData);
+      setDocVars({
+        year: 2021,
+        our_firm_id: orderData.our_firm_id,
+        type_doc_id: 2,
+      });
       loadOrderData();
       getLastDocNumber();
       setTemplateDoc("bill.mrt");

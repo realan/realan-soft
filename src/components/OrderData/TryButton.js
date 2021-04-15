@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import { gql } from "apollo-boost";
 import { makeStyles } from "@material-ui/core/styles";
 import { useMutation } from "@apollo/react-hooks";
@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
 export default function TryButon() {
   //   console.log("submitAddOrder");
   const classes = useStyles();
-  const [AddOrder, { data, loading, error }] = useMutation(ADD_ORDER);
+  const [AddOrder, { loading, error }] = useMutation(ADD_ORDER);
   //   const [AddItems] = useMutation(ADD_ITEMS);
 
   //   let type = "UPDATE";
