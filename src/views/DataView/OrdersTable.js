@@ -7,7 +7,7 @@ import { DataGrid } from "@material-ui/data-grid";
 import Pagination from "@material-ui/lab/Pagination";
 import PropTypes from "prop-types";
 import FileExportToXls from "components/FileExportToXls/FileExportToXls";
-import UpdateOrder from "components/OrderData/UpdateOrder";
+// import UpdateOrder from "components/OrderData/UpdateOrder";
 import OrderDocsButtons from "components/OrderButtonsGroup/OrderDocsButtons";
 import EditOrderButton from "components/OrderButtonsGroup/EditOrderButton";
 
@@ -94,7 +94,7 @@ const OrdersTable = () => {
   const columns = useMemo(
     () => [
       { field: "editOrder", headerName: "Ред", width: 60, renderCell: EditButton },
-      // { field: "id", headerName: "id", width: 10 },
+      { field: "id", headerName: "id", width: 10 },
       { field: "customer", headerName: "Заказчик", width: 200 },
       { field: "shopCity", headerName: "Город", width: 120 },
       { field: "dateOut", headerName: "Отгрузка", type: "date", width: 110 },
@@ -148,7 +148,7 @@ const OrdersTable = () => {
           sum: item.sum,
         };
       });
-      console.log(preparedRows);
+      // console.log(preparedRows);
       setRows(preparedRows);
     }
   }, [loading, data]);

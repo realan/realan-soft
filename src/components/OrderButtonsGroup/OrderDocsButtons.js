@@ -1,9 +1,9 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import InvoiceView from "components/ReporsDialog/InvoiceView";
+import DocsDialogView from "components/DocsDialogView/DocsDialogView";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
-import { useLazyQuery } from "@apollo/react-hooks";
+import { useLazyQuery, useMutations } from "@apollo/react-hooks";
 import { gql } from "@apollo/client";
 
 const GET_ORDER_DATA = gql`
@@ -77,9 +77,25 @@ const GET_LAST_DOC_NUMBER = gql`
   }
 `;
 
+const ADD_DOCUMENT = gql`
+  mutation AddDocument($addData: register_insert_input!) {
+    insert_register_one(object: $addData}) {
+      id
+    }
+  }
+`;
+const UPDATE_ORDER = gql`
+  mutation UpdateOrder($addData: register_insert_input!) {
+    insert_register_one(object: $addData}) {
+      id
+    }
+  }
+`;
+
 export default function OrderDocsButtons({ params }) {
-  // console.log("render Docs buttoons");
+  // console.log("render docs buttons");
   const [open, setOpen] = useState(false);
+  const [typeDoc, setTypeDoc] = useState(undefined);
   const [orderData, setOrderData] = useState(false);
   const [templateDoc, setTemplateDoc] = useState("");
   const [docVars, setDocVars] = useState({
@@ -93,7 +109,7 @@ export default function OrderDocsButtons({ params }) {
   const [loadOrderData, { called, loading, data }] = useLazyQuery(GET_ORDER_DATA, {
     variables: { order_id: params.row.id },
   });
-  const [getLastDocNumber, { data: dataNumber, loading: loadingNumber }] = useLazyQuery(
+  const [getLastDocNumber, { data: dataNumber, loading: loadingNumber, error }] = useLazyQuery(
     GET_LAST_DOC_NUMBER,
     {
       variables: {
@@ -106,8 +122,8 @@ export default function OrderDocsButtons({ params }) {
   );
 
   useEffect(() => {
-    if (data) {
-      console.log(data);
+    if (!loading && data) {
+      // console.log(data);
       // console.log(params);
       const preparedData = data.orders.map((it) => {
         let listItems = it.items.map((item, key) => {
@@ -150,50 +166,51 @@ export default function OrderDocsButtons({ params }) {
       });
       console.log(preparedData[0]);
       setOrderData(preparedData[0]);
+      let objNumber = {
+        year: 2021,
+        our_firm_id: preparedData[0].our_firm_id,
+        type_doc_id: typeDoc,
+      };
+      setDocVars(objNumber);
+      getLastDocNumber();
     }
-  }, [data, params]);
+  }, [data, params.row]);
 
   useEffect(() => {
     if (dataNumber) {
-      console.log(dataNumber);
-      setOrderData((prevState) => ({ ...prevState, number: dataNumber.register[0].number }));
+      let number = 1;
+      if (dataNumber.register[0]) {
+        number = dataNumber.register[0].number;
+      }
+      // console.log(number);
+      setOrderData((prevState) => ({ ...prevState, number: number }));
     }
   }, [dataNumber]);
 
   if (called && loading) return <p>Loading ...</p>;
-  if (loadingNumber) return <p>Loading ...</p>;
+  if (loadingNumber) return <p>Loading Number ...</p>;
+  if (error) return `Error! ${error.message}`;
 
   const handleButtonClick = (event) => {
-    // console.log(event);
     const type = event.currentTarget.id;
-
     if (type === "invoice") {
-      console.log(orderData);
-      setDocVars({
-        year: 2021,
-        our_firm_id: orderData.our_firm_id,
-        type_doc_id: 1,
-      });
       loadOrderData();
-      getLastDocNumber();
       setTemplateDoc("torg12.mrt");
-      setOpen(true);
+      setTypeDoc(1);
     }
     if (type === "bill") {
-      console.log(orderData);
-      setDocVars({
-        year: 2021,
-        our_firm_id: orderData.our_firm_id,
-        type_doc_id: 2,
-      });
       loadOrderData();
-      getLastDocNumber();
       setTemplateDoc("bill.mrt");
-      setOpen(true);
+      setTypeDoc(2);
     }
+    setOpen(true);
   };
 
   const handleClose = () => setOpen(false);
+
+  const handleSubmit = () => {
+    setOpen(false);
+  };
 
   return (
     <>
@@ -221,7 +238,13 @@ export default function OrderDocsButtons({ params }) {
         </Button>
       </ButtonGroup>
       {open && (
-        <InvoiceView open={open} onClose={handleClose} data={orderData} template={templateDoc} />
+        <DocsDialogView
+          open={open}
+          onClose={handleClose}
+          onSubmit={handleSubmit}
+          data={orderData}
+          template={templateDoc}
+        />
       )}
     </>
   );

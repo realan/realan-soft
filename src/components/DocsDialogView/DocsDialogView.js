@@ -7,7 +7,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DocumentViewer from "reports/DocumentViewer";
 // import invoiceData1 from "../../reports/invoiceTORG12Data.json";
 
-const InvoiceView = ({ open, onClose, data, template }) => {
+const DocsDialogView = ({ open, onClose, onSubmit, data, template }) => {
   // const dataSample = invoiceData1;
 
   const docTemplate = {
@@ -23,7 +23,7 @@ const InvoiceView = ({ open, onClose, data, template }) => {
     // data: DocTemplateDataType,
   };
 
-  console.log(data);
+  console.log("docs data", data);
 
   return (
     <>
@@ -44,13 +44,13 @@ const InvoiceView = ({ open, onClose, data, template }) => {
               Закрыть
             </Button>
           </Box>
-          {/* <Button onClick={} color="primary">
-            jhgkhg
-          </Button> */}
+          <Button onClick={onSubmit} color="primary" variant="contained">
+            Провести документ
+          </Button>
         </DialogActions>
       </Dialog>
     </>
   );
 };
 
-export default InvoiceView;
+export default DocsDialogView;
