@@ -24,15 +24,17 @@ const DocsDialogView = ({ open, onClose, onSubmit, data, template }) => {
   };
 
   console.log("docs data", data);
+  console.log("template", docTemplate.filename);
 
   return (
     <>
       <Dialog
         open={open}
         onClose={onClose}
-        fullWidth={true}
-        maxWidth="md"
-        minWidth="md"
+        fullScreen={true}
+        // fullWidth={true}
+        // maxWidth="md"
+        // minWidth="lg"
         aria-labelledby="dialog-invoice"
       >
         <DialogContent>
