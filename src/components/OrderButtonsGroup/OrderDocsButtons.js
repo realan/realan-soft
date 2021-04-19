@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import DocsDialogView from "components/DocsDialogView/DocsDialogView";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
-import { useLazyQuery, useMutations } from "@apollo/react-hooks";
+import { useLazyQuery, useMutation } from "@apollo/react-hooks";
 import { gql } from "@apollo/client";
 
 const GET_ORDER_DATA = gql`
@@ -51,19 +51,21 @@ const GET_ORDER_DATA = gql`
           price_retail
         }
       }
+      id
       city
       bill_id
       invoice_id
       discount
       our_firm_id
       price_type_id
+      sum
     }
   }
 `;
 
 const GET_LAST_DOC_NUMBER = gql`
   query getLastDocNumber($year: Int!, $our_firm_id: Int!, $type_doc_id: Int!) {
-    register(
+    documents(
       where: {
         year: { _eq: $year }
         our_firm_id: { _eq: $our_firm_id }
@@ -78,15 +80,23 @@ const GET_LAST_DOC_NUMBER = gql`
 `;
 
 const ADD_DOCUMENT = gql`
-  mutation AddDocument($addData: register_insert_input!) {
-    insert_register_one(object: $addData}) {
+  mutation AddDocument($addData: documents_insert_input!) {
+    insert_documents_one(object: $addData) {
       id
     }
   }
 `;
-const UPDATE_ORDER = gql`
-  mutation UpdateOrder($addData: register_insert_input!) {
-    insert_register_one(object: $addData}) {
+
+const UPDATE_ORDER_BILL = gql`
+  mutation UpdateOrderBill($id: Int!, $bill_id: Int!) {
+    update_orders_by_pk(pk_columns: { id: $id }, _set: { bill_id: $bill_id }) {
+      id
+    }
+  }
+`;
+const UPDATE_ORDER_INVOICE = gql`
+  mutation UpdateOrderInvoice($id: Int!, $invoice_id: Int!) {
+    update_orders_by_pk(pk_columns: { id: $id }, _set: { invoice_id: $invoice_id }) {
       id
     }
   }
@@ -103,23 +113,34 @@ export default function OrderDocsButtons({ params }) {
     our_firm_id: 1,
     type_doc_id: 1,
   });
-  // let date = new Date();
-  // let year = date.getFullYear();
 
   const [loadOrderData, { called, loading, data }] = useLazyQuery(GET_ORDER_DATA, {
     variables: { order_id: params.row.id },
   });
-  const [getLastDocNumber, { data: dataNumber, loading: loadingNumber, error }] = useLazyQuery(
-    GET_LAST_DOC_NUMBER,
-    {
-      variables: {
-        year: docVars.year,
-        our_firm_id: docVars.our_firm_id,
-        type_doc_id: docVars.type_doc_id,
-      },
-      fetchPolicy: "network-only",
-    }
+  const [
+    getLastDocNumber,
+    { data: dataNumber, loading: loadingNumber, error: errorNumber },
+  ] = useLazyQuery(GET_LAST_DOC_NUMBER, {
+    variables: {
+      year: docVars.year,
+      our_firm_id: docVars.our_firm_id,
+      type_doc_id: docVars.type_doc_id,
+    },
+    fetchPolicy: "network-only",
+  });
+
+  const [
+    AddDocument,
+    { data: dataDocument, loading: loadingDocument, error: errorDocument },
+  ] = useMutation(ADD_DOCUMENT);
+
+  const [UpdateOrderBill, { data: dataBill, loading: loadingBill, error: errorBill }] = useMutation(
+    UPDATE_ORDER_BILL
   );
+  const [
+    UpdateOrderInvoice,
+    { data: dataInvoice, loading: loadingInvoice, error: errorInvoice },
+  ] = useMutation(UPDATE_ORDER_INVOICE);
 
   useEffect(() => {
     if (!loading && data) {
@@ -161,6 +182,9 @@ export default function OrderDocsButtons({ params }) {
           payer: it.firm,
           our_firm_id: it.our_firm_id,
           listItems: listItems,
+          sum: it.sum,
+          city: it.city,
+          id: it.id,
         };
         return obj;
       });
@@ -177,19 +201,45 @@ export default function OrderDocsButtons({ params }) {
   }, [data, params.row]);
 
   useEffect(() => {
-    if (dataNumber) {
-      let number = 1;
-      if (dataNumber.register[0]) {
-        number = dataNumber.register[0].number;
+    if (dataDocument) {
+      console.log("dataDocument", dataDocument);
+      if (typeDoc === 1) {
+        UpdateOrderInvoice({
+          variables: { id: orderData.id, invoice_id: dataDocument.insert_documents_one.id },
+        });
+        console.log("dataInvoice", dataInvoice);
+        console.log("orderData.id", orderData.id);
       }
-      // console.log(number);
-      setOrderData((prevState) => ({ ...prevState, number: number }));
+      if (typeDoc === 2) {
+        UpdateOrderBill({
+          variables: { id: orderData.id, bill_id: dataDocument.insert_documents_one.id },
+        });
+        console.log("dataBill", dataBill);
+        console.log("orderData.id", orderData.id);
+      }
+    }
+  }, [dataDocument, orderData.id]);
+
+  useEffect(() => {
+    if (dataNumber) {
+      let number = 0;
+      if (dataNumber.documents[0]) {
+        number = dataNumber.documents[0].number;
+      }
+      console.log("number", number);
+      setOrderData((prevState) => ({ ...prevState, number: number + 1 }));
     }
   }, [dataNumber]);
 
   if (called && loading) return <p>Loading ...</p>;
   if (loadingNumber) return <p>Loading Number ...</p>;
-  if (error) return `Error! ${error.message}`;
+  if (errorNumber) return `Error! ${errorNumber.message}`;
+  if (loadingDocument) return <p>Loading Document ...</p>;
+  if (errorDocument) return `Error! ${errorDocument.message}`;
+  if (loadingBill) return <p>Loading Bill ...</p>;
+  if (errorBill) return `Error! ${errorBill.message}`;
+  if (loadingInvoice) return <p>Loading Invoice ...</p>;
+  if (errorInvoice) return `Error! ${errorInvoice.message}`;
 
   const handleButtonClick = (event) => {
     const type = event.currentTarget.id;
@@ -209,6 +259,18 @@ export default function OrderDocsButtons({ params }) {
   const handleClose = () => setOpen(false);
 
   const handleSubmit = () => {
+    let date = new Date();
+    let year = date.getFullYear();
+    const preparedData = {
+      date: date,
+      our_firm_id: orderData.our_firm_id,
+      type_doc_id: typeDoc,
+      sum: orderData.sum,
+      year: year,
+      number: orderData.number,
+    };
+    AddDocument({ variables: { addData: preparedData } });
+
     setOpen(false);
   };
 
