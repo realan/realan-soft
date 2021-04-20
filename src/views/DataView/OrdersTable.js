@@ -10,6 +10,7 @@ import FileExportToXls from "components/FileExportToXls/FileExportToXls";
 // import UpdateOrder from "components/OrderData/UpdateOrder";
 import OrderDocsButtons from "components/OrderButtonsGroup/OrderDocsButtons";
 import EditOrderButton from "components/OrderButtonsGroup/EditOrderButton";
+import OrderInfoButtons from "components/OrderButtonsGroup/OrderInfoButtons";
 
 function CustomPagination(props) {
   const { pagination, api } = props;
@@ -61,6 +62,7 @@ const SUBSCRIPTION_ORDERS = gql`
       invoice_id
       discount
       city
+      delivery_id
       customer {
         id
         name
@@ -98,6 +100,7 @@ const OrdersTable = () => {
       { field: "customer", headerName: "Заказчик", width: 200 },
       { field: "shopCity", headerName: "Город", width: 120 },
       { field: "dateOut", headerName: "Отгрузка", type: "date", width: 110 },
+      { field: "buttonsInfo", headerName: "Инфо", width: 200, renderCell: InfoButtons },
       { field: "buttonsDocs", headerName: "Документы", width: 140, renderCell: DocsButtons },
       // { field: "updateOrder", headerName: "Обн", width: 50, renderCell: UpdateOrderIcon },
       { field: "sum", headerName: "Сумма", type: "number", width: 120 },
@@ -123,32 +126,34 @@ const OrdersTable = () => {
         // console.log(item)
         let city = "";
         item.shop !== null ? (city = item.shop.city) : (city = "");
-        const status = {};
-        item.shop !== null ? (status.shop = "+") : (status.shop = "-");
-        item.firm !== null ? (status.firm = "+") : (status.firm = "-");
-        item.person !== null ? (status.person = "+") : (status.person = "-");
-        item.bill_id !== null ? (status.bill_id = "+") : (status.bill_id = "-");
-        item.invoice_id !== null ? (status.invoice_id = "+") : (status.invoice_id = "-");
+        // const status = {};
+        // item.shop !== null ? (status.shop = "+") : (status.shop = "-");
+        // item.firm !== null ? (status.firm = "+") : (status.firm = "-");
+        // item.person !== null ? (status.person = "+") : (status.person = "-");
+        // item.bill_id !== null ? (status.bill_id = "+") : (status.bill_id = "-");
+        // item.invoice_id !== null ? (status.invoice_id = "+") : (status.invoice_id = "-");
 
         return {
-          id: item.id,
+          ...item,
           customer: item.customer.name,
           shopCity: city,
           dateOut: dateOut,
-          statusShop: status.shop,
-          statusFirm: status.firm,
-          statusPerson: status.person,
-          bill_id: item.bill_id,
-          invoice_id: item.invoice_id,
-          price_type_id: item.price_type_id,
-          discount: item.discount,
-          city: item.city,
-          payment_status: item.payment_status,
-          our_firm_id: item.our_firm_id,
-          sum: item.sum,
+          // id: item.id,
+          //
+          // statusShop: status.shop,
+          // statusFirm: status.firm,
+          // statusPerson: status.person,
+          // bill_id: item.bill_id,
+          // invoice_id: item.invoice_id,
+          // price_type_id: item.price_type_id,
+          // discount: item.discount,
+          // city: item.city,
+          // payment_status: item.payment_status,
+          // our_firm_id: item.our_firm_id,
+          // sum: item.sum,
         };
       });
-      // console.log(preparedRows);
+      console.log(preparedRows);
       setRows(preparedRows);
     }
   }, [loading, data]);
@@ -158,6 +163,9 @@ const OrdersTable = () => {
 
   function DocsButtons(params) {
     return <OrderDocsButtons params={params} />;
+  }
+  function InfoButtons(params) {
+    return <OrderInfoButtons params={params} />;
   }
   function EditButton(params) {
     return <EditOrderButton params={params} />;

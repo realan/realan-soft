@@ -211,12 +211,12 @@ export default function OrderDocsButtons({ params }) {
       };
       setDocVars(objNumber);
       // Если нет документа - вычисляем номер для нового документа
-      if (typeDoc === 1 ){
+      if (typeDoc === 1) {
         if (!orderData.invoice) {
           getLastDocNumber();
         }
       }
-      if (typeDoc === 2 ){
+      if (typeDoc === 2) {
         if (!orderData.bill) {
           getLastDocNumber();
         }
@@ -256,18 +256,18 @@ export default function OrderDocsButtons({ params }) {
         let invoice = {
           date: orderData.date_out,
           number: number + 1,
-        }
+        };
         console.log("set invoice data", invoice);
         setOrderData((prevState) => ({ ...prevState, invoice: invoice }));
-      }  
+      }
       if (typeDoc === 2) {
         let bill = {
           date: new Date(),
           number: number + 1,
-        }
+        };
         console.log("set bill data", bill);
         setOrderData((prevState) => ({ ...prevState, bill: bill }));
-      }  
+      }
       // setOrderData((prevState) => ({ ...prevState, number: number + 1 }));
     }
   }, [dataNumber]);
@@ -301,13 +301,13 @@ export default function OrderDocsButtons({ params }) {
 
   const handleSubmit = () => {
     let date = new Date();
-    let number = 0
-    if (typeDoc === 1 && orderData.invoice) { 
+    let number = 0;
+    if (typeDoc === 1 && orderData.invoice) {
       date = orderData.invoice.date;
       number = orderData.invoice.number;
       console.log("invoice", date);
     }
-    if (typeDoc === 2 && orderData.bill) { 
+    if (typeDoc === 2 && orderData.bill) {
       date = orderData.bill.date;
       number = orderData.bill.number;
       console.log("bill", date);
