@@ -1,7 +1,7 @@
 import React from "react";
 import "react-dadata/dist/react-dadata.css";
 import AddCustomer from "components/AddCustomer/AddCustomer";
-// import CustomersTable from "./DataView/CustomersTable";
+import CustomersTable from "./DataView/CustomersTable";
 import CustomersAccordion from "./DataView/CustomersAccordion";
 
 const Customers = () => {
@@ -9,7 +9,7 @@ const Customers = () => {
     <div>
       <AddCustomer />
       <CustomersAccordion />
-      {/* <CustomersTable /> */}
+      <CustomersTable />
     </div>
   );
 };

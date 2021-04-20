@@ -62,6 +62,7 @@ const SUBSCRIPTION_ORDERS = gql`
       invoice_id
       discount
       city
+      note_order
       delivery_id
       customer {
         id
@@ -173,7 +174,7 @@ const OrdersTable = () => {
 
   return (
     <>
-      <div style={{ height: 500, width: "100%" }}>
+      <div style={{ height: 1000, width: "100%" }}>
         <DataGrid
           rows={rows}
           columns={columns}
