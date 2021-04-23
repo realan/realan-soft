@@ -92,7 +92,6 @@ const GET_ORDER_DATA = gql`
 
 export default function UpdateOrder({ open, onClose, orderId }) {
   console.log("render UpdateOrder");
-  //   const [open, setOpen] = useState(false);
   const [orderData, setOrderData] = useState({});
 
   const { loading, error, data } = useQuery(GET_ORDER_DATA, { variables: { order_id: orderId } });

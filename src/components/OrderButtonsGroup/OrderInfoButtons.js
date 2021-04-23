@@ -3,14 +3,23 @@ import { makeStyles } from "@material-ui/core/styles";
 // import Chip from "@material-ui/core/Chip";
 import Avatar from "@material-ui/core/Avatar";
 import AvatarGroup from "@material-ui/lab/AvatarGroup";
-import { deepOrange, deepPurple, green, red, teal, blueGrey, lime, amber } from "@material-ui/core/colors";
+import {
+  deepOrange,
+  deepPurple,
+  green,
+  red,
+  teal,
+  blueGrey,
+  lime,
+  amber,
+} from "@material-ui/core/colors";
 import LocalShippingOutlinedIcon from "@material-ui/icons/LocalShippingOutlined";
 import StoreOutlinedIcon from "@material-ui/icons/StoreOutlined";
 import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined";
 import ForwardOutlinedIcon from "@material-ui/icons/ForwardOutlined";
 import GetAppOutlinedIcon from "@material-ui/icons/GetAppOutlined";
-import AttachMoneyOutlinedIcon from '@material-ui/icons/AttachMoneyOutlined';
-import CommentOutlinedIcon from '@material-ui/icons/CommentOutlined';
+import AttachMoneyOutlinedIcon from "@material-ui/icons/AttachMoneyOutlined";
+import CommentOutlinedIcon from "@material-ui/icons/CommentOutlined";
 
 // import { useState } from "react";
 // import UpdateOrder from "components/OrderData/UpdateOrder";
@@ -78,11 +87,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function OrderInfoButtons({ params }) {
   const classes = useStyles();
-  console.log("avatars", params);
+  //   console.log("avatars", params);
   const classesList = {};
 
-
-  switch(params.row.our_firm_id) {
+  switch (params.row.our_firm_id) {
     case 1:
       classesList.ourFirm = classes.teal;
       break;
@@ -100,7 +108,7 @@ export default function OrderInfoButtons({ params }) {
       break;
   }
 
-  switch(params.row.price_type_id) {
+  switch (params.row.price_type_id) {
     case 1:
       classesList.priceType = classes.teal;
       break;
@@ -142,9 +150,11 @@ export default function OrderInfoButtons({ params }) {
       <Avatar alt="Delivery" className={classesList.delivery}>
         <LocalShippingOutlinedIcon fontSize="small" />
       </Avatar>
-      { params.row.note_order &&  <Avatar alt="OrderNote" className={classes.orange}>
-        <CommentOutlinedIcon fontSize="small" />
-      </Avatar>}
+      {params.row.note_order && (
+        <Avatar alt="OrderNote" className={classes.orange}>
+          <CommentOutlinedIcon fontSize="small" />
+        </Avatar>
+      )}
     </AvatarGroup>
   );
 }

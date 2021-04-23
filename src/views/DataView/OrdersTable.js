@@ -124,37 +124,16 @@ const OrdersTable = () => {
     if (!loading && data) {
       const preparedRows = data.orders.map((item) => {
         const dateOut = new Date(item.date_out);
-        // console.log(item)
         let city = "";
         item.shop !== null ? (city = item.shop.city) : (city = "");
-        // const status = {};
-        // item.shop !== null ? (status.shop = "+") : (status.shop = "-");
-        // item.firm !== null ? (status.firm = "+") : (status.firm = "-");
-        // item.person !== null ? (status.person = "+") : (status.person = "-");
-        // item.bill_id !== null ? (status.bill_id = "+") : (status.bill_id = "-");
-        // item.invoice_id !== null ? (status.invoice_id = "+") : (status.invoice_id = "-");
-
         return {
           ...item,
           customer: item.customer.name,
           shopCity: city,
           dateOut: dateOut,
-          // id: item.id,
-          //
-          // statusShop: status.shop,
-          // statusFirm: status.firm,
-          // statusPerson: status.person,
-          // bill_id: item.bill_id,
-          // invoice_id: item.invoice_id,
-          // price_type_id: item.price_type_id,
-          // discount: item.discount,
-          // city: item.city,
-          // payment_status: item.payment_status,
-          // our_firm_id: item.our_firm_id,
-          // sum: item.sum,
         };
       });
-      console.log(preparedRows);
+      console.log("ordersRows", preparedRows);
       setRows(preparedRows);
     }
   }, [loading, data]);
