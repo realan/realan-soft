@@ -51,14 +51,7 @@ const GET_ORDER_DATA = gql`
           price_retail
         }
       }
-      bill {
-        number
-        date
-      }
-      invoice {
-        number
-        date
-      }
+
       id
       city
       date_out
@@ -71,6 +64,15 @@ const GET_ORDER_DATA = gql`
     }
   }
 `;
+
+// bill {
+//   number
+//   date
+// }
+// invoice {
+//   number
+//   date
+// }
 
 const GET_LAST_DOC_NUMBER = gql`
   query getLastDocNumber($year: Int!, $our_firm_id: Int!, $type_doc_id: Int!) {

@@ -22,7 +22,7 @@ import { useAuth0 } from "./../../react-auth0-spa";
 
 // for apollo client
 const httpLink = createHttpLink({
-  uri: "https://realan.herokuapp.com/v1/graphql",
+  uri: "https://realan-suvenir.hasura.app/v1/graphql",
 });
 
 const [accessToken, setAccessToken] = useState("");
@@ -50,14 +50,14 @@ const authLink = setContext((_, { headers }) => {
     return {
       headers: {
         ...headers,
-        "x-hasura-admin-secret": "31080913",
+        "x-hasura-admin-secret": "PY9vNvuzdxrPAjSOoO8TLhjqvqiU2GbkQHqPvljqeL2GAgipDgkZb78hPdJXBg05",
       },
     };
   } else {
     return {
       headers: {
         ...headers,
-        "x-hasura-admin-secret": "31080913",
+        "x-hasura-admin-secret": "PY9vNvuzdxrPAjSOoO8TLhjqvqiU2GbkQHqPvljqeL2GAgipDgkZb78hPdJXBg05",
       },
     };
   }
@@ -69,11 +69,11 @@ const authLink = setContext((_, { headers }) => {
 
   //   headers: {
   //     ...headers,
-  //     // 'x-hasura-admin-secret':'31080913'
+  //     // 'x-hasura-admin-secret':'PY9vNvuzdxrPAjSOoO8TLhjqvqiU2GbkQHqPvljqeL2GAgipDgkZb78hPdJXBg05'
 
   //     // authorization: token ? `Bearer ${token}` : "",
   //     // if (token){
-  //     //   'x-hasura-admin-secret':'31080913'
+  //     //   'x-hasura-admin-secret':'PY9vNvuzdxrPAjSOoO8TLhjqvqiU2GbkQHqPvljqeL2GAgipDgkZb78hPdJXBg05'
   //     // }
   //   }
   // }

@@ -4,7 +4,7 @@ export const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      "x-hasura-admin-secret": "31080913",
+      "x-hasura-admin-secret": "PY9vNvuzdxrPAjSOoO8TLhjqvqiU2GbkQHqPvljqeL2GAgipDgkZb78hPdJXBg05",
     },
   };
 });
@@ -14,14 +14,14 @@ export const authLink = setContext((_, { headers }) => {
 //     return {
 //         headers: {
 //             ...headers,
-//             'x-hasura-admin-secret': '31080913'
+//             'x-hasura-admin-secret': 'PY9vNvuzdxrPAjSOoO8TLhjqvqiU2GbkQHqPvljqeL2GAgipDgkZb78hPdJXBg05'
 //         }
 //     };
 // } else {
 // return {
 //     headers: {
 //         ...headers,
-//         'x-hasura-admin-secret': '31080913'
+//         'x-hasura-admin-secret': 'PY9vNvuzdxrPAjSOoO8TLhjqvqiU2GbkQHqPvljqeL2GAgipDgkZb78hPdJXBg05'
 //     }
 // }
 // }
