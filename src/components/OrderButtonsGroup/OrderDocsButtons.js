@@ -36,6 +36,7 @@ const GET_ORDER_DATA = gql`
         bic
         bank
         account
+        corr_account
         management_name
         accountant_name
         management_post

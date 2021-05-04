@@ -11,6 +11,75 @@ import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import FormTemplate from "components/FormTemplate/FormTemplate";
+
+const columns = [
+  {
+    Header: "Действия",
+    accessor: "actions",
+    width: 85,
+    sortable: false,
+    filterable: false,
+    show: false,
+  },
+  { Header: "id", accessor: "id", type: "integer", show: false, required: true },
+  {
+    Header: "Название",
+    accessor: "name",
+    type: "text",
+    show: true,
+    required: true,
+    initialState: "",
+  },
+  {
+    Header: "Город",
+    accessor: "town",
+    type: "text",
+    show: true,
+    required: true,
+    initialState: "",
+  },
+  {
+    Header: "Адрес",
+    accessor: "address",
+    type: "text",
+    show: true,
+    required: false,
+    initialState: "",
+  },
+  {
+    Header: "Контакт",
+    accessor: "contact_id",
+    type: "integer",
+    show: true,
+    required: false,
+    initialState: undefined,
+  },
+  {
+    Header: "Тэги",
+    accessor: "tags",
+    type: "text",
+    show: true,
+    required: true,
+    initialState: "",
+  },
+  {
+    Header: "Фирмы",
+    accessor: "firms_ids",
+    type: "text",
+    show: true,
+    required: false,
+    initialState: "",
+  },
+  {
+    Header: "Фирма",
+    accessor: "firm_id",
+    type: "integer",
+    show: true,
+    required: false,
+    initialState: undefined,
+  },
+];
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -204,9 +273,11 @@ export default function SelectCustomer({ orderData, onChange }) {
         </Grid>
         <Grid item xs>
           {orderData.customer_id && (
-            <Button color="primary" variant="outlined">
-              + фирма
-            </Button>
+            <FormTemplate fields={columns} buttonText={"+фирма"} headerText={"Добавить фирму"} />
+
+            //* <Button color="primary" variant="outlined">
+            //  + фирма
+            //</Button> */}
           )}
         </Grid>
 

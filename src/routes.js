@@ -11,13 +11,13 @@ import Todo from "views/Todo";
 // import StockCorrect from "views/StockCorrect";
 // import Setting from "views/Setting";
 import SetSample from "views/SetSample";
-import SetDelivery from "views/SetDelivery";
-import SetPersons from "views/SetPersons";
-import SetFirms from "views/SetFirms";
-import SetShops from "views/SetShops";
-import SetCustomers from "views/SetCustomers";
-import SetOrders from "views/SetOrders";
-import SetTodos from "views/SetTodos";
+// import SetDelivery from "views/SetDelivery";
+// import SetPersons from "views/SetPersons";
+// import SetFirms from "views/SetFirms";
+// import SetShops from "views/SetShops";
+// import SetCustomers from "views/SetCustomers";
+// import SetOrders from "views/SetOrders";
+// import SetTodos from "views/SetTodos";
 
 // @material-ui/icons
 import DashboardIcon from "@material-ui/icons/Dashboard";
@@ -87,36 +87,6 @@ var dashRoutes = [
     // state: "pageCollapse",
     component: Stock,
     layout: "/admin",
-    // views: [
-    //   {
-    //     path: "/stock",
-    //     name: "Склад состояние",
-    //     mini: "СК",
-    //     component: Stock,
-    //     layout: "/admin"
-    //   },
-    //   {
-    //     path: "/order-production",
-    //     name: "Приемка",
-    //     mini: "ПР",
-    //     component: OrderFromProduction,
-    //     layout: "/admin"
-    //   },
-    //   {
-    //     path: "/order-stock",
-    //     name: "Набор со склада",
-    //     mini: "НБ",
-    //     component: OrderFromStock,
-    //     layout: "/admin"
-    //   },
-    //   {
-    //     path: "/stock-correct",
-    //     name: "Корректировки",
-    //     mini: "КР",
-    //     component: StockCorrect,
-    //     layout: "/admin"
-    //   }
-    // ]
   },
   {
     collapse: true,
@@ -131,55 +101,55 @@ var dashRoutes = [
         component: SetSample,
         layout: "/admin",
       },
-      {
-        path: "/set-delivery",
-        name: "Логистика",
-        mini: "ЛГ",
-        component: SetDelivery,
-        layout: "/admin",
-      },
-      {
-        path: "/set-persons",
-        name: "Контакты",
-        mini: "КН",
-        component: SetPersons,
-        layout: "/admin",
-      },
-      {
-        path: "/set-firms",
-        name: "Организации",
-        mini: "ОРГ",
-        component: SetFirms,
-        layout: "/admin",
-      },
-      {
-        path: "/set-shops",
-        name: "Магазины",
-        mini: "МГ",
-        component: SetShops,
-        layout: "/admin",
-      },
-      {
-        path: "/set-customers",
-        name: "Заказчики",
-        mini: "ЗАК",
-        component: SetCustomers,
-        layout: "/admin",
-      },
-      {
-        path: "/set-orders",
-        name: "Заказы",
-        mini: "НЗ",
-        component: SetOrders,
-        layout: "/admin",
-      },
-      {
-        path: "/set-todos",
-        name: "Сделать",
-        mini: "СД",
-        component: SetTodos,
-        layout: "/admin",
-      },
+      // {
+      //   path: "/set-delivery",
+      //   name: "Логистика",
+      //   mini: "ЛГ",
+      //   component: SetDelivery,
+      //   layout: "/admin",
+      // },
+      // {
+      //   path: "/set-persons",
+      //   name: "Контакты",
+      //   mini: "КН",
+      //   component: SetPersons,
+      //   layout: "/admin",
+      // },
+      // {
+      //   path: "/set-firms",
+      //   name: "Организации",
+      //   mini: "ОРГ",
+      //   component: SetFirms,
+      //   layout: "/admin",
+      // },
+      // {
+      //   path: "/set-shops",
+      //   name: "Магазины",
+      //   mini: "МГ",
+      //   component: SetShops,
+      //   layout: "/admin",
+      // },
+      // {
+      //   path: "/set-customers",
+      //   name: "Заказчики",
+      //   mini: "ЗАК",
+      //   component: SetCustomers,
+      //   layout: "/admin",
+      // },
+      // {
+      //   path: "/set-orders",
+      //   name: "Заказы",
+      //   mini: "НЗ",
+      //   component: SetOrders,
+      //   layout: "/admin",
+      // },
+      // {
+      //   path: "/set-todos",
+      //   name: "Сделать",
+      //   mini: "СД",
+      //   component: SetTodos,
+      //   layout: "/admin",
+      // },
     ],
   },
 ];

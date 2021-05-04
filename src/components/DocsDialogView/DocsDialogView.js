@@ -9,7 +9,7 @@ import DocumentViewer from "reports/DocumentViewer";
 
 const DocsDialogView = ({ open, onClose, onSubmit, data, template }) => {
   // const dataSample = invoiceData1;
-
+  console.log("RENDER DocsDialogView");
   const docTemplate = {
     // userId: number;
     // projectId: number;

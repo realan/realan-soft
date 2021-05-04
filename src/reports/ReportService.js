@@ -13,10 +13,10 @@ Stimulsoft.Base.StiLicense.key =
 
 class SSReport {
   constructor() {
-    if (!SSReport.instance) {
-      this.report = new Stimulsoft.Report.StiReport();
-      SSReport.instance = this;
-    }
+    // if (!SSReport.instance) {
+    this.report = new Stimulsoft.Report.StiReport();
+    SSReport.instance = this;
+    // }
 
     return SSReport.instance;
   }

@@ -1,8 +1,8 @@
 {
   "ReportVersion": "2021.1.1.0",
   "ReportGuid": "951ba6b78dc749339d2f31905410beae",
-  "ReportName": "bill",
-  "ReportAlias": "bill",
+  "ReportName": "bill2",
+  "ReportAlias": "bill2",
   "ReportAuthor": "Сергей Беляев",
   "ReportCreated": "/Date(154800000+0000)/",
   "ReportChanged": "/Date(1509709718000+0000)/",
@@ -1089,7 +1089,7 @@
                 "Ident": "StiInteraction"
               },
               "Text": {
-                "Value": "СЧЕТ № {root_bill.number} от {root_bill.date.Day} {Choose(root_bill.date.Month, \"января\", \"февраля\", \"марта\", \"апреля\", \"мая\", \"июня\", \"июля\", \"августа\", \"сентября\", \"октября\", \"ноября\", \"декабря\")} {root_bill.date.Year} г."
+                "Value": "СЧЕТ № {root_bill.number} от {System.Convert.ToDateTime(root_bill.date).ToString(\"dd MMMM yyyy г.\")}"
               },
               "HorAlignment": "Center",
               "VertAlignment": "Center",
