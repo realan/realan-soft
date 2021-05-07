@@ -91,14 +91,14 @@ const GET_ORDER_DATA = gql`
 `;
 
 export default function UpdateOrder({ open, onClose, orderId }) {
-  console.log("render UpdateOrder");
+  // console.log("render UpdateOrder");
   const [orderData, setOrderData] = useState({});
 
   const { loading, error, data } = useQuery(GET_ORDER_DATA, { variables: { order_id: orderId } });
 
   useEffect(() => {
     if (data) {
-      console.log(data);
+      console.log("update order data", data);
       setOrderData(data.orders[0]);
       const dateOut = new Date(data.orders[0].date_out);
       onOrderDataChange("date_out", dateOut);

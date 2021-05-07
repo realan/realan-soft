@@ -4,7 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import ru from "date-fns/locale/ru";
 import Button from "@material-ui/core/Button";
 
-const DateButton = ({ value, placeholder = "", onChange }) => {
+const DateButton = ({ value = "", placeholder = "", onChange }) => {
   const ButtonInput = forwardRef(({ value, onClick }, ref) => (
     <Button
       className="date-button-input"

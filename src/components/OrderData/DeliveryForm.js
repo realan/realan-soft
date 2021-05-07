@@ -99,7 +99,7 @@ export default function DeliveryForm({ orderData, onChange }) {
             <Select
               native
               value={orderData.delivery_id || ""}
-              onChange={(event) => onChange("delivery_id", event.target.value)}
+              onChange={(event) => onChange("delivery_id", Number(event.target.value))}
               inputProps={{
                 name: "delivery",
                 id: "delivery_id",

@@ -12,7 +12,7 @@ import Button from "@material-ui/core/Button";
 //     }
 //   }
 // `;
-const ADD_ORDER = gql`
+const UPDATE_ORDER = gql`
   mutation AddOrder($addData: orders_insert_input!) {
     insert_orders_one(
       object: $addData
@@ -60,16 +60,18 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SubmitButon({ orderData, nextStep }) {
   const classes = useStyles();
-  const [AddOrder, { data, loading, error }] = useMutation(ADD_ORDER);
-  //   const [UpdateOrder, { loading:, error }] = useMutation(UPDATE_ORDER);
+  // const [AddOrder, { data, loading, error }] = useMutation(ADD_ORDER);
+  const [UpdateOrder, { loading: loadingUpdate, error: errorUpdate }] = useMutation(UPDATE_ORDER);
 
   let type = "UPDATE";
   if (!orderData.order_id) {
     type = "ADD";
   }
 
-  if (loading) return "Loading....";
-  if (error) return `Error! ${error.message}`;
+  // if (loading) return "Loading....";
+  // if (error) return `Error! ${error.message}`;
+  if (loadingUpdate) return "Loading....";
+  if (errorUpdate) return `Error! ${errorUpdate.message}`;
 
   const handleSubmit = () => {
     if (orderData.customer_id === undefined) {
@@ -91,7 +93,8 @@ export default function SubmitButon({ orderData, nextStep }) {
         return obj;
       });
       const preparedData = {
-        id: orderData.order_id ? orderData.order_id : undefined,
+        id: orderData.id ? orderData.id : undefined,
+        // id: orderData.order_id ? orderData.order_id : undefined,
         date_out: orderData.date_out,
         customer_id: orderData.customer_id,
         firm_id: orderData.firm_id,
@@ -117,12 +120,12 @@ export default function SubmitButon({ orderData, nextStep }) {
           data: items,
         },
       };
-      console.log(preparedData);
-      if (type === "ADD") {
-        AddOrder({ variables: { addData: preparedData } });
-      } else {
-        // UpdateOrder({ variables: { addData: preparedData } });
-      }
+      console.log(type, preparedData);
+      // if (type === "ADD") {
+      //   UpdateOrder({ variables: { addData: preparedData } });
+      // } else {
+      UpdateOrder({ variables: { addData: preparedData } });
+      // }
       nextStep();
     }
   };
