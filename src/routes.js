@@ -39,14 +39,14 @@ var dashRoutes = [
   },
   {
     path: "/orders",
-    name: "Заказы мрамор",
+    name: "Заказы склад",
     icon: ShoppingCartIcon,
     component: Orders,
     layout: "/admin",
   },
   {
     path: "/ordersall",
-    name: "Заказы все",
+    name: "Заказы менеджер",
     icon: AddShoppingCartIcon,
     component: OrdersAll,
     layout: "/admin",

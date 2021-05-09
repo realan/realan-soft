@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import UpdateOrder from "components/OrderData/UpdateOrder";
+import UpdateOrder from "components/OrderProcessing/UpdateOrder";
 import Fab from "@material-ui/core/Fab";
 import EditIcon from "@material-ui/icons/Edit";
 
