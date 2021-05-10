@@ -6,9 +6,9 @@ const useStyles = makeStyles(() => ({
       display: "flex",
       justifyContent: "center",
       flexWrap: "wrap",
-      "& > *": {
-        margin: theme.spacing(1),
-      },
+      // "& > *": {
+      //   margin: theme.spacing(1),
+      // },
     }}));
 
 export default function Login() {
