@@ -31,7 +31,7 @@ const useStyles = makeStyles(styles);
 
 export default function RegisterPage() {
   const [checked, setChecked] = React.useState([]);
-  const handleToggle = value => {
+  const handleToggle = (value) => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
 
@@ -91,79 +91,65 @@ export default function RegisterPage() {
                     <CustomInput
                       formControlProps={{
                         fullWidth: true,
-                        className: classes.customFormControlClasses
+                        className: classes.customFormControlClasses,
                       }}
                       inputProps={{
                         startAdornment: (
-                          <InputAdornment
-                            position="start"
-                            className={classes.inputAdornment}
-                          >
+                          <InputAdornment position="start" className={classes.inputAdornment}>
                             <Face className={classes.inputAdornmentIcon} />
                           </InputAdornment>
                         ),
-                        placeholder: "First Name..."
+                        placeholder: "First Name...",
                       }}
                     />
                     <CustomInput
                       formControlProps={{
                         fullWidth: true,
-                        className: classes.customFormControlClasses
+                        className: classes.customFormControlClasses,
                       }}
                       inputProps={{
                         startAdornment: (
-                          <InputAdornment
-                            position="start"
-                            className={classes.inputAdornment}
-                          >
+                          <InputAdornment position="start" className={classes.inputAdornment}>
                             <Email className={classes.inputAdornmentIcon} />
                           </InputAdornment>
                         ),
-                        placeholder: "Email..."
+                        placeholder: "Email...",
                       }}
                     />
                     <CustomInput
                       formControlProps={{
                         fullWidth: true,
-                        className: classes.customFormControlClasses
+                        className: classes.customFormControlClasses,
                       }}
                       inputProps={{
                         startAdornment: (
-                          <InputAdornment
-                            position="start"
-                            className={classes.inputAdornment}
-                          >
-                            <Icon className={classes.inputAdornmentIcon}>
-                              lock_outline
-                            </Icon>
+                          <InputAdornment position="start" className={classes.inputAdornment}>
+                            <Icon className={classes.inputAdornmentIcon}>lock_outline</Icon>
                           </InputAdornment>
                         ),
-                        placeholder: "Password..."
+                        placeholder: "Password...",
                       }}
                     />
                     <FormControlLabel
                       classes={{
                         root: classes.checkboxLabelControl,
-                        label: classes.checkboxLabel
+                        label: classes.checkboxLabel,
                       }}
                       control={
                         <Checkbox
                           tabIndex={-1}
                           onClick={() => handleToggle(1)}
-                          checkedIcon={
-                            <Check className={classes.checkedIcon} />
-                          }
+                          checkedIcon={<Check className={classes.checkedIcon} />}
                           icon={<Check className={classes.uncheckedIcon} />}
                           classes={{
                             checked: classes.checked,
-                            root: classes.checkRoot
+                            root: classes.checkRoot,
                           }}
                         />
                       }
                       label={
                         <span>
-                          I agree to the{" "}
-                          <a href="#pablo">terms and conditions</a>.
+                          I agree to the <a href="#pablo">terms and conditions</a>.
                         </span>
                       }
                     />

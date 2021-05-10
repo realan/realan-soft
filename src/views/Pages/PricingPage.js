@@ -41,11 +41,7 @@ export default function PricingPage() {
               <div className={classes.icon}>
                 <Icon className={classes.iconWhite}>weekend</Icon>
               </div>
-              <h3
-                className={`${classes.cardTitleWhite} ${classes.marginTop30}`}
-              >
-                FREE
-              </h3>
+              <h3 className={`${classes.cardTitleWhite} ${classes.marginTop30}`}>FREE</h3>
               <p className={classes.cardCategory}>
                 This is good if your company size is between 2 and 10 Persons.
               </p>
@@ -62,9 +58,7 @@ export default function PricingPage() {
               <div className={classes.icon}>
                 <Home className={classes.iconRose} />
               </div>
-              <h3 className={`${classes.cardTitle} ${classes.marginTop30}`}>
-                $29
-              </h3>
+              <h3 className={`${classes.cardTitle} ${classes.marginTop30}`}>$29</h3>
               <p className={classes.cardDescription}>
                 This is good if your company size is between 2 and 10 Persons.
               </p>
@@ -81,11 +75,7 @@ export default function PricingPage() {
               <div className={classes.icon}>
                 <Business className={classes.iconWhite} />
               </div>
-              <h3
-                className={`${classes.cardTitleWhite} ${classes.marginTop30}`}
-              >
-                $69
-              </h3>
+              <h3 className={`${classes.cardTitleWhite} ${classes.marginTop30}`}>$69</h3>
               <p className={classes.cardCategory}>
                 This is good if your company size is between 11 and 99 Persons.
               </p>
@@ -102,11 +92,7 @@ export default function PricingPage() {
               <div className={classes.icon}>
                 <AccountBalance className={classes.iconWhite} />
               </div>
-              <h3
-                className={`${classes.cardTitleWhite} ${classes.marginTop30}`}
-              >
-                $159
-              </h3>
+              <h3 className={`${classes.cardTitleWhite} ${classes.marginTop30}`}>$159</h3>
               <p className={classes.cardCategory}>
                 This is good if your company size is 99+ persons.
               </p>

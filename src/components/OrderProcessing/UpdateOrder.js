@@ -9,7 +9,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 // import Button from "@material-ui/core/Button";
 // import Box from "@material-ui/core/Box";
-import {GET_ORDER_DATA} from "./orderConstants";
+import { GET_ORDER_DATA } from "./orderConstants";
 
 export default function UpdateOrder({ open, onClose, orderId }) {
   // console.log("render UpdateOrder");
@@ -38,22 +38,19 @@ export default function UpdateOrder({ open, onClose, orderId }) {
         };
       });
       handleChange("items", items);
-      const orderParams  = {
+      const orderParams = {
         sum_dealer: 0,
         sum_opt: 0,
         sum_retail: 0,
-      }
+      };
       handleChange("orderParams", orderParams);
     }
   }, [data]);
 
-  const handleChange = useCallback(
-    (type, value) => {
-      // console.log(orderData);
-      setOrderData((prevState) => ({ ...prevState, [type]: value }));
-    },
-    []
-  );
+  const handleChange = useCallback((type, value) => {
+    // console.log(orderData);
+    setOrderData((prevState) => ({ ...prevState, [type]: value }));
+  }, []);
 
   if (loading) return <p>Loading order...</p>;
   if (error) return `Error! ${error.message}`;
@@ -76,14 +73,16 @@ export default function UpdateOrder({ open, onClose, orderId }) {
         >
           <DialogTitle id="draggable-dialog-title">Скорректировать заказ</DialogTitle>
           <DialogContent>
-            { orderData.id && <OrderForm 
-                orderData={orderData} 
+            {orderData.id && (
+              <OrderForm
+                orderData={orderData}
                 onChange={handleChange}
                 onSubmit={handleSubmit}
                 onCancel={handleCancel}
-              />}
-           </DialogContent>
-         </Dialog>
+              />
+            )}
+          </DialogContent>
+        </Dialog>
       )}
     </>
   );

@@ -17,7 +17,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import DateButton from "components/DateButton/DateButton";
 import GridItem from "components/Grid/GridItem";
 import FormSection from "components/FormSection/FormSection";
-import {QUERY_DELIVERY} from "./orderConstants";
+import { QUERY_DELIVERY } from "./orderConstants";
 
 // import { AddressSuggestions } from "react-dadata";
 // // import ReactDadataBox from "react-dadata-box";
@@ -26,7 +26,6 @@ import {QUERY_DELIVERY} from "./orderConstants";
 
 // import FormControlLabel from '@material-ui/core/FormControlLabel';
 // import Checkbox from "@material-ui/core/Checkbox";
-
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -68,10 +67,7 @@ export default function DeliveryForm({ orderData, onChange }) {
   });
 
   return (
-    <FormSection
-    title={"Доставка"}
-    icon={""}
-    >
+    <FormSection title={"Доставка"} icon={""}>
       <Grid container spacing={2} alignItems="baseline">
         <Grid item xs={12}>
           <TextField

@@ -15,7 +15,7 @@ import { makeStyles } from "@material-ui/core/styles";
 // import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import FormSection from "components/FormSection/FormSection";
-import {QUERY_OUR_FIRMS} from "./orderConstants";
+import { QUERY_OUR_FIRMS } from "./orderConstants";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -76,10 +76,7 @@ export default function DocumentsForm({ orderData, onChange }) {
   };
 
   return (
-    <FormSection
-    title={"Документы"}
-    icon={""}
-    >
+    <FormSection title={"Документы"} icon={""}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           Масса <strong>{orderData.orderParams.weight}</strong>, сумма дилер{" "}

@@ -134,7 +134,6 @@ export const GET_ORDER_DATA = gql`
   }
 `;
 
-
 export const newOrderFormState = {
   customer_id: undefined,
   firm_id: undefined,
@@ -160,7 +159,7 @@ export const newOrderFormState = {
   consignee_data: "",
   delivery_id: undefined,
   delivery_note: "",
-}
+};
 
 export const SUBSCRIPTION_CUSTOMERS = gql`
   subscription SubscriptionsCustomers {
@@ -202,7 +201,6 @@ export const SUBSCRIPTION_CUSTOMERS = gql`
     }
   }
 `;
-
 
 export const QUERY_OUR_FIRMS = gql`
   query QueryOurFirms {

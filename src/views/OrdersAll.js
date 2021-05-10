@@ -5,7 +5,7 @@ import NewOrder from "components/OrderProcessing/NewOrder";
 const OrdersAll = () => {
   return (
     <>
-      <NewOrder/>
+      <NewOrder />
       <OrdersTable />
     </>
   );

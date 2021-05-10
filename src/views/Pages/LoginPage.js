@@ -27,7 +27,7 @@ const useStyles = makeStyles(styles);
 export default function LoginPage() {
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
   React.useEffect(() => {
-    let id = setTimeout(function() {
+    let id = setTimeout(function () {
       setCardAnimation("");
     }, 700);
     // Specify how to clean up after this effect:
@@ -42,28 +42,23 @@ export default function LoginPage() {
         <GridItem xs={12} sm={6} md={4}>
           <form>
             <Card login className={classes[cardAnimaton]}>
-              <CardHeader
-                className={`${classes.cardHeader} ${classes.textCenter}`}
-                color="rose"
-              >
+              <CardHeader className={`${classes.cardHeader} ${classes.textCenter}`} color="rose">
                 <h4 className={classes.cardTitle}>Log in</h4>
                 <div className={classes.socialLine}>
-                  {[
-                    "fab fa-facebook-square",
-                    "fab fa-twitter",
-                    "fab fa-google-plus"
-                  ].map((prop, key) => {
-                    return (
-                      <Button
-                        color="transparent"
-                        justIcon
-                        key={key}
-                        className={classes.customButtonClass}
-                      >
-                        <i className={prop} />
-                      </Button>
-                    );
-                  })}
+                  {["fab fa-facebook-square", "fab fa-twitter", "fab fa-google-plus"].map(
+                    (prop, key) => {
+                      return (
+                        <Button
+                          color="transparent"
+                          justIcon
+                          key={key}
+                          className={classes.customButtonClass}
+                        >
+                          <i className={prop} />
+                        </Button>
+                      );
+                    }
+                  )}
                 </div>
               </CardHeader>
               <CardBody>
@@ -71,46 +66,44 @@ export default function LoginPage() {
                   labelText="First Name.."
                   id="firstname"
                   formControlProps={{
-                    fullWidth: true
+                    fullWidth: true,
                   }}
                   inputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
                         <Face className={classes.inputAdornmentIcon} />
                       </InputAdornment>
-                    )
+                    ),
                   }}
                 />
                 <CustomInput
                   labelText="Email..."
                   id="email"
                   formControlProps={{
-                    fullWidth: true
+                    fullWidth: true,
                   }}
                   inputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
                         <Email className={classes.inputAdornmentIcon} />
                       </InputAdornment>
-                    )
+                    ),
                   }}
                 />
                 <CustomInput
                   labelText="Password"
                   id="password"
                   formControlProps={{
-                    fullWidth: true
+                    fullWidth: true,
                   }}
                   inputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
-                        <Icon className={classes.inputAdornmentIcon}>
-                          lock_outline
-                        </Icon>
+                        <Icon className={classes.inputAdornmentIcon}>lock_outline</Icon>
                       </InputAdornment>
                     ),
                     type: "password",
-                    autoComplete: "off"
+                    autoComplete: "off",
                   }}
                 />
               </CardBody>

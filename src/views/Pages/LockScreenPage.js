@@ -20,7 +20,7 @@ const useStyles = makeStyles(styles);
 export default function LockScreenPage() {
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
   React.useEffect(() => {
-    let id = setTimeout(function() {
+    let id = setTimeout(function () {
       setCardAnimation("");
     }, 700);
     // Specify how to clean up after this effect:
@@ -32,12 +32,9 @@ export default function LockScreenPage() {
   return (
     <div className={classes.container}>
       <form>
-        <Card
-          profile
-          className={classes.customCardClass + " " + classes[cardAnimaton]}
-        >
+        <Card profile className={classes.customCardClass + " " + classes[cardAnimaton]}>
           <CardAvatar profile className={classes.cardAvatar}>
-            <a href="#pablo" onClick={e => e.preventDefault()}>
+            <a href="#pablo" onClick={(e) => e.preventDefault()}>
               <img src={avatar} alt="..." />
             </a>
           </CardAvatar>
@@ -47,11 +44,11 @@ export default function LockScreenPage() {
               labelText="Enter Password"
               id="company-disabled"
               formControlProps={{
-                fullWidth: true
+                fullWidth: true,
               }}
               inputProps={{
                 type: "password",
-                autoComplete: "off"
+                autoComplete: "off",
               }}
             />
           </CardBody>

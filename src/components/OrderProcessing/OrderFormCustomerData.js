@@ -9,7 +9,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import FormTemplate from "components/FormTemplate/FormTemplate";
-import {columnsCustomers} from "./orderConstants";
+import { columnsCustomers } from "./orderConstants";
 import FormSection from "components/FormSection/FormSection";
 
 const useStyles = makeStyles((theme) => ({
@@ -57,10 +57,7 @@ export default function SelectCustomer({ orderData, onChange, options }) {
   // const header = orderData.customer_id ? orderData.customer.name : "Выбери заказчика";
 
   return (
-    <FormSection
-    title={"Данные заказчика"}
-    icon={""}
-    >
+    <FormSection title={"Данные заказчика"} icon={""}>
       <Grid container spacing={2} alignItems="flex-end">
         <Grid item xs={8}>
           <Autocomplete
@@ -99,7 +96,11 @@ export default function SelectCustomer({ orderData, onChange, options }) {
         </Grid>
         <Grid item xs>
           {orderData.customer_id && (
-            <FormTemplate fields={columnsCustomers} buttonText={"+фирма"} headerText={"Добавить фирму"} />
+            <FormTemplate
+              fields={columnsCustomers}
+              buttonText={"+фирма"}
+              headerText={"Добавить фирму"}
+            />
 
             //* <Button color="primary" variant="outlined">
             //  + фирма

@@ -1,18 +1,18 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import OrderFormCustomerData from "./OrderFormCustomerData";
 import OrderFormDelivery from "./OrderFormDelivery";
 import OrderFormDocs from "./OrderFormDocs";
 import OrderFormItems from "./OrderFormItems";
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
 import { grey } from "@material-ui/core/colors";
-import {newOrderFormState} from "./orderConstants";
+import { newOrderFormState } from "./orderConstants";
 // import { useLazyQuery } from "@apollo/react-hooks";
-import {SUBSCRIPTION_CUSTOMERS} from "./orderConstants";
+import { SUBSCRIPTION_CUSTOMERS } from "./orderConstants";
 import { useSubscription } from "@apollo/react-hooks";
 
 const useStyles = makeStyles({
@@ -25,28 +25,28 @@ const useStyles = makeStyles({
 export default function OrderForm({ orderData = newOrderFormState, onChange, onSubmit, onCancel }) {
   const classes = useStyles();
   const [formLists, setFormLists] = useState({
-    customers:[],
-    firms:[],
-    shops:[],
-    persons:[],
-    delivery:[],
-  })
+    customers: [],
+    firms: [],
+    shops: [],
+    persons: [],
+    delivery: [],
+  });
 
   const { loading, error, data } = useSubscription(SUBSCRIPTION_CUSTOMERS);
 
   useEffect(() => {
     if (!loading && data) {
-      console.log("customers", data)
-      setFormLists((prevState) => ({ ...prevState, customers: data.customers}));
+      console.log("customers", data);
+      setFormLists((prevState) => ({ ...prevState, customers: data.customers }));
     }
   }, [loading, data]);
 
   // fill select options in this form and customer data. TODO - fill delivery, our_firm also
-  useEffect( () => {
+  useEffect(() => {
     let customer;
     // Add order
     if (!orderData.id && orderData.customer_id) {
-      customer = formLists.customers.find( el => el.id === orderData.customer_id);
+      customer = formLists.customers.find((el) => el.id === orderData.customer_id);
       onChange("customer", customer);
       onChange("discount", customer.discount);
       onChange("saldo", customer.saldo);
@@ -60,10 +60,10 @@ export default function OrderForm({ orderData = newOrderFormState, onChange, onS
 
     // Add and update order
     if (orderData.customer_id) {
-      const firms = customer.firms
-      const shops = customer.shops
-      const persons = customer.persons
-      setFormLists((prevState) => ({ ...prevState, firms, shops, persons}));
+      const firms = customer.firms;
+      const shops = customer.shops;
+      const persons = customer.persons;
+      setFormLists((prevState) => ({ ...prevState, firms, shops, persons }));
       if (firms.length === 1) {
         onChange("firm_id", firms[0].id);
       }
@@ -76,13 +76,13 @@ export default function OrderForm({ orderData = newOrderFormState, onChange, onS
         onChange("person_id", undefined);
       }
     }
-  }, [orderData.customer_id, orderData.id])
+  }, [orderData.customer_id, orderData.id]);
 
   // fill the form with shops data
-  useEffect( () => {
+  useEffect(() => {
     // Add order
     if (!orderData.id && orderData.shop_id) {
-      const shop = formLists.shops.find( el => el.id === orderData.shop_id);
+      const shop = formLists.shops.find((el) => el.id === orderData.shop_id);
       onChange("city", shop.city);
       onChange("address", shop.address);
       onChange("consignee_name", shop.consignee_name);
@@ -98,27 +98,29 @@ export default function OrderForm({ orderData = newOrderFormState, onChange, onS
       );
       setFormLists((prevState) => ({ ...prevState, persons }));
     }
-  }, [orderData.shop_id, orderData.id])
+  }, [orderData.shop_id, orderData.id]);
 
   if (loading) return "Loading....";
   if (error) return `Error! ${error.message}`;
-  
 
-    return (
-        <Card className={classes.root} >
-          <CardContent> 
-            <OrderFormCustomerData orderData={orderData} onChange={onChange} options={formLists}/>
-            <OrderFormDelivery orderData={orderData} onChange={onChange}/>
-            <OrderFormItems orderData={orderData} onChange={onChange}/>
-            <OrderFormDocs orderData={orderData} onChange={onChange}/>
-          </CardContent>
-          <CardActions>
-            <Box flexGrow={1}>
-              <Button onClick={onCancel}color="primary" variant="outlined">Отмена</Button>
-            </Box>
-            <Button onClick={onSubmit} color="primary" variant="contained">OK</Button>
-          </CardActions>
-        </Card>
-    );
-  }
-  
+  return (
+    <Card className={classes.root}>
+      <CardContent>
+        <OrderFormCustomerData orderData={orderData} onChange={onChange} options={formLists} />
+        <OrderFormDelivery orderData={orderData} onChange={onChange} />
+        <OrderFormItems orderData={orderData} onChange={onChange} />
+        <OrderFormDocs orderData={orderData} onChange={onChange} />
+      </CardContent>
+      <CardActions>
+        <Box flexGrow={1}>
+          <Button onClick={onCancel} color="primary" variant="outlined">
+            Отмена
+          </Button>
+        </Box>
+        <Button onClick={onSubmit} color="primary" variant="contained">
+          OK
+        </Button>
+      </CardActions>
+    </Card>
+  );
+}

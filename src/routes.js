@@ -7,7 +7,6 @@ import Customers from "views/Customers";
 import Stock from "views/Stock";
 import Todo from "views/Todo";
 
-
 import LockScreenPage from "views/Pages/LockScreenPage.js";
 import LoginPage from "views/Pages/LoginPage.js";
 import PricingPage from "views/Pages/PricingPage.js";
@@ -16,9 +15,6 @@ import UserProfile from "views/Pages/UserProfile.js";
 import ErrorPage from "views/Pages/ErrorPage.js";
 
 import SetSample from "views/SetSample";
-
-
-
 
 // @material-ui/icons
 import DashboardIcon from "@material-ui/icons/Dashboard";
@@ -43,44 +39,43 @@ var dashRoutes = [
     name: "Pricing Page",
     mini: "PP",
     component: PricingPage,
-    layout: "/auth"
+    layout: "/auth",
   },
   {
     path: "/login-page",
     name: "Login Page",
     mini: "L",
     component: LoginPage,
-    layout: "/auth"
+    layout: "/auth",
   },
   {
     path: "/register-page",
     name: "Register Page",
     mini: "R",
     component: RegisterPage,
-    layout: "/auth"
+    layout: "/auth",
   },
   {
     path: "/lock-screen-page",
     name: "Lock Screen Page",
     mini: "LS",
     component: LockScreenPage,
-    layout: "/auth"
+    layout: "/auth",
   },
   {
     path: "/user-page",
     name: "User Profile",
     mini: "UP",
     component: UserProfile,
-    layout: "/admin"
+    layout: "/admin",
   },
   {
     path: "/error-page",
     name: "Error Page",
     mini: "E",
     component: ErrorPage,
-    layout: "/auth"
+    layout: "/auth",
   },
-
 
   {
     path: "/dashboard",
