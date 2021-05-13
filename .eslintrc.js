@@ -17,6 +17,9 @@ module.exports = {
     "react/prop-types": 0,
     skipStrings: 0,
     "no-unused-vars": 1,
+    "prettier/prettier": ["error", {
+     "endOfLine":"auto"
+   }],
   },
   extends: ["eslint:recommended", "plugin:react/recommended", "plugin:prettier/recommended"],
 };

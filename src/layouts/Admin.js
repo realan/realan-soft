@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import cx from "classnames";
 import { Switch, Route, Redirect } from "react-router-dom";
 // creates a beautiful scrollbar
@@ -7,6 +7,8 @@ import "perfect-scrollbar/css/perfect-scrollbar.css";
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
+
+import { useAuth0 } from "@auth0/auth0-react";
 
 // core components
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
@@ -35,6 +37,13 @@ export default function Dashboard(props) {
   const [logo, setLogo] = React.useState(require("assets/img/logo-white.svg"));
   // styles
   const classes = useStyles();
+
+  //Auth0
+  const { user, isLoading, error } = useAuth0();
+  useEffect(() => {
+    console.log("user data Anmin component", user);
+  }, [user]);
+
   const mainPanelClasses =
     classes.mainPanel +
     " " +
@@ -63,6 +72,7 @@ export default function Dashboard(props) {
       window.removeEventListener("resize", resizeFunction);
     };
   });
+
   // functions for changeing the states from components
   const handleImageClick = (image) => {
     setImage(image);

@@ -1,16 +1,12 @@
 // import './wdyr';
 import React from "react";
 import ReactDOM from "react-dom";
-// import { createBrowserHistory } from "history";
-// import { Router, Route, Switch, Redirect } from "react-router-dom";
-
-// import AuthLayout from "layouts/Auth.js";
-// import AdminLayout from "layouts/Admin.js";
 
 import "assets/scss/material-dashboard-pro-react.scss?v=1.9.0";
-// import { Auth0Provider } from "providers/Auth0Provider";
 import { Auth0Provider } from "@auth0/auth0-react";
+
 import { getConfig } from "./config";
+import history from "./utils/history";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { client } from "providers/ClientApollo";
 import App from "App";
@@ -37,13 +33,6 @@ ReactDOM.render(
   <Auth0Provider {...providerConfig}>
     <ApolloProvider client={client}>
       <App />
-      {/* <Router history={hist}>
-        <Switch>
-          <Route path="/auth" component={AuthLayout} />
-          <Route path="/admin" component={AdminLayout} />
-          <Redirect from="/" to="/admin/dashboard" />
-        </Switch>
-      </Router> */}
     </ApolloProvider>
   </Auth0Provider>,
   document.getElementById("root")
