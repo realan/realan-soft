@@ -15,7 +15,7 @@ import FileExportToXls from "components/FileExportToXls/FileExportToXls";
 
 const SUBSCRIPTION_STOCK = gql`
   subscription {
-    pivot {
+    mr_pivot {
       id: item_id
       item_name
       item_art
@@ -72,7 +72,7 @@ CustomPagination.propTypes = {
   }).isRequired,
 };
 
-const Stock = () => {
+const StockOld = () => {
   // date for dialog
   const [itemForDialog, setItemForDialog] = useState({
     isOpen: false,
@@ -89,8 +89,8 @@ const Stock = () => {
 
   useEffect(() => {
     if (!loading && data) {
-      setRowsData(data.pivot);
-      setRows(data.pivot);
+      setRowsData(data.mr_pivot);
+      setRows(data.mr_pivot);
     }
   }, [loading, data]);
 
@@ -155,7 +155,6 @@ const Stock = () => {
         preparedRows = rowsData;
         break;
     }
-    console.log("Stock rows", preparedRows);
     setRows(preparedRows);
   };
 
@@ -200,4 +199,4 @@ const Stock = () => {
   );
 };
 
-export default Stock;
+export default StockOld;

@@ -71,14 +71,14 @@ export const ADD_MOVING = gql`
 `;
 
 export const ADD_MOVE_ITEM = gql`
-  mutation AddMove($addData: mr_moving_insert_input!) {
-    insert_mr_moving(objects: [$addData]) {
+  mutation AddMove($addData: moving_insert_input!) {
+    insert_moving(objects: [$addData]) {
       affected_rows
       returning {
         qty
         to_order
         from_order
-        item
+        item_id
       }
     }
   }

@@ -6,38 +6,38 @@ import { gql } from "apollo-boost";
 import { useSubscription } from "@apollo/react-hooks";
 import { renderProgress } from "@material-ui/x-grid-data-generator";
 // import OrderDataDialog from "../components/OrderDataDialog/OrderDataDialog.js";
-// import Button from "@material-ui/core/Button";
+import Button from "@material-ui/core/Button";
 import DialogOrders from "components/DialogOrders/DialogOrders.js";
-// import DialogAddOrder from "components/DialogAddOrder/DialogAddOrder";
+import DialogAddOrder from "components/DialogAddOrder/DialogAddOrder";
 // import FormTemplate from "forms/FormTemplate";
 // import AddIcon from '@material-ui/icons/Add';
 
-const SUBSCRIPTION_ORDERS = gql`
+const SUBSCRIPTION_ORDERS_OLD = gql`
   subscription {
-    orders(where: { is_cancelled: { _eq: false }, is_shipped: { _eq: false } }) {
+    mr_order(where: { is_cancelled: { _eq: false }, is_shipped: { _eq: false } }) {
       id
-      customer_id
-      city
+      customer
+      town
       date_in
       date_out
-      customer {
+      mr_customer {
         name
       }
-      items_aggregate {
+      mr_items_aggregate {
         aggregate {
           sum {
             qty
           }
         }
       }
-      movingsToOrder_aggregate {
+      mr_to_aggregate {
         aggregate {
           sum {
             qty
           }
         }
       }
-      movingsFromOrder_aggregate {
+      mr_from_aggregate {
         aggregate {
           sum {
             qty
@@ -48,7 +48,7 @@ const SUBSCRIPTION_ORDERS = gql`
   }
 `;
 
-const Orders = () => {
+const OrdersOld = () => {
   const [itemForDialog, setItemForDialog] = useState({
     isOpen: false,
     orderData: undefined,
@@ -56,7 +56,7 @@ const Orders = () => {
 
   const [rows, setRows] = useState([]);
   // const [open, setOpen] = useState(false);
-  // const [openAddOrder, setOpenAddOrder] = useState(false);
+  const [openAddOrder, setOpenAddOrder] = useState(false);
   // const [orderData, setOrderData] = useState({ id: 1 });
 
   const columns = useMemo(
@@ -73,23 +73,23 @@ const Orders = () => {
     []
   );
 
-  const { loading, error, data } = useSubscription(SUBSCRIPTION_ORDERS);
+  const { loading, error, data } = useSubscription(SUBSCRIPTION_ORDERS_OLD);
 
   useEffect(() => {
     if (!loading && data) {
-      const preparedRows = data.orders.map((it) => {
+      const preparedRows = data.mr_order.map((it) => {
         const dateIn = new Date(it.date_in);
         const dateOut = new Date(it.date_out);
-        let qty = it.items_aggregate.aggregate.sum.qty;
+        let qty = it.mr_items_aggregate.aggregate.sum.qty;
         let qtyRatio = +(
-          (it.movingsToOrder_aggregate.aggregate.sum.qty -
-            it.movingsFromOrder_aggregate.aggregate.sum.qty) /
+          (it.mr_to_aggregate.aggregate.sum.qty - it.mr_from_aggregate.aggregate.sum.qty) /
           qty
         ).toFixed(3);
+
         let obj = {
           id: it.id,
-          customer: it.customer.name,
-          town: it.city,
+          customer: it.mr_customer.name,
+          town: it.town,
           date_in: dateIn,
           date_out: dateOut,
           qty: qty,
@@ -97,7 +97,7 @@ const Orders = () => {
         };
         return obj;
       });
-      console.log("Orders data new", data);
+      console.log("Orders data", data);
       setRows(preparedRows);
     }
   }, [loading, data]);
@@ -106,7 +106,6 @@ const Orders = () => {
   if (error) return `Error! ${error.message}`;
 
   const onRowClick = (row) => {
-    console.log("Open Order-Items Dialog. Data", row);
     setItemForDialog({
       orderData: row.row,
       isOpen: true,
@@ -116,15 +115,15 @@ const Orders = () => {
   const handleClose = () => {
     setItemForDialog({ ...itemForDialog, isOpen: false });
   };
-  // const handleAddOrderClose = () => {
-  //   setOpenAddOrder(false);
-  // };
+  const handleAddOrderClose = () => {
+    setOpenAddOrder(false);
+  };
 
   return (
     <>
-      {/* <Button color="primary" variant="outlined" onClick={() => setOpenAddOrder(true)}>
+      <Button color="primary" variant="outlined" onClick={() => setOpenAddOrder(true)}>
         Добавить заказ
-      </Button> */}
+      </Button>
       <div style={{ height: 1400, width: "100%" }}>
         <DataGrid
           columns={columns}
@@ -143,9 +142,9 @@ const Orders = () => {
         />
       )}
 
-      {/* <DialogAddOrder open={openAddOrder} handleClose={handleAddOrderClose} /> */}
+      <DialogAddOrder open={openAddOrder} handleClose={handleAddOrderClose} />
     </>
   );
 };
 
-export default Orders;
+export default OrdersOld;

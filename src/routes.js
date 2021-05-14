@@ -1,10 +1,13 @@
 import Dashboard from "views/Dashboard";
 import Orders from "views/Orders";
+import Stock from "views/Stock";
+import OrdersOld from "views/OrdersOld";
+import StockOld from "views/StockOld";
 import OrdersAll from "views/OrdersAll";
 import Payments from "views/Payments";
 import Invoice from "views/Invoice";
 import Customers from "views/Customers";
-import Stock from "views/Stock";
+
 import Todo from "views/Todo";
 
 // import LockScreenPage from "views/Pages/LockScreenPage.js";
@@ -27,56 +30,6 @@ import StoreIcon from "@material-ui/icons/Store";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 
 var dashRoutes = [
-  // {
-  //   path: "/login-page",
-  //   name: "Авторизация",
-  //   icon: DashboardIcon,
-  //   component: Login,
-  //   layout: "/auth",
-  // },
-  // {
-  //   path: "/pricing-page",
-  //   name: "Pricing Page",
-  //   mini: "PP",
-  //   component: PricingPage,
-  //   layout: "/auth",
-  // },
-  // {
-  //   path: "/login-page",
-  //   name: "Login Page",
-  //   mini: "L",
-  //   component: LoginPage,
-  //   layout: "/auth",
-  // },
-  // {
-  //   path: "/register-page",
-  //   name: "Register Page",
-  //   mini: "R",
-  //   component: RegisterPage,
-  //   layout: "/auth",
-  // },
-  // {
-  //   path: "/lock-screen-page",
-  //   name: "Lock Screen Page",
-  //   mini: "LS",
-  //   component: LockScreenPage,
-  //   layout: "/auth",
-  // },
-  // {
-  //   path: "/user-page",
-  //   name: "User Profile",
-  //   mini: "UP",
-  //   component: UserProfile,
-  //   layout: "/admin",
-  // },
-  // {
-  //   path: "/error-page",
-  //   name: "Error Page",
-  //   mini: "E",
-  //   component: ErrorPage,
-  //   layout: "/auth",
-  // },
-
   {
     path: "/dashboard",
     name: "Инфо",
@@ -90,6 +43,14 @@ var dashRoutes = [
     name: "Заказы склад",
     icon: ShoppingCartIcon,
     component: Orders,
+    layout: "/admin",
+    roles: ["admin", "stock"],
+  },
+  {
+    path: "/stock",
+    name: "Склад",
+    icon: StoreIcon,
+    component: Stock,
     layout: "/admin",
     roles: ["admin", "stock"],
   },
@@ -134,14 +95,22 @@ var dashRoutes = [
     roles: ["admin", "stock"],
   },
   {
-    // collapse: true,
-    path: "/stock",
-    name: "Склад",
+    path: "/ordersold",
+    name: "Заказы Мр",
+    icon: ShoppingCartIcon,
+    component: OrdersOld,
+    layout: "/admin",
+    roles: ["admin", "stock"],
+  },
+
+  {
+    path: "/stockold",
+    name: "Склад Мр",
     icon: StoreIcon,
     // state: "pageCollapse",
-    component: Stock,
+    component: StockOld,
     layout: "/admin",
-    roles: ["admin"],
+    roles: ["admin", "stock"],
   },
   // {
   // collapse: true,

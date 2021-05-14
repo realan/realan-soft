@@ -27,7 +27,7 @@ import DeleteItemFromOrder from "components/DeleteItemFromOrder/DeleteItemFromOr
 
 const UPDATE_ORDER_DATE = gql`
   mutation UpdateOrderDate($id: Int!, $date_out: timestamptz) {
-    update_orders(where: { id: { _eq: $id } }, _set: { date_out: $date_out }) {
+    update_mr_order(where: { id: { _eq: $id } }, _set: { date_out: $date_out }) {
       returning {
         id
       }
@@ -37,26 +37,25 @@ const UPDATE_ORDER_DATE = gql`
 
 const SUBSCRIPTION_ITEMS_IN_ORDER = gql`
   subscription SubscriptionsItemsInOrder($order_id: Int!) {
-    items(order_by: { price: { name: asc } }, where: { order_id: { _eq: $order_id } }) {
+    mr_items(order_by: { item: asc }, where: { mr_order: { id: { _eq: $order_id } } }) {
       id
-      item_id
+      item
       qty
       note
       stock_data {
-        into_stock
-        out_stock
+        stock_now
       }
-      price {
+      mr_price {
         id
         name
-        qty_to: movings_aggregate(where: { to_order: { _eq: 30 } }) {
+        qty_to: mr_movings_aggregate(where: { to_order: { _eq: $order_id } }) {
           aggregate {
             sum {
               qty
             }
           }
         }
-        qty_from: movings_aggregate(where: { from_order: { _eq: 30 } }) {
+        qty_from: mr_movings_aggregate(where: { from_order: { _eq: $order_id } }) {
           aggregate {
             sum {
               qty
@@ -123,7 +122,7 @@ function deleteField(params) {
 
 const DialogOrders = ({ open, handleClose, orderData }) => {
   // const classes = useStyles();
-  // console.log("Order Data Dialog", orderData);
+  console.log("Order Data Dialog", orderData);
   let orderId = orderData.id;
 
   const [rows, setRows] = useState([]);
@@ -189,16 +188,17 @@ const DialogOrders = ({ open, handleClose, orderData }) => {
 
   useEffect(() => {
     if (!loading && data) {
-      // console.log("Items in order", data);
-      const preparedRows = data.items.map((it, key) => {
-        const qtyCollect = it.price.qty_to.aggregate.sum.qty - it.price.qty_from.aggregate.sum.qty;
+      // console.log(data);
+      const preparedRows = data.mr_items.map((it, key) => {
+        const qtyCollect =
+          it.mr_price.qty_to.aggregate.sum.qty - it.mr_price.qty_from.aggregate.sum.qty;
 
         return {
           id: key, //it.id,
-          idItem: it.price.id,
-          name: it.price.name,
+          idItem: it.mr_price.id,
+          name: it.mr_price.name,
           qtyOrder: it.qty,
-          qtyStock: it.stock_data.into_stock - it.stock_data.out_stock,
+          qtyStock: it.stock_data.stock_now,
           qtyCollect: qtyCollect,
           fromProd: 0, //it.qty,
           fromStock: 0, // it.qty,
@@ -251,7 +251,7 @@ const DialogOrders = ({ open, handleClose, orderData }) => {
           qty: it.fromProd,
           to_order: it.to_order,
           from_order: 2, // у доработки ID = 2 - типа постоянное значение заказа !!!!!!!!
-          item_id: it.idItem,
+          item: it.idItem,
         };
         AddMoveItemMutation({ variables: { addData: addData } });
       }
@@ -260,7 +260,7 @@ const DialogOrders = ({ open, handleClose, orderData }) => {
           qty: it.fromStock,
           to_order: it.to_order,
           from_order: 3, // у склада ID = 3 - типа постоянное значение заказа !!!!!!!!
-          item_id: it.idItem,
+          item: it.idItem,
         };
         AddMoveItemMutation({ variables: { addData: addData } });
       }
