@@ -7,14 +7,14 @@ import Customers from "views/Customers";
 import Stock from "views/Stock";
 import Todo from "views/Todo";
 
-import LockScreenPage from "views/Pages/LockScreenPage.js";
-import LoginPage from "views/Pages/LoginPage.js";
-import PricingPage from "views/Pages/PricingPage.js";
-import RegisterPage from "views/Pages/RegisterPage.js";
-import UserProfile from "views/Pages/UserProfile.js";
-import ErrorPage from "views/Pages/ErrorPage.js";
+// import LockScreenPage from "views/Pages/LockScreenPage.js";
+// import LoginPage from "views/Pages/LoginPage.js";
+// import PricingPage from "views/Pages/PricingPage.js";
+// import RegisterPage from "views/Pages/RegisterPage.js";
+// import UserProfile from "views/Pages/UserProfile.js";
+// import ErrorPage from "views/Pages/ErrorPage.js";
 
-import SetSample from "views/SetSample";
+// import SetSample from "views/SetSample";
 
 // @material-ui/icons
 import DashboardIcon from "@material-ui/icons/Dashboard";
@@ -22,7 +22,7 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import PaymentIcon from "@material-ui/icons/Payment";
 import PeopleIcon from "@material-ui/icons/People";
 import FormatListNumberedIcon from "@material-ui/icons/FormatListNumbered";
-import SettingsIcon from "@material-ui/icons/Settings";
+// import SettingsIcon from "@material-ui/icons/Settings";
 import StoreIcon from "@material-ui/icons/Store";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 
@@ -34,48 +34,48 @@ var dashRoutes = [
   //   component: Login,
   //   layout: "/auth",
   // },
-  {
-    path: "/pricing-page",
-    name: "Pricing Page",
-    mini: "PP",
-    component: PricingPage,
-    layout: "/auth",
-  },
-  {
-    path: "/login-page",
-    name: "Login Page",
-    mini: "L",
-    component: LoginPage,
-    layout: "/auth",
-  },
-  {
-    path: "/register-page",
-    name: "Register Page",
-    mini: "R",
-    component: RegisterPage,
-    layout: "/auth",
-  },
-  {
-    path: "/lock-screen-page",
-    name: "Lock Screen Page",
-    mini: "LS",
-    component: LockScreenPage,
-    layout: "/auth",
-  },
-  {
-    path: "/user-page",
-    name: "User Profile",
-    mini: "UP",
-    component: UserProfile,
-    layout: "/admin",
-  },
-  {
-    path: "/error-page",
-    name: "Error Page",
-    mini: "E",
-    component: ErrorPage,
-    layout: "/auth",
-  },
+  // {
+  //   path: "/pricing-page",
+  //   name: "Pricing Page",
+  //   mini: "PP",
+  //   component: PricingPage,
+  //   layout: "/auth",
+  // },
+  // {
+  //   path: "/login-page",
+  //   name: "Login Page",
+  //   mini: "L",
+  //   component: LoginPage,
+  //   layout: "/auth",
+  // },
+  // {
+  //   path: "/register-page",
+  //   name: "Register Page",
+  //   mini: "R",
+  //   component: RegisterPage,
+  //   layout: "/auth",
+  // },
+  // {
+  //   path: "/lock-screen-page",
+  //   name: "Lock Screen Page",
+  //   mini: "LS",
+  //   component: LockScreenPage,
+  //   layout: "/auth",
+  // },
+  // {
+  //   path: "/user-page",
+  //   name: "User Profile",
+  //   mini: "UP",
+  //   component: UserProfile,
+  //   layout: "/admin",
+  // },
+  // {
+  //   path: "/error-page",
+  //   name: "Error Page",
+  //   mini: "E",
+  //   component: ErrorPage,
+  //   layout: "/auth",
+  // },
 
   {
     path: "/dashboard",
@@ -83,6 +83,7 @@ var dashRoutes = [
     icon: DashboardIcon,
     component: Dashboard,
     layout: "/admin",
+    roles: ["admin"],
   },
   {
     path: "/orders",
@@ -90,6 +91,7 @@ var dashRoutes = [
     icon: ShoppingCartIcon,
     component: Orders,
     layout: "/admin",
+    roles: ["admin", "stock"],
   },
   {
     path: "/ordersall",
@@ -97,6 +99,7 @@ var dashRoutes = [
     icon: AddShoppingCartIcon,
     component: OrdersAll,
     layout: "/admin",
+    roles: ["admin", "stock"],
   },
   {
     path: "/payments",
@@ -104,6 +107,7 @@ var dashRoutes = [
     icon: PaymentIcon,
     component: Payments,
     layout: "/admin",
+    roles: ["admin"],
   },
   {
     path: "/invoice",
@@ -111,6 +115,7 @@ var dashRoutes = [
     icon: PaymentIcon,
     component: Invoice,
     layout: "/admin",
+    roles: ["ceo", "manager"],
   },
   {
     path: "/customers",
@@ -118,6 +123,7 @@ var dashRoutes = [
     icon: PeopleIcon,
     component: Customers,
     layout: "/admin",
+    roles: ["admin", "stock"],
   },
   {
     path: "/todo",
@@ -125,6 +131,7 @@ var dashRoutes = [
     icon: FormatListNumberedIcon,
     component: Todo,
     layout: "/admin",
+    roles: ["admin", "stock"],
   },
   {
     // collapse: true,
@@ -134,70 +141,71 @@ var dashRoutes = [
     // state: "pageCollapse",
     component: Stock,
     layout: "/admin",
+    roles: ["admin"],
   },
-  {
-    collapse: true,
-    name: "Настройки",
-    icon: SettingsIcon,
-    state: "pageCollapse",
-    views: [
-      {
-        path: "/set-sample",
-        name: "Проба",
-        mini: "ПР",
-        component: SetSample,
-        layout: "/admin",
-      },
-      // {
-      //   path: "/set-delivery",
-      //   name: "Логистика",
-      //   mini: "ЛГ",
-      //   component: SetDelivery,
-      //   layout: "/admin",
-      // },
-      // {
-      //   path: "/set-persons",
-      //   name: "Контакты",
-      //   mini: "КН",
-      //   component: SetPersons,
-      //   layout: "/admin",
-      // },
-      // {
-      //   path: "/set-firms",
-      //   name: "Организации",
-      //   mini: "ОРГ",
-      //   component: SetFirms,
-      //   layout: "/admin",
-      // },
-      // {
-      //   path: "/set-shops",
-      //   name: "Магазины",
-      //   mini: "МГ",
-      //   component: SetShops,
-      //   layout: "/admin",
-      // },
-      // {
-      //   path: "/set-customers",
-      //   name: "Заказчики",
-      //   mini: "ЗАК",
-      //   component: SetCustomers,
-      //   layout: "/admin",
-      // },
-      // {
-      //   path: "/set-orders",
-      //   name: "Заказы",
-      //   mini: "НЗ",
-      //   component: SetOrders,
-      //   layout: "/admin",
-      // },
-      // {
-      //   path: "/set-todos",
-      //   name: "Сделать",
-      //   mini: "СД",
-      //   component: SetTodos,
-      //   layout: "/admin",
-      // },
-    ],
-  },
+  // {
+  // collapse: true,
+  // name: "Настройки",
+  // icon: SettingsIcon,
+  // state: "pageCollapse",
+  // views: [
+  //   {
+  //     path: "/set-sample",
+  //     name: "Проба",
+  //     mini: "ПР",
+  //     component: SetSample,
+  //     layout: "/admin",
+  //   },
+  // {
+  //   path: "/set-delivery",
+  //   name: "Логистика",
+  //   mini: "ЛГ",
+  //   component: SetDelivery,
+  //   layout: "/admin",
+  // },
+  // {
+  //   path: "/set-persons",
+  //   name: "Контакты",
+  //   mini: "КН",
+  //   component: SetPersons,
+  //   layout: "/admin",
+  // },
+  // {
+  //   path: "/set-firms",
+  //   name: "Организации",
+  //   mini: "ОРГ",
+  //   component: SetFirms,
+  //   layout: "/admin",
+  // },
+  // {
+  //   path: "/set-shops",
+  //   name: "Магазины",
+  //   mini: "МГ",
+  //   component: SetShops,
+  //   layout: "/admin",
+  // },
+  // {
+  //   path: "/set-customers",
+  //   name: "Заказчики",
+  //   mini: "ЗАК",
+  //   component: SetCustomers,
+  //   layout: "/admin",
+  // },
+  // {
+  //   path: "/set-orders",
+  //   name: "Заказы",
+  //   mini: "НЗ",
+  //   component: SetOrders,
+  //   layout: "/admin",
+  // },
+  // {
+  //   path: "/set-todos",
+  //   name: "Сделать",
+  //   mini: "СД",
+  //   component: SetTodos,
+  //   layout: "/admin",
+  // },
+  // ],
+  // },
 ];
 export default dashRoutes;

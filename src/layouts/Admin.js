@@ -16,7 +16,8 @@ import Footer from "components/Footer/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 
-import routes from "routes.js";
+import routesInitial from "routes.js";
+// import routes from "routes.js";
 
 import styles from "assets/jss/material-dashboard-pro-react/layouts/adminStyle.js";
 
@@ -35,13 +36,24 @@ export default function Dashboard(props) {
   // const [hasImage, setHasImage] = React.useState(true);
   const [fixedClasses, setFixedClasses] = React.useState("dropdown");
   const [logo, setLogo] = React.useState(require("assets/img/logo-white.svg"));
+  const [routes, setRoutes] = React.useState(routesInitial);
   // styles
   const classes = useStyles();
 
   //Auth0
   const { user, isLoading, error } = useAuth0();
+
   useEffect(() => {
     console.log("user data Anmin component", user);
+    let roles = [];
+    let availableRoutes = [];
+    if (user) {
+      roles = user["https://realan-suvenir.ru/roles"];
+      availableRoutes = routesInitial.filter((path) => {
+        return path.roles.some((serverRole) => roles.includes(serverRole));
+      });
+      setRoutes(availableRoutes);
+    }
   }, [user]);
 
   const mainPanelClasses =
