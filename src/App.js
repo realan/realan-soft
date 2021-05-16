@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Router, Route, Switch, Redirect } from "react-router-dom";
 import AuthLayout from "layouts/Auth.js";
 import AdminLayout from "layouts/Admin.js";
-import { useAuth0 } from "@auth0/auth0-react";
+// import { useAuth0 } from "@auth0/auth0-react";
 import history from "./utils/history";
 
 // styles

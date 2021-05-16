@@ -49,7 +49,7 @@ const useStyles = makeStyles({
   },
 });
 
-const SUBSCRIPTION_ORDERS = gql`
+const SUBSCRIPTION_ORDERS_MANAGER = gql`
   subscription {
     orders(where: { id: { _gt: 10 } }) {
       id
@@ -118,7 +118,7 @@ const OrdersTable = () => {
     []
   );
 
-  const { loading, error, data } = useSubscription(SUBSCRIPTION_ORDERS);
+  const { loading, error, data } = useSubscription(SUBSCRIPTION_ORDERS_MANAGER);
 
   useEffect(() => {
     if (!loading && data) {
@@ -133,7 +133,7 @@ const OrdersTable = () => {
           dateOut: dateOut,
         };
       });
-      console.log("ordersRows", preparedRows);
+      // console.log("ordersRows", preparedRows);
       setRows(preparedRows);
     }
   }, [loading, data]);

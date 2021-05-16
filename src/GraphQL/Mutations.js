@@ -84,6 +84,20 @@ export const ADD_MOVE_ITEM = gql`
   }
 `;
 
+export const ADD_MOVES_ITEMS = gql`
+  mutation AddMoves($addData: [moving_insert_input!]!) {
+    insert_moving(objects: $addData) {
+      affected_rows
+      returning {
+        qty
+        to_order
+        from_order
+        item_id
+      }
+    }
+  }
+`;
+
 export const DELETE_ITEM_FROM_ORDER = gql`
   mutation DeleteItemFromOrder($id: Int!) {
     delete_mr_items(where: { id: { _eq: $id } }) {

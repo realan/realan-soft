@@ -36,22 +36,26 @@ export default function OrderForm({ orderData = newOrderFormState, onChange, onS
 
   useEffect(() => {
     if (!loading && data) {
-      console.log("customers", data);
+      // console.log("customers", data);
       setFormLists((prevState) => ({ ...prevState, customers: data.customers }));
     }
   }, [loading, data]);
 
-  // fill select options in this form and customer data. TODO - fill delivery, our_firm also
+  // populate select options in this form and customer data.
   useEffect(() => {
     let customer;
     // Add order
     if (!orderData.id && orderData.customer_id) {
       customer = formLists.customers.find((el) => el.id === orderData.customer_id);
-      onChange("customer", customer);
-      onChange("discount", customer.discount);
-      onChange("saldo", customer.saldo);
-      onChange("price_type_id", customer.price_type_id);
-      onChange("payment_term", customer.payment_term);
+      // console.log(orderData);
+      // console.log(customer);
+      if (customer) {
+        onChange("customer", customer);
+        onChange("discount", customer.discount);
+        onChange("saldo", customer.saldo);
+        onChange("price_type_id", customer.price_type_id);
+        onChange("payment_term", customer.payment_term);
+      }
     }
     // Update order
     if (orderData.id && orderData.customer_id) {
@@ -60,20 +64,22 @@ export default function OrderForm({ orderData = newOrderFormState, onChange, onS
 
     // Add and update order
     if (orderData.customer_id) {
-      const firms = customer.firms;
-      const shops = customer.shops;
-      const persons = customer.persons;
-      setFormLists((prevState) => ({ ...prevState, firms, shops, persons }));
-      if (firms.length === 1) {
-        onChange("firm_id", firms[0].id);
-      }
-      if (shops.length === 1) {
-        onChange("shop_id", shops[0].id);
-      }
-      if (persons.length === 1) {
-        onChange("person_id", persons[0].id);
-      } else {
-        onChange("person_id", undefined);
+      if (customer) {
+        const firms = customer.firms;
+        const shops = customer.shops;
+        const persons = customer.persons;
+        setFormLists((prevState) => ({ ...prevState, firms, shops, persons }));
+        if (firms.length === 1) {
+          onChange("firm_id", firms[0].id);
+        }
+        if (shops.length === 1) {
+          onChange("shop_id", shops[0].id);
+        }
+        if (persons.length === 1) {
+          onChange("person_id", persons[0].id);
+        } else if (!orderData.person_id) {
+          onChange("person_id", undefined);
+        }
       }
     }
   }, [orderData.customer_id, orderData.id]);
@@ -83,13 +89,15 @@ export default function OrderForm({ orderData = newOrderFormState, onChange, onS
     // Add order
     if (!orderData.id && orderData.shop_id) {
       const shop = formLists.shops.find((el) => el.id === orderData.shop_id);
-      onChange("city", shop.city);
-      onChange("address", shop.address);
-      onChange("consignee_name", shop.consignee_name);
-      onChange("consignee_phone", shop.consignee_phone);
-      onChange("consignee_data", shop.consignee_data);
-      onChange("delivery_note", shop.delivery_note);
-      onChange("delivery_id", shop.delivery_id);
+      if (shop) {
+        onChange("city", shop.city);
+        onChange("address", shop.address);
+        onChange("consignee_name", shop.consignee_name);
+        onChange("consignee_phone", shop.consignee_phone);
+        onChange("consignee_data", shop.consignee_data);
+        onChange("delivery_note", shop.delivery_note);
+        onChange("delivery_id", shop.delivery_id);
+      }
     }
     // Add and update  - list persons
     if (orderData.id && orderData.shop_id) {

@@ -12,7 +12,7 @@ import DialogOrders from "components/DialogOrders/DialogOrders.js";
 // import FormTemplate from "forms/FormTemplate";
 // import AddIcon from '@material-ui/icons/Add';
 
-const SUBSCRIPTION_ORDERS = gql`
+const SUBSCRIPTION_ORDERS_STOCK = gql`
   subscription {
     orders(where: { is_cancelled: { _eq: false }, is_shipped: { _eq: false } }) {
       id
@@ -21,6 +21,7 @@ const SUBSCRIPTION_ORDERS = gql`
       date_in
       date_out
       customer {
+        id
         name
       }
       items_aggregate {
@@ -73,7 +74,7 @@ const Orders = () => {
     []
   );
 
-  const { loading, error, data } = useSubscription(SUBSCRIPTION_ORDERS);
+  const { loading, error, data } = useSubscription(SUBSCRIPTION_ORDERS_STOCK);
 
   useEffect(() => {
     if (!loading && data) {

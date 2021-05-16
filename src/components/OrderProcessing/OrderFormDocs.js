@@ -96,7 +96,8 @@ export default function DocumentsForm({ orderData, onChange }) {
         <Grid item xs={6}>
           <TextField
             fullWidth
-            label="Условия оплаты"
+            label="Условия оплаты - менять у заказчика"
+            disabled={true}
             value={orderData.payment_term}
             onChange={(event) => onChange("payment_term", event.target.value)}
           />

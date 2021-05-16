@@ -5,7 +5,7 @@ import { ApolloClient } from "apollo-client";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { split } from "@apollo/client";
 import initialState from "../GraphQL/state";
-import { resolvers, typeDefs } from "../GraphQL/Resolvers";
+import { resolvers, typeDefs } from "../GraphQL/Resolvers_toDelete";
 import { authLink } from "providers/AuthLink";
 
 let cache = new InMemoryCache();

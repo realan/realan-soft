@@ -13,38 +13,37 @@ import InputWithButtons from "components/InputWithButtons/InputWithButtons";
 // import CardPosInOrder from "components/CardPosInOrder/CardPosInOrder";
 import Switch from "@material-ui/core/Switch";
 import DialogStockCorrectQty from "components/DialogStockCorrectQty/DialogStockCorrectQty";
-// import { ADD_MOVE_ITEM } from "../../GraphQL/Mutations";
-import { ADD_MOVES_ITEMS } from "../../GraphQL/Mutations";
+import { ADD_MOVE_ITEM } from "../../GraphQL/Mutations";
 import { QuantityChanger } from "components/QuantityChanger";
 
 // const useStyles = makeStyles(styles);
 
 const SUBSCRIPTION_ORDERS_BY_ID = gql`
   subscription SubscriptionsOrdersByItemId($item_id: Int!) {
-    items(
-      where: { item_id: { _eq: $item_id }, order: { is_shipped: { _eq: false } } }
-      order_by: { order: { date_out: asc_nulls_last } }
+    mr_items(
+      where: { item: { _eq: $item_id }, mr_order: { is_shipped: { _eq: false } } }
+      order_by: { mr_order: { date_out: asc_nulls_last } }
     ) {
       id
-      order_id
+      order
       qty
       note
-      order {
+      mr_order {
         id
-        customer_id
-        city
+        customer
+        town
         date_out
-        customer {
+        mr_customer {
           name
         }
-        movingsToOrder(where: { item_id: { _eq: $item_id } }) {
+        mr_to(where: { item: { _eq: $item_id } }) {
           qty
         }
-        movingsFromOrder(where: { item_id: { _eq: $item_id } }) {
+        mr_from(where: { item: { _eq: $item_id } }) {
           qty
         }
       }
-      price {
+      mr_price {
         id
         name
       }
@@ -58,7 +57,7 @@ const STORE_TYPE = {
 };
 
 // const DialogStock = (props) => {
-const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_now }) => {
+const DialogStockOld = ({ open, handleClose, item_id, item_name, item_art, stock_now }) => {
   // console.log("render DialogStock")
   // const classes = useStyles();
   const [itemId, setItemId] = useState(undefined);
@@ -110,7 +109,7 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
     // { field: 'customer', headerName: 'Заказчик', width: 150 },
     // { field: 'town', headerName: 'Город', width: 110 },
     { field: "townAndCustomer", headerName: "Заказ", width: 250 },
-    { field: "dateOut", headerName: "Дата отгрузки", type: "date", width: 110 },
+    { field: "dateOut", headerName: "Дата отгрузки", width: 110 },
     // { field: 'collected', headerName: 'Набрано%', type: "number", width: 80 },
     { field: "orderQty", headerName: "Заказ", type: "number", width: 80 },
     // { field: 'needQty', headerName: 'Нужно', type: "number", width: 80 },
@@ -120,8 +119,7 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
     { field: "note", headerName: "Примечание", type: "text", width: 110 },
   ];
 
-  // const [AddMove] = useMutation(ADD_MOVE_ITEM);
-  const [AddMoves] = useMutation(ADD_MOVES_ITEMS);
+  const [AddMove] = useMutation(ADD_MOVE_ITEM);
 
   const { loading, error, data } = useSubscription(SUBSCRIPTION_ORDERS_BY_ID, {
     variables: { item_id: itemId },
@@ -134,21 +132,21 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
 
   useEffect(() => {
     if (data) {
-      console.log("stock item data", data);
-      const preparedData = data.items.map((it, key) => {
-        const dateOut = new Date(it.order.date_out);
-        const sumTo = it.order.movingsToOrder.reduce((sum, current) => sum + current.qty, 0);
-        const sumFrom = it.order.movingsFromOrder.reduce((sum, current) => sum + current.qty, 0);
+      console.log(data);
+      const preparedData = data.mr_items.map((it, key) => {
+        const dateOut = new Date(it.mr_order.date_out);
+        const sumTo = it.mr_order.mr_to.reduce((sum, current) => sum + current.qty, 0);
+        const sumFrom = it.mr_order.mr_from.reduce((sum, current) => sum + current.qty, 0);
         const needQty = it.qty - (sumTo - sumFrom);
         const collectedQty = sumTo - sumFrom;
 
         let obj = {
           id: key, // it.id,
-          orderId: it.order.id,
-          customer: it.order.customer.name,
-          town: it.order.city,
-          townAndCustomer: it.order.city + " " + it.order.customer.name,
-          dateOut: dateOut,
+          orderId: it.mr_order.id,
+          customer: it.mr_order.mr_customer.name,
+          town: it.mr_order.town,
+          townAndCustomer: it.mr_order.town + " " + it.mr_order.mr_customer.name,
+          dateOut: dateOut.toDateString(),
           collectedQty: collectedQty,
           orderQty: it.qty,
           needQty: needQty,
@@ -159,7 +157,7 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
         };
         return obj;
       });
-      console.log("preparedData", preparedData);
+      console.log(preparedData);
       setRows(preparedData);
     }
   }, [data]);
@@ -168,52 +166,50 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
   if (error) return `Error! ${error.message}`;
 
   const handleOK = () => {
-    console.log("handle OK", rows);
-    const addData = [];
+    console.log(rows);
+    console.log("handle OK");
     rows.map((it) => {
-      let obj = {};
       if (it.fromProd !== 0) {
-        obj = {
+        console.log(it);
+        let addData = {
           qty: it.fromProd,
           to_order: it.orderId,
           from_order: 2, // у доработки ID = 2 - типа постоянное значение заказа !!!!!!!!
-          item_id: itemId,
+          item: itemId,
         };
-        addData.push(obj);
+        AddMove({ variables: { addData: addData } });
       }
       if (it.fromStock !== 0) {
-        obj = {
+        console.log(it);
+        let addData = {
           qty: it.fromStock,
           to_order: it.orderId,
           from_order: 3, // у склада ID = 3 - типа постоянное значение заказа !!!!!!!!
-          item_id: itemId,
+          item: itemId,
         };
-        addData.push(obj);
+        AddMove({ variables: { addData: addData } });
       }
       return 1; //хз почему return
     });
-    let obj = {};
     if (stockToProd > 0) {
-      obj = {
+      let addData = {
         qty: stockToProd,
         to_order: 2, // у доработки ID = 2 - типа постоянное значение заказа !!!!!!!!
         from_order: 3, // у склада ID = 3 - типа постоянное значение заказа !!!!!!!!
-        item_id: itemId,
+        item: itemId,
       };
-      addData.push(obj);
+      console.log(addData);
+      AddMove({ variables: { addData: addData } });
     }
     if (prodToStock > 0) {
-      obj = {
+      let addData = {
         qty: prodToStock,
         to_order: 3, // у доработки ID = 2 - типа постоянное значение заказа !!!!!!!!
         from_order: 2, // у склада ID = 3 - типа постоянное значение заказа !!!!!!!!
-        item_id: itemId,
+        item: itemId,
       };
-      addData.push(obj);
-    }
-    console.log("move items", addData);
-    if (addData.length > 0) {
-      AddMoves({ variables: { addData: addData } });
+      console.log(addData);
+      AddMove({ variables: { addData: addData } });
     }
     setProdToStock(0);
     setStockToProd(0);
@@ -354,4 +350,4 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
   );
 };
 
-export default DialogStock;
+export default DialogStockOld;

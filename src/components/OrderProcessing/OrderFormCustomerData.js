@@ -25,12 +25,12 @@ const useStyles = makeStyles((theme) => ({
 export default function SelectCustomer({ orderData, onChange, options }) {
   const classes = useStyles();
 
-  const handleChange = (event) => {
-    // console.log(event.target)
-    const idValue = Number.parseInt(event.target.value);
-    const idType = event.target.id;
-    onChange(idType, idValue);
-  };
+  // const handleChange = (event) => {
+  //   // console.log(event.target)
+  //   const idValue = Number.parseInt(event.target.value);
+  //   const idType = event.target.id;
+  //   onChange(idType, idValue);
+  // };
 
   const listFirms = options.firms.map((item) => {
     return (
@@ -55,7 +55,7 @@ export default function SelectCustomer({ orderData, onChange, options }) {
   });
 
   // const header = orderData.customer_id ? orderData.customer.name : "Выбери заказчика";
-
+  // console.log("orderData in Customer block", orderData);
   return (
     <FormSection title={"Данные заказчика"} icon={""}>
       <Grid container spacing={2} alignItems="flex-end">

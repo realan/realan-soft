@@ -16,12 +16,14 @@ import { makeStyles } from "@material-ui/core/styles";
 import "react-datepicker/dist/react-datepicker.css";
 import { QuantityChanger } from "components/QuantityChanger";
 import Box from "@material-ui/core/Box";
-import { ADD_MOVE_ITEM } from "../../GraphQL/Mutations";
+// import { ADD_MOVE_ITEM } from "../../GraphQL/Mutations";
+import { ADD_MOVES_ITEMS } from "../../GraphQL/Mutations";
 import DateButton from "components/DateButton/DateButton";
 import AddItemInOrder from "components/AddItemInOrder/AddItemInOrder";
 import ButtonDeleteOrder from "components/ButtonDeleteOrder/ButtonDeleteOrder";
 import UpdateItemInOrder from "components/UpdateItemInOrder/UpdateItemInOrder";
 import DeleteItemFromOrder from "components/DeleteItemFromOrder/DeleteItemFromOrder";
+// import DialogAddOrderData from "components/DialogAddOrderData/DialogAddOrderData";
 
 // const useStyles = makeStyles(styles);
 
@@ -130,7 +132,7 @@ const DialogOrders = ({ open, handleClose, orderData }) => {
   const [orderDate, setOrderDate] = useState();
 
   const [UpdateDateMutation] = useMutation(UPDATE_ORDER_DATE);
-  const [AddMoveItemMutation] = useMutation(ADD_MOVE_ITEM);
+  const [AddMovesItemsMutation] = useMutation(ADD_MOVES_ITEMS);
 
   function fromProdField(params) {
     const needQty = params.row.qtyOrder - params.row.qtyCollect - params.row.fromStock;
@@ -245,28 +247,34 @@ const DialogOrders = ({ open, handleClose, orderData }) => {
 
   const makeMoves = (currentRows) => {
     // TODO: replace map to forEach
+    const addData = [];
     currentRows.map((it) => {
-      if (it.qtyFromProd !== 0) {
-        let addData = {
+      let obj = {};
+      if (it.fromProd !== 0) {
+        obj = {
           qty: it.fromProd,
           to_order: it.to_order,
           from_order: 2, // у доработки ID = 2 - типа постоянное значение заказа !!!!!!!!
           item_id: it.idItem,
         };
-        AddMoveItemMutation({ variables: { addData: addData } });
+        addData.push(obj);
       }
-      if (it.qtyFromStock !== 0) {
-        let addData = {
+      if (it.fromStock !== 0) {
+        obj = {
           qty: it.fromStock,
           to_order: it.to_order,
           from_order: 3, // у склада ID = 3 - типа постоянное значение заказа !!!!!!!!
           item_id: it.idItem,
         };
-        AddMoveItemMutation({ variables: { addData: addData } });
+        addData.push(obj);
       }
+
       return true;
     });
-
+    console.log("move items", addData);
+    if (addData.length > 0) {
+      AddMovesItemsMutation({ variables: { addData: addData } });
+    }
     handleClose();
   };
 

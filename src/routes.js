@@ -1,14 +1,14 @@
 import Dashboard from "views/Dashboard";
 import Orders from "views/Orders";
 import Stock from "views/Stock";
-import OrdersOld from "views/OrdersOld";
-import StockOld from "views/StockOld";
+// import OrdersOld from "views/OrdersOld";
+// import StockOld from "views/StockOld";
 import OrdersAll from "views/OrdersAll";
-import Payments from "views/Payments";
+// import Payments from "views/Payments";
 import Invoice from "views/Invoice";
 import Customers from "views/Customers";
 
-import Todo from "views/Todo";
+import ImportData from "views/ImportData";
 
 // import LockScreenPage from "views/Pages/LockScreenPage.js";
 // import LoginPage from "views/Pages/LoginPage.js";
@@ -40,7 +40,7 @@ var dashRoutes = [
   },
   {
     path: "/orders",
-    name: "Заказы склад",
+    name: "Склад заказы",
     icon: ShoppingCartIcon,
     component: Orders,
     layout: "/admin",
@@ -62,14 +62,14 @@ var dashRoutes = [
     layout: "/admin",
     roles: ["admin", "stock"],
   },
-  {
-    path: "/payments",
-    name: "Платежи",
-    icon: PaymentIcon,
-    component: Payments,
-    layout: "/admin",
-    roles: ["admin"],
-  },
+  // {
+  //   path: "/payments",
+  //   name: "Платежи",
+  //   icon: PaymentIcon,
+  //   component: Payments,
+  //   layout: "/admin",
+  //   roles: ["admin"],
+  // },
   {
     path: "/invoice",
     name: "ТОРГ-12",
@@ -87,31 +87,31 @@ var dashRoutes = [
     roles: ["admin", "stock"],
   },
   {
-    path: "/todo",
+    path: "/import",
     name: "Импорт данных",
     icon: FormatListNumberedIcon,
-    component: Todo,
+    component: ImportData,
     layout: "/admin",
     roles: ["admin", "stock"],
   },
-  {
-    path: "/ordersold",
-    name: "Заказы Мр",
-    icon: ShoppingCartIcon,
-    component: OrdersOld,
-    layout: "/admin",
-    roles: ["admin", "stock"],
-  },
+  // {
+  //   path: "/ordersold",
+  //   name: "Заказы Мр",
+  //   icon: ShoppingCartIcon,
+  //   component: OrdersOld,
+  //   layout: "/admin",
+  //   roles: ["admin", "stock"],
+  // },
 
-  {
-    path: "/stockold",
-    name: "Склад Мр",
-    icon: StoreIcon,
-    // state: "pageCollapse",
-    component: StockOld,
-    layout: "/admin",
-    roles: ["admin", "stock"],
-  },
+  // {
+  //   path: "/stockold",
+  //   name: "Склад Мр",
+  //   icon: StoreIcon,
+  //   // state: "pageCollapse",
+  //   component: StockOld,
+  //   layout: "/admin",
+  //   roles: ["admin", "stock"],
+  // },
   // {
   // collapse: true,
   // name: "Настройки",

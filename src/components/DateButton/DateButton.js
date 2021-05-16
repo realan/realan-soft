@@ -26,6 +26,8 @@ const DateButton = ({ value = "", placeholder = "", onChange }) => {
         // name={item.accessor}
         showWeekNumbers
         showMonthDropdown
+        showYearDropdown
+        scrollableYearDropdown
         placeholderText={placeholder}
         locale={ru}
         // value={orderDate}

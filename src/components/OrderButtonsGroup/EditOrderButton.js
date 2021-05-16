@@ -8,7 +8,7 @@ export default function EditOrderButton({ params }) {
   const [open, setOpen] = useState(false);
 
   const handleClose = () => setOpen(false);
-
+  // console.log(params);
   return (
     <>
       <Fab

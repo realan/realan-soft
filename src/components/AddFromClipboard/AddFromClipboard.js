@@ -7,7 +7,7 @@ import { DataGrid } from "@material-ui/data-grid";
 
 const AddFromClipboard = ({ type, value, onSubmit }) => {
   const [state, setState] = useState([]);
-
+  // console.log(value);
   const columns = value.map((item) => {
     let head = {};
     for (let key in item) {
@@ -60,7 +60,7 @@ const AddFromClipboard = ({ type, value, onSubmit }) => {
       setState(result);
     });
   };
-  console.log(result);
+  // console.log(result);
 
   const insertInDb = () => {
     state.forEach((item) => {

@@ -85,6 +85,10 @@ export default function Dashboard(props) {
     };
   });
 
+  // Authentitication
+  if (error) return <div>Oops... {error.message}</div>;
+  if (isLoading) return <div>Loading </div>;
+
   // functions for changeing the states from components
   const handleImageClick = (image) => {
     setImage(image);

@@ -6,7 +6,7 @@ import { DataGrid } from "@material-ui/data-grid";
 import Pagination from "@material-ui/lab/Pagination";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-import DialogStock from "components/DialogStock/DialogStock.js";
+import DialogStockOld from "components/DialogStockOld/DialogStockOld.js";
 import StockTableChoise from "components/StockTableChoise/StockTableChoise";
 import VoiceInput from "components/VoiceInput/VoiceInput";
 import { Box } from "@material-ui/core";
@@ -186,7 +186,7 @@ const StockOld = () => {
       </div>
       <FileExportToXls data={rows} name={"склад"} />
       {itemForDialog.itemId && (
-        <DialogStock
+        <DialogStockOld
           open={itemForDialog.isOpen}
           handleClose={handleClose}
           item_id={itemForDialog.itemId}

@@ -9,7 +9,9 @@ import Button from "@material-ui/core/Button";
 const EditItemInOrder = ({ value, onChange, onDelete, onCancel, onSubmit, open }) => {
   //
   const handleChange = (type) => (event) => {
-    onChange(type, event.target.value);
+    let val;
+    type === "qty" ? (val = Number(event.target.value)) : (val = event.target.value);
+    onChange(type, val);
   };
 
   return (
