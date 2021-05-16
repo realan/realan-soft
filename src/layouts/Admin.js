@@ -43,19 +43,6 @@ export default function Dashboard(props) {
   //Auth0
   const { user, isLoading, error } = useAuth0();
 
-  useEffect(() => {
-    console.log("user data Anmin component", user);
-    let roles = [];
-    let availableRoutes = [];
-    if (user) {
-      roles = user["https://realan-suvenir.ru/roles"];
-      availableRoutes = routesInitial.filter((path) => {
-        return path.roles.some((serverRole) => roles.includes(serverRole));
-      });
-      setRoutes(availableRoutes);
-    }
-  }, [user]);
-
   const mainPanelClasses =
     classes.mainPanel +
     " " +
@@ -68,6 +55,7 @@ export default function Dashboard(props) {
   // effect instead of componentDidMount, componentDidUpdate and componentWillUnmount
   React.useEffect(() => {
     if (navigator.platform.indexOf("Win") > -1) {
+      console.log(mainPanel);
       ps = new PerfectScrollbar(mainPanel.current, {
         suppressScrollX: true,
         suppressScrollY: false,
@@ -85,9 +73,22 @@ export default function Dashboard(props) {
     };
   });
 
-  // Authentitication
-  if (error) return <div>Oops... {error.message}</div>;
-  if (isLoading) return <div>Loading </div>;
+  // useEffect(() => {
+  //   console.log("user data Anmin component", user);
+  //   let roles = [];
+  //   let availableRoutes = [];
+  //   if (user) {
+  //     roles = user["https://realan-suvenir.ru/roles"];
+  //     availableRoutes = routesInitial.filter((path) => {
+  //       return path.roles.some((serverRole) => roles.includes(serverRole));
+  //     });
+  //     setRoutes(availableRoutes);
+  //   }
+  // }, [user]);
+
+  // // Authentitication
+  // if (error) return <div>Oops... {error.message}</div>;
+  // if (isLoading) return <div>Loading </div>;
 
   // functions for changeing the states from components
   const handleImageClick = (image) => {

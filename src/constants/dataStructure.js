@@ -107,6 +107,7 @@ export const dataStructure = {
     { payment_ratio: "number" },
     { consignee_phone: "text" },
     { address: "text" },
+    { waybill_number: "text" },
   ],
   items: [
     { item_id: "number" },
