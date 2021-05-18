@@ -5,9 +5,8 @@ import { useState } from "react";
 import Button from "@material-ui/core/Button";
 import { DataGrid } from "@material-ui/data-grid";
 
-const AddFromClipboard = ({ type, value, onSubmit }) => {
+const AddFromClipboard = ({ value, onSubmit }) => {
   const [state, setState] = useState([]);
-  // console.log(value);
   const columns = value.map((item) => {
     let head = {};
     for (let key in item) {
@@ -20,6 +19,9 @@ const AddFromClipboard = ({ type, value, onSubmit }) => {
   const headsList = value.map((item) => Object.keys(item));
   const headsType = value.map((item) => item[Object.keys(item)]);
 
+  let headsListClipboard = [];
+  let headsTypesClipboard = [];
+
   let result = [];
 
   const parseClipboad = () => {
@@ -27,26 +29,43 @@ const AddFromClipboard = ({ type, value, onSubmit }) => {
       let arr = str.split("\n");
 
       // !!! вставить проверку, значения в массиве из пропса совпадает с заголовками с буфере по порядку
-
+      // console.log(arr);
       arr.forEach(function (line, i) {
         if (line) {
+          if (i === 0) {
+            let rowHead = line.split("\t");
+            rowHead.forEach(function (cell) {
+              let val = cell.trim();
+              let index = headsList.findIndex((item) => item == val);
+              // console.log(index);
+              headsListClipboard.push(val);
+              headsTypesClipboard.push(headsType[index]);
+            });
+          }
           if (i !== 0) {
             let row = [];
             let rowIn = line.split("\t");
             let obj = {};
-
             rowIn.forEach(function (cell, j) {
-              let type = headsType[j];
+              let type = headsTypesClipboard[j];
+              // let type = headsType[j];
               let val = cell.trim();
               if (type === "number") {
-                obj[headsList[j]] = Number(val.replace(",", ".").replace(" ", ""));
+                if (val !== "") {
+                  // obj[headsList[j]] = Number(val.replace(",", ".").replace(" ", ""));
+                  obj[headsListClipboard[j]] = Number(val.replace(",", ".").replace(" ", ""));
+                }
               } else if (type === "boolean") {
                 val === "1" || val === "ИСТИНА" || val === "true" || val === true
                   ? (val = true)
                   : (val = false);
-                obj[headsList[j]] = val;
+                // obj[headsList[j]] = val;
+                obj[headsListClipboard[j]] = val;
               } else {
-                obj[headsList[j]] = val;
+                if (val !== "") {
+                  // obj[headsList[j]] = val;
+                  obj[headsListClipboard[j]] = val;
+                }
               }
               // console.log(obj);
               row.push(obj);
@@ -56,24 +75,26 @@ const AddFromClipboard = ({ type, value, onSubmit }) => {
           }
         }
       });
-      // console.log(result);
+      console.log(result);
       setState(result);
     });
   };
   // console.log(result);
 
   const insertInDb = () => {
-    state.forEach((item) => {
-      // console.log(item);
-      let addData = {};
-      for (let key in item) {
-        if (key !== "id") {
-          addData[key] = item[key];
-        }
-      }
-      console.log(addData);
-      onSubmit({ variables: { addData: addData } });
-    });
+    // let addData = [];
+    // const addData=state.forEach((item) => {
+    //   // console.log(item);
+    //   for (let key in item) {
+    //     let obj = {};
+    //     if (key !== "id") {
+    //       obj[key] = item[key];
+    //     }
+    //     addData.push(obj);
+    //   }
+    // });
+    // console.log(addData);
+    onSubmit({ variables: { addData: state } });
   };
 
   return (

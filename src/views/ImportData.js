@@ -14,6 +14,7 @@ import {
   ADD_ITEM,
   ADD_MOVING,
 } from "../GraphQL/Mutations";
+import { UPSERT_PRICE } from "../GraphQL/importDataMutations";
 
 const ImportData = () => {
   const [type, setType] = useState("category");
@@ -26,88 +27,22 @@ const ImportData = () => {
   const [AddItem] = useMutation(ADD_ITEM);
   const [AddMove] = useMutation(ADD_MOVING);
 
+  const [UpsertPrice] = useMutation(UPSERT_PRICE);
+
   const mutations = {};
   mutations["customers"] = AddCustomer;
   mutations["category"] = AddCategory;
-  mutations["price"] = AddPrice;
+  mutations["price"] = UpsertPrice; //AddPrice;
   mutations["orders"] = AddOrder;
   mutations["items"] = AddItem;
   mutations["move"] = AddMove;
 
-  const columns = {};
-
-  console.log(dataStructure);
-
-  columns["customers"] = [
-    { name: "text" },
-    { town: "text" },
-    { person: "text" },
-    { phone: "text" },
-    { email: "text" },
-    { delivery: "text" },
-    { discount: "number" },
-    { first_order: "text" },
-  ];
-
-  columns["category"] = [{ name: "text" }];
-
-  columns["price"] = [
-    { name: "text" },
-    { weight: "number" },
-    { price_opt: "number" },
-    { art: "text" },
-    { category: "number" }, //ID
-    { price_rozn: "number" },
-  ];
-
-  columns["orders"] = [
-    { customer: "number" }, // id customer
-    { town: "text" },
-    { delivery: "text" },
-    { person: "text" },
-    { phone: "text" },
-    { is_shipped: "boolean" }, // - boolean, default: false
-    { date_in: "text" }, // - timestamp without time zone, nullable, default: now()
-    { date_out: "text" }, // - timestamp with time zone, nullable
-    { email: "text" }, // - text, nullable
-    { discount: "number" }, // - numeric, nullable
-    { is_cancelled: "boolean" }, // - boolean, nullable, default: false
-    { note: "text" },
-  ];
-
-  columns["items"] = [
-    { item: "number" }, // id price
-    { qty: "number" },
-    { order: "number" }, //id order
-    { note: "text" },
-    { is_cancelled: "boolean" }, // nullable
-  ];
-
-  columns["move"] = [
-    { item: "number" }, //r
-    { qty: "number" },
-    { from_order: "number" }, // - integer
-    { to_order: "number" }, // - integer
-    { date: "text" }, // - timestamp with time zone, default: now()
-  ];
-
-  const handleClick = (type) => {
-    setType(type);
-    // console.log(columns[type]);
-  };
-
-  // const importButton = ({ activeType, type, onClick }) => {
-  //   return (
-  //     <Button
-  //       color={activeType === { type } ? "secondary" : "default"}
-  //       onClick={() => onClick({ type })}
-  //     >
-  //       {type}
-  //     </Button>
-  //   );
+  // const handleClick = (type) => {
+  //   setType(type);
+  //   // console.log(columns[type]);
   // };
 
-  const listButtons = ["customers", "category", "price", "orders", "items", "move"];
+  const listButtons = Object.keys(dataStructure);
 
   return (
     <div>
@@ -117,10 +52,15 @@ const ImportData = () => {
           key={item.id}
           activeType={type}
           buttonType={item}
-          onClick={() => handleClick(item)}
+          onClick={() => setType(item)}
         />
       ))}
-      <AddFromClipboard type={type} value={columns[type]} onSubmit={mutations[type]} />
+      <AddFromClipboard
+        // type={type}
+        // value={columns[type]}
+        value={dataStructure[type]}
+        onSubmit={mutations[type]}
+      />
     </div>
   );
 };
