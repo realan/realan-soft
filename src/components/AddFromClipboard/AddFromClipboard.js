@@ -82,19 +82,17 @@ const AddFromClipboard = ({ value, onSubmit }) => {
   // console.log(result);
 
   const insertInDb = () => {
-    // let addData = [];
-    // const addData=state.forEach((item) => {
-    //   // console.log(item);
-    //   for (let key in item) {
-    //     let obj = {};
-    //     if (key !== "id") {
-    //       obj[key] = item[key];
-    //     }
-    //     addData.push(obj);
-    //   }
-    // });
-    // console.log(addData);
-    onSubmit({ variables: { addData: state } });
+    const addData = state.map((item) => {
+      console.log(item);
+      const obj = {};
+      headsList.forEach((head) => {
+        obj[head] = item[head];
+      });
+
+      return obj;
+    });
+    console.log(addData);
+    onSubmit({ variables: { addData: addData } });
   };
 
   return (
