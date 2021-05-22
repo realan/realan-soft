@@ -6,30 +6,31 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { TextField } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import { GET_PRICE } from "../../GraphQL/Queries";
-import { ADD_ITEM } from "../../GraphQL/Mutations";
-import { useLazyQuery, useMutation } from "@apollo/react-hooks";
+// import { ADD_ITEM } from "../../GraphQL/Mutations";
+import { useLazyQuery } from "@apollo/react-hooks";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
-const AddItemInOrder = ({ orderId }) => {
+const AddItemInOrder = ({ onSubmit }) => {
   const initialState = {
-    count: 0,
+    qty: 0,
     note: "",
     name: "",
     art: "",
-    priceOpt: 0,
-    priceRozn: 0,
+    price_dealer: 0,
+    price_opt: 0,
+    price_retail: 0,
   };
 
   const [isOpen, setIsOpen] = useState(false);
   const [state, setState] = useState(initialState);
   const [options, setOptions] = useState([]);
-  const [AddItems] = useMutation(ADD_ITEM);
+  // const [AddItems] = useMutation(ADD_ITEM);
 
   const [getPrice, { loading, error, data }] = useLazyQuery(GET_PRICE);
 
   useEffect(() => {
     if (!loading && data) {
-      setOptions(data.mr_price);
+      setOptions(data.price);
     }
   }, [loading, data]);
 
@@ -37,18 +38,24 @@ const AddItemInOrder = ({ orderId }) => {
   if (error) return `Error! ${error.message}`;
 
   const handleChange = (type) => (event) => {
-    setState({ ...state, [type]: event.target.value });
+    let val = event.target.value;
+    type === "qty" ? (val = Number(val)) : val;
+    setState({ ...state, [type]: val });
   };
 
   const getInput = (event, val) => {
     if (val !== null) {
       let obj = {
         ...state,
+        id: 1000,
         name: val.name,
         art: val.art,
-        itemId: val.id,
-        priceOpt: val.price_opt,
-        priceRozn: val.price_rozn,
+        qty: 0,
+        item_id: val.id,
+        price_dealer: val.price_dealer,
+        price_opt: val.price_opt,
+        price_retail: val.price_retail,
+        weight: val.weight,
       };
       setState(obj);
     }
@@ -65,15 +72,17 @@ const AddItemInOrder = ({ orderId }) => {
 
   const handleOk = () => {
     // console.log(state)
-    if (state.counter !== 0) {
-      const addData = {
-        order: orderId,
-        item: state.itemId,
-        qty: state.count,
-        note: state.note,
-      };
+    if (state.qty !== 0) {
+      console.log(state);
+      onSubmit(state);
+      // const addData = {
+      //   // order: orderId,
+      //   item_id: state.item_id,
+      //   qty: Number(state.qty),
+      //   note: state.note,
+      // };
       // console.log(addData);
-      AddItems({ variables: { addData: addData } });
+      // AddItems({ variables: { addData: addData } });
     }
     setState(initialState);
     setIsOpen(false);
@@ -108,8 +117,8 @@ const AddItemInOrder = ({ orderId }) => {
             label="Кол-во"
             type="number"
             fullWidth
-            value={state.count}
-            onChange={handleChange("count")}
+            value={state.qty}
+            onChange={handleChange("qty")}
           />
           <TextField
             margin="dense"
@@ -124,8 +133,8 @@ const AddItemInOrder = ({ orderId }) => {
             label="Цена опт"
             type="number"
             fullWidth
-            value={state.priceOpt}
-            onChange={handleChange("priceOpt")}
+            value={state.price_opt}
+            onChange={handleChange("price_opt")}
           />
         </DialogContent>
         <DialogActions>

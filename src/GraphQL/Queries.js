@@ -4,23 +4,11 @@ import gql from "graphql-tag";
 
 export const GET_PRICE = gql`
   query GetPrice {
-    mr_price {
-      id
-      name
-      art
-      price_opt
-      price_rozn
-      weight
-    }
-  }
-`;
-
-export const GET_PRICE_NEW = gql`
-  query GetPrice {
     price {
       id
-      name
       art
+      category_id
+      name
       price_dealer
       price_opt
       price_retail
@@ -28,6 +16,20 @@ export const GET_PRICE_NEW = gql`
     }
   }
 `;
+
+// export const GET_PRICE_NEW = gql`
+//   query GetPrice {
+//     price {
+//       id
+//       name
+//       art
+//       price_dealer
+//       price_opt
+//       price_retail
+//       weight
+//     }
+//   }
+// `;
 
 /// old querries
 

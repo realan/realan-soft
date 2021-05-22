@@ -3,12 +3,12 @@ import { useState, useEffect } from "react";
 // import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import Button from "@material-ui/core/Button";
-import { GET_PRICE_NEW } from "../../GraphQL/Queries";
+import { GET_PRICE } from "../../GraphQL/Queries";
 
 const GetOrderItems = ({ onChange }) => {
   const [price, setPrice] = useState([]);
 
-  const { loading, error, data } = useQuery(GET_PRICE_NEW);
+  const { loading, error, data } = useQuery(GET_PRICE);
 
   useEffect(() => {
     if (!loading && data) {
@@ -100,12 +100,9 @@ const GetOrderItems = ({ onChange }) => {
   };
 
   return (
-    <div>
-      Скопируй в буфер заказ - строку заголовка и позиции. Потом нажми кнопку
-      <Button variant="outlined" color="primary" onClick={parseClipboadToItems}>
-        Вставить позиции
-      </Button>
-    </div>
+    <Button variant="outlined" color="primary" onClick={parseClipboadToItems}>
+      Заменить значениями из буфера
+    </Button>
   );
 };
 

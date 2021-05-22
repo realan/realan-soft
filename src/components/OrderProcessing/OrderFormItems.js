@@ -7,6 +7,7 @@ import EditItemInOrder from "components/EditItemInOrder/EditItemInOrder";
 // import Typography from "@material-ui/core/Typography";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import FormSection from "components/FormSection/FormSection";
+import AddItemInOrder from "components/AddItemInOrder/AddItemInOrder";
 
 export default function OrderFormItems({ orderData, onChange }) {
   const [state, setState] = useState({
@@ -71,6 +72,13 @@ export default function OrderFormItems({ orderData, onChange }) {
     setEditRow({ ...editRow, [type]: value });
   };
 
+  const handleAddItem = (value) => {
+    const itemsArr = orderData.items;
+    itemsArr.push(value);
+    console.log(itemsArr);
+    onChange("items", itemsArr);
+  };
+
   const handleSubmitChange = () => {
     const itemsArr = orderData.items.map((it) => (it.id === editRow.id ? editRow : it));
     onChange("items", itemsArr);
@@ -85,6 +93,8 @@ export default function OrderFormItems({ orderData, onChange }) {
           {state.sum_opt} руб., сумма розн {state.sum_retail} руб.
         </Grid>
         <GetOrderItems onChange={(items) => onChange("items", items)} />
+        <AddItemInOrder onSubmit={handleAddItem} />
+
         <Grid item xs={12}>
           <div style={{ height: tableHeight, width: "100%" }}>
             <DataGrid
