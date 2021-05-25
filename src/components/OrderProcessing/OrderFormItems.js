@@ -31,11 +31,17 @@ export default function OrderFormItems({ orderData, onChange }) {
   useEffect(() => {
     if (orderData.items) {
       let obj = {
-        weight: orderData.items.reduce((sum, it) => sum + it.qty * it.weight, 0),
-        sum_opt: orderData.items.reduce((sum, it) => sum + it.qty * it.price_opt, 0),
-        sum_dealer: orderData.items.reduce((sum, it) => sum + it.qty * it.price_dealer, 0),
-        sum_retail: orderData.items.reduce((sum, it) => sum + it.qty * it.price_retail, 0),
+        weight: +orderData.items.reduce((sum, it) => sum + it.qty * it.weight, 0).toFixed(3),
+        sum_opt: +orderData.items.reduce((sum, it) => sum + it.qty * it.price_opt, 0).toFixed(3),
+        sum_dealer: +orderData.items
+          .reduce((sum, it) => sum + it.qty * it.price_dealer, 0)
+          .toFixed(3),
+        sum_retail: +orderData.items
+          .reduce((sum, it) => sum + it.qty * it.price_retail, 0)
+          .toFixed(3),
       };
+      // console.log(orderData.items);
+      // console.log("orderSums", obj);
       setState(obj);
       setTableHeight(200 + 32 * orderData.items.length);
       onChange("orderParams", obj);
@@ -73,7 +79,7 @@ export default function OrderFormItems({ orderData, onChange }) {
   };
 
   const handleAddItem = (value) => {
-    const itemsArr = orderData.items;
+    const itemsArr = [...orderData.items]; //.map((it) => it);
     itemsArr.push(value);
     console.log(itemsArr);
     onChange("items", itemsArr);
@@ -81,6 +87,7 @@ export default function OrderFormItems({ orderData, onChange }) {
 
   const handleSubmitChange = () => {
     const itemsArr = orderData.items.map((it) => (it.id === editRow.id ? editRow : it));
+    console.log(itemsArr);
     onChange("items", itemsArr);
     setOpenEdit(false);
   };

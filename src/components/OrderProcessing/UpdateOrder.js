@@ -54,7 +54,7 @@ export default function UpdateOrder({ open, onClose, orderId }) {
   }, [data]);
 
   const handleChange = useCallback((type, value) => {
-    // console.log(orderData);
+    console.log(orderData);
     setOrderData((prevState) => ({ ...prevState, [type]: value }));
   }, []);
 

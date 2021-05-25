@@ -12,8 +12,10 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 
 const AddItemInOrder = ({ onSubmit }) => {
   const initialState = {
+    id: undefined,
+    item_id: undefined,
     qty: 0,
-    note: "",
+    note: undefined,
     name: "",
     art: "",
     price_dealer: 0,
