@@ -29,6 +29,7 @@ export const dataStructure = {
     { address_mail: "text" },
     { email: "text" },
     { site: "text" },
+    { phone: "text" },
     { management_name: "text" },
     { management_post: "text" },
     { bank: "text" },

@@ -105,6 +105,7 @@ export const UPSERT_FIRMS = gql`
           address_mail
           email
           site
+          phone
           management_name
           management_post
           bank
