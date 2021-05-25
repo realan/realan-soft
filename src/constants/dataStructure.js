@@ -63,6 +63,7 @@ export const dataStructure = {
     { consignee_data: "text" },
     { delivery_note: "text" },
     { delivery_id: "number" },
+    { delivery_ask: "text" },
   ],
   category: [{ name: "text" }],
   price: [

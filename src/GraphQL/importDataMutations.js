@@ -286,6 +286,7 @@ export const UPSERT_SHOPS = gql`
           consignee_data
           delivery_note
           delivery_id
+          delivery_ask
         ]
       }
     ) {
