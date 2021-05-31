@@ -1,6 +1,6 @@
-export const dataStructure = {
+export const dataStructureTest = {
   customers: [
-    { name: "text" },
+    { name: { type: "text", default: "", show: true, nullable: false, title: "Заказчик" } },
     { discount: "number" },
     { date_start: "text" },
     { type: "text" },

@@ -23,7 +23,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(styles);
 
-const FormTemplate = ({ headerText, buttonText, onSubmit, fields }) => {
+const FormTemplate = ({ headerIcon, headerText, buttonText, onSubmit, fields }) => {
   const [open, setOpen] = useState(false);
   const [formState, setFormState] = useState({});
   const classes = useStyles();
@@ -106,20 +106,6 @@ const FormTemplate = ({ headerText, buttonText, onSubmit, fields }) => {
           );
           break;
         case "numeric":
-          fieldItem = (
-            <TextField
-              key={index}
-              name={item.accessor}
-              margin="dense"
-              label={item.Header}
-              type="number"
-              fullWidth
-              value={formState[item.accessor]}
-              onChange={handleIntegerChange}
-            />
-          );
-          break;
-        case "number":
           fieldItem = (
             <TextField
               key={index}
@@ -252,7 +238,7 @@ const FormTemplate = ({ headerText, buttonText, onSubmit, fields }) => {
 
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">
-          <CardIcon color="info"></CardIcon>
+          <CardIcon color="info">{headerIcon}</CardIcon>
           {headerText}
         </DialogTitle>
 

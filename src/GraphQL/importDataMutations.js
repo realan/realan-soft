@@ -228,6 +228,7 @@ export const UPSERT_PERSONS = gql`
           shop_id
           surname
           fio
+          note
         ]
       }
     ) {
