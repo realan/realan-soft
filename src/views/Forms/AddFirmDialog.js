@@ -6,9 +6,15 @@ import { useFormDialog, FormPop } from "../../components/useFormDialog";
 import { gql } from "apollo-boost";
 import { useMutation } from "@apollo/react-hooks";
 
-const ADD_CUSTOMER = gql`
-  mutation AddCustomerMutation($addData: customers_insert_input!) {
-    insert_customers(objects: [$addData]) {
+import { PartySuggestions } from "react-dadata";
+import { AddressSuggestions } from "react-dadata";
+import ReactDadataBox from "react-dadata-box";
+import "react-dadata/dist/react-dadata.css";
+import { DADATA_API_KEY } from "constants/dadata";
+
+const ADD_FIRM = gql`
+  mutation AddFirmMutation($addData: firms_insert_input!) {
+    insert_firms(objects: [$addData]) {
       affected_rows
       returning {
         id
@@ -17,24 +23,43 @@ const ADD_CUSTOMER = gql`
   }
 `;
 
-const price_type_id = [
+const our_firm_id = [
   { id: "1", name: "Дилер" },
   { id: "2", name: "Опт" },
   { id: "3", name: "Розница" },
 ];
 
+// const initialValues = {
+//   name: "",
+//   discount: 0,
+//   type: "",
+//   tags: "",
+//   dealer: "Реалан",
+//   saldo: 0,
+//   payment_term: "предоплата",
+//   price_type_id: "2",
+// };
+
 const initialValues = {
   name: "",
-  discount: 0,
-  type: "",
-  tags: "",
-  dealer: "Реалан",
-  saldo: 0,
-  payment_term: "предоплата",
-  price_type_id: "2",
+  address: "",
+  address_mail: "",
+  management_name: "",
+  management_post: "",
+  inn: "",
+  kpp: "",
+  ogrn: "",
+  okpo: "",
+  account: "",
+  bank: "",
+  bic: "",
+  corr_account: "",
+  email: "",
+  site: "",
+  our_firm_id: undefined,
 };
 
-export default function AddCustomerDialog() {
+export default function AddFirmDialog({ customerId }) {
   const validate = (fieldValues = values) => {
     let temp = { ...errors };
     if ("name" in fieldValues) temp.name = fieldValues.name ? "" : "Обязательное поле";
@@ -56,14 +81,18 @@ export default function AddCustomerDialog() {
     true,
     validate
   );
-  const [AddCustomerMutation, { loading, error }] = useMutation(ADD_CUSTOMER);
+  const [AddFirmMutation, { loading, error }] = useMutation(ADD_FIRM);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      const addData = { ...values, ["price_type_id"]: Number(values.price_type_id) };
+      const addData = {
+        ...values,
+        ["our_firm_id"]: Number(values.our_firm_id),
+        ["customer_id"]: customerId,
+      };
       console.log(addData);
-      AddCustomerMutation({ variables: { addData } });
+      AddFirmMutation({ variables: { addData } });
       resetForm();
       // setOpen(false);
     }
@@ -74,7 +103,7 @@ export default function AddCustomerDialog() {
 
   return (
     <>
-      <FormPop formName={"Новый заказчик"} onSubmit={handleSubmit}>
+      <FormPop formName={"Добавить фирму"} onSubmit={handleSubmit}>
         <Grid container>
           <Grid item xs={8}>
             <Controls.Input
@@ -117,11 +146,11 @@ export default function AddCustomerDialog() {
               error={errors.payment_term}
             />
             <Controls.RadioGroup
-              name="price_type_id"
+              name="our_firm_id"
               label="Тип цены"
-              value={values.price_type_id}
+              value={values.our_firm_id}
               onChange={handleInputChange}
-              items={price_type_id}
+              items={our_firm_id}
             />
             <div>
               <Controls.Button text="Сбросить" color="default" onClick={resetForm} />

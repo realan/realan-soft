@@ -10,39 +10,68 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 // import Button from "@material-ui/core/Button";
 // import Box from "@material-ui/core/Box";
 import { GET_ORDER_DATA } from "./orderConstants";
-import { UPDATE_ORDER } from "./orderConstants";
+import { UPDATE_ORDER, UPSERT_ITEMS } from "./orderConstants";
 import ConfirmSnackbar from "components/ConfirmSnackbar/ConfirmSnackbar";
+
+// const showConfirm = () => {
+//   return <ConfirmSnackbar open={true} message={"Импотророро"} />;
+// };
 
 export default function UpdateOrder({ open, onClose, orderId }) {
   // console.log("render UpdateOrder");
   const [orderData, setOrderData] = useState({});
   const [openConfirm, setOpenConfirm] = useState(false);
 
-  const { loading, error, data } = useQuery(GET_ORDER_DATA, {
-    variables: { order_id: orderId },
-    fetchPolicy: "network-only",
-  });
   const [
     UpdateOrder,
     { loading: loadingUpdate, error: errorUpdate, data: dataUpdate },
-  ] = useMutation(UPDATE_ORDER);
+  ] = useMutation(UPDATE_ORDER); //, { onCompleted: setOpenConfirm(true) });
+
+  const [
+    UpsertItems,
+    { loading: loadingUpsertItems, error: errorUpsertItems, data: dataUpsertItems },
+  ] = useMutation(UPSERT_ITEMS);
+
+  const { loading, error, data: dataOrder } = useQuery(GET_ORDER_DATA, {
+    variables: { order_id: orderId },
+    fetchPolicy: "network-only",
+  });
 
   useEffect(() => {
     console.log("Order Update", dataUpdate);
     if (dataUpdate) {
-      setOpenConfirm(true);
+      console.log("Items", orderData.items);
+      const addData = orderData.items.map((item) => {
+        return {
+          id: item.id < 500 ? undefined : item.id,
+          item_id: item.item_id,
+          qty: item.qty,
+          note: item.note,
+          order_id: orderData.id,
+        };
+      });
+      console.log(addData);
+      UpsertItems({ variables: { addData } });
     }
   }, [dataUpdate]);
 
   useEffect(() => {
-    if (data) {
+    console.log("Items Upsert", dataUpsertItems);
+    if (dataUpsertItems) {
+      setOpenConfirm(true);
+      onClose();
+    }
+  }, [dataUpsertItems]);
+
+  useEffect(() => {
+    if (dataOrder) {
       // console.log("update order data", data);
-      setOrderData(data.orders[0]);
-      const dateOut = new Date(data.orders[0].date_out);
+      setOrderData(dataOrder.orders[0]);
+      const dateOut = new Date(dataOrder.orders[0].date_out);
       handleChange("date_out", dateOut);
-      const pay_till_date = new Date(data.orders[0].pay_till_date);
+      const pay_till_date = new Date(dataOrder.orders[0].pay_till_date);
       handleChange("pay_till_date", pay_till_date);
-      const items = data.orders[0].items.map((it) => {
+      const items = dataOrder.orders[0].items.map((it) => {
         return {
           id: it.id,
           item_id: it.item_id,
@@ -63,9 +92,13 @@ export default function UpdateOrder({ open, onClose, orderId }) {
         sum_retail: 0,
       };
       handleChange("orderParams", orderParams);
-      handleChange("person_id", data.orders[0].person_id); // ??? по идее, этой строчки не нужно.
+      handleChange("person_id", dataOrder.orders[0].person_id); // ??? по идее, этой строчки не нужно.
     }
-  }, [data]);
+  }, [dataOrder]);
+
+  // const showConfirm = () => {
+  //   setOpenConfirm(true);
+  // };
 
   const handleChange = useCallback((type, value) => {
     // console.log(orderData);
@@ -76,6 +109,8 @@ export default function UpdateOrder({ open, onClose, orderId }) {
   if (error) return `Error! ${error.message}`;
   if (loadingUpdate) return <p>Updating order...</p>;
   if (errorUpdate) return `Error! ${errorUpdate.message}`;
+  if (loadingUpsertItems) return <p>Updating items...</p>;
+  if (errorUpsertItems) return `Error! ${errorUpsertItems.message}`;
 
   const handleSubmit = () => {
     console.log(orderData);
@@ -112,18 +147,19 @@ export default function UpdateOrder({ open, onClose, orderId }) {
         weigth: orderData.weigth,
       },
     });
-    onClose();
+    // onClose();
   };
+
   const handleCancel = () => {
     onClose();
   };
 
   return (
     <>
-      {data && (
+      {dataOrder && (
         <Dialog
           open={open}
-          onClose={onClose}
+          //onClose={onClose}
           maxWidth={false}
           aria-labelledby="draggable-dialog-title"
         >

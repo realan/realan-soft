@@ -14,43 +14,6 @@ import OrderInfoButtons from "./OrderButtonsGroup/OrderInfoButtons";
 import { renderProgress } from "@material-ui/x-grid-data-generator";
 // import EditOrderButton from "./OrderButtonsGroup/EditOrderButton";
 
-// function CustomPagination(props) {
-//   const { pagination, api } = props;
-//   const classes = useStyles();
-
-//   return (
-//     <Pagination
-//       className={classes.root}
-//       boundaryCount={50}
-//       size="large"
-//       siblingCount={3}
-//       color="primary"
-//       page={pagination.page}
-//       count={pagination.pageCount}
-//       onChange={(event, value) => api.current.setPage(value)}
-//     />
-//   );
-// }
-
-// CustomPagination.propTypes = {
-//   api: PropTypes.shape({
-//     current: PropTypes.object.isRequired,
-//   }).isRequired,
-//   pagination: PropTypes.shape({
-//     page: PropTypes.number.isRequired,
-//     pageCount: PropTypes.number.isRequired,
-//     pageSize: PropTypes.number.isRequired,
-//     paginationMode: PropTypes.oneOf(["client", "server"]).isRequired,
-//     rowCount: PropTypes.number.isRequired,
-//   }).isRequired,
-// };
-
-// const useStyles = makeStyles({
-//   root: {
-//     display: "flex",
-//   },
-// });
-
 const SUBSCRIPTION_ORDERS_MANAGER = gql`
   subscription {
     orders(where: { id: { _gt: 10 } }) {

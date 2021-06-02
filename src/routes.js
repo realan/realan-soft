@@ -29,7 +29,7 @@ var dashRoutes = [
     roles: ["admin"],
   },
   {
-    path: "/orders",
+    path: "/ordersstock",
     name: "Склад заказы",
     icon: ShoppingCartIcon,
     component: OrdersStock,
@@ -45,7 +45,7 @@ var dashRoutes = [
     roles: ["admin", "stock"],
   },
   {
-    path: "/ordersall",
+    path: "/ordersmanager",
     name: "Заказы менеджер",
     icon: AddShoppingCartIcon,
     component: OrdersManager,

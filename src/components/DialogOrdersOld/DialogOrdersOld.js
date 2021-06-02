@@ -18,7 +18,7 @@ import { QuantityChanger } from "components/QuantityChanger";
 import Box from "@material-ui/core/Box";
 import { ADD_MOVE_ITEM } from "../../GraphQL/Mutations";
 import DateButton from "components/DateButton/DateButton";
-import AddItemInOrder from "components/AddItemInOrder/AddItemInOrder";
+import AddItemInOrder from "views/Forms/OrderProcessing/AddItemInOrder";
 import ButtonDeleteOrder from "components/ButtonDeleteOrder/ButtonDeleteOrder";
 import UpdateItemInOrder from "components/UpdateItemInOrder/UpdateItemInOrder";
 import DeleteItemFromOrder from "components/DeleteItemFromOrder/DeleteItemFromOrder";

@@ -2,11 +2,7 @@ import React from "react";
 import { useState } from "react";
 import DateButton from "components/DateButton/DateButton";
 import ModalResorting from "./ModalResorting";
-import AddItemInOrder from "components/AddItemInOrder/AddItemInOrder";
 import AddCustomerForm from "views/Forms/AddCustomerForm";
-// import AddCustomerForm from "../Forms/AddCustomerForm";
-// import OrderDocsButtons from "components/OrderButtonsGroup/OrderDocsButtons";
-// import { DataGrid } from "@material-ui/data-grid";
 
 const Orders = () => {
   const today = new Date();
@@ -32,10 +28,7 @@ const Orders = () => {
         <DateButton value={endDate} onChange={(date) => setEndDate(date)} />
       </div>
       <AddCustomerForm />
-
       <ModalResorting startDate={startDate} endDate={endDate} />
-      <AddItemInOrder orderId={181} />
-      {/* <OrderDocsButtons params={params} /> */}
     </>
   );
 };

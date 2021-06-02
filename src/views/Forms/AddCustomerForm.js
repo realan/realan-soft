@@ -1,35 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+// import { useEffect } from "react";
 import { Grid } from "@material-ui/core";
 import Controls from "../../components/controls/Controls";
 import { useForm, Form } from "../../components/useForm";
-// import * as employeeService from "../../services/employeeService";
+import { gql } from "apollo-boost";
+import { useMutation } from "@apollo/react-hooks";
 
-// const genderItems = [
-//   { id: "male", title: "Male" },
-//   { id: "female", title: "Female" },
-//   { id: "other", title: "Other" },
-// ];
+const ADD_CUSTOMER = gql`
+  mutation AddCustomerMutation($addData: customers_insert_input!) {
+    insert_customers(objects: [$addData]) {
+      affected_rows
+      returning {
+        id
+      }
+    }
+  }
+`;
 
 const price_type_id = [
-  { id: 1, name: "Дилер" },
-  { id: 2, name: "Опт" },
-  { id: 3, name: "Розница" },
+  { id: "1", name: "Дилер" },
+  { id: "2", name: "Опт" },
+  { id: "3", name: "Розница" },
 ];
 
-// const initialFValues = {
-//   id: 0,
-//   fullName: "",
-//   email: "",
-//   mobile: "",
-//   city: "",
-//   gender: "male",
-//   departmentId: "",
-//   hireDate: new Date(),
-//   isPermanent: false,
-// };
-
-const initialFValues = {
-  id: 0,
+const initialValues = {
   name: "",
   discount: 0,
   type: "",
@@ -37,15 +31,15 @@ const initialFValues = {
   dealer: "Реалан",
   saldo: 0,
   payment_term: "предоплата",
-  price_type_id: 2,
+  price_type_id: "2",
 };
 
 export default function AddCustomerForm() {
   const validate = (fieldValues = values) => {
     let temp = { ...errors };
     if ("name" in fieldValues) temp.name = fieldValues.name ? "" : "Обязательное поле";
-    // if ("email" in fieldValues)
-    //   temp.email = /$^|.+@.+..+/.test(fieldValues.email) ? "" : "Email недействителен";
+    if ("discount" in fieldValues)
+      temp.discount = fieldValues.discount < 0.5 ? "" : "Скидка не более 0,5";
     // if ("mobile" in fieldValues)
     //   temp.mobile = fieldValues.mobile.length > 9 ? "" : "Нужно минимум 10 цифр.";
     if ("price_type_id" in fieldValues)
@@ -57,31 +51,26 @@ export default function AddCustomerForm() {
     if (fieldValues == values) return Object.values(temp).every((x) => x == "");
   };
 
-  const { values, setValues, errors, setErrors, handleInputChange, resetForm } = useForm(
-    initialFValues,
+  const { values, errors, setErrors, handleInputChange, resetForm } = useForm(
+    initialValues,
     true,
     validate
   );
 
+  const [AddCustomerMutation, { loading, error }] = useMutation(ADD_CUSTOMER);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      console.log(validate);
-      console.log(values);
-      // employeeService.insertEmployee(values);
+      const addData = { ...values, ["price_type_id"]: Number(values.price_type_id) };
+      console.log(addData);
+      AddCustomerMutation({ variables: { addData } });
       resetForm();
     }
   };
 
-  // { name: "text" },
-  // { discount: "number" },
-  // { date_start: "text" },
-  // { type: "text" },
-  // { tags: "text" },
-  // { dealer: "text" },
-  // { saldo: "number" },
-  // { payment_term: "text" },
-  // { price_type_id: "number" },
+  if (loading) return "Loading...";
+  if (error) return `Error! ${error.message}`;
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -95,8 +84,17 @@ export default function AddCustomerForm() {
             error={errors.name}
           />
           <Controls.Input
+            name="type"
+            label="Тип заказчика"
+            value={values.type}
+            onChange={handleInputChange}
+            error={errors.type}
+          />
+
+          <Controls.Input
             label="Скидка"
             name="discount"
+            type="number"
             value={values.discount}
             onChange={handleInputChange}
             error={errors.discount}
@@ -104,18 +102,19 @@ export default function AddCustomerForm() {
           <Controls.Input
             label="Начальное сальдо"
             name="saldo"
+            type="number"
             value={values.saldo}
             onChange={handleInputChange}
             error={errors.saldo}
           />
+
           <Controls.Input
-            label="Тип"
-            name="city"
-            value={values.city}
+            name="payment_term"
+            label="Условия оплаты"
+            value={values.payment_term}
             onChange={handleInputChange}
+            error={errors.payment_term}
           />
-        </Grid>
-        <Grid item xs={6}>
           <Controls.RadioGroup
             name="price_type_id"
             label="Тип цены"
@@ -123,31 +122,11 @@ export default function AddCustomerForm() {
             onChange={handleInputChange}
             items={price_type_id}
           />
-          {/* <Controls.Select
-            name="departmentId"
-            label="Department"
-            value={values.departmentId}
-            onChange={handleInputChange}
-            options={employeeService.getDepartmentCollection()}
-            error={errors.departmentId}
-          />
-          <Controls.DatePicker
-            name="hireDate"
-            label="Hire Date"
-            value={values.hireDate}
-            onChange={handleInputChange}
-          /> 
-          <Controls.Checkbox
-            name="isPermanent"
-            label="Permanent Employee"
-            value={values.isPermanent}
-            onChange={handleInputChange}
-          /> */}
-
           <div>
-            <Controls.Button type="submit" text="Submit" />
-            <Controls.Button text="Reset" color="default" onClick={resetForm} />
+            <Controls.Button text="Сбросить" color="default" onClick={resetForm} />
+            <Controls.Button type="submit" text="OK" />
           </div>
+          <pre>{JSON.stringify(values, null, 4)}</pre>
         </Grid>
       </Grid>
     </Form>

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 // import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import Button from "@material-ui/core/Button";
-import { GET_PRICE } from "../../GraphQL/Queries";
+import { GET_PRICE } from "../../../GraphQL/Queries";
 
 const GetOrderItems = ({ onChange }) => {
   const [price, setPrice] = useState([]);
@@ -80,10 +80,10 @@ const GetOrderItems = ({ onChange }) => {
       });
 
       console.log(result);
-      let itemsOrder = result.map((item) => {
+      let itemsOrder = result.map((item, index) => {
         const inPrice = price.find((el) => el.id === item.itemId);
         return {
-          id: item.itemId,
+          id: index,
           item_id: item.itemId,
           art: item.art,
           name: item.name,

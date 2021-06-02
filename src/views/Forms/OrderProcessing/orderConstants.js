@@ -96,6 +96,7 @@ export const UPDATE_ORDER = gql`
         weigth: $weigth
       }
     ) {
+      affected_rows
       returning {
         id
       }
@@ -103,7 +104,25 @@ export const UPDATE_ORDER = gql`
   }
 `;
 
-// upsert don't work
+export const UPSERT_ITEMS = gql`
+  mutation UpsertItems($addData: [items_insert_input!]!) {
+    insert_items(
+      objects: $addData
+      on_conflict: {
+        constraint: items_pkey
+        update_columns: [item_id, qty, order_id, note, is_cancelled]
+      }
+    ) {
+      returning {
+        id
+        item_id
+        order_id
+      }
+    }
+  }
+`;
+
+// upsert doesn't work
 export const UPSERT_ORDER = gql`
   mutation UpsertOrder($addData: orders_insert_input!) {
     insert_orders_one(

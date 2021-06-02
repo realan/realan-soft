@@ -8,9 +8,10 @@ import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import FormTemplate from "components/FormTemplate/FormTemplate";
-import { columnsCustomers } from "./orderConstants";
+// import FormTemplate from "components/FormTemplate/FormTemplate";
+// import { columnsCustomers } from "./orderConstants";
 import FormSection from "components/FormSection/FormSection";
+import AddFirmDialog from "../AddFirmDialog";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -25,14 +26,6 @@ const useStyles = makeStyles((theme) => ({
 export default function SelectCustomer({ orderData, onChange, options }) {
   const classes = useStyles();
 
-  // const handleChange = (event) => {
-  //   // console.log(event.target)
-  //   const idValue = Number.parseInt(event.target.value);
-  //   const idType = event.target.id;
-  //   onChange(idType, idValue);
-  // };
-  // console.log("Options", options);
-  // console.log("orderData", orderData);
   const listFirms = options.firms.map((item) => {
     return (
       <option value={item.id} key={item.id}>
@@ -56,7 +49,7 @@ export default function SelectCustomer({ orderData, onChange, options }) {
   });
 
   const handleCustomerChange = (event, val) => {
-    console.log(val);
+    console.log("handleCustomerChange", val);
     let customerId;
     val ? (customerId = Number(val.id)) : (customerId = undefined);
     onChange("customer_id", customerId);
@@ -106,11 +99,12 @@ export default function SelectCustomer({ orderData, onChange, options }) {
         </Grid>
         <Grid item xs>
           {orderData.customer_id && (
-            <FormTemplate
-              fields={columnsCustomers}
-              buttonText={"+фирма"}
-              headerText={"Добавить фирму"}
-            />
+            <AddFirmDialog customerId={orderData.customer_id} />
+            // <FormTemplate
+            //   fields={columnsCustomers}
+            //   buttonText={"+фирма"}
+            //   headerText={"Добавить фирму"}
+            // />
 
             //* <Button color="primary" variant="outlined">
             //  + фирма

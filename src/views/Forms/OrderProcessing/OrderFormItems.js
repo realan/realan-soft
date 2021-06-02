@@ -2,12 +2,12 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { DataGrid } from "@material-ui/data-grid";
 import Grid from "@material-ui/core/Grid";
-import GetOrderItems from "components/GetOrderItems/GetOrderItems";
+import GetOrderItems from "./GetOrderItems";
+import AddItemInOrder from "./AddItemInOrder";
 import EditItemInOrder from "components/EditItemInOrder/EditItemInOrder";
 // import Typography from "@material-ui/core/Typography";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import FormSection from "components/FormSection/FormSection";
-import AddItemInOrder from "components/AddItemInOrder/AddItemInOrder";
 
 export default function OrderFormItems({ orderData, onChange }) {
   const [state, setState] = useState({
@@ -49,7 +49,7 @@ export default function OrderFormItems({ orderData, onChange }) {
   }, [orderData.items]);
 
   const columns = [
-    { field: "id", headerName: "id", width: 30 },
+    { field: "id", headerName: "id", width: 70 },
     { field: "name", headerName: "Наименование", type: "text", width: 200 },
     { field: "art", headerName: "Артикул", type: "text", width: 80 },
     { field: "qty", headerName: "К-во", type: "number", width: 80 },
@@ -100,13 +100,14 @@ export default function OrderFormItems({ orderData, onChange }) {
           {state.sum_opt} руб., сумма розн {state.sum_retail} руб.
         </Grid>
         <GetOrderItems onChange={(items) => onChange("items", items)} />
-        <AddItemInOrder onSubmit={handleAddItem} />
+        <AddItemInOrder onSubmit={handleAddItem} index={orderData.items.length} />
 
         <Grid item xs={12}>
           <div style={{ height: tableHeight, width: "100%" }}>
             <DataGrid
               columns={columns}
               rows={orderData.items}
+              //getRowId={(row) => row.art}
               rowHeight={32}
               onRowClick={onRowClick}
             />

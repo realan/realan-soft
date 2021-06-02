@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core";
+import { Button, makeStyles } from "@material-ui/core";
 
-export function useForm(initialFValues, validateOnChange = false, validate) {
+export function useFormDialog(initialFValues, validateOnChange = false, validate) {
   const [values, setValues] = useState(initialFValues);
   const [errors, setErrors] = useState({});
 
@@ -43,12 +43,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function Form(props) {
+export function FormPop(props) {
+  const [open, setOpen] = useState(false);
   const classes = useStyles();
-  const { children, ...other } = props;
+  const { children, formName, ...other } = props;
   return (
-    <form className={classes.root} autoComplete="off" {...other}>
-      {children}
-    </form>
+    <>
+      <Button variant="outlined" color="primary" onClick={() => setOpen(!open)}>
+        {open ? "Свернуть" : formName}
+      </Button>
+      {open && (
+        <form className={classes.root} autoComplete="off" {...other}>
+          {children}
+        </form>
+      )}
+    </>
   );
 }

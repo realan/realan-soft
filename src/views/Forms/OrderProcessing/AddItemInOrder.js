@@ -5,24 +5,24 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { TextField } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import { GET_PRICE } from "../../GraphQL/Queries";
+import { GET_PRICE } from "../../../GraphQL/Queries";
 // import { ADD_ITEM } from "../../GraphQL/Mutations";
 import { useLazyQuery } from "@apollo/react-hooks";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
-const AddItemInOrder = ({ onSubmit }) => {
-  const initialState = {
-    id: undefined,
-    item_id: undefined,
-    qty: 0,
-    note: undefined,
-    name: "",
-    art: "",
-    price_dealer: 0,
-    price_opt: 0,
-    price_retail: 0,
-  };
+const initialState = {
+  id: undefined,
+  item_id: undefined,
+  qty: 0,
+  note: undefined,
+  name: "",
+  art: "",
+  price_dealer: 0,
+  price_opt: 0,
+  price_retail: 0,
+};
 
+const AddItemInOrder = ({ onSubmit, index }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [state, setState] = useState(initialState);
   const [options, setOptions] = useState([]);
@@ -48,11 +48,10 @@ const AddItemInOrder = ({ onSubmit }) => {
   const getInput = (event, val) => {
     if (val !== null) {
       let obj = {
-        ...state,
-        id: 1000,
+        id: index,
         name: val.name,
         art: val.art,
-        qty: 0,
+        qty: 1,
         item_id: val.id,
         price_dealer: val.price_dealer,
         price_opt: val.price_opt,
@@ -73,18 +72,9 @@ const AddItemInOrder = ({ onSubmit }) => {
   };
 
   const handleOk = () => {
-    // console.log(state)
     if (state.qty !== 0) {
       console.log(state);
       onSubmit(state);
-      // const addData = {
-      //   // order: orderId,
-      //   item_id: state.item_id,
-      //   qty: Number(state.qty),
-      //   note: state.note,
-      // };
-      // console.log(addData);
-      // AddItems({ variables: { addData: addData } });
     }
     setState(initialState);
     setIsOpen(false);
@@ -133,6 +123,7 @@ const AddItemInOrder = ({ onSubmit }) => {
           <TextField
             margin="dense"
             label="Цена опт"
+            disabled={true}
             type="number"
             fullWidth
             value={state.price_opt}

@@ -105,13 +105,14 @@ const CustomersTable = () => {
 
   return (
     <>
-      <div style={{ height: 500, width: "100%" }}>
+      <div style={{ height: 1500, width: "100%" }}>
         <DataGrid
           rows={rows}
           columns={columns}
           rowHeight={30}
           // onRowClick={onRowClick}
-          pagination
+          showFooterToolbar={false}
+          //pagination
           pageSize={40}
           components={{ pagination: CustomPagination }}
         />
