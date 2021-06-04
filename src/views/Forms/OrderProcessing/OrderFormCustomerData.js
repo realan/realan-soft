@@ -7,11 +7,13 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
+// import Button from "@material-ui/core/Button";
 // import FormTemplate from "components/FormTemplate/FormTemplate";
 // import { columnsCustomers } from "./orderConstants";
 import FormSection from "components/FormSection/FormSection";
 import AddFirmDialog from "../AddFirmDialog";
+import AddShopDialog from "../AddShopDialog";
+import AddPersonDialog from "../AddPersonDialog";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -97,19 +99,8 @@ export default function SelectCustomer({ orderData, onChange, options }) {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs>
-          {orderData.customer_id && (
-            <AddFirmDialog customerId={orderData.customer_id} />
-            // <FormTemplate
-            //   fields={columnsCustomers}
-            //   buttonText={"+фирма"}
-            //   headerText={"Добавить фирму"}
-            // />
-
-            //* <Button color="primary" variant="outlined">
-            //  + фирма
-            //</Button> */}
-          )}
+        <Grid item>
+          {orderData.customer_id && <AddFirmDialog customerId={orderData.customer_id} />}
         </Grid>
 
         <Grid item xs={8}>
@@ -130,12 +121,8 @@ export default function SelectCustomer({ orderData, onChange, options }) {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs>
-          {orderData.customer_id && (
-            <Button color="primary" variant="outlined">
-              + магазин
-            </Button>
-          )}
+        <Grid item>
+          {orderData.customer_id && <AddShopDialog customerId={orderData.customer_id} />}
         </Grid>
 
         <Grid item xs={8}>
@@ -155,12 +142,8 @@ export default function SelectCustomer({ orderData, onChange, options }) {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs>
-          {orderData.customer_id && (
-            <Button color="primary" variant="outlined">
-              + контакт
-            </Button>
-          )}
+        <Grid item>
+          {orderData.customer_id && <AddPersonDialog customerId={orderData.customer_id} />}
         </Grid>
         {orderData.person_id && (
           <>

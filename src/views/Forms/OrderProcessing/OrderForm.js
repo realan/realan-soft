@@ -36,7 +36,7 @@ export default function OrderForm({ orderData = newOrderFormState, onChange, onS
 
   useEffect(() => {
     if (!loading && data) {
-      // console.log("customers", data);
+      console.log("customers", data);
       setFormLists((prevState) => ({ ...prevState, customers: data.customers }));
     }
   }, [loading, data]);
