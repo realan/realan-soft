@@ -12,11 +12,12 @@ import OrderDocsButtons from "./OrderButtonsGroup/OrderDocsButtons";
 import EditOrderButton from "./OrderButtonsGroup/EditOrderButton";
 import OrderInfoButtons from "./OrderButtonsGroup/OrderInfoButtons";
 import { renderProgress } from "@material-ui/x-grid-data-generator";
+import DeleteOrderButton from "./OrderButtonsGroup/DeleteOrderButton";
 // import EditOrderButton from "./OrderButtonsGroup/EditOrderButton";
 
 const SUBSCRIPTION_ORDERS_MANAGER = gql`
   subscription {
-    orders(where: { id: { _gt: 10 } }) {
+    orders(where: { is_cancelled: { _eq: false }, is_shipped: { _eq: false }, id: { _gte: 10 } }) {
       id
       date_out
       sum
@@ -75,6 +76,7 @@ const OrdersTable = () => {
       { field: "discount", headerName: "Скидка", type: "number", width: 120 },
       { field: "weigth", headerName: "Масса", width: 120 },
       { field: "qtyRatio", headerName: "Набрано", renderCell: renderProgress, width: 100 },
+      { field: "deleteOrder", headerName: "Удалить", width: 100, renderCell: DeleteButton },
     ],
     []
   );
@@ -110,6 +112,9 @@ const OrdersTable = () => {
   }
   function EditButton(params) {
     return <EditOrderButton params={params} />;
+  }
+  function DeleteButton(params) {
+    return <DeleteOrderButton params={params} />;
   }
 
   return (

@@ -317,13 +317,13 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
 
           <div>
             {" "}
-            Со склада в доработку
+            Со склада на производство
             <InputWithButtons onChange={handleChangeStockToProd} />
           </div>
 
           <div>
             {" "}
-            С доработки на склад
+            С производства на склад
             <InputWithButtons onChange={handleChangeProdToStock} />
           </div>
           <div>

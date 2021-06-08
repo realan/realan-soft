@@ -42,12 +42,26 @@ export default function UpdateOrder({ open, onClose, orderId }) {
     if (dataUpdate) {
       console.log("Items", orderData.items);
       const addData = orderData.items.map((item) => {
+        let price = 0;
+        switch (orderData.price_type_id) {
+          case 1:
+            price = item.price_dealer;
+            break;
+          case 2:
+            price = item.price_opt;
+            break;
+          case 3:
+            price = item.price_retail;
+            break;
+        }
         return {
           id: item.id < 500 ? undefined : item.id,
           item_id: item.item_id,
           qty: item.qty,
           note: item.note,
           order_id: orderData.id,
+          price_in: item.price_dealer,
+          price_out: +(price * (1 - orderData.discount)).toFixed(2),
         };
       });
       console.log(addData);

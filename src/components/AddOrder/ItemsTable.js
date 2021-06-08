@@ -110,4 +110,4 @@ const ItemsTable = ({ value, onChange }) => {
   );
 };
 
-export default GetOrderItems;
+export default ItemsTable;

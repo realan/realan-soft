@@ -32,13 +32,13 @@ export default function OrderFormItems({ orderData, onChange }) {
     if (orderData.items) {
       let obj = {
         weight: +orderData.items.reduce((sum, it) => sum + it.qty * it.weight, 0).toFixed(3),
-        sum_opt: +orderData.items.reduce((sum, it) => sum + it.qty * it.price_opt, 0).toFixed(3),
+        sum_opt: +orderData.items.reduce((sum, it) => sum + it.qty * it.price_opt, 0).toFixed(2),
         sum_dealer: +orderData.items
           .reduce((sum, it) => sum + it.qty * it.price_dealer, 0)
-          .toFixed(3),
+          .toFixed(2),
         sum_retail: +orderData.items
           .reduce((sum, it) => sum + it.qty * it.price_retail, 0)
-          .toFixed(3),
+          .toFixed(2),
       };
       // console.log(orderData.items);
       // console.log("orderSums", obj);

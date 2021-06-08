@@ -6,6 +6,7 @@ import { useFormDialog, FormPop } from "../../components/useFormDialog";
 import { gql } from "apollo-boost";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import { QUERY_OUR_FIRMS } from "./OrderProcessing/orderConstants";
+import ConfirmSnackbar from "components/ConfirmSnackbar/ConfirmSnackbar";
 
 // import { PartySuggestions } from "react-dadata";
 // import { AddressSuggestions } from "react-dadata";
@@ -42,6 +43,11 @@ const ADD_CONTRACT = gql`
 //   { id: "4", name: 'ООО "Мрамолит"' },
 // ];
 
+const initConfirm = {
+  open: false,
+  message: "OK",
+};
+
 const initialValues = {
   name: "",
   address: "",
@@ -67,6 +73,7 @@ const initialValues = {
 export default function AddFirmDialog({ customerId }) {
   const [contract, setContract] = useState({});
   const [ourFirms, setOurFirms] = useState([]);
+  const [confirm, setConfirm] = useState(initConfirm);
   const validate = (fieldValues = values) => {
     let temp = { ...errors };
     if ("name" in fieldValues) temp.name = fieldValues.name ? "" : "Обязательное поле";
@@ -93,9 +100,11 @@ export default function AddFirmDialog({ customerId }) {
     true,
     validate
   );
-  const [AddFirmMutation, { loading, error, data }] = useMutation(ADD_FIRM);
+  const [AddFirmMutation, { loading, error, data }] = useMutation(ADD_FIRM, {
+    onCompleted: () => setConfirm({ open: true, message: "add new firm" }),
+  });
   const [AddContractMutation, { loading: loadingCo, error: errorCo }] = useMutation(ADD_CONTRACT, {
-    onCompleted: console.log("done"),
+    onCompleted: () => setConfirm({ open: true, message: "add new contract" }),
   });
   const { loading: loadingOurFirms, error: errorOurFirms, data: dataOurFirms } = useQuery(
     QUERY_OUR_FIRMS
@@ -104,13 +113,16 @@ export default function AddFirmDialog({ customerId }) {
   useEffect(() => {
     if (data) {
       console.log(data.insert_firms.returning[0]);
-      const addData = {
-        ...contract,
-        ["firm_id"]: data.insert_firms.returning[0].id,
-      };
-      AddContractMutation({ variables: { addData } });
+
+      if (contract.our_firm_id) {
+        const addData = {
+          ...contract,
+          ["firm_id"]: data.insert_firms.returning[0].id,
+        };
+        AddContractMutation({ variables: { addData } });
+      }
     }
-  }, [data]);
+  }, [data, contract.our_firm_id]);
 
   useEffect(() => {
     if (dataOurFirms) {
@@ -147,6 +159,10 @@ export default function AddFirmDialog({ customerId }) {
     }
   };
 
+  const handleComplete = (message) => {
+    return <ConfirmSnackbar open={true} message={message} />;
+  };
+
   if (loading) return "Loading...";
   if (error) return `Error! ${error.message}`;
   if (loadingCo) return "Loading...";
@@ -156,6 +172,13 @@ export default function AddFirmDialog({ customerId }) {
 
   return (
     <>
+      {confirm.open && (
+        <ConfirmSnackbar
+          open={confirm.open}
+          message={confirm.message}
+          onClose={() => setConfirm(initConfirm)}
+        />
+      )}
       <FormPop formName={"Добавить фирму"} onSubmit={handleSubmit}>
         <Grid container>
           <Grid item xs={12}>

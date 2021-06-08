@@ -9,7 +9,7 @@ import { Box } from "@material-ui/core";
 
 const useStyles = makeStyles({
   input: {
-    width: 65,
+    width: 70,
   },
 });
 
@@ -41,7 +41,7 @@ const QuantityChanger = ({
           variant="outlined"
           type="number"
           value={value}
-          onChange={({ target }) => onChange(target.value)}
+          onChange={({ target }) => onChange(Number(target.value))}
           className={classes.input}
         />
       </Box>

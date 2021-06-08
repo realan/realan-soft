@@ -13,10 +13,23 @@ export const dataStructure = {
   documents: [
     { date: "text" },
     { sum: "number" },
+    { sum_net: "number" },
+    { order_id: "number" },
+    { customer_id: "number" },
+    { firm_id: "number" },
+    { shop_id: "number" },
     { our_firm_id: "number" },
     { type_doc_id: "number" },
     { number: "number" },
     { year: "number" },
+  ],
+  contracts: [
+    { firm_id: "number" },
+    { our_firm_id: "number" },
+    { date_start: "text" },
+    { date_end: "text" },
+    { contract_no: "text" },
+    { is_valid: "boolean" },
   ],
   firms: [
     { name: "text" },

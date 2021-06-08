@@ -49,8 +49,19 @@ export const ADD_ORDER = gql`
 `;
 
 export const ADD_ITEM = gql`
-  mutation AddItem($addData: mr_items_insert_input!) {
-    insert_mr_items(objects: [$addData]) {
+  mutation AddItem($addData: items_insert_input!) {
+    insert_items(objects: [$addData]) {
+      affected_rows
+      returning {
+        id
+      }
+    }
+  }
+`;
+
+export const ADD_ITEMS = gql`
+  mutation AddItems($addData: [items_insert_input!]!) {
+    insert_items(objects: $addData) {
       affected_rows
       returning {
         id
@@ -60,8 +71,8 @@ export const ADD_ITEM = gql`
 `;
 
 export const ADD_MOVING = gql`
-  mutation AddMoving($addData: mr_moving_insert_input!) {
-    insert_mr_moving(objects: [$addData]) {
+  mutation AddMoving($addData: moving_insert_input!) {
+    insert_moving(objects: [$addData]) {
       affected_rows
       returning {
         id
@@ -89,6 +100,7 @@ export const ADD_MOVES_ITEMS = gql`
     insert_moving(objects: $addData) {
       affected_rows
       returning {
+        id
         qty
         to_order
         from_order
@@ -100,7 +112,7 @@ export const ADD_MOVES_ITEMS = gql`
 
 export const DELETE_ITEM_FROM_ORDER = gql`
   mutation DeleteItemFromOrder($id: Int!) {
-    delete_mr_items(where: { id: { _eq: $id } }) {
+    delete_items(where: { id: { _eq: $id } }) {
       returning {
         id
       }

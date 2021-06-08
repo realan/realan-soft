@@ -30,11 +30,25 @@ export default function NewOrder() {
       // console.log(data);
       // console.log(orderData);
       const items = orderData.items.map((it) => {
+        let price = 0;
+        switch (orderData.price_type_id) {
+          case 1:
+            price = it.price_dealer;
+            break;
+          case 2:
+            price = it.price_opt;
+            break;
+          case 3:
+            price = it.price_retail;
+            break;
+        }
         const obj = {
           item_id: it.item_id,
           qty: it.qty,
           order_id: data.insert_orders_one.id,
           note: it.note,
+          price_in: it.price_dealer,
+          price_out: +(price * (1 - orderData.discount)).toFixed(2),
         };
         return obj;
       });

@@ -42,7 +42,9 @@ const GET_ORDER_DATA = gql`
         management_post
       }
       items {
+        id
         qty
+        price_out
         price {
           id
           art
@@ -161,14 +163,14 @@ export default function OrderDocsButtons({ params }) {
       // console.log(params);
       const preparedData = data.orders.map((it) => {
         let listItems = it.items.map((item, key) => {
-          let price = 0;
-          params.row.price_type === 1
-            ? (price = item.price.price_dealer)
-            : params.row.price_type === 2
-            ? (price = item.price.price_opt)
-            : (price = item.price.price_retail);
-          // console.log(params.row.discount);
-          price = price * (1 - params.row.discount);
+          // let price = 0;
+          // params.row.price_type === 1
+          //   ? (price = item.price.price_dealer)
+          //   : params.row.price_type === 2
+          //   ? (price = item.price.price_opt)
+          //   : (price = item.price.price_retail);
+          // // console.log(params.row.discount);
+          // price = price * (1 - params.row.discount);
           // console.log(price);
           return {
             id: key + 1,
@@ -181,11 +183,11 @@ export default function OrderDocsButtons({ params }) {
             quantOfPlace: "",
             grossWeight: "",
             quantity: item.qty,
-            priceBeforeTax: price,
-            sumBeforeTax: price,
+            priceBeforeTax: item.price_out,
+            sumBeforeTax: item.price_out,
             taxRate: "--",
             taxSum: 0,
-            sumTotal: price * item.qty,
+            sumTotal: item.price_out * item.qty,
           };
         });
         let obj = {
@@ -194,6 +196,9 @@ export default function OrderDocsButtons({ params }) {
           consignee: it.firm,
           payer: it.firm,
           our_firm_id: it.our_firm_id,
+          firm_id: it.firm_id,
+          customer_id: it.customer_id,
+          shop_id: it.shop_id,
           listItems: listItems,
           sum: it.sum,
           city: it.city,
@@ -202,13 +207,14 @@ export default function OrderDocsButtons({ params }) {
           bill_id: it.bill_id,
           invoice_id: it.invoice_id,
           invoice: it.invoice,
+          date_out: it.date_out,
         };
         return obj;
       });
       console.log("order data", preparedData[0]);
       setOrderData(preparedData[0]);
       let objNumber = {
-        year: 2021,
+        year: new Date().getFullYear(),
         our_firm_id: preparedData[0].our_firm_id,
         type_doc_id: typeDoc,
       };
@@ -225,7 +231,7 @@ export default function OrderDocsButtons({ params }) {
         }
       }
     }
-  }, [data, params.row]);
+  }, [data, typeDoc, params.row]);
 
   // update order data after document inserting - insert bill id or invoice id
   useEffect(() => {
@@ -235,15 +241,15 @@ export default function OrderDocsButtons({ params }) {
         UpdateOrderInvoice({
           variables: { id: orderData.order_id, invoice_id: dataDocument.insert_documents_one.id },
         });
-        console.log("dataInvoice", dataInvoice);
-        console.log("orderData.id", orderData.order_id);
+        // console.log("dataInvoice", dataInvoice);
+        // console.log("orderData.id", orderData.order_id);
       }
       if (typeDoc === 2) {
         UpdateOrderBill({
           variables: { id: orderData.order_id, bill_id: dataDocument.insert_documents_one.id },
         });
-        console.log("dataBill", dataBill);
-        console.log("orderData.id", orderData.order_id);
+        // console.log("dataBill", dataBill);
+        // console.log("orderData.id", orderData.order_id);
       }
     }
   }, [dataDocument, orderData.id]);
@@ -251,15 +257,18 @@ export default function OrderDocsButtons({ params }) {
   // задаем дату-номер документа
   useEffect(() => {
     if (dataNumber) {
+      console.log("DOCUMENT NUMBER", dataNumber);
       let number = 0;
       if (dataNumber.documents[0]) {
         number = dataNumber.documents[0].number;
       }
       if (typeDoc === 1) {
         let invoice = {
-          date: orderData.date_out,
+          date: new Date(orderData.date_out),
           number: number + 1,
         };
+        // console.log("orderData", orderData);
+        // console.log("date_out invoice", orderData.date_out);
         console.log("set invoice data", invoice);
         setOrderData((prevState) => ({ ...prevState, invoice: invoice }));
       }
@@ -274,6 +283,13 @@ export default function OrderDocsButtons({ params }) {
       // setOrderData((prevState) => ({ ...prevState, number: number + 1 }));
     }
   }, [dataNumber]);
+
+  // клик по одной из кнопок - обрабатываем изменение типа документа
+  // useEffect(()=>{
+  //   if (typeDoc) {
+
+  //   }
+  // },[typeDoc, ])
 
   if (called && loading) return <p>Loading ...</p>;
   if (loadingNumber) return <p>Loading Number ...</p>;
@@ -308,19 +324,22 @@ export default function OrderDocsButtons({ params }) {
     if (typeDoc === 1 && orderData.invoice) {
       date = orderData.invoice.date;
       number = orderData.invoice.number;
-      console.log("invoice", date);
+      // console.log("invoice", orderData.invoice);
     }
     if (typeDoc === 2 && orderData.bill) {
       date = orderData.bill.date;
       number = orderData.bill.number;
-      console.log("bill", date);
+      // console.log("bill", date);
     }
-    console.log(orderData, date);
+    // console.log(orderData, date);
     let year = date.getFullYear();
 
     const preparedData = {
       date: date,
       our_firm_id: orderData.our_firm_id,
+      firm_id: orderData.firm_id,
+      shop_id: orderData.shop_id,
+      order_id: orderData.order_id,
       type_doc_id: typeDoc,
       sum: orderData.sum,
       year: year,

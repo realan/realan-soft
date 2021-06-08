@@ -17,6 +17,7 @@ import {
   UPSERT_PERSONS,
   UPSERT_PRICE,
   UPSERT_SHOPS,
+  UPSERT_CONTRACTS,
 } from "../../GraphQL/importDataMutations";
 // import { UpsertMutations } from "../GraphQL/importDataMutations";
 
@@ -33,6 +34,7 @@ const ImportData = () => {
   const [UpsertPersons] = useMutation(UPSERT_PERSONS);
   const [UpsertPrice] = useMutation(UPSERT_PRICE);
   const [UpsertShops] = useMutation(UPSERT_SHOPS);
+  const [UpsertContracts] = useMutation(UPSERT_CONTRACTS);
 
   const mutations = {};
   mutations["category"] = UpsertCategory;
@@ -45,6 +47,7 @@ const ImportData = () => {
   mutations["persons"] = UpsertPersons;
   mutations["price"] = UpsertPrice;
   mutations["shops"] = UpsertShops;
+  mutations["contracts"] = UpsertContracts;
 
   // ["customers", "documents", "firms", "persons", "shops", "category", "price", "orders", "items", "moving"]
 
@@ -54,9 +57,10 @@ const ImportData = () => {
   return (
     <div>
       <div>Выбери, какие данные импортировать</div>
-      {listButtons.map((item) => (
+      {listButtons.map((item, index) => (
         <ImportButton
-          key={item.id}
+          //key={item.id}
+          key={index}
           activeType={type}
           buttonType={item}
           onClick={() => setType(item)}

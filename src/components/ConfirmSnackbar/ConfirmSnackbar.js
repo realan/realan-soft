@@ -8,7 +8,6 @@ function Alert(props) {
 }
 
 export default function ConfirmSnackbar({ open, message = "OK", onClose }) {
-  console.log(open);
   return (
     <Snackbar
       anchorOrigin={{ vertical: "top", horizontal: "right" }}

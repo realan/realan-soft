@@ -56,9 +56,9 @@ const DocumentViewer = ({ docTemplate, data }) => {
     reporter.setTemplate(docTemplate.filename);
     reporter.setTemplateData(data);
     reporter.renderViewer();
-    console.log("reporter", reporter);
-    console.log("template", docTemplate);
-    console.log("data", data);
+    // console.log("reporter", reporter);
+    // console.log("template", docTemplate);
+    console.log("DOCUMENT VIEWER data", data);
   }, [docTemplate, data]);
 
   return (

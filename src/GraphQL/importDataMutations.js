@@ -41,6 +41,21 @@ export const UPSERT_CATEGORY = gql`
     }
   }
 `;
+export const UPSERT_CONTRACTS = gql`
+  mutation UpsertContracts($addData: [contracts_insert_input!]!) {
+    insert_contracts(
+      objects: $addData
+      on_conflict: {
+        constraint: contracts_pkey
+        update_columns: [firm_id, our_firm_id, date_start, date_end, contract_no, is_valid]
+      }
+    ) {
+      returning {
+        id
+      }
+    }
+  }
+`;
 
 export const UPSERT_CUSTOMERS = gql`
   mutation UpsertCustomers($addData: [customers_insert_input!]!) {
@@ -74,8 +89,20 @@ export const UPSERT_DOCUMENTS = gql`
     insert_documents(
       objects: $addData
       on_conflict: {
-        constraint: documents_pkey
-        update_columns: [date, sum, our_firm_id, type_doc_id, number, year]
+        constraint: registr_pkey
+        update_columns: [
+          date
+          sum
+          sum_net
+          customer_id
+          firm_id
+          shop_id
+          order_id
+          our_firm_id
+          type_doc_id
+          number
+          year
+        ]
       }
     ) {
       returning {

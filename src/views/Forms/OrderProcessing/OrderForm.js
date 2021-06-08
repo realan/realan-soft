@@ -35,11 +35,11 @@ export default function OrderForm({ orderData = newOrderFormState, onChange, onS
   const { loading, error, data } = useSubscription(SUBSCRIPTION_CUSTOMERS);
 
   useEffect(() => {
-    if (!loading && data) {
+    if (data) {
       console.log("customers", data);
       setFormLists((prevState) => ({ ...prevState, customers: data.customers }));
     }
-  }, [loading, data]);
+  }, [data]);
 
   // populate select options in this form and customer data.
   useEffect(() => {
@@ -82,7 +82,7 @@ export default function OrderForm({ orderData = newOrderFormState, onChange, onS
         }
       }
     }
-  }, [orderData.customer_id, orderData.id]);
+  }, [orderData.customer_id, orderData.id, data]); //data - чтобы обновлялись списки при добавлении фирмы, магаза и персоны
 
   // fill the form with shops data
   useEffect(() => {
@@ -108,6 +108,18 @@ export default function OrderForm({ orderData = newOrderFormState, onChange, onS
     //   setFormLists((prevState) => ({ ...prevState, persons }));
     // }
   }, [orderData.shop_id, orderData.id]);
+
+  // fill the form with firm data
+  useEffect(() => {
+    if (!orderData.id && orderData.firm_id) {
+      const firm = formLists.firms.find((el) => el.id === orderData.firm_id);
+      if (firm) {
+        const ourFirmId = firm.contracts[0] && firm.contracts[0].our_firm_id;
+        console.log(firm);
+        onChange("our_firm_id", ourFirmId);
+      }
+    }
+  }, [orderData.id, orderData.firm_id]);
 
   if (loading) return "Loading....";
   if (error) return `Error! ${error.message}`;

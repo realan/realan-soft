@@ -51,14 +51,14 @@ const SUBSCRIPTION_ITEMS_IN_ORDER = gql`
       price {
         id
         name
-        qty_to: movings_aggregate(where: { to_order: { _eq: 30 } }) {
+        qty_to: movings_aggregate(where: { to_order: { _eq: $order_id } }) {
           aggregate {
             sum {
               qty
             }
           }
         }
-        qty_from: movings_aggregate(where: { from_order: { _eq: 30 } }) {
+        qty_from: movings_aggregate(where: { from_order: { _eq: $order_id } }) {
           aggregate {
             sum {
               qty
@@ -209,7 +209,7 @@ const DialogOrders = ({ open, handleClose, orderData }) => {
           idDb: it.id,
         };
       });
-
+      console.log(preparedRows);
       setRows(preparedRows);
     }
   }, [loading, data]);

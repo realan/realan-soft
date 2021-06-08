@@ -12,7 +12,6 @@ import Paper from "@material-ui/core/Paper";
 import Draggable from "react-draggable";
 import { useLazyQuery } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
-import { createTrue } from "typescript";
 
 function PaperComponent(props) {
   return (
@@ -84,7 +83,7 @@ const ModalResorting = ({ startDate, endDate }) => {
   };
   const handleOpen = () => {
     getResort();
-    setIsOpen(createTrue);
+    setIsOpen(true);
   };
 
   return (

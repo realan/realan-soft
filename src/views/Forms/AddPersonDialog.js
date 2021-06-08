@@ -143,13 +143,13 @@ export default function AddPersonDialog({ customerId }) {
               onChange={handleInputChange}
               error={errors.note}
             />
-            <Controls.DateButton
+            {/* <Controls.DateButton
               name="birthday"
               placeholder="День рождения"
               value={values.birthday}
               onChange={handleInputChange}
               error={errors.birthday}
-            />
+            /> */}
 
             <div>
               <Controls.Button text="Сбросить" color="default" onClick={resetForm} />

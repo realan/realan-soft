@@ -110,7 +110,7 @@ export const UPSERT_ITEMS = gql`
       objects: $addData
       on_conflict: {
         constraint: items_pkey
-        update_columns: [item_id, qty, order_id, note, is_cancelled]
+        update_columns: [item_id, qty, order_id, note, is_cancelled, price_in, price_out]
       }
     ) {
       returning {
@@ -257,7 +257,7 @@ export const newOrderFormState = {
   discount: 0,
   payment_term: "",
   packaging: "",
-  price_type_id: 0,
+  price_type_id: -1,
   orderParams: {
     weight: 0,
     sum_opt: 0,
