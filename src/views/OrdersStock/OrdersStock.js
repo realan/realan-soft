@@ -55,7 +55,7 @@ const OrdersStock = () => {
 
   const columns = useMemo(
     () => [
-      { field: "id", headerName: "id", width: 30 },
+      { field: "id", headerName: "id", width: 60 },
       { field: "customer", headerName: "Заказчик", type: "text", width: 200 },
       { field: "town", headerName: "Город", type: "text", width: 120 },
       { field: "date_in", headerName: "Заказан", type: "date", width: 110 },
