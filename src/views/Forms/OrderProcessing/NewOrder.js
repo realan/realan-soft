@@ -19,7 +19,7 @@ export default function NewOrder() {
   );
 
   useEffect(() => {
-    console.log("dataItems", dataItems);
+    // console.log("dataItems", dataItems);
     if (dataItems) {
       setOpenConfirm(true);
     }
@@ -67,7 +67,7 @@ export default function NewOrder() {
   if (errorItems) return `Error! ${errorItems.message}`;
 
   const handleChange = (type, value) => {
-    console.log("orderData", orderData);
+    // console.log("orderData", orderData);
     if (type === "customer_id" && !value) {
       setOrderData(newOrderFormState);
     } else {
@@ -103,10 +103,12 @@ export default function NewOrder() {
       person_id: orderData.person_id,
       price_type_id: orderData.price_type_id,
       shop_id: orderData.shop_id,
-      sum: orderData.sum,
-      weigth: orderData.weigth,
+      sum: +orderData.sum.toFixed(2),
+      sum_in: orderData.orderParams.sum_in,
+      weight: orderData.orderParams.weight,
     };
-    console.log(order);
+    console.log("orderData", orderData);
+    console.log("order", order);
     AddOrder({ variables: { addData: order } });
     setOpen(false);
   };

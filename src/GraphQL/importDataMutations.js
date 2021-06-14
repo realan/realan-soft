@@ -212,7 +212,7 @@ export const UPSERT_ORDERS = gql`
           pay_till_date
           payment_status
           sum
-          weigth
+          weight
           is_shipped
           note_order
           note_supplier

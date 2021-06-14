@@ -1,7 +1,6 @@
 import gql from "graphql-tag";
 
 // querries for mramolit project
-
 export const GET_PRICE = gql`
   query GetPrice {
     price {
@@ -13,6 +12,10 @@ export const GET_PRICE = gql`
       price_opt
       price_retail
       weight
+      supplier {
+        id
+        our_discount
+      }
     }
   }
 `;

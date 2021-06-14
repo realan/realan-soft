@@ -56,9 +56,9 @@ export default function DocumentsForm({ orderData, onChange }) {
     }
     sum = sum * (1 - orderData.discount);
     onChange("sum", sum);
-    console.log("orderData.price_type_id", orderData.price_type_id);
+    // console.log("orderData.price_type_id", orderData.price_type_id);
     console.log("orderData.orderParams", orderData.orderParams);
-    console.log("SUM", sum);
+    // console.log("SUM", sum);
   }, [orderData.discount, orderData.price_type_id, orderData.orderParams]);
 
   if (loading) return "Loading....";

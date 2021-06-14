@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import cx from "classnames";
 import { Switch, Route, Redirect } from "react-router-dom";
 // creates a beautiful scrollbar
@@ -8,7 +8,7 @@ import "perfect-scrollbar/css/perfect-scrollbar.css";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 
-import { useAuth0 } from "@auth0/auth0-react";
+// import { useAuth0 } from "@auth0/auth0-react";
 
 // core components
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
@@ -41,7 +41,7 @@ export default function Dashboard(props) {
   const classes = useStyles();
 
   //Auth0
-  const { user, isLoading, error } = useAuth0();
+  // const { user, isLoading, error } = useAuth0();
 
   const mainPanelClasses =
     classes.mainPanel +
@@ -55,7 +55,7 @@ export default function Dashboard(props) {
   // effect instead of componentDidMount, componentDidUpdate and componentWillUnmount
   React.useEffect(() => {
     if (navigator.platform.indexOf("Win") > -1) {
-      console.log(mainPanel);
+      // console.log(mainPanel);
       ps = new PerfectScrollbar(mainPanel.current, {
         suppressScrollX: true,
         suppressScrollY: false,

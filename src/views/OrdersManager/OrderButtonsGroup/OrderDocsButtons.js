@@ -64,6 +64,7 @@ const GET_ORDER_DATA = gql`
       our_firm_id
       price_type_id
       sum
+      sum_net
     }
   }
 `;
@@ -241,15 +242,11 @@ export default function OrderDocsButtons({ params }) {
         UpdateOrderInvoice({
           variables: { id: orderData.order_id, invoice_id: dataDocument.insert_documents_one.id },
         });
-        // console.log("dataInvoice", dataInvoice);
-        // console.log("orderData.id", orderData.order_id);
       }
       if (typeDoc === 2) {
         UpdateOrderBill({
           variables: { id: orderData.order_id, bill_id: dataDocument.insert_documents_one.id },
         });
-        // console.log("dataBill", dataBill);
-        // console.log("orderData.id", orderData.order_id);
       }
     }
   }, [dataDocument, orderData.id]);
@@ -267,8 +264,6 @@ export default function OrderDocsButtons({ params }) {
           date: new Date(orderData.date_out),
           number: number + 1,
         };
-        // console.log("orderData", orderData);
-        // console.log("date_out invoice", orderData.date_out);
         console.log("set invoice data", invoice);
         setOrderData((prevState) => ({ ...prevState, invoice: invoice }));
       }
@@ -283,13 +278,6 @@ export default function OrderDocsButtons({ params }) {
       // setOrderData((prevState) => ({ ...prevState, number: number + 1 }));
     }
   }, [dataNumber]);
-
-  // клик по одной из кнопок - обрабатываем изменение типа документа
-  // useEffect(()=>{
-  //   if (typeDoc) {
-
-  //   }
-  // },[typeDoc, ])
 
   if (called && loading) return <p>Loading ...</p>;
   if (loadingNumber) return <p>Loading Number ...</p>;

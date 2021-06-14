@@ -260,6 +260,7 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
       }, 0);
       setStockQty(stock_now - sumQtyFromStock);
     }
+    console.log(preparedRow);
     setRows(preparedRow);
   };
 

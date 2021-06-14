@@ -27,6 +27,7 @@ const GetOrderItems = ({ onChange }) => {
       let qtyColumn;
       let priceColumn;
       let artColumn;
+      // let noteColumn;
 
       let header = arr[0].split("\t");
       header.forEach(function (item, i) {
@@ -41,6 +42,15 @@ const GetOrderItems = ({ onChange }) => {
           header[i] = "qty";
           qtyColumn = i;
         }
+        if (
+          item === "примечание" ||
+          item === "Примечание" ||
+          item === "примечание\r" ||
+          item === "note"
+        ) {
+          header[i] = "note";
+          // noteColumn = i;
+        }
         if (item === "Цена" || item === "Цена за ед.") {
           header[i] = "price";
           priceColumn = i;
@@ -49,6 +59,8 @@ const GetOrderItems = ({ onChange }) => {
           header[i] = "sum";
         }
       });
+
+      console.log(header);
 
       arr.forEach(function (line, i) {
         if (line) {
@@ -68,6 +80,11 @@ const GetOrderItems = ({ onChange }) => {
                 obj[header[j]] = art;
                 let itId = price.find((item) => item.art === art).id;
                 obj["itemId"] = itId;
+                // } else if (j === noteColumn) {
+                //   let art = cell.trim();
+                //   obj[header[j]] = art;
+                //   let itId = price.find((item) => item.art === art).id;
+                //   obj["itemId"] = itId;
               } else {
                 obj[header[j]] = cell.trim();
               }
@@ -82,6 +99,7 @@ const GetOrderItems = ({ onChange }) => {
       console.log(result);
       let itemsOrder = result.map((item, index) => {
         const inPrice = price.find((el) => el.id === item.itemId);
+        console.log(inPrice);
         return {
           id: index,
           item_id: item.itemId,
@@ -90,11 +108,13 @@ const GetOrderItems = ({ onChange }) => {
           qty: item.qty,
           note: item.note,
           weight: inPrice.weight,
+          price_in: inPrice.price_dealer * (1 - inPrice.supplier?.our_discount),
           price_dealer: inPrice.price_dealer,
           price_opt: inPrice.price_opt,
           price_retail: inPrice.price_retail,
         };
       });
+      console.log("itemsOrder", itemsOrder);
       onChange(itemsOrder);
     });
   };

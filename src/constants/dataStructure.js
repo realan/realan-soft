@@ -112,7 +112,7 @@ export const dataStructure = {
     { pay_till_date: "text" },
     { payment_status: "text" },
     { sum: "number" },
-    { weigth: "number" },
+    { weight: "number" },
     { is_shipped: "boolean" },
     { note_order: "text" },
     { note_supplier: "text" },

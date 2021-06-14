@@ -17,13 +17,13 @@ export function getConfig() {
       ? configJson.audience
       : null;
 
-  console.log("audience", audience);
+  // console.log("audience", audience);
   const obj = {
     domain: configJson.domain,
     clientId: configJson.clientId,
     ...(audience ? { audience } : null),
   };
-  console.log(obj);
+  // console.log(obj);
   return obj;
   // {
   //   domain: configJson.domain,

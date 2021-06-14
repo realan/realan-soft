@@ -38,7 +38,6 @@ export default function UpdateOrder({ open, onClose, orderId }) {
   });
 
   useEffect(() => {
-    console.log("Order Update", dataUpdate);
     if (dataUpdate) {
       console.log("Items", orderData.items);
       const addData = orderData.items.map((item) => {
@@ -70,8 +69,8 @@ export default function UpdateOrder({ open, onClose, orderId }) {
   }, [dataUpdate]);
 
   useEffect(() => {
-    console.log("Items Upsert", dataUpsertItems);
     if (dataUpsertItems) {
+      console.log("Items Upsert", dataUpsertItems);
       setOpenConfirm(true);
       onClose();
     }
@@ -79,13 +78,14 @@ export default function UpdateOrder({ open, onClose, orderId }) {
 
   useEffect(() => {
     if (dataOrder) {
-      // console.log("update order data", data);
+      console.log("order data query", dataOrder);
       setOrderData(dataOrder.orders[0]);
       const dateOut = new Date(dataOrder.orders[0].date_out);
       handleChange("date_out", dateOut);
       const pay_till_date = new Date(dataOrder.orders[0].pay_till_date);
       handleChange("pay_till_date", pay_till_date);
       const items = dataOrder.orders[0].items.map((it) => {
+        let discount = it.price.supplier.our_discount ? it.price.supplier.our_discount : 0;
         return {
           id: it.id,
           item_id: it.item_id,
@@ -93,6 +93,7 @@ export default function UpdateOrder({ open, onClose, orderId }) {
           note: it.note,
           art: it.price.art,
           name: it.price.name,
+          price_in: it.price.price_dealer * (1 - discount),
           price_dealer: it.price.price_dealer,
           price_opt: it.price.price_opt,
           price_retail: it.price.price_retail,
@@ -157,8 +158,9 @@ export default function UpdateOrder({ open, onClose, orderId }) {
         person_id: orderData.person_id,
         price_type_id: orderData.price_type_id,
         shop_id: orderData.shop_id,
-        sum: orderData.sum,
-        weigth: orderData.weigth,
+        sum: +orderData.sum.toFixed(2),
+        sum_in: orderData.orderParams.sum_in,
+        weight: orderData.orderParams.weight,
       },
     });
     // onClose();

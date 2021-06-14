@@ -61,7 +61,8 @@ export const UPDATE_ORDER = gql`
     $price_type_id: Int
     $shop_id: Int
     $sum: numeric
-    $weigth: numeric
+    $sum_in: numeric
+    $weight: numeric
   ) {
     update_orders(
       where: { id: { _eq: $id } }
@@ -93,7 +94,8 @@ export const UPDATE_ORDER = gql`
         price_type_id: $price_type_id
         shop_id: $shop_id
         sum: $sum
-        weigth: $weigth
+        sum_in: $sum_in
+        weight: $weight
       }
     ) {
       affected_rows
@@ -147,7 +149,7 @@ export const UPSERT_ORDER = gql`
           discount
           pay_till_date
           sum
-          weigth
+          weight
           note_order
           note_supplier
         ]
@@ -189,7 +191,7 @@ export const GET_ORDER_DATA = gql`
       price_type_id
       shop_id
       sum
-      weigth
+      weight
       customer {
         id
         name
@@ -240,6 +242,9 @@ export const GET_ORDER_DATA = gql`
           price_opt
           price_retail
           weight
+          supplier {
+            our_discount
+          }
         }
       }
     }
@@ -260,6 +265,7 @@ export const newOrderFormState = {
   price_type_id: -1,
   orderParams: {
     weight: 0,
+    sum_in: 0,
     sum_opt: 0,
     sum_dealer: 0,
     sum_retail: 0,

@@ -17,7 +17,10 @@ import DeleteOrderButton from "./OrderButtonsGroup/DeleteOrderButton";
 
 const SUBSCRIPTION_ORDERS_MANAGER = gql`
   subscription {
-    orders(where: { is_cancelled: { _eq: false }, is_shipped: { _eq: false }, id: { _gte: 10 } }) {
+    orders(
+      order_by: { id: desc }
+      where: { is_cancelled: { _eq: false }, is_shipped: { _eq: false }, id: { _gte: 10 } }
+    ) {
       id
       date_out
       sum
@@ -30,6 +33,28 @@ const SUBSCRIPTION_ORDERS_MANAGER = gql`
       city
       note_order
       delivery_id
+      weight
+      items_aggregate {
+        aggregate {
+          sum {
+            qty
+          }
+        }
+      }
+      movingsToOrder_aggregate {
+        aggregate {
+          sum {
+            qty
+          }
+        }
+      }
+      movingsFromOrder_aggregate {
+        aggregate {
+          sum {
+            qty
+          }
+        }
+      }
       customer {
         id
         name
@@ -74,7 +99,7 @@ const OrdersTable = () => {
       { field: "sum", headerName: "Сумма", type: "number", width: 120 },
       // { field: "price_type_id", headerName: "Сумма", type: "number", width: 120 },
       { field: "discount", headerName: "Скидка", type: "number", width: 120 },
-      { field: "weigth", headerName: "Масса", width: 120 },
+      { field: "weight", headerName: "Масса", width: 120 },
       { field: "qtyRatio", headerName: "Набрано", renderCell: renderProgress, width: 100 },
       { field: "deleteOrder", headerName: "Удалить", width: 100, renderCell: DeleteButton },
     ],
@@ -85,18 +110,26 @@ const OrdersTable = () => {
 
   useEffect(() => {
     if (!loading && data) {
+      // console.log("orders", data.orders);
       const preparedRows = data.orders.map((item) => {
         const dateOut = new Date(item.date_out);
         let city = "";
         item.shop !== null ? (city = item.shop.city) : (city = "");
+        let qty = item.items_aggregate.aggregate.sum.qty;
+        let qtyRatio = +(
+          (item.movingsToOrder_aggregate.aggregate.sum.qty -
+            item.movingsFromOrder_aggregate.aggregate.sum.qty) /
+          qty
+        ).toFixed(3);
         return {
           ...item,
           customer: item.customer.name,
           shopCity: city,
           dateOut: dateOut,
+          qtyRatio,
         };
       });
-      console.log("ordersRows", preparedRows);
+      // console.log("ordersRows", preparedRows);
       setRows(preparedRows);
     }
   }, [loading, data]);

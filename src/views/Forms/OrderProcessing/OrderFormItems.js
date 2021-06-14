@@ -12,6 +12,7 @@ import FormSection from "components/FormSection/FormSection";
 export default function OrderFormItems({ orderData, onChange }) {
   const [state, setState] = useState({
     weight: 0,
+    sum_in: 0,
     sum_dealer: 0,
     sum_opt: 0,
     sum_retail: 0,
@@ -29,9 +30,12 @@ export default function OrderFormItems({ orderData, onChange }) {
   const [editRow, setEditRow] = useState(initStateEditRow);
 
   useEffect(() => {
+    console.log(orderData);
     if (orderData.items) {
+      console.log("orderData", orderData);
       let obj = {
         weight: +orderData.items.reduce((sum, it) => sum + it.qty * it.weight, 0).toFixed(3),
+        sum_in: +orderData.items.reduce((sum, it) => sum + it.qty * it.price_in, 0).toFixed(2),
         sum_opt: +orderData.items.reduce((sum, it) => sum + it.qty * it.price_opt, 0).toFixed(2),
         sum_dealer: +orderData.items
           .reduce((sum, it) => sum + it.qty * it.price_dealer, 0)
@@ -97,7 +101,7 @@ export default function OrderFormItems({ orderData, onChange }) {
       <Grid container spacing={2}>
         <Grid item xs={12}>
           Масса <strong>{state.weight}</strong>, сумма дилер {state.sum_dealer} руб., сумма опт{" "}
-          {state.sum_opt} руб., сумма розн {state.sum_retail} руб.
+          {state.sum_opt} руб., сумма розн {state.sum_retail} руб. Себестоимость {state.sum_in} руб.
         </Grid>
         <GetOrderItems onChange={(items) => onChange("items", items)} />
         <AddItemInOrder onSubmit={handleAddItem} index={orderData.items.length} />
