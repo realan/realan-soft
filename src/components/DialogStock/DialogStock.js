@@ -70,7 +70,7 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
   const [rows, setRows] = useState([]);
 
   function fromProdField(params) {
-    // console.log(params);
+    console.log("row params", params);
     const needQty = params.row.needQty - params.row.fromStock;
     return (
       <strong>
