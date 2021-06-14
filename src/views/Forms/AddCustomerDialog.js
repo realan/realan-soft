@@ -2,7 +2,7 @@ import React from "react";
 // import { useState } from "react";
 import { Grid } from "@material-ui/core";
 import Controls from "../../components/controls/Controls";
-import { useFormDialog, FormPop } from "../../components/useFormDialog";
+import { useForm, FormPop } from "../../components/useForm";
 import { gql } from "apollo-boost";
 import { useMutation } from "@apollo/react-hooks";
 
@@ -51,7 +51,7 @@ export default function AddCustomerDialog() {
     if (fieldValues == values) return Object.values(temp).every((x) => x == "");
   };
 
-  const { values, errors, setErrors, handleInputChange, resetForm } = useFormDialog(
+  const { values, errors, setErrors, handleInputChange, resetForm } = useForm(
     initialValues,
     true,
     validate

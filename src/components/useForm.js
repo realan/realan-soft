@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core";
+import { Button, makeStyles } from "@material-ui/core";
 
 export function useForm(initialFValues, validateOnChange = false, validate) {
   const [values, setValues] = useState(initialFValues);
@@ -50,5 +50,41 @@ export function Form(props) {
     <form className={classes.root} autoComplete="off" {...other}>
       {children}
     </form>
+  );
+}
+
+export function FormPop(props) {
+  const [open, setOpen] = useState(false);
+  const classes = useStyles();
+  const { children, formName, ...other } = props;
+  return (
+    <>
+      <Button variant="outlined" color="primary" onClick={() => setOpen(!open)}>
+        {open ? "Свернуть" : formName}
+      </Button>
+      {open && (
+        <form className={classes.root} autoComplete="off" {...other}>
+          {children}
+        </form>
+      )}
+    </>
+  );
+}
+
+export function FormModal(props) {
+  const [open, setOpen] = useState(false);
+  const classes = useStyles();
+  const { children, formName, ...other } = props;
+  return (
+    <>
+      <Button variant="outlined" color="primary" onClick={() => setOpen(!open)}>
+        {open ? "Свернуть" : formName}
+      </Button>
+      {open && (
+        <form className={classes.root} autoComplete="off" {...other}>
+          {children}
+        </form>
+      )}
+    </>
   );
 }

@@ -243,6 +243,10 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
   };
 
   const onCountChange = (newCount, currentRows, id, storeType) => {
+    console.log("New count", newCount);
+    console.log("currentRows", currentRows);
+    console.log("id", id);
+    console.log("storeType", storeType);
     const preparedRow = currentRows.map((row) => {
       if (row.id === id) {
         return {
