@@ -70,7 +70,7 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
   const [rows, setRows] = useState([]);
 
   function fromProdField(params) {
-    console.log("row params", params);
+    console.log("row params. Pay attn rowIndex as id", params);
     const needQty = params.row.needQty - params.row.fromStock;
     return (
       <strong>
@@ -78,7 +78,7 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
           maxValue={needQty}
           id={params.rowIndex}
           onChange={(newValue) =>
-            onCountChange(newValue, rows, params.rowIndex, STORE_TYPE.PRODUCTION)
+            onCountChange(newValue, rows, params.row.id, STORE_TYPE.PRODUCTION)
           }
           colorType="default"
           value={params.row.fromProd}
@@ -98,7 +98,7 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
           minValue={-(params.row.orderQty - params.row.needQty)}
           maxValue={maxValue}
           id={params.rowIndex}
-          onChange={(newValue) => onCountChange(newValue, rows, params.rowIndex, STORE_TYPE.STOCK)}
+          onChange={(newValue) => onCountChange(newValue, rows, params.row.id, STORE_TYPE.STOCK)}
           value={params.row.fromStock}
         />
       </strong>
