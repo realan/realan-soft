@@ -61,6 +61,7 @@ const GET_ORDER_DATA = gql`
       date_out
       bill_id
       invoice_id
+      profit_calc_id
       discount
       our_firm_id
       price_type_id
@@ -95,10 +96,27 @@ const GET_LAST_DOC_NUMBER = gql`
   }
 `;
 
-const ADD_DOCUMENT = gql`
-  mutation AddDocument($addData: documents_insert_input!) {
-    insert_documents_one(object: $addData) {
-      id
+// const ADD_DOCUMENT = gql`
+//   mutation AddDocument($addData: documents_insert_input!) {
+//     insert_documents_one(object: $addData) {
+//       id
+//     }
+//   }
+// `;
+
+export const UPSERT_DOCUMENTS = gql`
+  mutation UpsertDocument($addData: [documents_insert_input!]!) {
+    insert_documents(
+      objects: $addData
+      on_conflict: {
+        constraint: registr_pkey
+        update_columns: [date, our_firm_id, firm_id, shop_id, customer_id, year, number, sum]
+      }
+    ) {
+      returning {
+        id
+        type_doc_id
+      }
     }
   }
 `;
@@ -147,9 +165,13 @@ export default function OrderDocsButtons({ params }) {
   });
 
   const [
-    AddDocument,
-    { data: dataDocument, loading: loadingDocument, error: errorDocument },
-  ] = useMutation(ADD_DOCUMENT);
+    UpsertDocuments,
+    { data: dataUpsertDoc, loading: loadingUpsertDoc, error: errorUpsertDoc },
+  ] = useMutation(UPSERT_DOCUMENTS);
+  // const [
+  //   AddDocument,
+  //   { data: dataDocument, loading: loadingDocument, error: errorDocument },
+  // ] = useMutation(ADD_DOCUMENT);
 
   const [UpdateOrderBill, { data: dataBill, loading: loadingBill, error: errorBill }] = useMutation(
     UPDATE_ORDER_BILL
@@ -195,10 +217,12 @@ export default function OrderDocsButtons({ params }) {
           shop_id: it.shop_id,
           listItems: listItems,
           sum: it.sum,
+          sum_in: it.sum_in,
           city: it.city,
           order_id: it.id,
           bill: it.bill,
           bill_id: it.bill_id,
+          profit_calc_id: it.profit_calc_id,
           invoice_id: it.invoice_id,
           invoice: it.invoice,
           date_out: it.date_out,
@@ -229,25 +253,43 @@ export default function OrderDocsButtons({ params }) {
 
   // update order data after document inserting - insert bill id or invoice id
   useEffect(() => {
-    if (dataDocument) {
-      console.log("dataDocument", dataDocument);
-      if (typeDoc === 1) {
-        UpdateOrderInvoice({
-          variables: { id: orderData.order_id, invoice_id: dataDocument.insert_documents_one.id },
-        });
-      }
-      if (typeDoc === 2) {
-        UpdateOrderBill({
-          variables: { id: orderData.order_id, bill_id: dataDocument.insert_documents_one.id },
-        });
-      }
+    if (dataUpsertDoc) {
+      console.log("dataUpsertDoc", dataUpsertDoc.insert_documents);
+      dataUpsertDoc.insert_documents.returning.forEach((item) => {
+        console.log(1);
+        switch (item.type_doc_id) {
+          case 1: // invoice
+            UpdateOrderInvoice({
+              variables: { id: orderData.order_id, invoice_id: item.id },
+            });
+            break;
+
+          case 2: // bill
+            if (typeDoc === 2) {
+              UpdateOrderBill({
+                variables: { id: orderData.order_id, bill_id: item.id },
+              });
+              break;
+            }
+        }
+      });
+      // if (typeDoc === 1) {
+      //   UpdateOrderInvoice({
+      //     variables: { id: orderData.order_id, invoice_id: dataUpsertDoc.insert_documents_one.id },
+      //   });
+      // }
+      // if (typeDoc === 2) {
+      //   UpdateOrderBill({
+      //     variables: { id: orderData.order_id, bill_id: dataUpsertDoc.insert_documents_one.id },
+      //   });
+      // }
     }
-  }, [dataDocument, orderData.id]);
+  }, [dataUpsertDoc, orderData.id]);
 
   // задаем дату-номер документа
   useEffect(() => {
     if (dataNumber) {
-      console.log("DOCUMENT NUMBER", dataNumber);
+      // console.log("DOCUMENT NUMBER", dataNumber);
       let number = 0;
       if (dataNumber.documents[0]) {
         number = dataNumber.documents[0].number;
@@ -257,7 +299,7 @@ export default function OrderDocsButtons({ params }) {
           date: new Date(orderData.date_out),
           number: number + 1,
         };
-        console.log("set invoice data", invoice);
+        // console.log("set invoice data", invoice);
         setOrderData((prevState) => ({ ...prevState, invoice: invoice }));
       }
       if (typeDoc === 2) {
@@ -265,7 +307,7 @@ export default function OrderDocsButtons({ params }) {
           date: new Date(),
           number: number + 1,
         };
-        console.log("set bill data", bill);
+        // console.log("set bill data", bill);
         setOrderData((prevState) => ({ ...prevState, bill: bill }));
       }
       // setOrderData((prevState) => ({ ...prevState, number: number + 1 }));
@@ -275,8 +317,10 @@ export default function OrderDocsButtons({ params }) {
   if (called && loading) return <p>Loading ...</p>;
   if (loadingNumber) return <p>Loading Number ...</p>;
   if (errorNumber) return `Error! ${errorNumber.message}`;
-  if (loadingDocument) return <p>Loading Document ...</p>;
-  if (errorDocument) return `Error! ${errorDocument.message}`;
+  if (loadingUpsertDoc) return <p>Loading Document ...</p>;
+  if (errorUpsertDoc) return `Error! ${errorUpsertDoc.message}`;
+  // if (loadingDocument) return <p>Loading Document ...</p>;
+  // if (errorDocument) return `Error! ${errorDocument.message}`;
   if (loadingBill) return <p>Loading Bill ...</p>;
   if (errorBill) return `Error! ${errorBill.message}`;
   if (loadingInvoice) return <p>Loading Invoice ...</p>;
@@ -305,14 +349,20 @@ export default function OrderDocsButtons({ params }) {
   };
 
   const handleSubmit = () => {
+    let addData = [];
     let date = new Date();
     let number = 0;
+    let id = undefined;
+    let profit_id = undefined;
     if (typeDoc === 1 && orderData.invoice) {
+      id = orderData.invoice_id;
       date = orderData.invoice.date;
       number = orderData.invoice.number;
       // console.log("invoice", orderData.invoice);
     }
     if (typeDoc === 2 && orderData.bill) {
+      id = orderData.bill_id;
+      profit_id = orderData.profit_calc_id;
       date = orderData.bill.date;
       number = orderData.bill.number;
       // console.log("bill", date);
@@ -321,6 +371,7 @@ export default function OrderDocsButtons({ params }) {
     let year = date.getFullYear();
 
     const preparedData = {
+      //id: id,
       date: date,
       our_firm_id: orderData.our_firm_id,
       firm_id: orderData.firm_id,
@@ -331,8 +382,30 @@ export default function OrderDocsButtons({ params }) {
       year: year,
       number: number,
     };
-    // console.log(orderData, orderData)
-    AddDocument({ variables: { addData: preparedData } });
+
+    let profitData = {};
+    if (typeDoc === 1) {
+      profitData = {
+        ...preparedData,
+        type_doc_id: 3,
+        sum: preparedData.sum - orderData.sum_in,
+      };
+      if (profit_id) {
+        profitData.id = profit_id;
+      }
+    }
+    if (id) {
+      preparedData.id = id;
+    }
+
+    addData.push(preparedData);
+    if (profitData.type_doc_id) {
+      addData.push(profitData);
+    }
+
+    console.log("addData", addData);
+    UpsertDocuments({ variables: { addData } });
+    // AddDocument({ variables: { addData } });
 
     //проводим прибыль
     // if (typeDoc === 1 && orderData.invoice) {

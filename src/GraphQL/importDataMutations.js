@@ -284,7 +284,7 @@ export const UPSERT_PRICE = gql`
           height
           weight
           consist_of_ids
-          provider_id
+          supplier_id
           is_on_sale
         ]
       }

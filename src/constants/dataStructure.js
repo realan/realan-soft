@@ -91,7 +91,7 @@ export const dataStructure = {
     { height: "number" },
     { weight: "number" },
     { consist_of_ids: "" },
-    { provider_id: "number" },
+    { supplier_id: "number" },
     { is_on_sale: "boolean" },
   ],
   orders: [
