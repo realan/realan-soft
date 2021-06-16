@@ -94,7 +94,7 @@ const OrdersTable = () => {
       { field: "shopCity", headerName: "Город", width: 120 },
       { field: "dateOut", headerName: "Отгрузка", type: "date", width: 110 },
       { field: "buttonsInfo", headerName: "Инфо", width: 200, renderCell: InfoButtons },
-      { field: "buttonsDocs", headerName: "Документы", width: 140, renderCell: DocsButtons },
+      { field: "buttonsDocs", headerName: "Документы", width: 250, renderCell: DocsButtons },
       // { field: "updateOrder", headerName: "Обн", width: 50, renderCell: UpdateOrderIcon },
       { field: "sum", headerName: "Сумма", type: "number", width: 120 },
       // { field: "price_type_id", headerName: "Сумма", type: "number", width: 120 },
@@ -124,6 +124,7 @@ const OrdersTable = () => {
         return {
           ...item,
           customer: item.customer.name,
+          customerId: item.customer.id,
           shopCity: city,
           dateOut: dateOut,
           qtyRatio,

@@ -9,7 +9,7 @@ import {
 
 export default function Select(props) {
   const { name, label, value, error = null, onChange, options } = props;
-  console.log(value);
+  // console.log(value);
   return (
     <FormControl variant="outlined" {...(error && { error: true })}>
       <InputLabel>{label}</InputLabel>

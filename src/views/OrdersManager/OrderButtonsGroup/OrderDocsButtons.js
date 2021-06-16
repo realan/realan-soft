@@ -5,6 +5,7 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
 import { useLazyQuery, useMutation } from "@apollo/react-hooks";
 import { gql } from "@apollo/client";
+import AddPaymentDialog from "views/Forms/AddPaymentDialog";
 
 const GET_ORDER_DATA = gql`
   query GetOrderData($order_id: Int!) {
@@ -64,7 +65,7 @@ const GET_ORDER_DATA = gql`
       our_firm_id
       price_type_id
       sum
-      sum_net
+      sum_in
     }
   }
 `;
@@ -118,8 +119,9 @@ const UPDATE_ORDER_INVOICE = gql`
 `;
 
 export default function OrderDocsButtons({ params }) {
-  // console.log("render docs buttons");
+  // console.log("params", params.row);
   const [open, setOpen] = useState(false);
+  const [openPayment, setOpenPayment] = useState(false);
   const [typeDoc, setTypeDoc] = useState(undefined);
   const [orderData, setOrderData] = useState(false);
   const [templateDoc, setTemplateDoc] = useState("");
@@ -164,15 +166,6 @@ export default function OrderDocsButtons({ params }) {
       // console.log(params);
       const preparedData = data.orders.map((it) => {
         let listItems = it.items.map((item, key) => {
-          // let price = 0;
-          // params.row.price_type === 1
-          //   ? (price = item.price.price_dealer)
-          //   : params.row.price_type === 2
-          //   ? (price = item.price.price_opt)
-          //   : (price = item.price.price_retail);
-          // // console.log(params.row.discount);
-          // price = price * (1 - params.row.discount);
-          // console.log(price);
           return {
             id: key + 1,
             description: item.price.name,
@@ -305,6 +298,11 @@ export default function OrderDocsButtons({ params }) {
   };
 
   const handleClose = () => setOpen(false);
+  const handlePaymentClose = () => setOpenPayment(false);
+
+  const handlePaymentButtonClick = () => {
+    setOpenPayment(true);
+  };
 
   const handleSubmit = () => {
     let date = new Date();
@@ -333,7 +331,15 @@ export default function OrderDocsButtons({ params }) {
       year: year,
       number: number,
     };
+    // console.log(orderData, orderData)
     AddDocument({ variables: { addData: preparedData } });
+
+    //проводим прибыль
+    // if (typeDoc === 1 && orderData.invoice) {
+    //   preparedData.type_doc_id = 3; // id profit
+    //   preparedData.sum = orderData.sum - orderData.sum_in;
+    //   AddDocument({ variables: { addData: preparedData } });
+    // }
 
     setOpen(false);
   };
@@ -358,7 +364,7 @@ export default function OrderDocsButtons({ params }) {
         <Button
           id="payment"
           color={params.row.payment_status ? "primary" : "secondary"}
-          onClick={handleButtonClick}
+          onClick={handlePaymentButtonClick}
         >
           Пл
         </Button>
@@ -370,6 +376,16 @@ export default function OrderDocsButtons({ params }) {
           onSubmit={handleSubmit}
           data={orderData}
           template={templateDoc}
+        />
+      )}
+      {openPayment && (
+        <AddPaymentDialog
+          open={openPayment}
+          onClose={handlePaymentClose}
+          customerId={params.row.customerId}
+          orderId={params.row.id}
+          firmId={params.row.firm.id}
+          ourFirmId={params.row.our_firm_id}
         />
       )}
     </>

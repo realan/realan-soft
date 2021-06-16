@@ -136,11 +136,6 @@ export default function AddFirmDialog({ customerId }) {
     if (validate()) {
       let firmData = {};
       let contractData = {};
-
-      //   ...values,
-      //   ["customer_id"]: customerId,
-      //   ["our_firm_id"]: Number(values.our_firm_id),
-      // };
       for (let key in values) {
         if (key !== "our_firm_id" && key !== "contract_no" && key !== "note") {
           firmData[key] = values[key];
