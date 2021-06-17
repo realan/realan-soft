@@ -101,7 +101,7 @@ export default function OrderFormItems({ orderData, onChange }) {
       <Grid container spacing={2}>
         <Grid item xs={12}>
           Масса <strong>{state.weight}</strong>, сумма дилер {state.sum_dealer} руб., сумма опт{" "}
-          {state.sum_opt} руб., сумма розн {state.sum_retail} руб. Себестоимость {state.sum_in} руб.
+          {state.sum_opt} руб., сумма розн {state.sum_retail} руб.
         </Grid>
         <GetOrderItems onChange={(items) => onChange("items", items)} />
         <AddItemInOrder onSubmit={handleAddItem} index={orderData.items.length} />

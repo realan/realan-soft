@@ -104,8 +104,8 @@ export default function NewOrder() {
       price_type_id: orderData.price_type_id,
       shop_id: orderData.shop_id,
       sum: +orderData.sum.toFixed(2),
-      sum_in: orderData.orderParams.sum_in,
-      weight: orderData.orderParams.weight,
+      sum_in: +orderData.orderParams.sum_in.toFixed(2),
+      weight: +orderData.orderParams.weight.toFixed(3),
     };
     console.log("orderData", orderData);
     console.log("order", order);

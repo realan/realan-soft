@@ -84,7 +84,8 @@ export default function DocumentsForm({ orderData, onChange }) {
         <Grid item xs={12}>
           Масса <strong>{orderData.orderParams.weight}</strong>, сумма дилер{" "}
           {orderData.orderParams.sum_dealer} руб., сумма опт {orderData.orderParams.sum_opt} руб.,
-          сумма розн {orderData.orderParams.sum_retail} руб. К оплате {orderData.sum} руб.
+          сумма розн {orderData.orderParams.sum_retail} руб. К оплате {orderData.sum.toFixed(2)}{" "}
+          руб.
         </Grid>
 
         <Grid item xs={3}>
