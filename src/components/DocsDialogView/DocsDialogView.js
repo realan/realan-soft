@@ -46,6 +46,9 @@ const DocsDialogView = ({ open, onClose, onSubmit, data, template }) => {
               Закрыть
             </Button>
           </Box>
+          <Button onClick={onSubmit} color="primary" variant="outlined">
+            Отправить заказчику. Пока не работает
+          </Button>
           <Button onClick={onSubmit} color="primary" variant="contained">
             Провести документ
           </Button>

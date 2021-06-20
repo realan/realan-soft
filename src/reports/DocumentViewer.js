@@ -51,18 +51,23 @@ import SSReport from "./ReportService";
 // export default DocumentViewer;
 
 const DocumentViewer = ({ docTemplate, data }) => {
+  const reporter = new SSReport();
   useEffect(() => {
-    const reporter = new SSReport();
     reporter.setTemplate(docTemplate.filename);
     reporter.setTemplateData(data);
     reporter.renderViewer();
-    // console.log("reporter", reporter);
-    // console.log("template", docTemplate);
     console.log("DOCUMENT VIEWER data", data);
   }, [docTemplate, data]);
 
+  const handleClick = () => {
+    let a = reporter.makeFormFile();
+    console.log(a);
+    // reporter.consoleInfo();
+  };
+
   return (
     <div>
+      <button onClick={handleClick}>SendDoc</button>
       <section id="viewer" />
     </div>
   );

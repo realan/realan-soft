@@ -31,14 +31,14 @@ const GetOrderItems = ({ onChange }) => {
 
       let header = arr[0].split("\t");
       header.forEach(function (item, i) {
-        if (item === "Товар") {
+        if (item === "Товар" || item === "Товар\r") {
           header[i] = "name";
         }
-        if (item === "Модель") {
+        if (item === "Модель" || item === "Модель\r") {
           header[i] = "art";
           artColumn = i;
         }
-        if (item === "Кол-во") {
+        if (item === "Кол-во" || item === "Кол-во\r") {
           header[i] = "qty";
           qtyColumn = i;
         }
@@ -60,46 +60,84 @@ const GetOrderItems = ({ onChange }) => {
         }
       });
 
-      console.log(header);
+      // console.log(header);
 
       arr.forEach(function (line, i) {
         if (line) {
           if (i !== 0) {
-            let row = [];
+            // let row = [];
             let rowIn = line.split("\t");
             let obj = {};
-
+            let haveArt = true;
+            let art = "";
             rowIn.forEach(function (cell, j) {
-              if (j === qtyColumn) {
-                obj[header[j]] = Number(cell);
-              } else if (j === priceColumn) {
-                let val = cell.replace("руб.", "").replace(" ", "");
-                obj[header[j]] = Number(val);
-              } else if (j === artColumn) {
-                let art = cell.trim();
-                obj[header[j]] = art;
-                let itId = price.find((item) => item.art === art).id;
-                obj["itemId"] = itId;
-                // } else if (j === noteColumn) {
-                //   let art = cell.trim();
-                //   obj[header[j]] = art;
-                //   let itId = price.find((item) => item.art === art).id;
-                //   obj["itemId"] = itId;
-              } else {
-                obj[header[j]] = cell.trim();
+              let itId = undefined;
+              switch (j) {
+                case qtyColumn:
+                  obj[header[j]] = Number(cell);
+                  break;
+                case priceColumn:
+                  //let val = cell.replace("руб.", "").replace(" ", "");
+                  obj[header[j]] = Number(cell.replace("руб.", "").replace(" ", ""));
+                  break;
+                case artColumn:
+                  art = cell.trim();
+                  obj[header[j]] = cell.trim();
+                  // check art in price, if not - skip add
+                  if (price.find((item) => item.art === art)) {
+                    itId = price.find((item) => item.art === art).id;
+                    obj["itemId"] = itId;
+                  } else {
+                    console.log("art", i, art);
+                    haveArt = false;
+                  }
+                  break;
+                default:
+                  obj[header[j]] = cell.trim();
+                  break;
               }
-              row.push(obj);
+
+              // if (j === qtyColumn) {
+              //   obj[header[j]] = Number(cell);
+              // } else if (j === priceColumn) {
+              //   let val = cell.replace("руб.", "").replace(" ", "");
+              //   obj[header[j]] = Number(val);
+              // } else if (j === artColumn) {
+              //   let art = cell.trim();
+              //   obj[header[j]] = art;
+              //   if (price.find((item) => item.art === art)) {
+              //     let itId = price.find((item) => item.art === art).id;
+              //     obj["itemId"] = itId;
+              //   } else {
+              //     haveArt = false;
+              //   }
+              // } else {
+              //   obj[header[j]] = cell.trim();
+              // }
+              // if (haveArt) {
+              //   row.push(obj);
+              // } else {
+              //   console.log("В прайсе нет позиции с артикулом ", art);
+              //   alert("В прайсе нет позиции с артикулом ", art);
+              // }
             });
-            obj.id = i;
-            result.push(obj);
+            if (haveArt) {
+              obj.id = i;
+              result.push(obj);
+            } else {
+              // console.log("В прайсе нет позиции с артикулом ", art);
+              alert("В прайсе нет позиции с артикулом " + art);
+            }
           }
         }
       });
 
-      console.log(result);
+      // console.log(result);
+
       let itemsOrder = result.map((item, index) => {
         const inPrice = price.find((el) => el.id === item.itemId);
-        console.log(inPrice);
+        // console.log(inPrice);
+        // console.log(index);
         return {
           id: index,
           item_id: item.itemId,

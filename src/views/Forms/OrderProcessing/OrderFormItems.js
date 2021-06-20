@@ -8,6 +8,7 @@ import EditItemInOrder from "components/EditItemInOrder/EditItemInOrder";
 // import Typography from "@material-ui/core/Typography";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import FormSection from "components/FormSection/FormSection";
+import FileExportToXls from "components/FileExportToXls/FileExportToXls";
 
 export default function OrderFormItems({ orderData, onChange }) {
   const [state, setState] = useState({
@@ -105,6 +106,7 @@ export default function OrderFormItems({ orderData, onChange }) {
         </Grid>
         <GetOrderItems onChange={(items) => onChange("items", items)} />
         <AddItemInOrder onSubmit={handleAddItem} index={orderData.items.length} />
+        <FileExportToXls data={orderData.items} name={"Позиции в заказе"} />
 
         <Grid item xs={12}>
           <div style={{ height: tableHeight, width: "100%" }}>

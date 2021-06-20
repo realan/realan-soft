@@ -26,6 +26,7 @@
     "chartist": "0.10.1",
     "classnames": "2.2.6",
     "date-fns": "^2.22.1",
+    "emailjs-com": "^3.1.0",
     "graphql": "^14.6.0",
     "history": "4.10.1",
     "match-sorter": "4.1.0",

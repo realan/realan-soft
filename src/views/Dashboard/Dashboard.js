@@ -1,8 +1,9 @@
 import React from "react";
 import { useState } from "react";
 import DateButton from "components/DateButton/DateButton";
+import SendMail from "components/SendMail/SendMail";
 import ModalResorting from "./ModalResorting";
-import AddCustomerForm from "views/Forms/AddCustomerForm";
+// import AddCustomerForm from "views/Forms/AddCustomerForm";
 
 const Orders = () => {
   const today = new Date();
@@ -27,7 +28,8 @@ const Orders = () => {
         {"    По "}
         <DateButton value={endDate} onChange={(date) => setEndDate(date)} />
       </div>
-      <AddCustomerForm />
+      <SendMail />
+
       <ModalResorting startDate={startDate} endDate={endDate} />
     </>
   );
