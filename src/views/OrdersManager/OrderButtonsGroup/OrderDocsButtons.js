@@ -64,6 +64,9 @@ const GET_ORDER_DATA = gql`
       profit_calc_id
       discount
       our_firm_id
+      firm_id
+      shop_id
+      customer_id
       price_type_id
       sum
       sum_in
@@ -135,6 +138,13 @@ const UPDATE_ORDER_INVOICE = gql`
     }
   }
 `;
+const UPDATE_ORDER_PROFIT_CALC = gql`
+  mutation UpdateOrderInvoice($id: Int!, $profit_id: Int!) {
+    update_orders_by_pk(pk_columns: { id: $id }, _set: { profit_calc_id: $profit_id }) {
+      id
+    }
+  }
+`;
 
 export default function OrderDocsButtons({ params }) {
   // console.log("params", params.row);
@@ -180,6 +190,10 @@ export default function OrderDocsButtons({ params }) {
     UpdateOrderInvoice,
     { data: dataInvoice, loading: loadingInvoice, error: errorInvoice },
   ] = useMutation(UPDATE_ORDER_INVOICE);
+  const [
+    UpdateOrderProfit,
+    { data: dataProfit, loading: loadingProfit, error: errorProfit },
+  ] = useMutation(UPDATE_ORDER_PROFIT_CALC);
 
   // fetch order data
   useEffect(() => {
@@ -256,33 +270,24 @@ export default function OrderDocsButtons({ params }) {
     if (dataUpsertDoc) {
       console.log("dataUpsertDoc", dataUpsertDoc.insert_documents);
       dataUpsertDoc.insert_documents.returning.forEach((item) => {
-        console.log(1);
         switch (item.type_doc_id) {
           case 1: // invoice
             UpdateOrderInvoice({
               variables: { id: orderData.order_id, invoice_id: item.id },
             });
             break;
-
           case 2: // bill
-            if (typeDoc === 2) {
-              UpdateOrderBill({
-                variables: { id: orderData.order_id, bill_id: item.id },
-              });
-              break;
-            }
+            UpdateOrderBill({
+              variables: { id: orderData.order_id, bill_id: item.id },
+            });
+            break;
+          case 4: // profit calc
+            UpdateOrderProfit({
+              variables: { id: orderData.order_id, profit_id: item.id },
+            });
+            break;
         }
       });
-      // if (typeDoc === 1) {
-      //   UpdateOrderInvoice({
-      //     variables: { id: orderData.order_id, invoice_id: dataUpsertDoc.insert_documents_one.id },
-      //   });
-      // }
-      // if (typeDoc === 2) {
-      //   UpdateOrderBill({
-      //     variables: { id: orderData.order_id, bill_id: dataUpsertDoc.insert_documents_one.id },
-      //   });
-      // }
     }
   }, [dataUpsertDoc, orderData.id]);
 
@@ -325,6 +330,8 @@ export default function OrderDocsButtons({ params }) {
   if (errorBill) return `Error! ${errorBill.message}`;
   if (loadingInvoice) return <p>Loading Invoice ...</p>;
   if (errorInvoice) return `Error! ${errorInvoice.message}`;
+  if (loadingProfit) return <p>Loading Profit ...</p>;
+  if (errorProfit) return `Error! ${errorProfit.message}`;
 
   const handleButtonClick = (event) => {
     const type = event.currentTarget.id;
@@ -374,6 +381,7 @@ export default function OrderDocsButtons({ params }) {
       //id: id,
       date: date,
       our_firm_id: orderData.our_firm_id,
+      customer_id: orderData.customer_id,
       firm_id: orderData.firm_id,
       shop_id: orderData.shop_id,
       order_id: orderData.order_id,
@@ -387,7 +395,7 @@ export default function OrderDocsButtons({ params }) {
     if (typeDoc === 1) {
       profitData = {
         ...preparedData,
-        type_doc_id: 3,
+        type_doc_id: 4, // profit calc
         sum: preparedData.sum - orderData.sum_in,
       };
       if (profit_id) {
@@ -404,15 +412,8 @@ export default function OrderDocsButtons({ params }) {
     }
 
     console.log("addData", addData);
+    console.log("orderData", orderData);
     UpsertDocuments({ variables: { addData } });
-    // AddDocument({ variables: { addData } });
-
-    //проводим прибыль
-    // if (typeDoc === 1 && orderData.invoice) {
-    //   preparedData.type_doc_id = 3; // id profit
-    //   preparedData.sum = orderData.sum - orderData.sum_in;
-    //   AddDocument({ variables: { addData: preparedData } });
-    // }
 
     setOpen(false);
   };

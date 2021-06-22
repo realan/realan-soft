@@ -9,7 +9,6 @@ import Grid from "@material-ui/core/Grid";
 // import Select from "@material-ui/core/Select";
 // import InputLabel from "@material-ui/core/InputLabel";
 import TextField from "@material-ui/core/TextField";
-import { valueFromAST } from "graphql";
 
 // import "./ContactUs.css";
 
@@ -21,16 +20,18 @@ const emailInfo = {
   from_name: "Сергей",
 };
 
-export default function SendMail() {
+export default function SendMail({ attachment = "" }) {
   const [emailData, setEmailData] = useState(emailInfo);
 
   const handleChange = (type, value) => {
     setEmailData((prevState) => ({ ...prevState, [type]: value }));
   };
+  // let container = new DataTransfer();
+  // container.items.add(file);
 
   function sendEmail(e) {
     e.preventDefault();
-
+    console.log(e.target);
     // emailjs.sendForm("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", e.target, "YOUR_USER_ID").then(
     emailjs
       .sendForm("service_kfuugrn", "template_g5xz8f7", e.target, "user_9kd8rqbfOibC42HqIDXIK")
@@ -40,7 +41,7 @@ export default function SendMail() {
           console.log(result.text);
         },
         (error) => {
-          console.log(error);
+          // console.log(error);
           console.log(error.text);
         }
       );
@@ -106,6 +107,7 @@ export default function SendMail() {
       <label>Attach file:</label> */}
       <Grid item xs={12}>
         <input type="file" name="my_file" />
+        {/* value={attachment} readOnly /> */}
         <input type="submit" value="Send" />
       </Grid>
     </form>
