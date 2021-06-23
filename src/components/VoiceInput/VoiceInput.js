@@ -6,9 +6,14 @@ import Fab from "@material-ui/core/Fab";
 import MicIcon from "@material-ui/icons/Mic";
 import MicOffIcon from "@material-ui/icons/MicOff";
 
-const VoiceInput = ({ onChange }) => {
+const VoiceInput = ({ onChange, stopWord = "стоп" }) => {
   const [state, setState] = useState("");
   const [toggle, setToggle] = useState(true);
+
+  function handleStop() {
+    setToggle(!toggle);
+    SpeechRecognition.stopListening();
+  }
 
   const commands = [
     {
@@ -18,6 +23,10 @@ const VoiceInput = ({ onChange }) => {
     {
       command: "Назад",
       callback: () => onChange(""),
+    },
+    {
+      command: stopWord,
+      callback: handleStop,
     },
   ];
 

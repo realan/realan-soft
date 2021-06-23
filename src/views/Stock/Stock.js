@@ -11,6 +11,8 @@ import StockTableChoise from "components/StockTableChoise/StockTableChoise";
 import VoiceInput from "components/VoiceInput/VoiceInput";
 import { Box } from "@material-ui/core";
 import FileExportToXls from "components/FileExportToXls/FileExportToXls";
+import TextField from "@material-ui/core/TextField";
+// import { withStyles } from "@material-ui/core/styles";
 // import { XGrid } from '@material-ui/x-grid';
 
 const SUBSCRIPTION_STOCK = gql`
@@ -32,6 +34,12 @@ const SUBSCRIPTION_STOCK = gql`
 const useStyles = makeStyles({
   root: {
     display: "flex",
+  },
+  textFieldEmpty: {
+    background: "pink",
+  },
+  textFieldExists: {
+    background: "PaleGreen",
   },
 });
 
@@ -73,6 +81,7 @@ CustomPagination.propTypes = {
 };
 
 const Stock = () => {
+  const classes = useStyles();
   // date for dialog
   const [itemForDialog, setItemForDialog] = useState({
     isOpen: false,
@@ -83,6 +92,13 @@ const Stock = () => {
   const [rows, setRows] = useState([]);
   const [rowsData, setRowsData] = useState([]);
   const [filter, setFilter] = useState("all");
+  const [batchData, setBatchData] = useState({
+    number: "",
+    isExist: false,
+  });
+  // const [voiceText, setVoiceText] = useState("");
+
+  const stopWord = "стоп";
 
   // hook for data from db
   const { loading, error, data } = useSubscription(SUBSCRIPTION_STOCK);
@@ -110,7 +126,7 @@ const Stock = () => {
   );
 
   const onRowClick = (row) => {
-    console.log(row);
+    // console.log(row);
     // if (row.row.order_next + row.row.order_next_week + row.row.order_this_week > 0) {
     setItemForDialog({
       isOpen: true,
@@ -118,6 +134,7 @@ const Stock = () => {
       itemId: row.row.id,
       itemName: row.row.item_name,
       itemArt: row.row.item_art,
+      batchNumber: batchData.number,
     });
     // } else {
     //   console.log(row)
@@ -155,23 +172,42 @@ const Stock = () => {
         preparedRows = rowsData;
         break;
     }
-    console.log("Stock rows", preparedRows);
+    // console.log("Stock rows", preparedRows);
     setRows(preparedRows);
   };
 
-  const onSearchChange = (text) => {
-    const preparedRows = rowsData.filter((row) => row.item_name.toLowerCase().indexOf(text) >= 0);
-    setRows(preparedRows);
+  const onVoiceChange = (text) => {
+    console.log(text);
+    if (text !== stopWord) {
+      const preparedRows = rowsData.filter((row) => row.item_name.toLowerCase().indexOf(text) >= 0);
+      setRows(preparedRows);
+      // setVoiceText(text);
+    }
+  };
+
+  const handleBatchChange = (event) => {
+    let flag = event.target.value === "" ? false : true;
+    setBatchData({ number: event.target.value, isExist: flag });
   };
 
   return (
     <div>
       <Box>
+        <Box>
+          <TextField
+            className={batchData.isExist ? classes.textFieldExists : classes.textFieldEmpty}
+            label="Номер коробки/лотка"
+            variant="outlined"
+            id="custom-outlined-input"
+            value={batchData.number}
+            onChange={handleBatchChange}
+          />
+        </Box>
         <Box flexGrow={1}>
           <StockTableChoise value={filter} onChange={filterChange} />
         </Box>
         <Box>
-          <VoiceInput onChange={onSearchChange} />
+          <VoiceInput onChange={onVoiceChange} stopWord={stopWord} />
         </Box>
       </Box>
       <div style={{ height: 1400, width: "100%" }}>
@@ -194,6 +230,7 @@ const Stock = () => {
           item_name={itemForDialog.itemName}
           item_art={itemForDialog.itemArt}
           stock_now={itemForDialog.stockQty}
+          note={itemForDialog.batchNumber}
         />
       )}
     </div>

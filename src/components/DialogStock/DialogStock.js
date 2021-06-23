@@ -58,7 +58,7 @@ const STORE_TYPE = {
 };
 
 // const DialogStock = (props) => {
-const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_now }) => {
+const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_now, note }) => {
   // console.log("render DialogStock")
   // const classes = useStyles();
   const [itemId, setItemId] = useState(undefined);
@@ -167,7 +167,7 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
   if (loading) return "Loading....";
   if (error) return `Error! ${error.message}`;
 
-  const handleOK = () => {
+  const handleSubmit = () => {
     console.log("handle OK", rows);
     const addData = [];
     rows.map((it) => {
@@ -178,6 +178,7 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
           to_order: it.orderId,
           from_order: 2, // у доработки ID = 2 - типа постоянное значение заказа !!!!!!!!
           item_id: itemId,
+          note: note, // номер партии
         };
         addData.push(obj);
       }
@@ -208,6 +209,7 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
         to_order: 3, // у доработки ID = 2 - типа постоянное значение заказа !!!!!!!!
         from_order: 2, // у склада ID = 3 - типа постоянное значение заказа !!!!!!!!
         item_id: itemId,
+        note: note, // номер партии
       };
       addData.push(obj);
     }
@@ -285,6 +287,8 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
           <Switch checked={showCards} onChange={handleFilter} name="checkedB" color="primary" />
           Карточки
           <img src={imgSource} alt="Item" width={100} height={100} />
+          {"                ПАРТИЯ № (лоток/коробка)  "}
+          <strong>{note}</strong>
           <Button
             onClick={() => setOpenCorrectQty(true)}
             color="primary"
@@ -342,7 +346,7 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
               Отмена
             </Button>
           </Box>
-          <Button onClick={handleOK} color="primary" variant="contained" size="large">
+          <Button onClick={handleSubmit} color="primary" variant="contained" size="large">
             Подтвердить
           </Button>
         </DialogActions>
