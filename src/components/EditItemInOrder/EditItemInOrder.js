@@ -19,6 +19,9 @@ const EditItemInOrder = ({ value, onChange, onDelete, onCancel, onSubmit, open }
       <Dialog open={open} onClose={onCancel} aria-labelledby="form-dialog-title" maxWidth="sm">
         <DialogTitle id="form-dialog-title">{value.name} </DialogTitle>
         <DialogContent>
+          <h5>
+            ! Внести изменения в упаковочные листы, провести набранные позиции из заказа на склад !
+          </h5>
           <TextField
             autoFocus
             margin="dense"

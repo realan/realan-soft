@@ -22,7 +22,13 @@ const useStyles = makeStyles({
   },
 });
 
-export default function OrderForm({ orderData = newOrderFormState, onChange, onSubmit, onCancel }) {
+export default function OrderForm({
+  orderData = newOrderFormState,
+  onChange,
+  onSubmit,
+  onCancel,
+  type,
+}) {
   const classes = useStyles();
   const [formLists, setFormLists] = useState({
     customers: [],
@@ -129,7 +135,7 @@ export default function OrderForm({ orderData = newOrderFormState, onChange, onS
       <CardContent>
         <OrderFormCustomerData orderData={orderData} onChange={onChange} options={formLists} />
         <OrderFormDelivery orderData={orderData} onChange={onChange} />
-        <OrderFormItems orderData={orderData} onChange={onChange} />
+        <OrderFormItems orderData={orderData} onChange={onChange} type={type} />
         <OrderFormDocs orderData={orderData} onChange={onChange} />
       </CardContent>
       <CardActions>

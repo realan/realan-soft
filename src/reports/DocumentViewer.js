@@ -7,24 +7,33 @@ import SendMail from "components/SendMail/SendMail";
 
 const DocumentViewer = ({ docTemplate, data }) => {
   // let blob = new Blob();
+  let document = "";
+
   const reporter = new SSReport();
-  const [attach, setAttach] = useState("");
+  const [attach, setAttach] = useState(document);
+
   useEffect(() => {
     reporter.setTemplate(docTemplate.filename);
     reporter.setTemplateData(data);
     reporter.renderViewer();
-
+    let file = reporter.makeFormFile();
+    document = getBase64(file);
+    console.log("document", document);
     // console.log("DOCUMENT VIEWER data", data);
   }, [docTemplate, data]);
 
+  useEffect(() => {
+    console.log("document", document);
+    setAttach(document);
+  }, [document]);
+
   function getBase64(file) {
-    let document = "";
     let reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = function () {
       document = reader.result;
       console.log("document", document);
-      setAttach(document);
+      // setAttach(document);
     };
     reader.onerror = function (error) {
       console.log("Error: ", error);
@@ -34,9 +43,10 @@ const DocumentViewer = ({ docTemplate, data }) => {
   }
 
   const handleClick = () => {
-    let file = reporter.makeFormFile();
+    setAttach(document);
+    // let file = reporter.makeFormFile();
     // setFile(file);
-    getBase64(file);
+    // getBase64(file);
     // console.log("file", file);
     // console.log("attachment", attachment);
     // setAttach(attachment);

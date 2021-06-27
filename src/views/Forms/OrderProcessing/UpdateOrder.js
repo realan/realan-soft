@@ -187,6 +187,7 @@ export default function UpdateOrder({ open, onClose, orderId }) {
                 onChange={handleChange}
                 onSubmit={handleSubmit}
                 onCancel={handleCancel}
+                type="update"
               />
             )}
           </DialogContent>

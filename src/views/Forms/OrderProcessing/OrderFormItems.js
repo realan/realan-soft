@@ -1,5 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { gql } from "apollo-boost";
+import { useMutation } from "@apollo/react-hooks";
 import { DataGrid } from "@material-ui/data-grid";
 import Grid from "@material-ui/core/Grid";
 import GetOrderItems from "./GetOrderItems";
@@ -10,7 +12,15 @@ import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import FormSection from "components/FormSection/FormSection";
 import FileExportToXls from "components/FileExportToXls/FileExportToXls";
 
-export default function OrderFormItems({ orderData, onChange }) {
+export const DELETE_ITEM = gql`
+  mutation DeleteItem($id: Int!) {
+    delete_items_by_pk(id: $id) {
+      id
+    }
+  }
+`;
+
+export default function OrderFormItems({ orderData, onChange, type }) {
   const [state, setState] = useState({
     weight: 0,
     sum_in: 0,
@@ -21,6 +31,7 @@ export default function OrderFormItems({ orderData, onChange }) {
 
   const [tableHeight, setTableHeight] = useState(200);
   const [openEdit, setOpenEdit] = useState(false);
+  const [DeleteItem, { loading, error }] = useMutation(DELETE_ITEM);
 
   const initStateEditRow = {
     id: undefined,
@@ -53,6 +64,9 @@ export default function OrderFormItems({ orderData, onChange }) {
     }
   }, [orderData.items]);
 
+  if (loading) return "Loading...";
+  if (error) return `Error! ${error.message}`;
+
   const columns = [
     { field: "id", headerName: "id", width: 70 },
     { field: "name", headerName: "Наименование", type: "text", width: 200 },
@@ -71,6 +85,10 @@ export default function OrderFormItems({ orderData, onChange }) {
   const handleDeleteItem = () => {
     const itemsArr = orderData.items.filter((it) => it.id !== editRow.id);
     onChange("items", itemsArr);
+    // if update - delete from DB
+    if (type === "update") {
+      DeleteItem({ variables: { id: editRow.id } });
+    }
     setOpenEdit(false);
   };
 
@@ -104,7 +122,7 @@ export default function OrderFormItems({ orderData, onChange }) {
           Масса <strong>{state.weight}</strong>, сумма дилер {state.sum_dealer} руб., сумма опт{" "}
           {state.sum_opt} руб., сумма розн {state.sum_retail} руб.
         </Grid>
-        <GetOrderItems onChange={(items) => onChange("items", items)} />
+        {type === "add" && <GetOrderItems onChange={(items) => onChange("items", items)} />}
         <AddItemInOrder onSubmit={handleAddItem} index={orderData.items.length} />
         <FileExportToXls data={orderData.items} name={"Позиции в заказе"} />
 

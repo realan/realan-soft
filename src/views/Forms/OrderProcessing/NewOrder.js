@@ -129,6 +129,7 @@ export default function NewOrder() {
           onChange={handleChange}
           onSubmit={handleSubmit}
           onCancel={handleCancel}
+          type="add"
         />
       )}
       {/* <Button variant="outlined" onClick={() => setOpenConfirm(true)}>
