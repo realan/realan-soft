@@ -7,22 +7,24 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import InputWithButtons from "components/InputWithButtons/InputWithButtons";
 import Button from "@material-ui/core/Button";
-import { ADD_MOVE_ITEM } from "../../GraphQL/Mutations";
+import { ADD_MOVES_ITEMS } from "../../GraphQL/Mutations";
 
 const DialogStockCorrectQty = ({ open, itemId, name, stockNow, handleClose }) => {
   const [count, setCount] = useState(0);
 
-  const [AddMove] = useMutation(ADD_MOVE_ITEM);
+  const [AddMove] = useMutation(ADD_MOVES_ITEMS);
 
   const handleOK = () => {
-    if (stockNow !== 0) {
-      const addData = {
-        qty: count - stockNow,
-        to_order: 3, // склад - для расчета точного количества
-        from_order: 5, // ID = 5 - корректировки склада
-        item: itemId,
-      };
-      // console.log(addData)
+    if (stockNow !== count) {
+      const addData = [
+        {
+          qty: count - stockNow,
+          to_order: 3, // склад - для расчета точного количества
+          from_order: 5, // ID = 5 - корректировки склада
+          item_id: itemId,
+        },
+      ];
+      console.log(addData);
       AddMove({ variables: { addData: addData } });
       handleClose(count);
     }

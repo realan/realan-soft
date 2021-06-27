@@ -17,7 +17,7 @@ import TextField from "@material-ui/core/TextField";
 
 const SUBSCRIPTION_STOCK = gql`
   subscription {
-    pivot {
+    pivot(order_by: { item_id: asc }) {
       id: item_id
       item_name
       item_art
@@ -82,6 +82,8 @@ CustomPagination.propTypes = {
 
 const Stock = () => {
   const classes = useStyles();
+  const rowHeight = 50;
+  const rowsQty = 50;
   // date for dialog
   const [itemForDialog, setItemForDialog] = useState({
     isOpen: false,
@@ -114,6 +116,7 @@ const Stock = () => {
   const columns = useMemo(
     () => [
       { field: "id", headerName: "id", width: 10 },
+      { field: "image", headerName: "id", width: rowHeight + 30, renderCell: Image },
       { field: "item_name", headerName: "Название", width: 380 },
       { field: "stock_now", headerName: "Склад", type: "number", width: 80 },
       { field: "order_this_week", headerName: "Зкз 1", type: "number", width: 80 },
@@ -142,6 +145,14 @@ const Stock = () => {
     //   // alert("Этой позиции нет в заказах");
     // }
   };
+
+  function Image(params) {
+    const imgSource =
+      "https://realan-suvenir.ru/image/cache/catalog/products/" +
+      params.row.item_art +
+      "-100x100.jpg";
+    return <img src={imgSource} alt="Item" width={rowHeight} height={rowHeight} />;
+  }
 
   const handleClose = () => {
     setItemForDialog({ ...itemForDialog, isOpen: false });
@@ -210,14 +221,14 @@ const Stock = () => {
           <VoiceInput onChange={onVoiceChange} stopWord={stopWord} />
         </Box>
       </Box>
-      <div style={{ height: 1400, width: "100%" }}>
+      <div style={{ height: rowHeight * rowsQty + 200, width: "100%" }}>
         <DataGrid
           rows={rows}
           columns={columns}
-          rowHeight={30}
+          rowHeight={rowHeight}
           onRowClick={onRowClick}
           pagination
-          pageSize={40}
+          pageSize={rowsQty}
           components={{ pagination: CustomPagination }}
         />
       </div>

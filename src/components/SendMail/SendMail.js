@@ -32,9 +32,12 @@ export default function SendMail({ attachment = "" }) {
   function sendEmail(e) {
     e.preventDefault();
     console.log(e.target);
+    const formData = new FormData();
+    // formData.append(e.target);
+    formData.append("file", attachment);
     // emailjs.sendForm("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", e.target, "YOUR_USER_ID").then(
     emailjs
-      .sendForm("service_kfuugrn", "template_g5xz8f7", e.target, "user_9kd8rqbfOibC42HqIDXIK")
+      .sendForm("service_kfuugrn", "template_g5xz8f7", formData, "user_9kd8rqbfOibC42HqIDXIK")
       //   .send("service_kfuugrn", "template_g5xz8f7")
       .then(
         (result) => {
@@ -106,7 +109,7 @@ export default function SendMail({ attachment = "" }) {
       <textarea name="message" />
       <label>Attach file:</label> */}
       <Grid item xs={12}>
-        <input type="file" name="my_file" />
+        {/* <input type="file" name="my_file" /> */}
         {/* value={attachment} readOnly /> */}
         <input type="submit" value="Send" />
       </Grid>

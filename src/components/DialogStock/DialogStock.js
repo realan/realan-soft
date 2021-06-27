@@ -70,7 +70,7 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
   const [rows, setRows] = useState([]);
 
   function fromProdField(params) {
-    console.log("row params. Pay attn rowIndex as id", params);
+    // console.log("row params. Pay attn rowIndex as id", params);
     const needQty = params.row.needQty - params.row.fromStock;
     return (
       <strong>
@@ -107,6 +107,7 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
 
   const columns = [
     { field: "id", headerName: "id", width: 10 },
+    { field: "orderId", headerName: "idOrder", width: 80 },
     // { field: 'customer', headerName: 'Заказчик', width: 150 },
     // { field: 'town', headerName: 'Город', width: 110 },
     { field: "townAndCustomer", headerName: "Заказ", width: 250 },
@@ -134,7 +135,7 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
 
   useEffect(() => {
     if (data) {
-      console.log("stock item data", data);
+      // console.log("stock item data", data);
       const preparedData = data.items.map((it, key) => {
         const dateOut = new Date(it.order.date_out);
         const sumTo = it.order.movingsToOrder.reduce((sum, current) => sum + current.qty, 0);
@@ -159,7 +160,7 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
         };
         return obj;
       });
-      console.log("preparedData", preparedData);
+      // console.log("preparedData", preparedData);
       setRows(preparedData);
     }
   }, [data]);
@@ -286,7 +287,7 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
           {item_name}
           <Switch checked={showCards} onChange={handleFilter} name="checkedB" color="primary" />
           Карточки
-          <img src={imgSource} alt="Item" width={100} height={100} />
+          <img src={imgSource} alt="Item" width={150} height={150} />
           {"                ПАРТИЯ № (лоток/коробка)  "}
           <strong>{note}</strong>
           <Button
@@ -326,17 +327,14 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
 
           <div>
             {" "}
-            Со склада на производство
-            <InputWithButtons onChange={handleChangeStockToProd} />
+            С производства на склад
+            <InputWithButtons onChange={handleChangeProdToStock} />
           </div>
 
           <div>
             {" "}
-            С производства на склад
-            <InputWithButtons onChange={handleChangeProdToStock} />
-          </div>
-          <div>
-            <img src={imgSource} alt="Item" width={100} height={100} />
+            Со склада на производство
+            <InputWithButtons onChange={handleChangeStockToProd} />
           </div>
         </DialogContent>
 
