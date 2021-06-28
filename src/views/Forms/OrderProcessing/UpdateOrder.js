@@ -78,12 +78,13 @@ export default function UpdateOrder({ open, onClose, orderId }) {
 
   useEffect(() => {
     if (dataOrder) {
-      console.log("order data query", dataOrder);
+      // console.log("order data query", dataOrder);
       setOrderData(dataOrder.orders[0]);
       const dateOut = new Date(dataOrder.orders[0].date_out);
       handleChange("date_out", dateOut);
       const pay_till_date = new Date(dataOrder.orders[0].pay_till_date);
       handleChange("pay_till_date", pay_till_date);
+      // console.log("dataOrder", dataOrder);
       const items = dataOrder.orders[0].items.map((it) => {
         let discount = it.price.supplier.our_discount ? it.price.supplier.our_discount : 0;
         return {

@@ -10,6 +10,7 @@ import FileExportToXls from "components/FileExportToXls/FileExportToXls";
 // import UpdateOrder from "components/OrderData/UpdateOrder";
 import OrderDocsButtons from "./OrderButtonsGroup/OrderDocsButtons";
 import EditOrderButton from "./OrderButtonsGroup/EditOrderButton";
+import SendMailButton from "./OrderButtonsGroup/SendMailButton";
 import OrderInfoButtons from "./OrderButtonsGroup/OrderInfoButtons";
 import { renderProgress } from "@material-ui/x-grid-data-generator";
 import DeleteOrderButton from "./OrderButtonsGroup/DeleteOrderButton";
@@ -95,6 +96,7 @@ const OrdersTable = () => {
       { field: "dateOut", headerName: "Отгрузка", type: "date", width: 110 },
       { field: "buttonsInfo", headerName: "Инфо", width: 200, renderCell: InfoButtons },
       { field: "buttonsDocs", headerName: "Документы", width: 150, renderCell: DocsButtons },
+      { field: "sendMail", headerName: "Письмо", width: 100, renderCell: EmailButton },
       // { field: "updateOrder", headerName: "Обн", width: 50, renderCell: UpdateOrderIcon },
       { field: "sum", headerName: "Сумма", type: "number", width: 120 },
       // { field: "price_type_id", headerName: "Сумма", type: "number", width: 120 },
@@ -149,6 +151,9 @@ const OrdersTable = () => {
   }
   function DeleteButton(params) {
     return <DeleteOrderButton params={params} />;
+  }
+  function EmailButton(params) {
+    return <SendMailButton params={params} />;
   }
 
   return (
