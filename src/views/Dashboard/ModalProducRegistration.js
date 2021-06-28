@@ -34,6 +34,7 @@ const QUERY_GET_FROM_SUPPLIER = gql`
         art
         name
       }
+      to_order
       qty
       note
     }
@@ -69,6 +70,7 @@ const ModalProducRegistration = ({ startDate, endDate }) => {
           date: item.created_at,
           qty: item.qty,
           note: item.note,
+          to_order: item.to_order,
         };
       });
       setRows(preparedRows);
