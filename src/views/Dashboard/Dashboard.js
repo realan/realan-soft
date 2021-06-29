@@ -5,6 +5,7 @@ import SendMail from "components/SendMail/SendMail";
 import ModalResorting from "./ModalResorting";
 import moment from "moment";
 import ModalProducRegistration from "./ModalProducRegistration";
+import ModalOrderToSupplier from "./ModalOrderToSupplier";
 // import AddCustomerForm from "views/Forms/AddCustomerForm";
 
 const Orders = () => {
@@ -23,6 +24,7 @@ const Orders = () => {
 
       <ModalProducRegistration startDate={startDate} endDate={endDate} />
       <ModalResorting startDate={startDate} endDate={endDate} />
+      <ModalOrderToSupplier />
       <SendMail />
     </>
   );

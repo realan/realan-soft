@@ -107,6 +107,11 @@ const Stock = () => {
 
   useEffect(() => {
     if (!loading && data) {
+      // let obj = data.pivot.map(it => {
+      //   let
+      //   return
+      // });
+
       setRowsData(data.pivot);
       setRows(data.pivot);
     }
