@@ -6,6 +6,8 @@ import ModalResorting from "./ModalResorting";
 import moment from "moment";
 import ModalProducRegistration from "./ModalProducRegistration";
 import ModalOrderToSupplier from "./ModalOrderToSupplier";
+import ModalCompleteSet from "views/Stock/ModalCompleteSet";
+import ModalMoving from "../../components/MovingHandle/ModalMoving";
 // import AddCustomerForm from "views/Forms/AddCustomerForm";
 
 const Orders = () => {
@@ -25,6 +27,8 @@ const Orders = () => {
       <ModalProducRegistration startDate={startDate} endDate={endDate} />
       <ModalResorting startDate={startDate} endDate={endDate} />
       <ModalOrderToSupplier />
+      <ModalCompleteSet />
+      <ModalMoving startDate={startDate} endDate={endDate} />
       <SendMail />
     </>
   );

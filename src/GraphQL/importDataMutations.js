@@ -187,6 +187,20 @@ export const UPSERT_MOVES = gql`
     }
   }
 `;
+export const UPSERT_SETS = gql`
+  mutation UpsertMoves($addData: [sets_insert_input!]!) {
+    insert_sets(
+      objects: $addData
+      on_conflict: { constraint: sets_pkey, update_columns: [component_id, set_id] }
+    ) {
+      returning {
+        id
+        component_id
+        set_id
+      }
+    }
+  }
+`;
 
 export const UPSERT_ORDERS = gql`
   mutation UpsertOrders($addData: [orders_insert_input!]!) {

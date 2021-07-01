@@ -139,4 +139,5 @@ export const dataStructure = {
     { to_order: "number" },
     { created_at: "text" },
   ],
+  sets: [{ component_id: "number" }, { set_id: "number" }],
 };

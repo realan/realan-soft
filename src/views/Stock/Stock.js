@@ -12,6 +12,7 @@ import VoiceInput from "components/VoiceInput/VoiceInput";
 import { Box } from "@material-ui/core";
 import FileExportToXls from "components/FileExportToXls/FileExportToXls";
 import TextField from "@material-ui/core/TextField";
+import ModalCompleteSet from "./ModalCompleteSet";
 // import { withStyles } from "@material-ui/core/styles";
 // import { XGrid } from '@material-ui/x-grid';
 
@@ -218,6 +219,7 @@ const Stock = () => {
             value={batchData.number}
             onChange={handleBatchChange}
           />
+          <ModalCompleteSet />
         </Box>
         <Box flexGrow={1}>
           <StockTableChoise value={filter} onChange={filterChange} />

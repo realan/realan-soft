@@ -18,6 +18,7 @@ import {
   UPSERT_PRICE,
   UPSERT_SHOPS,
   UPSERT_CONTRACTS,
+  UPSERT_SETS,
 } from "../../GraphQL/importDataMutations";
 // import { UpsertMutations } from "../GraphQL/importDataMutations";
 
@@ -35,6 +36,7 @@ const ImportData = () => {
   const [UpsertPrice] = useMutation(UPSERT_PRICE);
   const [UpsertShops] = useMutation(UPSERT_SHOPS);
   const [UpsertContracts] = useMutation(UPSERT_CONTRACTS);
+  const [UpsertSets] = useMutation(UPSERT_SETS);
 
   const mutations = {};
   mutations["category"] = UpsertCategory;
@@ -48,6 +50,7 @@ const ImportData = () => {
   mutations["price"] = UpsertPrice;
   mutations["shops"] = UpsertShops;
   mutations["contracts"] = UpsertContracts;
+  mutations["sets"] = UpsertSets;
 
   // ["customers", "documents", "firms", "persons", "shops", "category", "price", "orders", "items", "moving"]
 

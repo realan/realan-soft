@@ -169,7 +169,7 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
   if (error) return `Error! ${error.message}`;
 
   const handleSubmit = () => {
-    console.log("handle OK", rows);
+    // console.log("handle OK", rows);
     const addData = [];
     rows.map((it) => {
       let obj = {};
@@ -214,7 +214,7 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
       };
       addData.push(obj);
     }
-    console.log("move items", addData);
+    // console.log("move items", addData);
     if (addData.length > 0) {
       AddMoves({ variables: { addData: addData } });
     }
@@ -246,10 +246,10 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
   };
 
   const onCountChange = (newCount, currentRows, id, storeType) => {
-    console.log("New count", newCount);
-    console.log("currentRows", currentRows);
-    console.log("id", id);
-    console.log("storeType", storeType);
+    // console.log("New count", newCount);
+    // console.log("currentRows", currentRows);
+    // console.log("id", id);
+    // console.log("storeType", storeType);
     const preparedRow = currentRows.map((row) => {
       if (row.id === id) {
         return {
