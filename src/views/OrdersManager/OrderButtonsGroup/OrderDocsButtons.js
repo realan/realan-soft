@@ -74,15 +74,6 @@ const GET_ORDER_DATA = gql`
   }
 `;
 
-// bill {
-//   number
-//   date
-// }
-// invoice {
-//   number
-//   date
-// }
-
 const GET_LAST_DOC_NUMBER = gql`
   query getLastDocNumber($year: Int!, $our_firm_id: Int!, $type_doc_id: Int!) {
     documents(
@@ -98,14 +89,6 @@ const GET_LAST_DOC_NUMBER = gql`
     }
   }
 `;
-
-// const ADD_DOCUMENT = gql`
-//   mutation AddDocument($addData: documents_insert_input!) {
-//     insert_documents_one(object: $addData) {
-//       id
-//     }
-//   }
-// `;
 
 export const UPSERT_DOCUMENTS = gql`
   mutation UpsertDocument($addData: [documents_insert_input!]!) {
@@ -183,17 +166,15 @@ export default function OrderDocsButtons({ params }) {
   //   { data: dataDocument, loading: loadingDocument, error: errorDocument },
   // ] = useMutation(ADD_DOCUMENT);
 
-  const [UpdateOrderBill, { data: dataBill, loading: loadingBill, error: errorBill }] = useMutation(
+  const [UpdateOrderBill, { loading: loadingBill, error: errorBill }] = useMutation(
     UPDATE_ORDER_BILL
   );
-  const [
-    UpdateOrderInvoice,
-    { data: dataInvoice, loading: loadingInvoice, error: errorInvoice },
-  ] = useMutation(UPDATE_ORDER_INVOICE);
-  const [
-    UpdateOrderProfit,
-    { data: dataProfit, loading: loadingProfit, error: errorProfit },
-  ] = useMutation(UPDATE_ORDER_PROFIT_CALC);
+  const [UpdateOrderInvoice, { loading: loadingInvoice, error: errorInvoice }] = useMutation(
+    UPDATE_ORDER_INVOICE
+  );
+  const [UpdateOrderProfit, { loading: loadingProfit, error: errorProfit }] = useMutation(
+    UPDATE_ORDER_PROFIT_CALC
+  );
 
   // fetch order data
   useEffect(() => {

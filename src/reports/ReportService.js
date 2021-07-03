@@ -40,15 +40,15 @@ class SSReport {
     // console.log("SS viewer options", options);
     const viewer = new Stimulsoft.Viewer.StiViewer(options, "StiViewer", false);
 
-    viewer.onEmailReport = function (args) {
-      // args.settings -  данные формы отправки Email
-      // args.settings.email  -  адрес почты
-      // args.settings.subject  -  тема письма
-      // args.settings.message  -  текст письма
-      // args.format  -  формат экспорта - Pdf, Html, Html5, Excel2007, Word2007, Csv
-      // args.fileName - имя файла отчета (имя вложения)
-      // args.data  -  байтовый массив с экспортированным файлом отчета
-    };
+    // viewer.onEmailReport = function (args) {
+    // args.settings -  данные формы отправки Email
+    // args.settings.email  -  адрес почты
+    // args.settings.subject  -  тема письма
+    // args.settings.message  -  текст письма
+    // args.format  -  формат экспорта - Pdf, Html, Html5, Excel2007, Word2007, Csv
+    // args.fileName - имя файла отчета (имя вложения)
+    // args.data  -  байтовый массив с экспортированным файлом отчета
+    // };
 
     viewer.report = this.report;
     viewer.renderHtml("viewer");

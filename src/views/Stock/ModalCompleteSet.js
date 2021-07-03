@@ -11,14 +11,18 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import InputWithButtons from "components/InputWithButtons/InputWithButtons";
 
-import { DataGrid } from "@material-ui/data-grid";
+// import { DataGrid } from "@material-ui/data-grid";
 import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
 import Draggable from "react-draggable";
-import { useLazyQuery } from "@apollo/react-hooks";
+
+import { QuantityChanger } from "components/QuantityChanger";
+// import InputWithButtons from "components/InputWithButtons/InputWithButtons";
+
+import { useLazyQuery, useMutation } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
+import { ADD_MOVES_ITEMS } from "../../GraphQL/Mutations";
 
 function PaperComponent(props) {
   return (
@@ -65,6 +69,9 @@ const QUERY_GET_SETS = gql`
         id
         art
         name
+        pivot {
+          stock_now
+        }
       }
       set {
         art
@@ -79,15 +86,16 @@ const ModalCompleteSet = () => {
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
   const [options, setOptions] = useState([]);
-  const [pos, setPos] = useState("");
+  const [rows, setRows] = useState([]);
+  const [setId, setSetId] = useState("");
   const [count, setCount] = useState(0);
+  const [maxCount, setMaxCount] = useState(0);
 
   const [getSetData, { loading, error, data }] = useLazyQuery(QUERY_GET_SETS);
+  const [AddMoves] = useMutation(ADD_MOVES_ITEMS);
 
   useEffect(() => {
     if (!loading && data) {
-      console.log(data);
-
       const preparedRows = data.sets.map((item) => {
         return {
           id: item.id,
@@ -97,12 +105,12 @@ const ModalCompleteSet = () => {
           component_name: item.component.name,
           component_art: item.component.art,
           component_id: item.component.id,
+          stock_qty: item.component.pivot.stock_now,
         };
       });
-
-      let op = getUnique(preparedRows, "set_name", "set_id");
-      // console.log(op);
-      setOptions(op);
+      let arr = getUnique(preparedRows, "set_name", "set_id");
+      setOptions(arr);
+      setRows(preparedRows);
     }
   }, [loading, data]);
 
@@ -115,7 +123,12 @@ const ModalCompleteSet = () => {
   });
 
   const handleChange = (event) => {
-    setPos(event.target.value);
+    const itemId = event.target.value;
+    setSetId(itemId);
+    let arr = rows.filter((it) => it.set_id === itemId).map((it) => it.stock_qty);
+    let min = Math.min(...arr);
+    setMaxCount(min);
+    setCount(0);
   };
 
   if (loading) return "Loading....";
@@ -125,12 +138,28 @@ const ModalCompleteSet = () => {
     setIsOpen(false);
   };
   const handleSubmit = () => {
-    console.log(pos);
-    const components = data.sets.filter(function (item) {
-      return item.set.id === pos;
+    let addData = rows
+      .filter((it) => it.set_id === setId)
+      .map((it) => {
+        return {
+          qty: count,
+          to_order: 4, // комплектация ID = 4 - типа постоянное значение заказа !!!!!!!!
+          from_order: 3, // у склада ID = 3 - типа постоянное значение заказа !!!!!!!!
+          item_id: it.component_id,
+          note: "В комплект", // номер партии
+        };
+      });
+    addData.push({
+      qty: count,
+      to_order: 3, // у склада ID = 3 - типа постоянное значение заказа !!!!!!!!
+      from_order: 4, // комплектация ID = 4 - типа постоянное значение заказа !!!!!!!!
+      item_id: setId,
+      note: "сборка комплекта", // номер партии
     });
-    console.log(components);
-    // setIsOpen(false);
+
+    AddMoves({ variables: { addData: addData } });
+
+    setIsOpen(false);
   };
   const handleOpen = () => {
     getSetData();
@@ -161,14 +190,15 @@ const ModalCompleteSet = () => {
             <Select
               labelId="simple-select-label_set"
               id="simple-select-label_set"
-              value={pos}
+              value={setId}
               onChange={handleChange}
             >
               {listSets}
             </Select>
           </FormControl>
+          <h5>Максимум можно сформировать {maxCount} комплектов</h5>
           <div>
-            <InputWithButtons onChange={handleCountChange} />
+            <QuantityChanger value={count} onChange={handleCountChange} maxValue={maxCount} />
           </div>
         </DialogContent>
 
@@ -178,7 +208,11 @@ const ModalCompleteSet = () => {
               Отмена
             </Button>
           </Box>
-          <Button onClick={handleSubmit} color="primary">
+          <Button
+            onClick={handleSubmit}
+            color="primary"
+            disabled={setId !== "" && count !== 0 ? false : true}
+          >
             Сформировать
           </Button>
         </DialogActions>

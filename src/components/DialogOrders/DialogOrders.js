@@ -135,6 +135,7 @@ const DialogOrders = ({ open, handleClose, orderData }) => {
   const [AddMovesItemsMutation] = useMutation(ADD_MOVES_ITEMS);
 
   function fromProdField(params) {
+    console.log(params);
     const needQty = params.row.qtyOrder - params.row.qtyCollect - params.row.fromStock;
     return (
       <strong>
@@ -142,7 +143,7 @@ const DialogOrders = ({ open, handleClose, orderData }) => {
           maxValue={needQty}
           id={params.rowIndex}
           onChange={(newValue) =>
-            onCountChange(newValue, rows, params.rowIndex, STORE_TYPE.PRODUCTION)
+            onCountChange(newValue, rows, params.row.id, STORE_TYPE.PRODUCTION)
           }
           colorType="default"
           value={params.row.fromProd}
@@ -161,7 +162,7 @@ const DialogOrders = ({ open, handleClose, orderData }) => {
           minValue={-params.row.qtyCollect}
           maxValue={maxValue}
           id={params.rowIndex}
-          onChange={(newValue) => onCountChange(newValue, rows, params.rowIndex, STORE_TYPE.STOCK)}
+          onChange={(newValue) => onCountChange(newValue, rows, params.row.id, STORE_TYPE.STOCK)}
           value={params.row.fromStock}
         />
       </strong>

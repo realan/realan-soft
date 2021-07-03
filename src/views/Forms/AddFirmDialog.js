@@ -154,10 +154,6 @@ export default function AddFirmDialog({ customerId }) {
     }
   };
 
-  const handleComplete = (message) => {
-    return <ConfirmSnackbar open={true} message={message} />;
-  };
-
   if (loading) return "Loading...";
   if (error) return `Error! ${error.message}`;
   if (loadingCo) return "Loading...";

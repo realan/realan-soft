@@ -30,12 +30,14 @@ export default function Dashboard(props) {
   // states and functions
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [miniActive, setMiniActive] = React.useState(false);
-  const [image, setImage] = React.useState(require("assets/img/sidebar-2.jpg"));
+  const [image, setImage] = React.useState("assets/img/sidebar-2.jpg");
+  // const [image, setImage] = React.useState(require("assets/img/sidebar-2.jpg"));
   const [color, setColor] = React.useState("blue");
   const [bgColor, setBgColor] = React.useState("black");
   // const [hasImage, setHasImage] = React.useState(true);
   const [fixedClasses, setFixedClasses] = React.useState("dropdown");
-  const [logo, setLogo] = React.useState(require("assets/img/logo-white.svg"));
+  const [logo, setLogo] = React.useState("assets/img/logo-white.svg");
+  // const [logo, setLogo] = React.useState(require("assets/img/logo-white.svg"));
   const [routes, setRoutes] = React.useState(routesInitial);
   // styles
   const classes = useStyles();
@@ -100,9 +102,11 @@ export default function Dashboard(props) {
   const handleBgColorClick = (bgColor) => {
     switch (bgColor) {
       case "white":
+        // setLogo("assets/img/logo.svg");
         setLogo(require("assets/img/logo.svg"));
         break;
       default:
+        // setLogo("assets/img/logo-white.svg");
         setLogo(require("assets/img/logo-white.svg"));
         break;
     }

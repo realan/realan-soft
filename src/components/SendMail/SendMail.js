@@ -20,7 +20,7 @@ const emailInfo = {
   from_name: "Сергей",
 };
 
-export default function SendMail({ attachment = "" }) {
+export default function SendMail() {
   const [emailData, setEmailData] = useState(emailInfo);
 
   const handleChange = (type, value) => {
@@ -29,12 +29,12 @@ export default function SendMail({ attachment = "" }) {
   // let container = new DataTransfer();
   // container.items.add(file);
   // const blob = new Blob([data], { type: "application/pdf" });
-  let blob = new Blob(["Hello, world!"], { type: "text/plain" });
+  // let blob = new Blob(["Hello, world!"], { type: "text/plain" });
 
   function sendEmail(e) {
     e.preventDefault();
-    console.log(e.target);
-    const formData = new FormData();
+    // console.log(e.target);
+    // const formData = new FormData();
     // formData.append(e.target);
     // formData.append("my_file", blob, "doc.pdf");
     // formData.append("name", emailData.name);
@@ -42,18 +42,18 @@ export default function SendMail({ attachment = "" }) {
     // formData.append("subject", emailData.subject);
     // formData.append("from_name", emailData.from_name);
     // emailjs.sendForm("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", e.target, "YOUR_USER_ID").then(
-    // emailjs
-    //   .sendForm("service_kfuugrn", "template_g5xz8f7", formData, "user_9kd8rqbfOibC42HqIDXIK")
-    //   //   .send("service_kfuugrn", "template_g5xz8f7")
-    //   .then(
-    //     (result) => {
-    //       console.log(result.text);
-    //     },
-    //     (error) => {
-    //       // console.log(error);
-    //       console.log(error.text);
-    //     }
-    //   );
+    emailjs
+      .sendForm("service_kfuugrn", "template_g5xz8f7", e.target, "user_9kd8rqbfOibC42HqIDXIK")
+      //   .send("service_kfuugrn", "template_g5xz8f7")
+      .then(
+        (result) => {
+          console.log(result.text);
+        },
+        (error) => {
+          // console.log(error);
+          console.log(error.text);
+        }
+      );
   }
 
   return (
