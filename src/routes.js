@@ -1,6 +1,8 @@
 import Dashboard from "views/Dashboard/Dashboard";
 import OrdersStock from "views/Stock/OrdersStock";
 import Stock from "views/Stock/Stock";
+import StockOld from "views/Stock/StockOld";
+import Suppliers from "views/Suppliers/Suppliers";
 import StockDashboard from "views/Stock/StockDashboard";
 import StockHistory from "views/Stock/StockHistory";
 import OrdersManager from "views/OrdersManager/OrdersManager";
@@ -35,7 +37,7 @@ var dashRoutes = [
     path: "/suppliers",
     name: "Поставщики",
     icon: EmojiTransportationIcon,
-    component: OrdersStock,
+    component: Suppliers,
     layout: "/admin",
     roles: ["admin", "stock"],
   },
@@ -85,7 +87,7 @@ var dashRoutes = [
         path: "/stock-old",
         name: "Старая версия",
         mini: "СТ",
-        component: Stock,
+        component: StockOld,
         layout: "/admin",
       },
     ],

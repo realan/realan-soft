@@ -1,22 +1,23 @@
 import React from "react";
 import { useState } from "react";
-import DateButton from "components/DateButton/DateButton";
 import ModalResorting from "./ModalResorting";
 import moment from "moment";
 import ModalCompleteSet from "views/Stock/ModalCompleteSet";
+import DateInterval from "components/DateInterval/DateInterval";
 
 const StockDashboard = () => {
-  const [startDate, setStartDate] = useState(moment().startOf("isoWeek").toDate());
-  const [endDate, setEndDate] = useState(new Date());
+  const [interval, setInterval] = useState({
+    start: moment().startOf("isoWeek").toDate(),
+    end: new Date(),
+  });
+
+  const handleDateChange = (date, type) =>
+    setInterval((prevState) => ({ ...prevState, [type]: date }));
 
   return (
     <>
-      <div>
-        {"C "} <DateButton value={startDate} onChange={(date) => setStartDate(date)} />
-        {"    По "}
-        <DateButton value={endDate} onChange={(date) => setEndDate(date)} />
-      </div>
-      <ModalResorting startDate={startDate} endDate={endDate} />
+      <DateInterval start={interval.start} end={interval.end} onChange={handleDateChange} />
+      <ModalResorting startDate={interval.start} endDate={interval.end} />
       <ModalCompleteSet />
     </>
   );

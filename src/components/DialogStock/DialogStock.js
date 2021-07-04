@@ -58,7 +58,16 @@ const STORE_TYPE = {
 };
 
 // const DialogStock = (props) => {
-const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_now, note }) => {
+const DialogStock = ({
+  open,
+  handleClose,
+  item_id,
+  item_name,
+  item_art,
+  stock_now,
+  note,
+  order_supply_id = 2,
+}) => {
   // console.log("render DialogStock")
   // const classes = useStyles();
   const [itemId, setItemId] = useState(undefined);
@@ -76,7 +85,7 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
       <strong>
         <QuantityChanger
           maxValue={needQty}
-          id={params.rowIndex}
+          id={params.row.id}
           onChange={(newValue) =>
             onCountChange(newValue, rows, params.row.id, STORE_TYPE.PRODUCTION)
           }
@@ -97,7 +106,7 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
         <QuantityChanger
           minValue={-(params.row.orderQty - params.row.needQty)}
           maxValue={maxValue}
-          id={params.rowIndex}
+          id={params.row.id}
           onChange={(newValue) => onCountChange(newValue, rows, params.row.id, STORE_TYPE.STOCK)}
           value={params.row.fromStock}
         />
@@ -121,7 +130,6 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
     { field: "note", headerName: "Примечание", type: "text", width: 110 },
   ];
 
-  // const [AddMove] = useMutation(ADD_MOVE_ITEM);
   const [AddMoves] = useMutation(ADD_MOVES_ITEMS);
 
   const { loading, error, data } = useSubscription(SUBSCRIPTION_ORDERS_BY_ID, {
@@ -135,6 +143,7 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
 
   useEffect(() => {
     if (data) {
+      // console.log(itemId);
       // console.log("stock item data", data);
       const preparedData = data.items.map((it, key) => {
         const dateOut = new Date(it.order.date_out);
@@ -177,7 +186,7 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
         obj = {
           qty: it.fromProd,
           to_order: it.orderId,
-          from_order: 2, // у доработки ID = 2 - типа постоянное значение заказа !!!!!!!!
+          from_order: order_supply_id, //  типа постоянное значение заказа !!!!!!!!
           item_id: itemId,
           note: note, // номер партии
         };
@@ -196,19 +205,21 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
     });
     let obj = {};
     if (stockToProd > 0) {
+      // Возврат товара поставщику
       obj = {
         qty: stockToProd,
-        to_order: 2, // у доработки ID = 2 - типа постоянное значение заказа !!!!!!!!
+        to_order: 2, // у Мрамолита ID = 2 - типа постоянное значение заказа. А другой Поставщик??? !!!!!!!!
         from_order: 3, // у склада ID = 3 - типа постоянное значение заказа !!!!!!!!
         item_id: itemId,
       };
       addData.push(obj);
     }
     if (prodToStock > 0) {
+      // От поставщика на свободный склад
       obj = {
         qty: prodToStock,
-        to_order: 3, // у доработки ID = 2 - типа постоянное значение заказа !!!!!!!!
-        from_order: 2, // у склада ID = 3 - типа постоянное значение заказа !!!!!!!!
+        to_order: 3, // у склада Реалана ID = 3 - типа постоянное значение заказа !!!!!!!!
+        from_order: order_supply_id, // у Мрамолита ID = 2 - типа постоянное значение заказа !!!!!!!!
         item_id: itemId,
         note: note, // номер партии
       };
@@ -267,7 +278,7 @@ const DialogStock = ({ open, handleClose, item_id, item_name, item_art, stock_no
       }, 0);
       setStockQty(stock_now - sumQtyFromStock);
     }
-    console.log(preparedRow);
+    // console.log(preparedRow);
     setRows(preparedRow);
   };
 

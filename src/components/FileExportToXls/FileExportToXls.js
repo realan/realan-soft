@@ -20,7 +20,7 @@ const FileExportToXls = ({ data, name }) => {
   const preparedData = convertToExport(data);
 
   const exportFile = () => {
-    console.log(preparedData);
+    // console.log(preparedData);
     /* convert state to workbook */
     const ws = XLSX.utils.aoa_to_sheet(preparedData);
     const wb = XLSX.utils.book_new();

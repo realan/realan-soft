@@ -50,6 +50,7 @@ export const UPDATE_ORDER = gql`
     $invoice_id: Int
     $is_cancelled: Boolean
     $is_shipped: Boolean
+    $is_need_packing: Boolean
     $note_order: String
     $note_supplier: String
     $our_firm_id: Int
@@ -83,6 +84,7 @@ export const UPDATE_ORDER = gql`
         invoice_id: $invoice_id
         is_cancelled: $is_cancelled
         is_shipped: $is_shipped
+        is_need_packing: $is_need_packing
         note_order: $note_order
         note_supplier: $note_supplier
         our_firm_id: $our_firm_id
@@ -152,6 +154,7 @@ export const UPSERT_ORDER = gql`
           weight
           note_order
           note_supplier
+          is_need_packing
         ]
       }
     ) {
@@ -192,6 +195,7 @@ export const GET_ORDER_DATA = gql`
       shop_id
       sum
       weight
+      is_need_packing
       customer {
         id
         name
@@ -277,6 +281,36 @@ export const newOrderFormState = {
   consignee_data: "",
   delivery_id: undefined,
   delivery_note: "",
+  is_need_packing: true,
+};
+
+export const newSupplierOrderFormState = {
+  customer_id: null,
+  firm_id: undefined,
+  shop_id: undefined,
+  person_id: undefined,
+  customer: { name: undefined },
+  items: [],
+  sum: 0,
+  discount: 0,
+  payment_term: "",
+  packaging: "",
+  price_type_id: 1,
+  orderParams: {
+    weight: 0,
+    sum_in: 0,
+    sum_opt: 0,
+    sum_dealer: 0,
+    sum_retail: 0,
+  },
+  city: "",
+  address: "",
+  consignee_name: "",
+  consignee_phone: "",
+  consignee_data: "",
+  delivery_id: undefined,
+  delivery_note: "",
+  is_need_packing: false,
 };
 
 export const SUBSCRIPTION_CUSTOMERS = gql`

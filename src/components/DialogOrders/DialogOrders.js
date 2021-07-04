@@ -141,7 +141,7 @@ const DialogOrders = ({ open, handleClose, orderData }) => {
       <strong>
         <QuantityChanger
           maxValue={needQty}
-          id={params.rowIndex}
+          id={params.row.id}
           onChange={(newValue) =>
             onCountChange(newValue, rows, params.row.id, STORE_TYPE.PRODUCTION)
           }
@@ -161,7 +161,7 @@ const DialogOrders = ({ open, handleClose, orderData }) => {
         <QuantityChanger
           minValue={-params.row.qtyCollect}
           maxValue={maxValue}
-          id={params.rowIndex}
+          id={params.row.id}
           onChange={(newValue) => onCountChange(newValue, rows, params.row.id, STORE_TYPE.STOCK)}
           value={params.row.fromStock}
         />

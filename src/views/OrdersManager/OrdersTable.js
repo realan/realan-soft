@@ -20,7 +20,12 @@ const SUBSCRIPTION_ORDERS_MANAGER = gql`
   subscription {
     orders(
       order_by: { id: desc }
-      where: { is_cancelled: { _eq: false }, is_shipped: { _eq: false }, id: { _gte: 10 } }
+      where: {
+        is_cancelled: { _eq: false }
+        is_shipped: { _eq: false }
+        is_purchase: { _eq: false }
+        id: { _gte: 10 }
+      }
     ) {
       id
       date_out

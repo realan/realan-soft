@@ -1,10 +1,12 @@
 import React from "react";
 import { useState } from "react";
-import SendMail from "components/SendMail/SendMail";
 import moment from "moment";
+// import ModalOrderToSupplier from "./ModalOrderToSupplier";
 import DateInterval from "components/DateInterval/DateInterval";
+import UnorderedPositions from "./UnorderedPositions";
+import NewSuplierOrder from "./NewSuplierOrder";
 
-const Dashboard = () => {
+const Suppliers = () => {
   const [interval, setInterval] = useState({
     start: moment().startOf("isoWeek").toDate(),
     end: new Date(),
@@ -16,9 +18,11 @@ const Dashboard = () => {
   return (
     <>
       <DateInterval start={interval.start} end={interval.end} onChange={handleDateChange} />
-      <SendMail />
+      {/* <ModalOrderToSupplier startDate={interval.start} endDate={interval.end} /> */}
+      <NewSuplierOrder />
+      <UnorderedPositions startDate={interval.start} endDate={interval.end} />
     </>
   );
 };
 
-export default Dashboard;
+export default Suppliers;

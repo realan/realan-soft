@@ -1,29 +1,20 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Button } from "@material-ui/core";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import { DataGrid } from "@material-ui/data-grid";
 import Box from "@material-ui/core/Box";
-import Paper from "@material-ui/core/Paper";
-import Draggable from "react-draggable";
 import FileExportToXls from "components/FileExportToXls/FileExportToXls";
-import { useLazyQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 
-function PaperComponent(props) {
-  return (
-    <Draggable handle="#draggable-dialog-title" cancel={'[class*="MuiDialogContent-root"]'}>
-      <Paper {...props} />
-    </Draggable>
-  );
-}
-
 const QUERY_GET_UNORDERED = gql`
-  query GetUnorderedItems {
-    items(where: { is_ordered: { _eq: false } }) {
+  query GetUnorderedItems($startDate: timestamptz, $endDate: timestamptz) {
+    items(
+      where: {
+        is_ordered: { _eq: false }
+        order: { date_out: { _gte: $startDate, _lte: $endDate } }
+      }
+    ) {
       item_id
       id
       note
@@ -50,8 +41,7 @@ const QUERY_GET_UNORDERED = gql`
   }
 `;
 
-const ModalOrderToSupplier = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const UnorderedPositions = ({ startDate, endDate }) => {
   const [rows, setRows] = useState([]);
 
   const columns = [
@@ -67,8 +57,13 @@ const ModalOrderToSupplier = () => {
     { field: "city", headerName: "Город", width: 250 },
     { field: "suppler_name", headerName: "Поставщик", width: 250 },
   ];
-
-  const [getUnorderedItems, { loading, error, data }] = useLazyQuery(QUERY_GET_UNORDERED);
+  console.log(startDate, endDate);
+  const { loading, error, data } = useQuery(QUERY_GET_UNORDERED, {
+    variables: {
+      startDate: startDate,
+      endDate: endDate,
+    },
+  });
 
   useEffect(() => {
     if (!loading && data) {
@@ -97,47 +92,26 @@ const ModalOrderToSupplier = () => {
   if (loading) return "Loading....";
   if (error) return `Error! ${error.message}`;
 
-  const handleClose = () => {
-    setIsOpen(false);
-  };
-  const handleOpen = () => {
-    getUnorderedItems();
-    setIsOpen(true);
+  const handleSubmit = () => {
+    console.log("submit");
   };
 
   return (
     <>
-      <Button color="primary" variant="outlined" onClick={handleOpen}>
-        Заказать позиции
-      </Button>
-      <Dialog
-        open={isOpen}
-        fullWidth={true}
-        maxWidth="md"
-        PaperComponent={PaperComponent}
-        aria-labelledby="draggable-dialog-title"
-      >
-        <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title"></DialogTitle>
+      {Boolean(rows.length) && (
+        <div style={{ height: 500, width: "100%" }}>
+          <DataGrid rows={rows} columns={columns} rowHeight={32} />
+        </div>
+      )}
 
-        <DialogContent>
-          {Boolean(rows.length) && (
-            <div style={{ height: 500, width: "100%" }}>
-              <DataGrid rows={rows} columns={columns} rowHeight={32} />
-            </div>
-          )}
-        </DialogContent>
-
-        <DialogActions>
-          <Box flexGrow={1}>
-            <Button onClick={handleClose} color="primary">
-              Отмена
-            </Button>
-          </Box>
-          <FileExportToXls data={rows} name={"Заказать"} />
-        </DialogActions>
-      </Dialog>
+      <Box flexGrow={1}>
+        <Button onClick={handleSubmit} color="primary">
+          Отмена
+        </Button>
+      </Box>
+      <FileExportToXls data={rows} name={"Заказать"} />
     </>
   );
 };
 
-export default ModalOrderToSupplier;
+export default UnorderedPositions;

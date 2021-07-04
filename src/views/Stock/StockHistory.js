@@ -4,10 +4,10 @@ import { DataGrid } from "@material-ui/data-grid";
 import { useSubscription } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 import moment from "moment";
-import DateButton from "components/DateButton/DateButton";
 import UpdateMove from "./UpdateMove";
 import DeleteMove from "./DeleteMove";
 import FileExportToXls from "components/FileExportToXls/FileExportToXls";
+import DateInterval from "components/DateInterval/DateInterval";
 
 const SUBSCRIPTION_MOVING = gql`
   subscription GetMoving($startDate: timestamp!, $endDate: timestamp!) {
@@ -47,8 +47,11 @@ function deleteField(params) {
 }
 
 const StockHistory = () => {
-  const [startDate, setStartDate] = useState(moment().startOf("isoWeek").toDate());
-  const [endDate, setEndDate] = useState(new Date());
+  const [interval, setInterval] = useState({
+    start: moment().startOf("isoWeek").toDate(),
+    end: new Date(),
+  });
+
   const [rows, setRows] = useState([]);
 
   const columns = [
@@ -66,12 +69,8 @@ const StockHistory = () => {
     { field: "delete", headerName: "Удалить", width: 80, renderCell: deleteField },
   ];
 
-  // const [getMovings, { loading, error, data }] = useLazyQuery(QUERY_GET_MOVING, {
-  //   variables: { startDate: startDate, endDate: endDate },
-  // });
-
   const { loading, error, data } = useSubscription(SUBSCRIPTION_MOVING, {
-    variables: { startDate: startDate, endDate: endDate },
+    variables: { startDate: interval.start, endDate: interval.end },
   });
 
   useEffect(() => {
@@ -98,13 +97,12 @@ const StockHistory = () => {
   if (loading) return "Loading....";
   if (error) return `Error! ${error.message}`;
 
+  const handleDateChange = (date, type) =>
+    setInterval((prevState) => ({ ...prevState, [type]: date }));
+
   return (
     <>
-      <div>
-        {"C "} <DateButton value={startDate} onChange={(date) => setStartDate(date)} />
-        {"    По "}
-        <DateButton value={endDate} onChange={(date) => setEndDate(date)} />
-      </div>
+      <DateInterval start={interval.start} end={interval.end} onChange={handleDateChange} />
       {Boolean(rows.length) && (
         <div style={{ height: 900, width: "100%" }}>
           <DataGrid rows={rows} columns={columns} rowHeight={32} />

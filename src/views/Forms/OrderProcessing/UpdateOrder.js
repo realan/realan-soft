@@ -148,6 +148,7 @@ export default function UpdateOrder({ open, onClose, orderId }) {
         firm_id: orderData.firm_id,
         invoice_id: orderData.invoice_id,
         is_cancelled: orderData.is_cancelled,
+        is_need_packing: orderData.is_need_packing,
         is_shipped: orderData.is_shipped,
         note_order: orderData.note_order,
         note_supplier: orderData.note_supplier,
