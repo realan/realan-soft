@@ -90,6 +90,7 @@ const SupplyOrderRegister = ({ orderId }) => {
   });
   const [rows, setRows] = useState([]);
   const [rowsData, setRowsData] = useState([]);
+  const [filteredRows, setFilteredRows] = useState([]);
   const [filter, setFilter] = useState("all");
 
   // const [voiceText, setVoiceText] = useState("");
@@ -107,7 +108,7 @@ const SupplyOrderRegister = ({ orderId }) => {
       // console.log(data);
       let preparedData = data.items_suppiers.map((it) => {
         return {
-          id: it.item_id,
+          id: it.id,
           is_registered: it.is_registered,
           item_id: it.item_id,
           note: it.note,
@@ -121,6 +122,7 @@ const SupplyOrderRegister = ({ orderId }) => {
       });
       // console.log(preparedData);
       setRowsData(preparedData);
+      setFilteredRows(preparedData);
       setRows(preparedData);
     }
   }, [loading, data]);
@@ -143,9 +145,11 @@ const SupplyOrderRegister = ({ orderId }) => {
     setItemForDialog({
       isOpen: true,
       stockQty: row.row.stock_now,
-      itemId: row.row.id,
+      itemId: row.row.item_id,
       itemName: row.row.item_name,
       itemArt: row.row.item_art,
+      item_supply_id: row.row.id,
+      qty_registered: row.row.qty_registered,
       // batchNumber: batchData.number,
     });
   };
@@ -183,18 +187,24 @@ const SupplyOrderRegister = ({ orderId }) => {
           (row) => row.order_this_week - row.collected_this_week !== 0
         );
         break;
+      case "notRegistered":
+        preparedRows = rowsData.filter((row) => row.qty_rest !== 0);
+        break;
       default:
         preparedRows = rowsData;
         break;
     }
     // console.log("Stock rows", preparedRows);
+    setFilteredRows(preparedRows);
     setRows(preparedRows);
   };
 
   const onVoiceChange = (text) => {
     // console.log(text);
     if (text !== stopWord) {
-      const preparedRows = rowsData.filter((row) => row.item_name.toLowerCase().indexOf(text) >= 0);
+      const preparedRows = filteredRows.filter(
+        (row) => row.item_name.toLowerCase().indexOf(text) >= 0
+      );
       setRows(preparedRows);
       // setVoiceText(text);
     }
@@ -231,6 +241,8 @@ const SupplyOrderRegister = ({ orderId }) => {
           item_art={itemForDialog.itemArt}
           stock_now={itemForDialog.stockQty}
           order_supply_id={orderId}
+          item_supply_id={itemForDialog.item_supply_id}
+          qty_registered={itemForDialog.qty_registered}
           // note={itemForDialog.batchNumber}
         />
       )}

@@ -17,6 +17,17 @@ import DialogStockCorrectQty from "components/DialogStockCorrectQty/DialogStockC
 import { ADD_MOVES_ITEMS } from "../../GraphQL/Mutations";
 import { QuantityChanger } from "components/QuantityChanger";
 
+export const UPDATE_SUPPLY_ITEM = gql`
+  mutation UpdateSupplyItem($id: Int!, $qty_registered: Int!) {
+    update_items_suppiers_by_pk(
+      pk_columns: { id: $id }
+      _set: { qty_registered: $qty_registered }
+    ) {
+      id
+    }
+  }
+`;
+
 // const useStyles = makeStyles(styles);
 
 const SUBSCRIPTION_ORDERS_BY_ID = gql`
@@ -67,6 +78,8 @@ const DialogStock = ({
   stock_now,
   note,
   order_supply_id = 2,
+  item_supply_id,
+  qty_registered,
 }) => {
   // console.log("render DialogStock")
   // const classes = useStyles();
@@ -77,6 +90,8 @@ const DialogStock = ({
   const [showCards, setShowCards] = useState(false);
   const [openCorrectQty, setOpenCorrectQty] = useState(false);
   const [rows, setRows] = useState([]);
+
+  console.log("item_supply_id", item_supply_id);
 
   function fromProdField(params) {
     // console.log("row params. Pay attn rowIndex as id", params);
@@ -125,12 +140,13 @@ const DialogStock = ({
     { field: "orderQty", headerName: "Заказ", type: "number", width: 80 },
     // { field: 'needQty', headerName: 'Нужно', type: "number", width: 80 },
     { field: "collectedQty", headerName: "Набрано", type: "number", width: 80 },
-    { field: "fromProd", headerName: "С доработки", width: 200, renderCell: fromProdField },
+    { field: "fromProd", headerName: "От поставщика", width: 200, renderCell: fromProdField },
     { field: "fromStock", headerName: "Со склада", width: 200, renderCell: fromStockField },
     { field: "note", headerName: "Примечание", type: "text", width: 110 },
   ];
 
-  const [AddMoves] = useMutation(ADD_MOVES_ITEMS);
+  const [AddMoves] = useMutation(ADD_MOVES_ITEMS); // { loading: loadAddMoves, error: errorAddMoves, data: dataAddMoves },
+  const [UpdateSupplyItems] = useMutation(UPDATE_SUPPLY_ITEM);
 
   const { loading, error, data } = useSubscription(SUBSCRIPTION_ORDERS_BY_ID, {
     variables: { item_id: itemId },
@@ -140,6 +156,13 @@ const DialogStock = ({
     setItemId(item_id);
     setStockQty(stock_now);
   }, [stock_now, item_id]);
+
+  // useEffect(() => {
+  //   if (!loadAddMoves && dataAddMoves && order_supply_id !== 2) {
+  //     console.log("kjhhkj");
+  //     UpdateSupplyItems({ variables: { addData: addData } });
+  //   }
+  // }, [dataAddMoves, loadAddMoves, order_supply_id]);
 
   useEffect(() => {
     if (data) {
@@ -176,10 +199,13 @@ const DialogStock = ({
 
   if (loading) return "Loading....";
   if (error) return `Error! ${error.message}`;
+  // if (loadAddMoves) return "Loading....";
+  // if (errorAddMoves) return `Error! ${errorAddMoves.message}`;
 
   const handleSubmit = () => {
     // console.log("handle OK", rows);
     const addData = [];
+    let sumFromProd = 0; // количество пришедщего с производства
     rows.map((it) => {
       let obj = {};
       if (it.fromProd !== 0) {
@@ -191,6 +217,7 @@ const DialogStock = ({
           note: note, // номер партии
         };
         addData.push(obj);
+        sumFromProd = sumFromProd + obj.qty;
       }
       if (it.fromStock !== 0) {
         obj = {
@@ -224,10 +251,18 @@ const DialogStock = ({
         note: note, // номер партии
       };
       addData.push(obj);
+      sumFromProd = sumFromProd + obj.qty;
     }
     // console.log("move items", addData);
     if (addData.length > 0) {
       AddMoves({ variables: { addData: addData } });
+    }
+
+    if (sumFromProd > 0 && item_supply_id && order_supply_id !== 2) {
+      // Жопа, надо подумать
+      UpdateSupplyItems({
+        variables: { id: item_supply_id, qty_registered: sumFromProd + qty_registered },
+      });
     }
     setProdToStock(0);
     setStockToProd(0);
@@ -338,13 +373,13 @@ const DialogStock = ({
 
           <div>
             {" "}
-            С производства на склад
+            От поставщика на склад
             <InputWithButtons onChange={handleChangeProdToStock} />
           </div>
 
           <div>
             {" "}
-            Со склада на производство
+            Со склада - поставщику
             <InputWithButtons onChange={handleChangeStockToProd} />
           </div>
         </DialogContent>

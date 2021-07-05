@@ -29,6 +29,7 @@ const StockTableChoise = ({ value = "all", onChange }) => {
         <FormControlLabel value="needAllWeeks" control={<Radio />} label="Нужно" />
         <FormControlLabel value="stockNow" control={<Radio />} label="На складе" />
         <FormControlLabel value="needThisWeek" control={<Radio />} label="Эта неделя" />
+        <FormControlLabel value="notRegistered" control={<Radio />} label="Поставщик нужно" />
       </RadioGroup>
     </>
   );
