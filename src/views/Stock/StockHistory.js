@@ -18,6 +18,7 @@ const SUBSCRIPTION_MOVING = gql`
       id
       created_at
       price {
+        id
         art
         name
       }
@@ -79,6 +80,7 @@ const StockHistory = () => {
       const preparedRows = data.moving.map((item) => {
         return {
           id: item.id,
+          price_id: item.price.id,
           name: item.price.name,
           art: item.price.art,
           date: new Date(item.created_at),

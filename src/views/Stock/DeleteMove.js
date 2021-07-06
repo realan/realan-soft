@@ -17,11 +17,19 @@ const DELETE_MOVE = gql`
     }
   }
 `;
+// const UPDATE_SUPPLY_ITEM = gql`
+//   mutation DeleteMove($id: Int!) {
+//     delete_moving_by_pk(id: $id) {
+//       id
+//     }
+//   }
+// `;
 
 const DeleteMove = ({ value }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const [DeteteMove] = useMutation(DELETE_MOVE);
+  // const [UpdateSupplyItem] = useMutation(UPDATE_SUPPLY_ITEM);
 
   // console.log(value);
   const handleSubmit = () => {

@@ -19,16 +19,21 @@ const SUBSCRIPTION_ITEMS = gql`
   subscription($order_id: Int!) {
     items_suppiers(where: { order_id: { _eq: $order_id } }, order_by: { price: { id: asc } }) {
       id
-      is_registered
       item_id
       note
       qty
-      qty_registered
       price {
         art
         name_voice
         pivot {
           stock_now
+        }
+        movings_aggregate(where: { from_order: { _eq: $order_id } }) {
+          aggregate {
+            sum {
+              qty
+            }
+          }
         }
       }
     }
@@ -94,7 +99,7 @@ const SupplyOrderRegister = ({ orderId, batchNumber }) => {
   const [filter, setFilter] = useState("all");
 
   // const [voiceText, setVoiceText] = useState("");
-  console.log(batchNumber);
+  // console.log(batchNumber);
   const stopWord = "стоп";
 
   const { loading, error, data } = useSubscription(SUBSCRIPTION_ITEMS, {
@@ -106,15 +111,16 @@ const SupplyOrderRegister = ({ orderId, batchNumber }) => {
   useEffect(() => {
     if (!loading && data) {
       // console.log(data);
+
       let preparedData = data.items_suppiers.map((it) => {
+        let qty_registered = it.price.movings_aggregate.aggregate.sum.qty;
         return {
           id: it.id,
-          is_registered: it.is_registered,
           item_id: it.item_id,
           note: it.note,
           qty: it.qty,
-          qty_registered: it.qty_registered,
-          qty_rest: it.qty - it.qty_registered,
+          qty_registered: qty_registered,
+          qty_rest: it.qty - qty_registered,
           item_art: it.price.art,
           item_name: it.price.name_voice,
           stock_now: it.price.pivot.stock_now,
@@ -231,7 +237,7 @@ const SupplyOrderRegister = ({ orderId, batchNumber }) => {
           components={{ pagination: CustomPagination }}
         />
       </div>
-      <FileExportToXls data={rows} name={"склад"} />
+      <FileExportToXls data={rows} name={"Заказ поставщика"} />
       {itemForDialog.itemId && (
         <DialogStock
           open={itemForDialog.isOpen}

@@ -53,7 +53,7 @@ const Stock = () => {
   });
 
   const [options, setOptions] = useState([]);
-  const [orderId, setOrderId] = useState(undefined);
+  const [orderId, setOrderId] = useState("");
 
   const { loading, error, data } = useQuery(QUERY_SUPPLY_ORDERS);
 
