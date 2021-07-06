@@ -78,7 +78,7 @@ CustomPagination.propTypes = {
   }).isRequired,
 };
 
-const SupplyOrderRegister = ({ orderId }) => {
+const SupplyOrderRegister = ({ orderId, batchNumber }) => {
   const rowHeight = 80;
   const rowsQty = 50;
   // date for dialog
@@ -94,7 +94,7 @@ const SupplyOrderRegister = ({ orderId }) => {
   const [filter, setFilter] = useState("all");
 
   // const [voiceText, setVoiceText] = useState("");
-
+  console.log(batchNumber);
   const stopWord = "стоп";
 
   const { loading, error, data } = useSubscription(SUBSCRIPTION_ITEMS, {
@@ -150,7 +150,7 @@ const SupplyOrderRegister = ({ orderId }) => {
       itemArt: row.row.item_art,
       item_supply_id: row.row.id,
       qty_registered: row.row.qty_registered,
-      // batchNumber: batchData.number,
+      batchNumber: batchNumber,
     });
   };
 
@@ -243,7 +243,7 @@ const SupplyOrderRegister = ({ orderId }) => {
           order_supply_id={orderId}
           item_supply_id={itemForDialog.item_supply_id}
           qty_registered={itemForDialog.qty_registered}
-          // note={itemForDialog.batchNumber}
+          note={batchNumber}
         />
       )}
     </div>

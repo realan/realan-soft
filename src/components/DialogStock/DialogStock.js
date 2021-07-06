@@ -91,7 +91,7 @@ const DialogStock = ({
   const [openCorrectQty, setOpenCorrectQty] = useState(false);
   const [rows, setRows] = useState([]);
 
-  console.log("item_supply_id", item_supply_id);
+  console.log("note", note);
 
   function fromProdField(params) {
     // console.log("row params. Pay attn rowIndex as id", params);
@@ -255,6 +255,7 @@ const DialogStock = ({
     }
     // console.log("move items", addData);
     if (addData.length > 0) {
+      console.log(addData);
       AddMoves({ variables: { addData: addData } });
     }
 

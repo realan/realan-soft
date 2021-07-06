@@ -115,7 +115,7 @@ const Stock = () => {
             onChange={handleBatchChange}
           />
         </Box>
-        {orderId && <SupplyOrderRegister orderId={orderId} />}
+        {orderId && <SupplyOrderRegister orderId={orderId} batchNumber={batchData.number} />}
       </Box>
     </>
   );
