@@ -58,7 +58,6 @@ export default function NewSuplierOrder() {
           order_id: data.insert_orders_one.id,
           supplier_id: 1, // Мрамолит по умолчанию, сделать получше !!!!!!
           note: it.note,
-          is_registered: false,
           price_in: +(price * (1 - orderData.discount)).toFixed(2),
         };
         return obj;
