@@ -16,17 +16,18 @@ import DialogStockCorrectQty from "components/DialogStockCorrectQty/DialogStockC
 // import { ADD_MOVE_ITEM } from "../../GraphQL/Mutations";
 import { ADD_MOVES_ITEMS } from "../../GraphQL/Mutations";
 import { QuantityChanger } from "components/QuantityChanger";
+import { orderConstant } from "constants/orderConstant";
 
-export const UPDATE_SUPPLY_ITEM = gql`
-  mutation UpdateSupplyItem($id: Int!, $qty_registered: Int!) {
-    update_items_suppiers_by_pk(
-      pk_columns: { id: $id }
-      _set: { qty_registered: $qty_registered }
-    ) {
-      id
-    }
-  }
-`;
+// export const UPDATE_SUPPLY_ITEM = gql`
+//   mutation UpdateSupplyItem($id: Int!, $qty_registered: Int!) {
+//     update_items_suppiers_by_pk(
+//       pk_columns: { id: $id }
+//       _set: { qty_registered: $qty_registered }
+//     ) {
+//       id
+//     }
+//   }
+// `;
 
 // const useStyles = makeStyles(styles);
 
@@ -77,9 +78,9 @@ const DialogStock = ({
   item_art,
   stock_now,
   note,
-  order_supply_id = 2,
-  item_supply_id,
-  qty_registered,
+  order_supply_id = orderConstant.stockMramolit,
+  // item_supply_id,
+  // qty_registered,
 }) => {
   // console.log("render DialogStock")
   // const classes = useStyles();
@@ -91,7 +92,7 @@ const DialogStock = ({
   const [openCorrectQty, setOpenCorrectQty] = useState(false);
   const [rows, setRows] = useState([]);
 
-  console.log("note", note);
+  // console.log("note", note);
 
   function fromProdField(params) {
     // console.log("row params. Pay attn rowIndex as id", params);
@@ -146,7 +147,7 @@ const DialogStock = ({
   ];
 
   const [AddMoves] = useMutation(ADD_MOVES_ITEMS); // { loading: loadAddMoves, error: errorAddMoves, data: dataAddMoves },
-  const [UpdateSupplyItems] = useMutation(UPDATE_SUPPLY_ITEM);
+  // const [UpdateSupplyItems] = useMutation(UPDATE_SUPPLY_ITEM);
 
   const { loading, error, data } = useSubscription(SUBSCRIPTION_ORDERS_BY_ID, {
     variables: { item_id: itemId },
@@ -223,7 +224,7 @@ const DialogStock = ({
         obj = {
           qty: it.fromStock,
           to_order: it.orderId,
-          from_order: 3, // у склада ID = 3 - типа постоянное значение заказа !!!!!!!!
+          from_order: orderConstant.stockRealan,
           item_id: itemId,
         };
         addData.push(obj);
@@ -232,12 +233,21 @@ const DialogStock = ({
     });
     let obj = {};
     if (stockToProd > 0) {
-      // Возврат товара поставщику
+      // Брак: фиксируем и возвращаем поставщику
       obj = {
         qty: stockToProd,
-        to_order: 2, // у Мрамолита ID = 2 - типа постоянное значение заказа. А другой Поставщик??? !!!!!!!!
-        from_order: 3, // у склада ID = 3 - типа постоянное значение заказа !!!!!!!!
+        to_order: orderConstant.defectItems,
+        from_order: order_supply_id,
         item_id: itemId,
+        note: note,
+      };
+      addData.push(obj);
+      obj = {
+        qty: stockToProd,
+        to_order: order_supply_id,
+        from_order: orderConstant.defectItems,
+        item_id: itemId,
+        note: note,
       };
       addData.push(obj);
     }
@@ -245,8 +255,8 @@ const DialogStock = ({
       // От поставщика на свободный склад
       obj = {
         qty: prodToStock,
-        to_order: 3, // у склада Реалана ID = 3 - типа постоянное значение заказа !!!!!!!!
-        from_order: order_supply_id, // у Мрамолита ID = 2 - типа постоянное значение заказа !!!!!!!!
+        to_order: orderConstant.stockRealan,
+        from_order: order_supply_id,
         item_id: itemId,
         note: note, // номер партии
       };
@@ -259,12 +269,12 @@ const DialogStock = ({
       AddMoves({ variables: { addData: addData } });
     }
 
-    if (sumFromProd > 0 && item_supply_id && order_supply_id !== 2) {
-      // Жопа, надо подумать
-      UpdateSupplyItems({
-        variables: { id: item_supply_id, qty_registered: sumFromProd + qty_registered },
-      });
-    }
+    // if (sumFromProd > 0 && item_supply_id && order_supply_id !== orderConstant.stockMramolit) {
+    //   // Жопа, надо подумать
+    //   UpdateSupplyItems({
+    //     variables: { id: item_supply_id, qty_registered: sumFromProd + qty_registered },
+    //   });
+    // }
     setProdToStock(0);
     setStockToProd(0);
     handleClose();
@@ -277,6 +287,9 @@ const DialogStock = ({
   const handleChangeStockToProd = (qty) => {
     setStockToProd(qty);
   };
+  // const handleChangeDefectToProd = (qty) => {
+  //   setStockToProd(qty);
+  // };
   const handleChangeProdToStock = (qty) => {
     setProdToStock(qty);
   };
@@ -349,7 +362,7 @@ const DialogStock = ({
 
         <DialogContent>
           {Boolean(rows.length) && !showCards && (
-            <div style={{ height: 800, width: "100%" }}>
+            <div style={{ height: rows.length * 55 + 150, width: "100%" }}>
               <DataGrid rows={rows} columns={columns} />
             </div>
           )}
@@ -380,7 +393,7 @@ const DialogStock = ({
 
           <div>
             {" "}
-            Со склада - поставщику
+            Брак: проводим приход на склад и возврат поставщику.
             <InputWithButtons onChange={handleChangeStockToProd} />
           </div>
         </DialogContent>
@@ -397,13 +410,15 @@ const DialogStock = ({
         </DialogActions>
       </Dialog>
 
-      <DialogStockCorrectQty
-        open={openCorrectQty}
-        itemId={item_id}
-        name={item_name}
-        stockNow={stockQty}
-        handleClose={handleCorrectQty}
-      />
+      {openCorrectQty && (
+        <DialogStockCorrectQty
+          open={openCorrectQty}
+          itemId={item_id}
+          name={item_name}
+          stockNow={stockQty}
+          handleClose={handleCorrectQty}
+        />
+      )}
     </div>
   );
 };

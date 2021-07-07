@@ -28,7 +28,14 @@ const SUBSCRIPTION_ITEMS = gql`
         pivot {
           stock_now
         }
-        movings_aggregate(where: { from_order: { _eq: $order_id } }) {
+        qty_to: movings_aggregate(where: { from_order: { _eq: $order_id } }) {
+          aggregate {
+            sum {
+              qty
+            }
+          }
+        }
+        qty_from: movings_aggregate(where: { to_order: { _eq: $order_id } }) {
           aggregate {
             sum {
               qty
@@ -110,10 +117,11 @@ const SupplyOrderRegister = ({ orderId, batchNumber }) => {
 
   useEffect(() => {
     if (!loading && data) {
-      // console.log(data);
+      console.log(data);
 
       let preparedData = data.items_suppiers.map((it) => {
-        let qty_registered = it.price.movings_aggregate.aggregate.sum.qty;
+        let qty_registered =
+          it.price.qty_to.aggregate.sum.qty - it.price.qty_from.aggregate.sum.qty;
         return {
           id: it.id,
           item_id: it.item_id,
@@ -247,8 +255,8 @@ const SupplyOrderRegister = ({ orderId, batchNumber }) => {
           item_art={itemForDialog.itemArt}
           stock_now={itemForDialog.stockQty}
           order_supply_id={orderId}
-          item_supply_id={itemForDialog.item_supply_id}
-          qty_registered={itemForDialog.qty_registered}
+          // item_supply_id={itemForDialog.item_supply_id}
+          // qty_registered={itemForDialog.qty_registered}
           note={batchNumber}
         />
       )}
