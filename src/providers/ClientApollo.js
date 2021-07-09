@@ -15,17 +15,17 @@ cache.writeData({
 });
 
 const httpLink = createHttpLink({
-  uri: "https://realan-suvenir.hasura.app/v1/graphql",
+  uri: "https://realan-soft.hasura.app/v1/graphql",
 });
 
 // Create a WebSocket link:
 const wsLink = new WebSocketLink({
-  uri: "wss://realan-suvenir.hasura.app/v1/graphql",
+  uri: "wss://realan-soft.hasura.app/v1/graphql",
   options: {
     reconnect: true,
     connectionParams: {
       headers: {
-        "x-hasura-admin-secret": "PY9vNvuzdxrPAjSOoO8TLhjqvqiU2GbkQHqPvljqeL2GAgipDgkZb78hPdJXBg05",
+        "x-hasura-admin-secret": "7Nm8QVTUxGdRalWbZzDnHDy4ZiByKk32I5O6FVDV3LJfQys7t2WRu3qPHMW70olV",
       },
     },
     //   connectionParams: {
