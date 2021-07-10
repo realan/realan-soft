@@ -8,7 +8,7 @@ import "perfect-scrollbar/css/perfect-scrollbar.css";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 
-// import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth0 } from "@auth0/auth0-react";
 
 // core components
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
@@ -26,6 +26,7 @@ var ps;
 const useStyles = makeStyles(styles);
 
 export default function Dashboard(props) {
+  const { user, isLoading, isAuthenticated, error } = useAuth0();
   const { ...rest } = props;
   // states and functions
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -36,14 +37,26 @@ export default function Dashboard(props) {
   const [bgColor, setBgColor] = React.useState("black");
   // const [hasImage, setHasImage] = React.useState(true);
   const [fixedClasses, setFixedClasses] = React.useState("dropdown");
-  const [logo, setLogo] = React.useState("assets/img/logo-white.svg");
+  const [logo, setLogo] = React.useState("assets/img/logo-white.png");
   // const [logo, setLogo] = React.useState(require("assets/img/logo-white.svg"));
   const [routes, setRoutes] = React.useState(routesInitial);
   // styles
   const classes = useStyles();
 
-  //Auth0
-  // const { user, isLoading, error } = useAuth0();
+  React.useEffect(() => {
+    console.log("user data Anmin component", user);
+    let roles = [];
+    let availableRoutes = [];
+    if (user) {
+      roles = user["https://realan-suvenir.ru/roles"];
+      availableRoutes = routesInitial.filter((path) => {
+        return path.roles.some((serverRole) => roles.includes(serverRole));
+      });
+      setRoutes(availableRoutes);
+    } else {
+      setRoutes([]);
+    }
+  }, [user]);
 
   const mainPanelClasses =
     classes.mainPanel +
@@ -54,6 +67,7 @@ export default function Dashboard(props) {
     });
   // ref for main panel div
   const mainPanel = React.createRef();
+
   // effect instead of componentDidMount, componentDidUpdate and componentWillUnmount
   React.useEffect(() => {
     if (navigator.platform.indexOf("Win") > -1) {
@@ -75,22 +89,13 @@ export default function Dashboard(props) {
     };
   });
 
-  // useEffect(() => {
-  //   console.log("user data Anmin component", user);
-  //   let roles = [];
-  //   let availableRoutes = [];
-  //   if (user) {
-  //     roles = user["https://realan-suvenir.ru/roles"];
-  //     availableRoutes = routesInitial.filter((path) => {
-  //       return path.roles.some((serverRole) => roles.includes(serverRole));
-  //     });
-  //     setRoutes(availableRoutes);
-  //   }
-  // }, [user]);
+  // Authentitication
+  if (error) return <div>Oops... {error.message}</div>;
+  if (isLoading) return <div>Loading </div>;
 
-  // // Authentitication
-  // if (error) return <div>Oops... {error.message}</div>;
-  // if (isLoading) return <div>Loading </div>;
+  if (isAuthenticated) {
+    console.log("user", user);
+  }
 
   // functions for changeing the states from components
   const handleImageClick = (image) => {
@@ -103,11 +108,11 @@ export default function Dashboard(props) {
     switch (bgColor) {
       case "white":
         // setLogo("assets/img/logo.svg");
-        setLogo(require("assets/img/logo.svg"));
+        setLogo("assets/img/logo.svg");
         break;
       default:
         // setLogo("assets/img/logo-white.svg");
-        setLogo(require("assets/img/logo-white.svg"));
+        setLogo("assets/img/logo-white.png");
         break;
     }
     setBgColor(bgColor);

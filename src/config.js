@@ -23,7 +23,7 @@ export function getConfig() {
     clientId: configJson.clientId,
     ...(audience ? { audience } : null),
   };
-  // console.log(obj);
+  console.log(obj);
   return obj;
   // {
   //   domain: configJson.domain,
