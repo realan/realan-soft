@@ -31,7 +31,7 @@ var dashRoutes = [
     icon: DashboardIcon,
     component: Dashboard,
     layout: "/admin",
-    roles: ["admin"],
+    roles: ["admin", "stock"],
   },
   {
     path: "/suppliers",

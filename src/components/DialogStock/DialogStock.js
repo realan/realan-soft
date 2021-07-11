@@ -13,6 +13,7 @@ import InputWithButtons from "components/InputWithButtons/InputWithButtons";
 // import CardPosInOrder from "components/CardPosInOrder/CardPosInOrder";
 import Switch from "@material-ui/core/Switch";
 import DialogStockCorrectQty from "components/DialogStockCorrectQty/DialogStockCorrectQty";
+import ConfirmSnackbar from "components/ConfirmSnackbar/ConfirmSnackbar";
 // import { ADD_MOVE_ITEM } from "../../GraphQL/Mutations";
 import { ADD_MOVES_ITEMS } from "../../GraphQL/Mutations";
 import { QuantityChanger } from "components/QuantityChanger";
@@ -64,6 +65,12 @@ const SUBSCRIPTION_ORDERS_BY_ID = gql`
   }
 `;
 
+const initConfirm = {
+  type: "warning",
+  message: "Ничего не проведено",
+  open: false,
+};
+
 const STORE_TYPE = {
   PRODUCTION: "production",
   STOCK: "stock",
@@ -90,6 +97,8 @@ const DialogStock = ({
   const [prodToStock, setProdToStock] = useState(0);
   const [showCards, setShowCards] = useState(false);
   const [openCorrectQty, setOpenCorrectQty] = useState(false);
+  // const [openConfirm, setOpenConfirm] = useState(false);
+  const [confirm, setConfirm] = useState(initConfirm);
   const [rows, setRows] = useState([]);
 
   // console.log("note", note);
@@ -146,7 +155,7 @@ const DialogStock = ({
     { field: "note", headerName: "Примечание", type: "text", width: 110 },
   ];
 
-  const [AddMoves] = useMutation(ADD_MOVES_ITEMS); // { loading: loadAddMoves, error: errorAddMoves, data: dataAddMoves },
+  const [AddMoves, { data: dataAddMoves }] = useMutation(ADD_MOVES_ITEMS); // { loading: loadAddMoves, error: errorAddMoves, data: dataAddMoves },
   // const [UpdateSupplyItems] = useMutation(UPDATE_SUPPLY_ITEM);
 
   const { loading, error, data } = useSubscription(SUBSCRIPTION_ORDERS_BY_ID, {
@@ -154,16 +163,16 @@ const DialogStock = ({
   });
 
   useEffect(() => {
+    // console.log("dataItems", dataItems);
+    if (dataAddMoves) {
+      setConfirm((prevState) => ({ ...prevState, ["open"]: true }));
+    }
+  }, [dataAddMoves]);
+
+  useEffect(() => {
     setItemId(item_id);
     setStockQty(stock_now);
   }, [stock_now, item_id]);
-
-  // useEffect(() => {
-  //   if (!loadAddMoves && dataAddMoves && order_supply_id !== 2) {
-  //     console.log("kjhhkj");
-  //     UpdateSupplyItems({ variables: { addData: addData } });
-  //   }
-  // }, [dataAddMoves, loadAddMoves, order_supply_id]);
 
   useEffect(() => {
     if (data) {
@@ -206,6 +215,7 @@ const DialogStock = ({
   const handleSubmit = () => {
     // console.log("handle OK", rows);
     const addData = [];
+    let message = "Добавлено \n";
     let sumFromProd = 0; // количество пришедщего с производства
     rows.map((it) => {
       let obj = {};
@@ -217,6 +227,7 @@ const DialogStock = ({
           item_id: itemId,
           note: note, // номер партии
         };
+        message = message + obj.qty + " шт. - " + it.customer + " от поставщика\n";
         addData.push(obj);
         sumFromProd = sumFromProd + obj.qty;
       }
@@ -227,6 +238,7 @@ const DialogStock = ({
           from_order: orderConstant.stockRealan,
           item_id: itemId,
         };
+        message = message + obj.qty + " шт. - " + it.customer + " со склада\n";
         addData.push(obj);
       }
       return 1; //хз почему return
@@ -241,6 +253,7 @@ const DialogStock = ({
         item_id: itemId,
         note: note,
       };
+      message = message + obj.qty + " шт. - возврат поставщику\n";
       addData.push(obj);
       obj = {
         qty: stockToProd,
@@ -260,13 +273,23 @@ const DialogStock = ({
         item_id: itemId,
         note: note, // номер партии
       };
+      message = message + obj.qty + " шт. - на склад\n";
       addData.push(obj);
       sumFromProd = sumFromProd + obj.qty;
     }
     // console.log("move items", addData);
     if (addData.length > 0) {
       console.log(addData);
+      console.log(message);
+      setConfirm({
+        type: "success",
+        message: message,
+        open: false,
+      });
       AddMoves({ variables: { addData: addData } });
+    } else {
+      console.log("confirm", confirm);
+      setConfirm((prevState) => ({ ...prevState, ["open"]: true }));
     }
 
     // if (sumFromProd > 0 && item_supply_id && order_supply_id !== orderConstant.stockMramolit) {
@@ -417,6 +440,15 @@ const DialogStock = ({
           name={item_name}
           stockNow={stockQty}
           handleClose={handleCorrectQty}
+        />
+      )}
+
+      {confirm.open && (
+        <ConfirmSnackbar
+          open={confirm.open}
+          message={confirm.message}
+          type={confirm.type}
+          onClose={() => setConfirm(initConfirm)} //() => setOpenConfirm(false)}
         />
       )}
     </div>

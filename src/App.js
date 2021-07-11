@@ -16,7 +16,7 @@ const App = () => {
   const { user, isLoading, error } = useAuth0();
 
   React.useEffect(() => {
-    console.log("user data", user);
+    // console.log("user data", user);
   }, [user]);
 
   if (error) {

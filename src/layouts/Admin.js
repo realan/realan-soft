@@ -26,7 +26,7 @@ var ps;
 const useStyles = makeStyles(styles);
 
 export default function Dashboard(props) {
-  const { user, isLoading, isAuthenticated, error } = useAuth0();
+  const { user, isLoading, error } = useAuth0();
   const { ...rest } = props;
   // states and functions
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -44,7 +44,7 @@ export default function Dashboard(props) {
   const classes = useStyles();
 
   React.useEffect(() => {
-    console.log("user data Anmin component", user);
+    // console.log("user data Anmin component", user);
     let roles = [];
     let availableRoutes = [];
     if (user) {
@@ -93,9 +93,9 @@ export default function Dashboard(props) {
   if (error) return <div>Oops... {error.message}</div>;
   if (isLoading) return <div>Loading </div>;
 
-  if (isAuthenticated) {
-    console.log("user", user);
-  }
+  // if (isAuthenticated) {
+  //   console.log("user", user);
+  // }
 
   // functions for changeing the states from components
   const handleImageClick = (image) => {

@@ -11,14 +11,7 @@ import EditItemInOrder from "components/EditItemInOrder/EditItemInOrder";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import FormSection from "components/FormSection/FormSection";
 
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormControl from "@material-ui/core/FormControl";
-import FormLabel from "@material-ui/core/FormLabel";
 import FileExportToXls from "components/FileExportToXls/FileExportToXls";
-
-import DateButton from "components/DateButton/DateButton";
 
 export const DELETE_ITEM_SUPPLIERS = gql`
   mutation DeleteItem($id: Int!) {
@@ -71,6 +64,28 @@ export default function SupplierOrderItems({ orderData, onChange, type }) {
       onChange("orderParams", obj);
     }
   }, [orderData.items]);
+
+  useEffect(() => {
+    let sum = 0;
+    switch (orderData.price_type_id) {
+      case 1:
+        sum = orderData.orderParams.sum_dealer;
+        break;
+      case 2:
+        sum = orderData.orderParams.sum_opt;
+        break;
+      case 3:
+        sum = orderData.orderParams.sum_retail;
+        break;
+      default:
+        break;
+    }
+    sum = sum * (1 - orderData.discount);
+    onChange("sum", sum);
+    // console.log("orderData.price_type_id", orderData.price_type_id);
+    console.log("orderData.orderParams", orderData.orderParams);
+    // console.log("SUM", sum);
+  }, [orderData.discount, orderData.price_type_id, orderData.orderParams]);
 
   if (loading) return "Loading...";
   if (error) return `Error! ${error.message}`;
@@ -125,11 +140,6 @@ export default function SupplierOrderItems({ orderData, onChange, type }) {
 
   return (
     <FormSection title={"Позиции в заказе"} icon={PeopleAltIcon}>
-      <DateButton
-        value={orderData.date_out}
-        placeholder="Дата отгрузки"
-        onChange={(date) => onChange("date_out", date)}
-      />
       <Grid container spacing={2}>
         <Grid item xs={12}>
           Масса <strong>{state.weight}</strong>, сумма дилер {state.sum_dealer} руб., сумма опт{" "}
@@ -139,21 +149,6 @@ export default function SupplierOrderItems({ orderData, onChange, type }) {
         <AddItemInOrder onSubmit={handleAddItem} index={orderData.items.length} />
 
         <FileExportToXls data={orderData.items} name={"Позиции в заказе"} />
-        <Grid item xs={12}>
-          <FormControl component="fieldset">
-            <FormLabel component="legend">Тип цены</FormLabel>
-            <RadioGroup
-              row
-              aria-label="pricetype"
-              name="price_type_id"
-              value={orderData.price_type_id}
-              onChange={(event) => onChange("price_type_id", event.target.value)}
-            >
-              <FormControlLabel value="1" control={<Radio />} label="Дилер" />
-              <FormControlLabel value="3" control={<Radio />} label="Розница" />
-            </RadioGroup>
-          </FormControl>
-        </Grid>
 
         <Grid item xs={12}>
           <div style={{ height: tableHeight, width: "100%" }}>

@@ -23,6 +23,7 @@ export default function NewSuplierOrder() {
   const [open, setOpen] = useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
   const [orderData, setOrderData] = useState(newSupplierOrderFormState);
+
   const [AddOrder, { loading, error, data }] = useMutation(ADD_ORDER);
   const [AddItems, { loading: loadingItems, error: errorItems, data: dataItems }] = useMutation(
     ADD_ITEMS_SUPPLIER
@@ -56,7 +57,7 @@ export default function NewSuplierOrder() {
           item_id: it.item_id,
           qty: it.qty,
           order_id: data.insert_orders_one.id,
-          supplier_id: 1, // Мрамолит по умолчанию, сделать получше !!!!!!
+          supplier_id: orderData.customer_id, //
           note: it.note,
           price_in: +(price * (1 - orderData.discount)).toFixed(2),
         };
@@ -69,7 +70,7 @@ export default function NewSuplierOrder() {
       setOrderData(newSupplierOrderFormState);
       setOpen(false);
     }
-  }, [loading, data]);
+  }, [loading, data, orderData.customer_id]);
 
   if (loading) return "Loading...";
   if (error) return `Error! ${error.message}`;
@@ -77,12 +78,8 @@ export default function NewSuplierOrder() {
   if (errorItems) return `Error! ${errorItems.message}`;
 
   const handleChange = (type, value) => {
-    // console.log("orderData", orderData);
-    if (type === "customer_id" && !value) {
-      setOrderData(newSupplierOrderFormState);
-    } else {
-      setOrderData((prevState) => ({ ...prevState, [type]: value }));
-    }
+    console.log("orderData", orderData);
+    setOrderData((prevState) => ({ ...prevState, [type]: value }));
   };
 
   const handleSubmit = () => {
@@ -93,7 +90,7 @@ export default function NewSuplierOrder() {
       consignee_data: orderData.consignee_data,
       consignee_name: orderData.consignee_name,
       consignee_phone: orderData.consignee_phone,
-      customer_id: 2, //  - склад мрамолит типа !!!!!!!
+      customer_id: Number(orderData.customer_id), //  - склад мрамолит типа !!!!!!!
       date_in: orderData.date_in,
       date_out: orderData.date_out,
       delivery_id: orderData.delivery_id,
@@ -113,15 +110,15 @@ export default function NewSuplierOrder() {
       payment_ratio: orderData.payment_ratio,
       payment_status: orderData.payment_status,
       person_id: orderData.person_id,
-      price_type_id: Number(orderData.person_id), //  - дилерские цены !!!!!!!
+      price_type_id: Number(orderData.price_type_id), //  - дилерские цены !!!!!!!
       shop_id: orderData.shop_id,
       sum: +orderData.sum.toFixed(2),
       sum_in: +orderData.orderParams.sum_in.toFixed(2),
       weight: +orderData.orderParams.weight.toFixed(3),
     };
-    console.log("orderData", orderData);
-    console.log("order", order);
-    AddOrder({ variables: { addData: order } });
+    // console.log("orderData", orderData);
+    console.log("orderData", order);
+    // AddOrder({ variables: { addData: order } });
     setOpen(false);
   };
 

@@ -32,7 +32,7 @@ const useStyles = makeStyles(styles);
 
 export default function HeaderLinks(props) {
   const [openNotification, setOpenNotification] = React.useState(null);
-  const { isLoading, isAuthenticated, error, user, loginWithRedirect, logout } = useAuth0();
+  const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
 
   const handleClickNotification = (event) => {
     if (openNotification && openNotification.contains(event.target)) {

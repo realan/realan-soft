@@ -57,7 +57,7 @@ const UnorderedPositions = ({ startDate, endDate }) => {
     { field: "city", headerName: "Город", width: 250 },
     { field: "suppler_name", headerName: "Поставщик", width: 250 },
   ];
-  console.log(startDate, endDate);
+  // console.log(startDate, endDate);
   const { loading, error, data } = useQuery(QUERY_GET_UNORDERED, {
     variables: {
       startDate: startDate,
@@ -67,7 +67,7 @@ const UnorderedPositions = ({ startDate, endDate }) => {
 
   useEffect(() => {
     if (!loading && data) {
-      console.log(data);
+      // console.log(data);
       const preparedRows = data.items.map((item) => {
         return {
           id: item.id,
@@ -98,6 +98,7 @@ const UnorderedPositions = ({ startDate, endDate }) => {
 
   return (
     <>
+      <h4>Нужно заказать позиции:</h4>
       {Boolean(rows.length) && (
         <div style={{ height: 500, width: "100%" }}>
           <DataGrid rows={rows} columns={columns} rowHeight={32} />

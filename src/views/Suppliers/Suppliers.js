@@ -5,6 +5,7 @@ import moment from "moment";
 import DateInterval from "components/DateInterval/DateInterval";
 import UnorderedPositions from "./UnorderedPositions";
 import NewSuplierOrder from "./NewSuplierOrder";
+import OrdersSuppliersTable from "./OrdersSuppliersTable";
 
 const Suppliers = () => {
   const [interval, setInterval] = useState({
@@ -20,6 +21,7 @@ const Suppliers = () => {
       <DateInterval start={interval.start} end={interval.end} onChange={handleDateChange} />
       {/* <ModalOrderToSupplier startDate={interval.start} endDate={interval.end} /> */}
       <NewSuplierOrder />
+      <OrdersSuppliersTable />
       <UnorderedPositions startDate={interval.start} endDate={interval.end} />
     </>
   );

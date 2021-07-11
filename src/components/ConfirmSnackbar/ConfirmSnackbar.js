@@ -7,16 +7,16 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-export default function ConfirmSnackbar({ open, message = "OK", onClose }) {
+export default function ConfirmSnackbar({ open, message = "OK", type = "success", onClose }) {
   return (
     <Snackbar
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
       open={open}
-      autoHideDuration={5000}
+      autoHideDuration={6000}
       onClose={onClose}
     >
-      <Alert severity="success" onClose={onClose}>
-        {message}
+      <Alert severity={type} onClose={onClose}>
+        <span style={{ whiteSpace: "pre-line" }}>{message}</span>
       </Alert>
     </Snackbar>
   );
