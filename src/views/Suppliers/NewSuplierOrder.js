@@ -110,7 +110,7 @@ export default function NewSuplierOrder() {
       payment_ratio: orderData.payment_ratio,
       payment_status: orderData.payment_status,
       person_id: orderData.person_id,
-      price_type_id: Number(orderData.price_type_id), //  - дилерские цены !!!!!!!
+      price_type_id: Number(orderData.price_type_id),
       shop_id: orderData.shop_id,
       sum: +orderData.sum.toFixed(2),
       sum_in: +orderData.orderParams.sum_in.toFixed(2),
@@ -118,7 +118,7 @@ export default function NewSuplierOrder() {
     };
     // console.log("orderData", orderData);
     console.log("orderData", order);
-    // AddOrder({ variables: { addData: order } });
+    AddOrder({ variables: { addData: order } });
     setOpen(false);
   };
 

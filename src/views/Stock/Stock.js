@@ -15,7 +15,10 @@ import SupplyOrderRegister from "./SupplyOrderRegister";
 
 const QUERY_SUPPLY_ORDERS = gql`
   query QuerySupplyOrders {
-    orders(where: { is_purchase: { _eq: true } }) {
+    orders(
+      where: { is_shipped: { _eq: false }, _and: { is_purchase: { _eq: true } } }
+      order_by: { date_out: asc }
+    ) {
       id
       date_out
       note_order

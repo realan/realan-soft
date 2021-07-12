@@ -60,7 +60,8 @@ export default function SupplierOrderItems({ orderData, onChange, type }) {
       // console.log(orderData.items);
       // console.log("orderSums", obj);
       setState(obj);
-      setTableHeight(200 + 32 * orderData.items.length);
+      let rowC = orderData.items.length > 100 ? 100 : orderData.items.length;
+      setTableHeight(200 + 32 * rowC);
       onChange("orderParams", obj);
     }
   }, [orderData.items]);
