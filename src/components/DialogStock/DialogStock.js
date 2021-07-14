@@ -8,7 +8,8 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { DataGrid } from "@material-ui/data-grid";
+// import { DataGrid, getThemePaletteMode } from "@material-ui/data-grid";
+import { DataGrid, getThemePaletteMode } from "@material-ui/data-grid";
 import InputWithButtons from "components/InputWithButtons/InputWithButtons";
 // import CardPosInOrder from "components/CardPosInOrder/CardPosInOrder";
 import Switch from "@material-ui/core/Switch";
@@ -18,6 +19,9 @@ import ConfirmSnackbar from "components/ConfirmSnackbar/ConfirmSnackbar";
 import { ADD_MOVES_ITEMS } from "../../GraphQL/Mutations";
 import { QuantityChanger } from "components/QuantityChanger";
 import { orderConstant } from "constants/orderConstant";
+
+import { createMuiTheme, darken, lighten } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/styles";
 
 // export const UPDATE_SUPPLY_ITEM = gql`
 //   mutation UpdateSupplyItem($id: Int!, $qty_registered: Int!) {
@@ -30,7 +34,46 @@ import { orderConstant } from "constants/orderConstant";
 //   }
 // `;
 
-// const useStyles = makeStyles(styles);
+const defaultTheme = createMuiTheme();
+const useStyles = makeStyles(
+  (theme) => {
+    const getBackgroundColor = (color) =>
+      getThemePaletteMode(theme.palette) === "dark" ? darken(color, 0.6) : lighten(color, 0.6);
+
+    const getHoverBackgroundColor = (color) =>
+      getThemePaletteMode(theme.palette) === "dark" ? darken(color, 0.5) : lighten(color, 0.5);
+
+    return {
+      root: {
+        "& .super-app-theme--Open": {
+          backgroundColor: getBackgroundColor(theme.palette.info.main),
+          "&:hover": {
+            backgroundColor: getHoverBackgroundColor(theme.palette.info.main),
+          },
+        },
+        "& .super-app-theme--notComplete": {
+          backgroundColor: getBackgroundColor(theme.palette.success.main),
+          "&:hover": {
+            backgroundColor: getHoverBackgroundColor(theme.palette.success.main),
+          },
+        },
+        "& .super-app-theme--note": {
+          backgroundColor: getBackgroundColor(theme.palette.warning.main),
+          "&:hover": {
+            backgroundColor: getHoverBackgroundColor(theme.palette.warning.main),
+          },
+        },
+        "& .super-app-theme--Rejected": {
+          backgroundColor: getBackgroundColor(theme.palette.error.main),
+          "&:hover": {
+            backgroundColor: getHoverBackgroundColor(theme.palette.error.main),
+          },
+        },
+      },
+    };
+  },
+  { defaultTheme }
+);
 
 const SUBSCRIPTION_ORDERS_BY_ID = gql`
   subscription SubscriptionsOrdersByItemId($item_id: Int!) {
@@ -90,7 +133,7 @@ const DialogStock = ({
   // qty_registered,
 }) => {
   // console.log("render DialogStock")
-  // const classes = useStyles();
+  const classes = useStyles();
   const [itemId, setItemId] = useState(undefined);
   const [stockQty, setStockQty] = useState(0); // now in stock
   const [stockToProd, setStockToProd] = useState(0);
@@ -185,6 +228,14 @@ const DialogStock = ({
         const needQty = it.qty - (sumTo - sumFrom);
         const collectedQty = sumTo - sumFrom;
 
+        let status;
+        if (needQty !== 0) {
+          status = "notComplete";
+        }
+        if (needQty !== 0 && it.note && it.note !== "") {
+          status = "note";
+        }
+
         let obj = {
           id: key, // it.id,
           orderId: it.order.id,
@@ -198,6 +249,7 @@ const DialogStock = ({
           fromProd: 0, //it.qty,
           fromStock: 0, // it.qty,
           note: it.note,
+          status: status,
           // item: itemId,
         };
         return obj;
@@ -385,8 +437,14 @@ const DialogStock = ({
 
         <DialogContent>
           {Boolean(rows.length) && !showCards && (
-            <div style={{ height: rows.length * 55 + 150, width: "100%" }}>
-              <DataGrid rows={rows} columns={columns} />
+            <div style={{ height: rows.length * 55 + 150, width: "100%" }} className={classes.root}>
+              <DataGrid
+                rows={rows}
+                columns={columns}
+                getRowClassName={(params) =>
+                  `super-app-theme--${params.getValue(params.id, "status")}`
+                }
+              />
             </div>
           )}
 
