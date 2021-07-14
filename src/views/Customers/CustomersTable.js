@@ -1,13 +1,13 @@
 import React from "react";
 import { useState, useMemo, useEffect } from "react";
-// import { gql } from "apollo-boost";
+import { gql } from "apollo-boost";
 import { useSubscription } from "@apollo/react-hooks";
 import { makeStyles } from "@material-ui/core/styles";
 import { DataGrid } from "@material-ui/data-grid";
 import Pagination from "@material-ui/lab/Pagination";
 import PropTypes from "prop-types";
 import FileExportToXls from "components/FileExportToXls/FileExportToXls";
-import { SUBSCRIPTION_CUSTOMERS } from "GraphQL/Subscriptions";
+// import { SUBSCRIPTION_CUSTOMERS } from "GraphQL/Subscriptions";
 
 function CustomPagination(props) {
   const { pagination, api } = props;
@@ -52,32 +52,32 @@ const useStyles = makeStyles({
   },
 });
 
-// const SUBSCRIPTION_CUSTOMERS = gql`
-//     subscription {
-//         customers(where: {id: {_gt: 10}}) {
-//             id
-//             name
-//             dealer
-//             firms {
-//                 id
-//                 name
-//             }
-//             shops {
-//                 id
-//                 city
-//                 name
-//             }
-//             persons {
-//                 id
-//                 full_name
-//                 phone
-//                 email
-//                 firm_id
-//                 shop_id
-//             }
-//         }
-//     }
-// `;
+const SUBSCRIPTION_CUSTOMERS = gql`
+  subscription {
+    customers(where: { id: { _gt: 10 } }) {
+      id
+      name
+      dealer
+      firms {
+        id
+        name
+      }
+      shops {
+        id
+        city
+        name
+      }
+      persons {
+        id
+        full_name
+        phone
+        email
+        firm_id
+        shop_id
+      }
+    }
+  }
+`;
 
 const CustomersTable = () => {
   const [rows, setRows] = useState([]);
