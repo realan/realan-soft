@@ -9,7 +9,8 @@ import OrdersSuppliersTable from "./OrdersSuppliersTable";
 
 const Suppliers = () => {
   const [interval, setInterval] = useState({
-    start: moment().startOf("isoWeek").toDate(),
+    // start: moment().startOf("isoWeek").toDate(),
+    start: moment().add(1, "weeks").endOf("isoWeek").toDate(),
     end: new Date(),
   });
 

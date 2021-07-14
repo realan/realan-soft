@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { gql } from "apollo-boost";
 import { useSubscription, useMutation } from "@apollo/react-hooks";
+import moment from "moment";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import Dialog from "@material-ui/core/Dialog";
@@ -45,7 +46,7 @@ const useStyles = makeStyles(
 
     return {
       root: {
-        "& .super-app-theme--Open": {
+        "& .super-app-theme--nextOrder": {
           backgroundColor: getBackgroundColor(theme.palette.info.main),
           "&:hover": {
             backgroundColor: getHoverBackgroundColor(theme.palette.info.main),
@@ -221,6 +222,7 @@ const DialogStock = ({
     if (data) {
       // console.log(itemId);
       // console.log("stock item data", data);
+      const nextOrdersDate = moment().add(1, "weeks").endOf("isoWeek").toDate();
       const preparedData = data.items.map((it, key) => {
         const dateOut = new Date(it.order.date_out);
         const sumTo = it.order.movingsToOrder.reduce((sum, current) => sum + current.qty, 0);
@@ -234,6 +236,9 @@ const DialogStock = ({
         }
         if (needQty !== 0 && it.note && it.note !== "") {
           status = "note";
+        }
+        if (dateOut >= nextOrdersDate) {
+          status = "nextOrder";
         }
 
         let obj = {
