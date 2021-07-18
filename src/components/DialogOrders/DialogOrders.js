@@ -135,7 +135,7 @@ const DialogOrders = ({ open, handleClose, orderData }) => {
   const [AddMovesItemsMutation] = useMutation(ADD_MOVES_ITEMS);
 
   function fromProdField(params) {
-    console.log(params);
+    // console.log(params);
     const needQty = params.row.qtyOrder - params.row.qtyCollect - params.row.fromStock;
     return (
       <strong>

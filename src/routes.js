@@ -1,5 +1,6 @@
 import Dashboard from "views/Dashboard/Dashboard";
 import OrdersStock from "views/Stock/OrdersStock";
+import StockPacking from "views/Stock/StockPacking";
 import Stock from "views/Stock/Stock";
 import StockOld from "views/Stock/StockOld";
 import Suppliers from "views/Suppliers/Suppliers";
@@ -80,7 +81,7 @@ var dashRoutes = [
         path: "/stock-packing",
         name: "Упаковка",
         mini: "УП",
-        component: OrdersStock,
+        component: StockPacking,
         layout: "/admin",
       },
       {

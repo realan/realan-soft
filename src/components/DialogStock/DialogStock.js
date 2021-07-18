@@ -23,6 +23,7 @@ import { orderConstant } from "constants/orderConstant";
 
 import { createMuiTheme, darken, lighten } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/styles";
+// import { green } from "@material-ui/core/colors";
 
 // export const UPDATE_SUPPLY_ITEM = gql`
 //   mutation UpdateSupplyItem($id: Int!, $qty_registered: Int!) {
@@ -490,9 +491,23 @@ const DialogStock = ({
               Отмена
             </Button>
           </Box>
-          <Button onClick={handleSubmit} color="primary" variant="contained" size="large">
-            Подтвердить
-          </Button>
+          <Box flexGrow={1}>
+            <Button
+              style={{
+                maxWidth: "150px",
+                maxHeight: "80px",
+                minWidth: "150px",
+                minHeight: "80px",
+                backgroundColor: "green",
+              }}
+              onClick={handleSubmit}
+              color="primary"
+              variant="contained"
+              //size="large"
+            >
+              Подтвердить
+            </Button>
+          </Box>
         </DialogActions>
       </Dialog>
 
