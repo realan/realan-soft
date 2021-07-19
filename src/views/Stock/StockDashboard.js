@@ -4,6 +4,7 @@ import ModalResorting from "./ModalResorting";
 import moment from "moment";
 import ModalCompleteSet from "views/Stock/ModalCompleteSet";
 import DateInterval from "components/DateInterval/DateInterval";
+import LastPositionMovings from "./LastPositionMovings";
 
 const StockDashboard = () => {
   const [interval, setInterval] = useState({
@@ -19,6 +20,7 @@ const StockDashboard = () => {
       <DateInterval start={interval.start} end={interval.end} onChange={handleDateChange} />
       <ModalResorting startDate={interval.start} endDate={interval.end} />
       <ModalCompleteSet />
+      <LastPositionMovings />
     </>
   );
 };
